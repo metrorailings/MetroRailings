@@ -1,0 +1,194 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/footer';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+
+/* ----------------------- GENERAL STYLES ----------------------------- */
+
+// Default body stylings
+body
+{
+	margin: 0px;
+}
+
+// Generic font implementations
+.italicized
+{
+	@extend %italicizedFont;
+}
+
+.bolded
+{
+	@extend %boldFont;
+}
+
+a
+{
+	@extend %linkText;
+}
+
+// Page header stylings
+h3
+{
+	@extend %h3;
+	display: block;
+
+	margin-bottom: 0px;
+}
+
+.sectionHeader
+{
+	@extend %sectionHeader;
+
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		width: 3px;
+		style: solid;
+		color: map-get($COLORS, darkBlueTheme);
+
+		left: none;
+		right: none;
+	}
+
+	padding:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	width: 10%;
+	display: block;
+}
+
+.headerUnderline
+{
+	display: inline-block;
+	width: 80%;
+	height: 2px;
+
+	margin-bottom: 25px;
+
+	background: linear-gradient(to right, map-get($COLORS, whiteTheme) 0%, map-get($COLORS, darkBlueTheme) 50%, map-get($COLORS, whiteTheme) 100%);
+}
+
+// Generic paragraph stylings
+p
+{
+	@extend %regularText;
+
+	margin:
+	{
+		left: 25px;
+		right: 25px;
+	}
+
+	line-height: 28px;
+
+	text-align: left;
+}
+
+// Classes that guarantee spacing around HTML elements incorporated within paragraph elements
+.spaceBeforeAndAfter
+{
+	&::before, &::after
+	{
+		content: ' ';
+		text-decoration: none;
+	}
+}
+.spaceBefore
+{
+	&::before
+	{
+		content: ' ';
+		text-decoration: none;
+	}
+}
+.spaceAfter
+{
+	&::after
+	{
+		content: ' ';
+		text-decoration: none;
+	}
+}
+
+.content
+{
+	width: 100%;
+	overflow-x: hidden;
+	text-align: center;
+}
+
+.separator
+{
+	width: 100%;
+	display: block;
+
+	margin:
+	{
+		top: 40px;
+		bottom: 40px;
+	}
+
+	border:
+	{
+		radius: 20px;
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, lightGrayTheme);
+	}
+}
+
+.hideOnMobile
+{
+	@media only screen and (max-device-width: 727px)
+	{
+		display: none;
+	}
+}
+
+// Styling for navigation buttons
+.navButton
+{
+	@extend %buttonText;
+	@include transitionSettings($property: opacity, $duration: 0.75s);
+
+	border:
+	{
+		radius: 15px;
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	width: 100%;
+
+	padding: 10px;
+
+	cursor: pointer;
+
+	background-color: map-get($COLORS, darkBlueTheme);
+	opacity: 1.0;
+
+	&.disabled
+	{
+		opacity: 0.4;
+	}
+}
+
+// Styling for tooltips
+.hint::after, .hint::before
+{
+	@extend %tooltipText;
+}

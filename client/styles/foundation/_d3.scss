@@ -1,0 +1,47 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+// Styling for the d3 tips
+.d3Tooltip
+{
+	@include transitionSettings($property: opacity, $duration: 0.5s);
+	@extend %tooltipText;
+
+	top: 0;
+	opacity: 0.0;
+
+	background-color: map-get($COLORS, blackTheme);
+	border-radius: 5px;
+
+	text-align: center;
+
+	@media only screen and (max-device-width: 1024px)
+	{
+		display: none;
+	}
+
+	&.bounceTip
+	{
+		opacity: 1.0;
+	}
+
+	& > div
+	{
+		padding: 5px;
+	}
+
+	& > div:first-child
+	{
+		border-bottom:
+		{
+			color: map-get($COLORS, whiteTheme);
+			width: 1px;
+			style: solid;
+		}
+	}
+}

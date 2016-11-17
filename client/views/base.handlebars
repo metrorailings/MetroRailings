@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="UTF-8" />
+        <!-- Forcing IE to adhere to standards here -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+        <!-- Mobile device scaling -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Favicon -->
+        <link rel="icon" href="favicon.ico">
+
+        <!-- Load all third-party stylesheets here --->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/hint.css/1.3.6/hint.min.css">
+
+        <!-- Load all the application-specific CSS files for this page -->
+        {{#cssFiles}}
+            <link rel="stylesheet" type="text/css" href='{{path}}'/>
+        {{/cssFiles }}
+
+    </head>
+
+<body>
+
+    <!-- All page-specific HTML goes here -->
+    <div class='content'>
+        {{{content}}}
+    </div>
+
+    <!-- Loading veil -->
+    <div id='baseLoaderOverlay'>
+        <div class='loader'>Loading</div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <span>
+            <i class='fa fa-copyright'></i> {{currentYear}}
+        </span>
+        <span id='socialMediaSection'>
+            <span>Share on</span>
+            <span>
+                <i id='facebookShareLink' class='fa fa-facebook-official'></i>
+                <i id='twitterShareLink' class='fa fa-twitter-square'></i>
+                <i id='redditShareLink' class='fa fa-reddit-square'></i>
+            </span>
+        </span>
+    </footer>
+
+    <!-- Data to be bootstrapped when the page loads and before the other scripts are loaded -->
+    <script>
+        window.MetroRailings = {{{initialData}}};
+    </script>
+
+    <!-- Load all the necessary third-party script files below -->
+
+    <!-- In production, only one script needs to be loaded -->
+    {{#if isProd}}
+        <script src="prod/app.js"></script>
+    {{else}}
+        <!-- In development environments, multiple scripts should be loaded in order to facilitate any needed debugging
+        Load the bootloading scripts along with the base script that is responsible for instantiating all other
+        scripts relevant to the page -->
+        <script src="client/scripts/jspm_packages/system.js" ></script>
+        <script src="client/scripts/jspm_config.js" ></script>
+		<script src="client/scripts/systemPaths.js" ></script>
+        <script src="client/scripts/plugins/facebook.js" ></script>
+        <script src="client/scripts/plugins/twitter.js" ></script>
+        <script src="client/scripts/plugins/socialLinks.js" ></script>
+
+        <script>System.import("{{launchScript}}");</script>
+    {{/if}}
+
+    </body>
+
+</html>

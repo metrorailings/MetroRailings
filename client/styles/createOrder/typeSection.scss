@@ -1,0 +1,29 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+/* ----------------------- STYLES ----------------------------- */
+
+#typeSection
+{
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	& > .pictureButtonContainer
+	{
+		height: 400px;
+		width: 49%;
+
+		img
+		{
+			width: 250px;
+			height: 250px;
+		}
+	}
+
+	& > .pictureButtonContainerCheckbox
+	{
+		width: 49%;
+	}
+}

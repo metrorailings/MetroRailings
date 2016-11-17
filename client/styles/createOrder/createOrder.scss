@@ -1,0 +1,185 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/loader';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/gallery';
+
+/* ----------------------- ANIMATIONS ----------------------------- */
+
+// The animation responsible for keeping the arrows moving downward on the scroll down notifier
+@include keyframes($name: movingDown)
+{
+	0%
+	{
+		opacity: 0.0;
+		top: -5px;
+	}
+
+	10%
+	{
+		opacity: 1.0;
+		top: 0px;
+	}
+
+	100%
+	{
+		opacity: 1.0;
+		top: 45px;
+	}
+}
+
+/* ----------------------- STYLES ----------------------------- */
+
+#typeSection, #lengthSection, #styleSection, #curvesSection, #colorSection, #submissionSection
+{
+	border-top:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+}
+
+#lengthSection, #styleSection, #curvesSection, #colorSection, #submissionSection
+{
+	@include transitionSettings($property: all, $duration: 0.75s);
+
+	height: 0px;
+
+	overflow-y: hidden;
+	overflow-x: hidden;
+
+	&.rollDownSection
+	{
+		padding:
+		{
+			top: 20px;
+			bottom: 20px;
+		}
+	}
+}
+
+.pictureButtonContainer, .pictureButtonContainerCheckbox
+{
+	@extend %significantText;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.pictureButton
+{
+	@include transitionSettings($property: all, $duration: 0.25s);
+
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+		radius: 10px;
+	}
+
+	position: relative;
+	top: 0px;
+	padding: 20px;
+
+	background-color: map-get($COLORS, lightBlueTheme);
+	box-shadow: 0px 10px 10px map-get($COLORS, darkGrayTheme);
+
+	cursor: pointer;
+
+	&.pressDown
+	{
+		top: 5px;
+		box-shadow: 0px 3px 3px map-get($COLORS, darkGrayTheme);
+	}
+
+	& > div
+	{
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+	}
+}
+
+.headlineQuestion
+{
+	@extend %majorText;
+}
+
+#scrollDownLabel
+{
+	@include shiftTransition($x: -50%);
+	@include transitionSettings($property: top, $duration: 0.25s);
+	@extend %fixedButtonText;
+
+	border:
+	{
+		style: solid;
+		width: 1px;
+		color: map-get($COLORS, blackTheme);
+
+		top-right-radius: 15px;
+		top-left-radius: 15px;
+	}
+
+	padding:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	position: fixed;
+	top: 101%;
+	left: 50%;
+
+	height: 25px;
+	width: 250px;
+	z-index: 1000;
+
+	background-color: map-get($COLORS, darkBlueTheme);
+	cursor: pointer;
+
+	&.reveal
+	{
+		top: calc(100% - 35px);
+	}
+
+	& > i
+	{
+		position: relative;
+
+		padding:
+		{
+			left: 15px;
+			right: 15px;
+		}
+
+		&:first-of-type
+		{
+			@include animationSettings($keyframeSet: movingDown, $duration: 2.5s, $timing: linear, $iterations: infinite);
+		}
+
+		&:last-of-type
+		{
+			@include animationSettings($keyframeSet: movingDown, $duration: 2.5s, $timing: linear, $delay: 1.2s, $iterations: infinite);
+		}
+	}
+}
+
+footer
+{
+	margin-top: 0px;
+}

@@ -1,0 +1,135 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#styleSection
+{
+	&.rollDownSection
+	{
+		height: 1400px;
+	}
+}
+
+.styleContainer
+{
+	margin:
+	{
+		top: 30px;
+		bottom: 30px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		radius: 10px;
+		color: map-get($COLORS, grayTheme);
+		style: solid;
+		width: 2px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: map-get($COLORS, lightWhiteTheme);
+
+	width: 95%;
+
+	& > span
+	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		height: 300px;
+
+		&.pictureButtonContainer
+		{
+			@extend %smallSignificantText;
+
+			img
+			{
+				width: 200px;
+				height: 200px;
+			}
+		}
+
+		&:nth-child(1)
+		{
+			width: 5%;
+		}
+
+		&:nth-child(2)
+		{
+			width: 30%;
+		}
+
+		&:nth-child(3)
+		{
+			width: 60%;
+		}
+	}
+}
+
+.styleDescription
+{
+	border-left:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, lightGrayTheme);
+	}
+
+	flex-wrap: wrap;
+
+	& > div
+	{
+		padding:
+		{
+			top: 10px;
+			bottom: 10px;
+			left: 25px;
+			right: 25px;
+		}
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		height: 130px;
+		width: 100%;
+	}
+}
+
+.pictureGallery
+{
+	border-bottom:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, lightGrayTheme);
+	}
+
+	& > img
+	{
+		margin:
+		{
+			left: 20px;
+			right: 20px;
+		}
+
+		width: 125px;
+		height: 125px;
+
+		cursor: pointer;
+	}
+}
+
+.textualDescription
+{
+	@extend %regularPlusText;
+}

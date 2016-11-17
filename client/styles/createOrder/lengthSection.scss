@@ -1,0 +1,115 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#lengthSection
+{
+	&.rollDownSection
+	{
+		height: 500px;
+	}
+}
+
+#enclosureHelp
+{
+	margin-top: 20px;
+}
+
+#stairsHelp
+{
+	margin-bottom: 20px;
+}
+
+#enclosureHelp, #stairsHelp
+{
+	border:
+	{
+		width: 1.5px;
+		radius: 20px;
+		style: solid;
+		color: map-get($COLORS, whiteTheme);
+	}
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	height: 0px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+
+	width: 80%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: map-get($COLORS, lightBlueTheme);
+
+	&.reveal
+	{
+		height: 150px;
+		border-color: map-get($COLORS, darkGrayTheme);
+	}
+
+	& > p
+	{
+		width: 85%;
+	}
+
+	& > span
+	{
+		width: 10%;
+
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+
+		& > span
+		{
+			width: 95%;
+
+			&:first-of-type
+			{
+				@extend %bigBlueIcons;
+			}
+
+			&:last-of-type
+			{
+				@extend %significantText;
+			}
+		}
+	}
+}
+
+#railingsLengthInputContainer
+{
+	@extend %significantText;
+
+	margin:
+	{
+		top: 20px;
+	}
+
+	letter-spacing: 0.15em;
+}
+
+#railingsLength
+{
+	@extend %significantText;
+
+	width: 80px;
+	margin-right: 15px;
+
+	&.invalid
+	{
+		background-color: map-get($COLORS, lightRedTheme);
+	}
+}

@@ -1,0 +1,70 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import 'animations';
+@import 'fonts';
+@import 'colors';
+
+/* ------------------ ANIMATIONS ----------------------- */
+
+@include keyframes($name: loadingColors)
+{
+	0%
+	{
+		color: map-get($COLORS, darkBlueTheme);
+	}
+
+	33%
+	{
+		color: map-get($COLORS, darkGreenTheme);
+	}
+
+	66%
+	{
+		color: map-get($COLORS, darkRedTheme);
+	}
+
+	100%
+	{
+		color: map-get($COLORS, darkBlueTheme);
+	}
+}
+
+/* ------------------ CLASSES ----------------------- */
+
+#baseLoaderOverlay
+{
+	@include transitionSettings($property: opacity, $duration: 0.3s);
+
+	position: fixed;
+	height: 100%;
+	width: 100%;
+
+	top: 0;
+	left: 0;
+
+	background-color: map-get($COLORS, blackTheme);
+	opacity: 0;
+	z-index: -9999;
+
+	&.show
+	{
+		z-index: 9999;
+		opacity: 0.7;
+	}
+}
+
+.loader
+{
+	@include shiftTransition($x: -50%, $y: -50%);
+	@include animationSettings($keyframeSet: loadingColors, $duration: 4s, $timing: linear, $iterations: infinite);
+	@extend %loaderText;
+
+	height: 50px;
+	line-height: 50px;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+
+	text-align: center;
+}

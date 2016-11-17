@@ -1,0 +1,138 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/footer';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+
+/* ----------------------- FORM STYLES ----------------------------- */
+
+input[type=checkbox]
+{
+	display: none;
+
+	& + label::before
+	{
+		@extend %significantText;
+
+		content: '\2713 ';
+
+		border:
+		{
+			width: 1px;
+			radius: 5px;
+			style: solid;
+			color: map-get($COLORS, darkGrayTheme);
+		}
+
+		display: inline-block;
+		width: 32px;
+		height: 32px;
+
+		background: map-get($COLORS, lightWhiteTheme);
+		box-shadow: inset 0 1px 3px rgba(0,0,0,.3);
+
+		font-size: 32px;
+		line-height: 32px;
+		color: map-get($COLORS, lightWhiteTheme);
+
+		cursor: pointer;
+	}
+
+	&:checked + label::before
+	{
+		color: map-get($COLORS, darkGreenTheme);
+	}
+}
+
+input[type=radio]
+{
+	display: none;
+
+	& + label
+	{
+		cursor: pointer;
+
+		&::before
+		{
+			@include transitionSettings($property: background, $duration: 0.25s);
+			@include shiftTransition($y: 25%);
+			@extend %significantText;
+
+			content: '';
+
+			border:
+			{
+				radius: 50%;
+
+				width: 5px;
+				style: solid;
+				color: map-get($COLORS, grayTheme);
+			}
+
+			margin-right: 10px;
+
+			width: 24px;
+			height: 24px;
+			display: inline-block;
+
+			position: relative;
+
+			background-color: map-get($COLORS, lightWhiteTheme);
+
+			cursor: pointer;
+		}
+	}
+
+	&:checked + label::before
+	{
+		background: map-get($COLORS, greenTheme);
+	}
+}
+
+// Styling for customized button sets
+.buttonSet
+{
+	& > label
+	{
+		@include transitionSettings($property: all, $duration: 0.5s);
+		@extend %formRadioLabelText;
+
+		border:
+		{
+			width: 1px;
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		padding: 10px;
+
+		cursor: pointer;
+
+		background-color: map-get($COLORS, lightGrayTheme);
+		color: map-get($COLORS, blackTheme);
+
+		&:first-of-type
+		{
+			border-top-left-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+
+		&:last-of-type
+		{
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+		}
+	}
+
+	& > input
+	{
+		display: none;
+
+		&:checked + label
+		{
+			background-color: map-get($COLORS, darkerGrayTheme);
+			color: map-get($COLORS, whiteTheme);
+		}
+	}
+}

@@ -1,0 +1,147 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#colorSection
+{
+	&.rollDownSection
+	{
+		height: 600px;
+	}
+}
+
+#colorPicker
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding-top: 30px;
+}
+
+#colorDemo
+{
+	border-right:
+	{
+		color: map-get($COLORS, grayTheme);
+		width: 2px;
+		style: solid;
+	}
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	width: 30%;
+	padding-right: 30px;
+
+	& > span
+	{
+		width: 100%;
+		position: relative;
+	}
+}
+
+#colorDemoPicture
+{
+	width: 260px;
+	height: 260px;
+
+	cursor: pointer;
+}
+
+#colorDemoName
+{
+	@extend %bigSignificantText;
+	@extend %italicizedFont;
+
+	letter-spacing: 0.1em;
+
+	margin-top: 25px;
+	width: 260px;
+}
+
+#colorSelector
+{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	width: 45%;
+	padding-left: 30px;
+
+	& > span
+	{
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+
+		width: 40%;
+		padding: 20px;
+	}
+}
+
+.colorContainer
+{
+	width: 95%;
+	font-size: 64px;
+}
+
+.selectedArrow
+{
+	visibility: hidden;
+
+	font-size: 64px;
+	color: map-get($COLORS, noticeTheme);
+
+	margin-bottom: 10px;
+
+	&.reveal
+	{
+		visibility: visible;
+	}
+}
+
+.colorOption
+{
+	border:
+	{
+		radius: 50%;
+
+		width: 1.5px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	width: 64px;
+	height: 64px;
+	display: inline-block;
+
+	cursor: pointer;
+}
+
+#whiteColor
+{
+	background-color: map-get($COLORS, smokeWhiteTheme);
+}
+
+#blackColor
+{
+	background-color: map-get($COLORS, blackTheme);
+}
+
+#mahoganyColor
+{
+	background-color: map-get($COLORS, mahoganyTheme);
+}
+
+#silverColor
+{
+	background-color: map-get($COLORS, silverTheme);
+}

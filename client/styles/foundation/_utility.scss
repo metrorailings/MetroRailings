@@ -1,0 +1,70 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import 'animations';
+
+/* ----------------------- MIX-INS ----------------------------- */
+
+/*
+ * Mix-in forces any element to which it is applied to to fully render, regardless of whether content is there within the element
+ *
+ * @author kinsho
+ */
+@mixin forceRender()
+{
+	&:after
+	{
+		content: '.';
+		visibility: hidden;
+	}
+
+	// No content clause required here. The purpose of the function has nothing to do specifically with styling
+}
+
+/*
+ * Mix-in generates the container and child DIV styling necessary to allow the child elements to be positioned
+ * anywhere within their host container
+ *
+ * @param $left - the distance which to shift the child elements rightward from the left edge of the container
+ * @param $top - the distance which to shift the child elements downward from the top edge of the container 
+ *
+ * @author kinsho
+ */
+@mixin truePositioning($left, $top)
+{
+	position: relative;
+
+	& > div
+	{
+		@include shiftTransition($x: -50%, $y: -50%);
+
+		position: absolute;
+		width: auto;
+
+		// Position the content using the default centering coordinates or the passed coordinates
+		left: $left;
+		top: $top;
+	}
+}
+
+/*
+ * Mix-in is responsible for setting the widths of all columns within a table by applying a width
+ * to each TH element within the table.
+ *
+ * @param $columnWidths - a list containing desired widths for each column, in index order
+ * @param $tableSelector - the CSS selector that will be used to reference the table
+ *
+ * @author kinsho
+ */
+@mixin setTableColumnWidths($columnWidths, $tableSelector)
+{
+	@for $i from 1 through length($columnWidths)
+	{
+		#{$tableSelector} th:nth-child( #{$i} )
+		{
+			width: nth($columnWidths, $i);
+		}
+	}
+
+	// No content clause required here. The purpose of the mix-in is purely functional. No point in allowing the
+	// formal override of the styling defined here.
+}
