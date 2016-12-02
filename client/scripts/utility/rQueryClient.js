@@ -1,3 +1,7 @@
+// ----------------- ENUM/CONSTANTS -----------------------------
+
+var ERROR_CLASS = 'error';
+
 // ----------------- MODULE -----------------------------
 
 var rQueryClient =
@@ -48,6 +52,112 @@ var rQueryClient =
 		{
 			checkboxes[i].checked = (checkboxes[i].id === selectedCheckboxID);
 		}
+	},
+
+	/**
+	 * Function that toggles the appearance of an input field depending on whether an invalid value has been detected
+	 * inside the field
+	 *
+	 * @param {boolean} showError - the flag indicating whether the field needs to be marked as invalid
+	 * @param {DOMElement} formField - the input field to mark up if invalid
+	 * @param {String} errorMessage - the message to display should the field contain an invalid value
+	 * @param {Set} [validationSet] - a set of form field IDs that denote which form fields currently have an erroneous value
+	 * @param {DOMElement} [hintElement] - the hint element to load the error message into, should one be provided
+	 *
+	 * @author kinsho
+	 */
+	updateValidationOnField: function (showError, formField, errorMessage, validationSet, hintElement)
+	{
+		// If a hint element is not provided, just assume the hint element has been placed right next to the form
+		// field in context
+		hintElement = hintElement || formField.nextElementSibling;
+
+		if (showError)
+		{
+			formField.classList.add(ERROR_CLASS);
+			hintElement.dataset.hint = errorMessage;
+
+			if (validationSet)
+			{
+				validationSet.add(formField.id);
+			}
+		}
+		else
+		{
+			formField.classList.remove(ERROR_CLASS);
+			hintElement.dataset.hint = '';
+
+			if (validationSet)
+			{
+				validationSet.delete(formField.id);
+			}
+		}
+	},
+
+	/**
+	 * Function resets the value of a form field to an empty string should the value passed alongside that form
+	 * field be falsy
+	 *
+	 * @param {DOMElement} element - the form field that may need to be reset
+	 * @param {String} value - the value that may justify the resetting of the form field
+	 * @param {Set} [validationSet] - a set of form field IDs that denote which form fields currently have an erroneous value
+	 *
+	 * @author kinsho
+	 */
+	resetIfNecessary: function (element, value, validationSet)
+	{
+		if ( !(value) )
+		{
+			element.value = '';
+
+			// If the validation object is provided, remove the element's ID from that object to note that it is no longer
+			// in an erroneous state
+			if (validationSet)
+			{
+				validationSet.delete(element.id);
+			}
+		}
+	},
+
+	/**
+	 * Function takes a view model object and ensures that every one of its enumerable properties is populated
+	 * with some value
+	 *
+	 * @params {Object} viewModel - the view model to be evaluated
+	 * @param {Set} [validationSet] - a set of form field IDs that denote which form fields currently have an erroneous value
+	 *
+	 * @returns {boolean} - a flag indicating whether the view model is in a valid state
+	 *
+	 * @author kinsho
+	 */
+	validateModel: function (viewModel, validationSet)
+	{
+		viewModel = viewModel || {};
+
+		// If a validation set has been passed, check the set to see if there are any fields within the set
+		// that were marked as invalid
+		if (validationSet && validationSet.size)
+		{
+			return false;
+		}
+
+		for (var i in viewModel)
+		{
+			// Check whether the property in context has a falsy value that is not explicitly a boolean value
+			if ( !(viewModel[i]) && viewModel !== false )
+			{
+				return false;
+			}
+
+			// Check whether the property is simply a string comprised solely of space characters
+			if ( !((viewModel[i] + '').trim().length) )
+			{
+				return false;
+			}
+		}
+
+		// The view model has successfully passed validation testing
+		return true;
 	}
 };
 

@@ -23,9 +23,19 @@ var _lengthField = document.getElementById(RAILINGS_LENGTH_TEXTFIELD); // The le
  */
 function restrictLength(event)
 {
-	if ( (event.charCode) && (_lengthField.value.length >= 3) )
+	if (event.charCode)
 	{
-		event.preventDefault();
+		// Do not allow the user to type in more than three numbers here
+		if (_lengthField.value.length >= 3)
+		{
+			event.preventDefault();
+		}
+
+		// Check if the user is typing in something else besides numbers
+		if (event.charCode < 48 || event.charCode > 57)
+		{
+			event.preventDefault();
+		}
 	}
 }
 

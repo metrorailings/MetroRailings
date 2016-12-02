@@ -5,7 +5,127 @@
 @import '../foundation/fonts';
 @import '../foundation/animations';
 
+/* ----------------------- MIX-INS ----------------------------- */
+
+@mixin stylePlaceholder()
+{
+	&::-moz-placeholder
+	{
+		@content;
+	}
+
+	&:-ms-input-placeholder
+	{
+		@content;
+	}
+
+	&::-webkit-input-placeholder
+	{
+		@content;
+	}
+}
+
 /* ----------------------- FORM STYLES ----------------------------- */
+
+.formRow
+{
+	margin:
+	{
+		left: 20px;
+		top: 15px;
+		bottom: 15px;
+	}
+
+	width: 98%;
+	text-align: left;
+
+	display: inline-block;
+
+	&.flexed
+	{
+		display: flex;
+		align-items: center;
+	}
+}
+
+.controlGrouping
+{
+	display: inline-block;
+
+	& > label
+	{
+		@extend %formLabelText;
+
+		margin:
+		{
+			left: 15px;
+			right: 15px;
+		}
+
+		text-align: left;
+
+		&.required::after
+		{
+			content: '*';
+
+			margin-left: 3px;
+		}
+	}
+
+	& > input
+	{
+		@extend %regularText;
+		@include stylePlaceholder()
+		{
+			color: map-get($COLORS, darkGrayTheme);
+		}
+
+		box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+
+		&.error
+		{
+			background-color: map-get($COLORS, lightRedTheme);
+			border-color: map-get($COLORS, darkRedTheme);
+		}
+	}
+
+	& > select
+	{
+		@extend %regularText;
+
+		box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+
+		& > option:disabled
+		{
+			opacity: 0.6;
+		}
+	}
+}
+
+.formDescriptiveText
+{
+	@extend %formDescriptiveText;
+
+	margin-left: 25px;
+}
+
+.requiredWarning
+{
+	@extend %formDescriptiveText;
+
+	margin:
+	{
+		top: 30px;
+		left: auto;
+		right: auto;
+	}
+
+	width: 95%;
+
+	text-align: left;
+}
+
+/* ----------------------- INPUT STYLES ----------------------------- */
 
 input[type=checkbox]
 {
@@ -96,7 +216,7 @@ input[type=radio]
 	& > label
 	{
 		@include transitionSettings($property: all, $duration: 0.5s);
-		@extend %formRadioLabelText;
+		@extend %formDescriptiveText;
 
 		border:
 		{

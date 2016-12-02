@@ -7,7 +7,8 @@
 var _Q = require('Q'),
 	_Handlebars = require('Handlebars'),
 	_htmlMinifier = require('html-minifier').minify,
-	fileManager = global.OwlStakes.require('utility/fileManager');
+	fileManager = global.OwlStakes.require('utility/fileManager'),
+	rQuery = global.OwlStakes.require('utility/rQuery');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -64,6 +65,16 @@ _Handlebars.registerHelper('if_cond', function(val1, val2, block)
 });
 
 /**
+ * Helper designed to help us test whether one value is greater than another
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('if_greater_cond', function(val1, val2, block)
+{
+	return (val1 >= val2 ? block.fn(this) : block.inverse(this));
+});
+
+/**
  * Helper designed to iterate over all the keys of an object and send in each property to the block within the helper
  *
  * @author kinsho
@@ -96,6 +107,18 @@ _Handlebars.registerHelper('to_lowercase', function(str)
 	str = str + '' || '';
 
 	return str.toLowerCase();
+});
+
+/**
+ * Helper designed to capitalize any string passed to it
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('capitalize', function(str)
+{
+	str = str + '' || '';
+
+	return rQuery.capitalize(str);
 });
 
 // ----------------- MODULE DEFINITION --------------------------

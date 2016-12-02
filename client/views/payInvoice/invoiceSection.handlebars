@@ -1,0 +1,60 @@
+<div id='invoice'>
+
+	<div id='invoiceHeader'>
+		<span>Product / Options</span>
+		<span>Unit Price</span>
+		<span class='keyCell'>Price</span>
+	</div>
+
+	<div id='invoiceBody'>
+
+		<div>
+			<span>{{length}} feet of railing</span>
+		    <span>
+                {{#if_greater_cond length 10}}
+					$60.00 per foot
+                {{ else }}
+					$600 minimum for all orders below 10 feet
+                {{/if_greater_cond}}
+			</span>
+			<span>${{totalPrice}}</span>
+		</div>
+
+		<div class='even'>
+			<span>Style: {{#capitalize style}}{{/capitalize}}</span>
+            <span>
+                {{#unless isCustomOrder}}
+					<span class='strikeOutPrice'>$5.95 per foot</span>
+					<br />
+					<span class='salesPrice'>$0 per foot (Off-season special)</span>
+                {{ else }}
+					&nbsp;
+                {{/unless}}
+			</span>
+            <span>
+                {{#unless isCustomOrder}}
+					$0
+                {{ else }}
+					TBD <i class='fa fa-question-circle'></i>
+                {{/unless}}
+			</span>
+		</div>
+
+		<div>
+			<span>Color: {{#capitalize color}}{{/capitalize}}</span>
+            <span>
+                <span class='strikeOutPrice'>$3.95 per foot</span>
+                <br />
+                <span class='salesPrice'>$0 per foot (Off-season special)</span>
+            </span>
+			<span>$0</span>
+		</div>
+
+	</div>
+
+	<div id='invoiceFooter'>
+		<span class='keyCell'>Order Total: </span>
+		<span>${{totalPrice}}</span>
+	</div>
+
+</div>

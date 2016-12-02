@@ -1,0 +1,176 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- MIX-INS ----------------------------- */
+
+/*
+ * Specialized function meant to dictate spacing within the invoice
+ */
+@mixin invoiceSpacing()
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > span
+	{
+		padding: 20px;
+
+		&:nth-of-type(1)
+		{
+			width: 50%;
+		}
+
+		&:nth-of-type(2)
+		{
+			width: 25%;
+		}
+
+		&:nth-of-type(3)
+		{
+			width: 20%;
+		}
+	}
+}
+
+/* ----------------------- STYLES ----------------------------- */
+
+#invoice
+{
+	border:
+	{
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+		width: 1px;
+		radius: 10px;
+	}
+
+	margin:
+	{
+		top: 20px;
+		bottom: 40px;
+		left: auto;
+		right: auto;
+	}
+
+	width: 90%;
+}
+
+#invoiceHeader
+{
+	@extend %tabularHeaderText;
+	@include invoiceSpacing();
+
+	& > span
+	{
+		border:
+		{
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+			width: 1px;
+
+			top: none;
+		}
+
+		&:first-of-type
+		{
+			border-left: none;
+		}
+
+		&:last-of-type
+		{
+			border:
+			{
+				right: none;
+				top-right-radius: 10px;
+			}
+		}
+	}
+}
+
+#invoiceBody
+{
+	@extend %tabularRegularText;
+
+	& > div
+	{
+		@include invoiceSpacing();
+
+		&.even
+		{
+			border:
+			{
+				width: 1px;
+				style: solid;
+				color: map-get($COLORS, darkGrayTheme);
+
+				left: none;
+				right: none;
+			}
+		}
+	}
+}
+
+#invoiceFooter
+{
+	@extend %tabularRegularText;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > span
+	{
+		border:
+		{
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+			width: 1px;
+
+			bottom: none;
+		}
+
+		padding: 20px;
+
+		&:first-of-type
+		{
+			border:
+			{
+				left: none;
+				bottom-left-radius: 10px;
+			}
+
+			width: 80%;
+			text-align: right;
+		}
+
+		&:last-of-type
+		{
+			border:
+			{
+				right: none;
+				bottom-right-radius: 10px;
+			}
+
+			width: 20%;
+		}
+	}
+}
+
+.keyCell
+{
+	background-color: map-get($COLORS, lightGrayTheme);
+}
+
+.strikeOutPrice
+{
+	text-decoration: line-through;
+	opacity: 0.35;
+}
+
+.salesPrice
+{
+	@extend %tabularSpecialText;
+}

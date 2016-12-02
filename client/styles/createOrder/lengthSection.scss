@@ -12,6 +12,19 @@
 	{
 		height: 500px;
 	}
+
+	& > .controlGrouping
+	{
+		@extend %significantText;
+
+		margin:
+		{
+			top: 25px;
+		}
+
+		letter-spacing: 0.15em;
+	}
+
 }
 
 #enclosureHelp
@@ -87,18 +100,6 @@
 			}
 		}
 	}
-}
-
-#railingsLengthInputContainer
-{
-	@extend %significantText;
-
-	margin:
-	{
-		top: 20px;
-	}
-
-	letter-spacing: 0.15em;
 }
 
 #railingsLength

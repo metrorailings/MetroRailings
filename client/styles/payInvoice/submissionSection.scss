@@ -4,15 +4,11 @@
 
 #submissionSection
 {
-	&.rollDownSection
+	padding:
 	{
-		height: 100px;
+		top: 50px;
+		bottom: 30px;
 	}
-}
-
-#orderSubmissionButtonContainer
-{
-	margin-top: 25px;
 }
 
 #orderSubmissionButton

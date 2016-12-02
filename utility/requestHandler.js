@@ -88,6 +88,7 @@ var _handlePostRequest = function(request)
 
 				controller, // Name of the controller that will service the request
 				ctrl, // The instance of the actual controller to act upon
+				cookie = request.headers.cookie, // All cookies sent along with the request
 				responseData;
 
 			// Find the routes
@@ -105,8 +106,8 @@ var _handlePostRequest = function(request)
 			ctrl = global.OwlStakes.require(controller);
 
 			// Find the correct action method indicated within the URL, then invoke that action method with
-			// all the relevant parameters needed to properly service the request
-			responseData = yield ctrl[ router.findAction(action) ](params);
+			// all the relevant parameters and any cookies needed to properly service the request
+			responseData = yield ctrl[ router.findAction(action) ](params, cookie);
 
 			// Send the data back
 			return responseData;

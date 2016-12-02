@@ -181,7 +181,7 @@ p
 	background-color: map-get($COLORS, darkBlueTheme);
 	opacity: 1.0;
 
-	&.disabled
+	&:disabled
 	{
 		opacity: 0.4;
 	}

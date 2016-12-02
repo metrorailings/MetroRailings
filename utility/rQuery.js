@@ -4,8 +4,6 @@
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
-var _numbers = '0123456789';
-
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -63,30 +61,6 @@ module.exports =
 		}
 
 		return entries;
-	},
-
-	/**
-	 * Function that assesses whether a string is entirely composed of numbers
-	 *
-	 * @param {String} str - the string to evaluate
-	 *
-	 * @returns {Boolean} - a flag indicating whether the string is entirely comprised of numbers
-	 *
-	 * @author kinsho
-	 */
-	isStringEntirelyNumeric: function (str)
-	{
-		str = str + '' || '';
-
-		for (var i = str.length - 1; i >= 0; i--)
-		{
-			if (_numbers.indexOf(str[i]) === -1)
-			{
-				return false;
-			}
-		}
-
-		return true;
 	},
 
 	/**

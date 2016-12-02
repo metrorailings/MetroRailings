@@ -5,7 +5,9 @@ import axios from 'client/scripts/utility/axios';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var SUBMIT_BUTTON = 'orderSubmissionButton';
+var SUBMIT_BUTTON = 'orderSubmissionButton',
+
+	SAVE_ORDER_URL = 'createOrder/saveOrder';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -21,9 +23,24 @@ var _submitButton = document.getElementById(SUBMIT_BUTTON);
  */
 function submit()
 {
+	var data;
+
 	if (vm.isFormSubmissible)
 	{
-		console.log('Good');
+		// Organize the data that will need to be sent over the wire
+		data =
+		{
+			type: vm.orderType,
+			length: vm.orderLength,
+			style: vm.orderStyle,
+			color: vm.orderColor
+		};
+
+		// Save the data
+		axios.post(SAVE_ORDER_URL, data, true).then(() =>
+		{
+			console.log('SAVED!');
+		});
 	}
 }
 

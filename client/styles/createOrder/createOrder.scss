@@ -49,8 +49,7 @@
 
 	height: 0px;
 
-	overflow-y: hidden;
-	overflow-x: hidden;
+	overflow: hidden;
 
 	&.rollDownSection
 	{
@@ -59,6 +58,11 @@
 			top: 20px;
 			bottom: 20px;
 		}
+	}
+
+	&.overflowFix
+	{
+		overflow: visible;
 	}
 }
 
@@ -174,7 +178,7 @@
 
 		&:last-of-type
 		{
-			@include animationSettings($keyframeSet: movingDown, $duration: 2.5s, $timing: linear, $delay: 1.2s, $iterations: infinite);
+			@include animationSettings($keyframeSet: movingDown, $duration: 2.5s, $timing: linear, $iterations: infinite);
 		}
 	}
 }

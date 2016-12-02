@@ -5,3 +5,4 @@
  */
 
 System.paths.createOrder = '/client/scripts/createOrder/main.js';
+System.paths.payInvoice = '/client/scripts/payInvoice/main.js';

@@ -17,7 +17,7 @@ var FACEBOOK_SHARE_ICON = 'facebookShareLink',
 
 function shareOnFacebook()
 {
-	FB.ui(
+	window.FB.ui(
 	{
 		method: 'share',
 		href: 'https://www.nuforcfun.com',

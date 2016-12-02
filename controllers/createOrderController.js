@@ -4,11 +4,14 @@ var _Q = require('q'),
 	_Handlebars = require('Handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
-	fileManager = global.OwlStakes.require('utility/fileManager');
+	fileManager = global.OwlStakes.require('utility/fileManager'),
+	cookies = global.OwlStakes.require('utility/cookies');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'createOrder',
+
+	COOKIE_ORDER_NAME = 'order',
 
 	PARTIALS =
 	{
@@ -78,5 +81,24 @@ module.exports =
 		populatedPageTemplate = yield templateManager.populateTemplate({}, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
-	})
+	}),
+
+	/**
+	 * Action method designed to validate and register a new order into the system
+	 *
+	 * @param {Object} params - the parameters
+	 *
+	 * @returns {Object}
+	 *
+	 * @author kinsho
+	 */
+	saveOrder: function (params)
+	{
+		console.log('Saving a new order into the system...');
+
+		return {
+			data: {},
+			cookie: cookies.formCookie(COOKIE_ORDER_NAME, params)
+		};
+	}
 }

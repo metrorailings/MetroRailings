@@ -65,20 +65,28 @@ module.exports =
 	 * @param {HTTPResponse} response - the HTTP response object
 	 * @param {String} responseData - the actual payload to send back to the client
 	 * @param {String} url - the URL used to initiate the request to the server
+	 * @param {String} [cookie] - a serialized cookie to send over the wire if one is provided
 	 *
 	 * @author kinsho
 	 */
-	sendPostSuccessResponse: function(response, responseData, url)
+	sendPostSuccessResponse: function(response, responseData, url, cookie)
 	{
+		var responseHeaders =
+			{
+				"Content-Type" : JSON_CONTENT_TYPE,
+				"Content-Encoding" : '',
+				"Access-Control-Allow-Origin" : "*"
+			};
+
+		if (cookie)
+		{
+			responseHeaders['Set-Cookie'] = cookie;
+		}
+
 		try
 		{
 			// Write out the important headers before launching the response back to the client
-			response.writeHead(200,
-				{
-					"Content-Type" : JSON_CONTENT_TYPE,
-					"Content-Encoding" : '',
-					"Access-Control-Allow-Origin" : "*"
-				});
+			response.writeHead(200, responseHeaders);
 
 			console.log('Response ready to be returned from URL: /' + url);
 
@@ -151,7 +159,7 @@ module.exports =
 		switch(request.method)
 		{
 			case 'POST':
-				responseData = this.sendPostSuccessResponse(response, responseData, url);
+				responseData = this.sendPostSuccessResponse(response, responseData.data, url, responseData.cookie);
 				break;
 			default:
 				responseData = this.sendSuccessResponse(response, responseData, url);

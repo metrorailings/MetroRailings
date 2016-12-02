@@ -4,7 +4,6 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-import rQuery from 'utility/rQuery';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
@@ -17,10 +16,10 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 	ENCLOSURE_HELP_MESSAGE = 'enclosureHelp',
 	STAIRS_HELP_MESSAGE = 'stairsHelp',
 	RAILINGS_LENGTH_TEXTFIELD = 'railingsLength',
-	RAILINGS_LENGTH_CONTAINER = 'railingsLengthInputContainer',
 	BARS_CHECKBOX = 'barsCheckbox',
 	COLLARS_CHECKBOX = 'collarsCheckbox',
 	CUSTOM_STYLING_CHECKBOX = 'customStylingCheckbox',
+	SUBMIT_BUTTON_CONTAINER = 'orderSubmissionButtonContainer',
 	SUBMIT_BUTTON = 'orderSubmissionButton',
 	SCROLL_DOWN_ALERT = 'scrollDownLabel',
 
@@ -32,10 +31,9 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 
 	RAILINGS_TYPE_FILLER_CLASS = 'railingsTypeFillIn',
 	ROLL_DOWN_SECTION_CLASS = 'rollDownSection',
-	INVALID_FLAG_CLASS = 'invalid',
 	REVEAL_CLASS = 'reveal',
 	SELECTED_ARROW_CLASS = 'selectedArrow',
-	DISABLED_CLASS = 'disabled',
+	OVERFLOW_FIX_CLASS = 'overflowFix',
 
 	STAIRS_TYPE = 'stairs',
 	DECK_TYPE = 'deck',
@@ -46,13 +44,19 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 	COLLARS_STYLE = 'collars',
 	CUSTOM_STYLE = 'custom',
 
-	LENGTH_ERROR_HINT = "You can only put numbers here.",
-	SUBMISSION_BUTTON_LENGTH_ERROR_HINT = 'Please scroll above and put a proper length in the section where we ask you how much feet of railing you need.';
+	ERROR =
+	{
+		LENGTH_INVALID: 'Please enter a non-zero length here.'
+	},
+
+	SUBMISSION_INSTRUCTIONS = 'Please scroll above and put a proper length in the section where we ask you how much feet of railing you need.';
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
-// Elements
-var _curvesSection = document.getElementById(CURVES_SECTION),
+var _validationSet = new Set(),
+
+	// Elements
+	_curvesSection = document.getElementById(CURVES_SECTION),
 	_styleSection = document.getElementById(STYLE_SECTION),
 	_lengthSection = document.getElementById(LENGTH_SECTION),
 	_colorSection = document.getElementById(COLOR_SECTION),
@@ -65,43 +69,13 @@ var _curvesSection = document.getElementById(CURVES_SECTION),
 	_enclosureHelpSection = document.getElementById(ENCLOSURE_HELP_MESSAGE),
 	_stairsHelpSection = document.getElementById(STAIRS_HELP_MESSAGE),
 	_lengthField = document.getElementById(RAILINGS_LENGTH_TEXTFIELD),
-	_lengthFieldContainer = document.getElementById(RAILINGS_LENGTH_CONTAINER),
 	_styleCheckboxes = [document.getElementById(BARS_CHECKBOX), document.getElementById(COLLARS_CHECKBOX), document.getElementById(CUSTOM_STYLING_CHECKBOX)],
 	_selectedArrows = document.getElementsByClassName(SELECTED_ARROW_CLASS),
 	_submitButton = document.getElementById(SUBMIT_BUTTON),
+	_submitButtonContainer = document.getElementById(SUBMIT_BUTTON_CONTAINER),
 	_scrollDownAlert = document.getElementById(SCROLL_DOWN_ALERT);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
-
-/**
- * A function to validate the value entered into the length field
- *
- * @author kinsho
- */
-function _validateLength()
-{
-	// Validate the value. If the value is illegitimate, alert the user as to why
-	var rawValue = _lengthField.value,
-		length = window.parseInt(rawValue, 10);
-
-	if ( !(Number.isNaN(length)) &&
-		(rQuery.isStringEntirelyNumeric(rawValue)) &&
-		(length > 0) )
-	{
-		_lengthField.value = length;
-		_lengthField.classList.remove(INVALID_FLAG_CLASS);
-		_lengthFieldContainer.dataset.hint = '';
-
-		viewModel.isFormSubmissible = true;
-	}
-	else
-	{
-		_lengthField.classList.add(INVALID_FLAG_CLASS);
-		_lengthFieldContainer.dataset.hint = LENGTH_ERROR_HINT;
-
-		viewModel.isFormSubmissible = false;
-	}
-}
 
 /**
  * A function designed to unveil or hide certain sections of the order form depending on the user's input so far
@@ -141,13 +115,44 @@ function _toggleSections(progress)
 
 	if (progress >= 5)
 	{
+		window.setTimeout(_toggleOverflow, 1000, true);
+
 		_colorSection.classList.add(ROLL_DOWN_SECTION_CLASS);
 		_submissionSection.classList.add(ROLL_DOWN_SECTION_CLASS);
 	}
 	else
 	{
+		_toggleOverflow(false);
+
 		_colorSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
 		_submissionSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
+	}
+}
+
+/**
+ * Toggles the overflow styling on the sections to accommodate tooltips
+ *
+ * @param {boolean} toMakeVisible - determines whether to set the overflow styling on the sections to be visible
+ *
+ * @author kinsho
+ */
+function _toggleOverflow(toMakeVisible)
+{
+	if (toMakeVisible)
+	{
+		_curvesSection.classList.add(OVERFLOW_FIX_CLASS);
+		_lengthSection.classList.add(OVERFLOW_FIX_CLASS);
+		_styleSection.classList.add(OVERFLOW_FIX_CLASS);
+		_colorSection.classList.add(OVERFLOW_FIX_CLASS);
+		_submissionSection.classList.add(OVERFLOW_FIX_CLASS);
+	}
+	else
+	{
+		_curvesSection.classList.remove(OVERFLOW_FIX_CLASS);
+		_lengthSection.classList.remove(OVERFLOW_FIX_CLASS);
+		_styleSection.classList.remove(OVERFLOW_FIX_CLASS);
+		_colorSection.classList.remove(OVERFLOW_FIX_CLASS);
+		_submissionSection.classList.remove(OVERFLOW_FIX_CLASS);
 	}
 }
 
@@ -206,6 +211,18 @@ function _hideScrollAlert()
 	}, 250);
 }
 
+/**
+ * Generic function for invoking the logic that briefly validates this view model
+ *
+ * @returns {boolean} - indicating whether this view model has been validated
+ *
+ * @author kinsho
+ */
+function _validate()
+{
+	viewModel.isFormSubmissible = rQueryClient.validateModel(viewModel, _validationSet);
+}
+
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
 var viewModel = {};
@@ -214,7 +231,7 @@ var viewModel = {};
 Object.defineProperty(viewModel, 'orderType',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -262,14 +279,13 @@ Object.defineProperty(viewModel, 'orderLength',
 	{
 		this.__orderLength = value;
 
-		// Empty out the input field when the order length is initialized
-		if (value === '')
-		{
-			_lengthField.value = '';
-			return;
-		}
+		var isInvalid = ( value.length && !(window.parseInt(value, 10)) );
 
-		_validateLength();
+		// Empty out the input field when the order length is initialized
+		rQueryClient.resetIfNecessary(_lengthField, value);
+
+		rQueryClient.updateValidationOnField(isInvalid, _lengthField, ERROR.LENGTH_INVALID, _validationSet);
+		_validate();
 
 		if (this.__userProgress <= 3)
 		{
@@ -277,8 +293,7 @@ Object.defineProperty(viewModel, 'orderLength',
 			// the length field is still valid
 			window.setTimeout(() =>
 			{
-				_validateLength();
-				if (viewModel.isFormSubmissible)
+				if (window.parseInt(value, 10))
 				{
 					viewModel.userProgress = 4;
 				}
@@ -291,7 +306,7 @@ Object.defineProperty(viewModel, 'orderLength',
 Object.defineProperty(viewModel, 'orderStyle',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -332,7 +347,7 @@ Object.defineProperty(viewModel, 'orderStyle',
 Object.defineProperty(viewModel, 'curvesNecessary',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -377,7 +392,7 @@ Object.defineProperty(viewModel, 'curvesNecessary',
 Object.defineProperty(viewModel, 'orderColor',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -409,7 +424,7 @@ Object.defineProperty(viewModel, 'orderColor',
 Object.defineProperty(viewModel, 'isFormSubmissible',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -420,16 +435,8 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	{
 		this.__isFormSubmissible = value;
 
-		if (value)
-		{
-			_submitButton.classList.remove(DISABLED_CLASS);
-			_submitButton.dataset.hint = '';
-		}
-		else
-		{
-			_submitButton.classList.add(DISABLED_CLASS);
-			_submitButton.dataset.hint = SUBMISSION_BUTTON_LENGTH_ERROR_HINT;
-		}
+		_submitButton.disabled = !(value);
+		_submitButtonContainer.dataset.hint = (value ? '' : SUBMISSION_INSTRUCTIONS);
 	}
 });
 
@@ -437,7 +444,7 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 Object.defineProperty(viewModel, 'userProgress',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{

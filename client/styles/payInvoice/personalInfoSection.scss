@@ -1,0 +1,29 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+/* ----------------------- STYLES ----------------------------- */
+
+#personalInfoSection
+{
+	& > .formRow >.controlGrouping
+	{
+		& > label
+		{
+			width: 30%;
+		}
+	}
+}
+
+#customerName
+{
+	width: 50%;
+}
+
+#customerPhone
+{
+	width: 15%;
+}
+
+#customerEmail
+{
+	width: 50%;
+}

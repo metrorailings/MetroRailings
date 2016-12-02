@@ -11,7 +11,8 @@
     "node-sass": "*",
     "mongodb": "*",
     "html-minifier": "*",
-    "sleep": "*"
+    "sleep": "*",
+    "cookie": "*"
   },
   "jspm": {
     "directories": {

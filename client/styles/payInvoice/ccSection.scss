@@ -1,0 +1,68 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#ccSection > .sectionHeadline
+{
+	margin-bottom: 40px;
+}
+
+#creditCardSecurityInfo > .controlGrouping
+{
+	&:first-of-type
+	{
+		width: 60%;
+	}
+
+	&:last-of-type
+	{
+		width: 35%;
+	}
+}
+
+#ccMerchantsAccepted
+{
+	& > i
+	{
+		@include transitionSettings($property: opacity, $duration: 0.75s);
+
+		font-size: 48px;
+
+		margin:
+		{
+			left: 5px;
+			right: 5px;
+		}
+
+		opacity: 1.0;
+
+		&.shade
+		{
+			opacity: 0.2;
+		}
+	}
+}
+
+#creditCardNumber
+{
+	width: 50%;
+}
+
+#expirationDateMonth
+{
+	width: 15%;
+}
+
+#expirationDateYear
+{
+	width: 10%;
+	margin-left: 10px;
+}
+
+#securityCode
+{
+	width: 10%;
+}

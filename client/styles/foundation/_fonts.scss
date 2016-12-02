@@ -8,6 +8,7 @@
  * Cardo
  * Muli
  * Playfair Display
+ * Raleway
  *
  */
 @import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display);
@@ -23,6 +24,7 @@ $FONTS:
 	largeFontSize: 24px,
 	largePlusFontSize: 28px,
 	giganticFontSize: 36px,
+	enormousFontSize: 72px,
 
 	mobileTinyFontSize: 10px,
 	mobileSmallFontSize: 12px,
@@ -141,9 +143,9 @@ $FONTS:
 	@include basicFontSettings($weight: 200, $size: map-get($FONTS, largeFontSize), $family: Muli);
 }
 
-%formRadioLabelText
+%formDescriptiveText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularFontSize), $family: Playfair Display);
+	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularFontSize), $family: Cardo);
 }
 
 %formSelectText
@@ -154,7 +156,7 @@ $FONTS:
 %formLabelText
 {
 	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFontSize), $family: Playfair Display);
-	letter-spacing: 0.1em;
+	letter-spacing: 0.05em;
 }
 
 /* --- Button stylings --- */
@@ -189,6 +191,27 @@ $FONTS:
 %bigBlueIcons
 {
 	@include basicFontSettings($weight: 400, $size: map-get($FONTS, giganticFontSize), $color: map-get($COLORS, darkBlueTheme));
+}
+
+/* --- Table stylings --- */
+%tabularHeaderText
+{
+	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFont), $family: Playfair Display);
+}
+
+%tabularRegularText
+{
+	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularPlusFont), $family: Playfair Display);
+}
+
+%tabularLargeText
+{
+	@include basicFontSettings($weight: 400, $size: map-get($FONTS, largePlusFont), $family: Playfair Display);
+}
+
+%tabularSpecialText
+{
+	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFont), $color: map-get($COLORS, darkBlueTheme), $family: Playfair Display);
 }
 
 /* --- Miscellany stylings --- */
