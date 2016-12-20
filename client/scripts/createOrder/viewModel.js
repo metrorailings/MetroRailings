@@ -5,6 +5,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
+import formValidator from 'utility/formValidator';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -279,7 +280,8 @@ Object.defineProperty(viewModel, 'orderLength',
 	{
 		this.__orderLength = value;
 
-		var isInvalid = ( value.length && !(window.parseInt(value, 10)) );
+		var isInvalid = ( !(formValidator.isNumeric(value)) ||
+			( value.length && !(window.parseInt(value, 10)) ) );
 
 		// Empty out the input field when the order length is initialized
 		rQueryClient.resetIfNecessary(_lengthField, value);

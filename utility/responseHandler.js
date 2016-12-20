@@ -27,7 +27,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	sendSuccessResponse: function(response, responseData, url)
+	sendResponse: function(response, responseData, url)
 	{
 		try
 		{
@@ -64,12 +64,13 @@ module.exports =
 	 *
 	 * @param {HTTPResponse} response - the HTTP response object
 	 * @param {String} responseData - the actual payload to send back to the client
+	 * @param {Number} statusCode - the status code to send to indicate the nature of the response
 	 * @param {String} url - the URL used to initiate the request to the server
 	 * @param {String} [cookie] - a serialized cookie to send over the wire if one is provided
 	 *
 	 * @author kinsho
 	 */
-	sendPostSuccessResponse: function(response, responseData, url, cookie)
+	sendPostResponse: function(response, responseData, statusCode, url, cookie)
 	{
 		var responseHeaders =
 			{
@@ -86,7 +87,7 @@ module.exports =
 		try
 		{
 			// Write out the important headers before launching the response back to the client
-			response.writeHead(200, responseHeaders);
+			response.writeHead(statusCode, responseHeaders);
 
 			console.log('Response ready to be returned from URL: /' + url);
 
@@ -98,25 +99,6 @@ module.exports =
 			console.error(exception);
 			this.sendInternalServerErrorResponse(response, url);
 		}
-	},
-
-	/**
-	 * Function responsible for relaying back to the client an HTTP response indicating that
-	 * a user error has occurred that has to be addressed
-	 *
-	 * @param {HTTPResponse} response - the HTTP response object
-	 * @param {String} errors - the bundle of error messages to send back to the client
-	 * @param {String} url - the URL used to initiate the request to the server
-	 *
-	 * @author kinsho
-	 */
-	sendErrorResponse: function(response, errors, url)
-	{
-		// Write out the important headers before launching the response back to the client
-		console.log('Errors were generated when trying to service the following URL: ' + url);
-
-		// Send a response back and close out this service call once and for all
-		response.end(JSON.stringify(errors));
 	},
 
 	/**
@@ -154,15 +136,15 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	delegateSuccessResponse: function(request, response, responseData, url)
+	delegateResponse: function(request, response, responseData, url)
 	{
 		switch(request.method)
 		{
 			case 'POST':
-				responseData = this.sendPostSuccessResponse(response, responseData.data, url, responseData.cookie);
+				responseData = this.sendPostResponse(response, responseData.data, responseData.statusCode, url, responseData.cookie);
 				break;
 			default:
-				responseData = this.sendSuccessResponse(response, responseData, url);
+				responseData = this.sendResponse(response, responseData, url);
 				break;
 		}
 	}

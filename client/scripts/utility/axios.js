@@ -64,8 +64,7 @@ var axiosModule =
 	 * @param {boolean} showLoader - a flag indicating whether a loading animation should be shown to the user
 	 * 		until the AJAX request returns back with data from the server
 	 *
-	 * @returns {Promise<Object>} - an object containing either data from an external source or a reason why the request ultimately
-	 * 		failed to return meaningful data
+	 * @returns {Promise<Object>} - an object containing either data from an external source or a a plain old rejection
 	 *
 	 * @author kinsho
 	 */
@@ -143,6 +142,17 @@ var axiosModule =
 				reject('');
 			});
 		});
+	},
+
+	/**
+	 * Public function that allows us to show the loading veil in circumstances outside of those that this module
+	 * is designed to handle
+	 *
+	 * @author kinsho
+	 */
+	toggleLoadingVeil: function()
+	{
+		_toggleLoadingVeil();
 	}
 };
 

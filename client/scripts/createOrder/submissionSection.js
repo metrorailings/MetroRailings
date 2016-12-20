@@ -2,12 +2,14 @@
 
 import vm from 'client/scripts/createOrder/viewModel';
 import axios from 'client/scripts/utility/axios';
+import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var SUBMIT_BUTTON = 'orderSubmissionButton',
 
-	SAVE_ORDER_URL = 'createOrder/saveOrder';
+	SAVE_ORDER_URL = 'createOrder/saveOrder',
+	PAY_INVOICE_URL = '/payInvoice';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -39,7 +41,11 @@ function submit()
 		// Save the data
 		axios.post(SAVE_ORDER_URL, data, true).then(() =>
 		{
-			console.log('SAVED!');
+			// If successful, let's take the user to the invoice page to complete the order
+			window.location.href = PAY_INVOICE_URL;
+		}, () =>
+		{
+			notifier.showGenericServerError();
 		});
 	}
 }

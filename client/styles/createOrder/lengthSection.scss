@@ -3,17 +3,13 @@
 @import '../foundation/animations';
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
 
 #lengthSection
 {
-	&.rollDownSection
-	{
-		height: 500px;
-	}
-
-	& > .controlGrouping
+	& > .controlGroupingRow
 	{
 		@extend %significantText;
 
@@ -22,16 +18,18 @@
 			top: 25px;
 		}
 
+		align-items: center;
+		justify-content: center;
+
 		letter-spacing: 0.15em;
 	}
-
 }
 
+// Keep in mind that the two help sections are on top of one another in the HTML
 #enclosureHelp
 {
 	margin-top: 20px;
 }
-
 #stairsHelp
 {
 	margin-bottom: 20px;
@@ -53,7 +51,7 @@
 		right: auto;
 	}
 
-	height: 0px;
+	max-height: 0px;
 	overflow-x: hidden;
 	overflow-y: hidden;
 
@@ -67,31 +65,47 @@
 
 	&.reveal
 	{
-		height: 150px;
+		max-height: 1000px;
 		border-color: map-get($COLORS, darkGrayTheme);
 	}
 
 	& > p
 	{
-		width: 85%;
+		@include desktopOnly()
+		{
+			width: 85%;
+		}
+
+		@include mobileOnly()
+		{
+			width: 65%;
+		}
 	}
 
 	& > span
 	{
-		width: 10%;
+		@include desktopOnly()
+		{
+			width: 10%;
+		}
 
-		display: inline-flex;
+		@include mobileOnly()
+		{
+			width: 30%;
+		}
+
+		display: flex;
 		justify-content: center;
 		align-items: center;
-		flex-wrap: wrap;
+		flex-direction: column;
 
-		& > span
+		& > div
 		{
-			width: 95%;
-
 			&:first-of-type
 			{
-				@extend %bigBlueIcons;
+				@extend %bigIcons;
+
+				color: map-get($COLORS, darkBlueTheme);
 			}
 
 			&:last-of-type

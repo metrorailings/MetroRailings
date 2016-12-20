@@ -77,6 +77,7 @@ function scrollDownToNextSection()
 function checkScrollBarPosition()
 {
 	var documentHeight = document.body.offsetHeight,
+		scrollMaxY = window.scrollMaxY || document.documentElement.scrollHeight - document.documentElement.clientHeight,
 		targetSectionY = 100, // Default offset from which to trigger the hiding of the scroll alert
 		ratio;
 
@@ -104,7 +105,7 @@ function checkScrollBarPosition()
 	}
 
 	ratio = Math.min(targetSectionY / documentHeight, 1.0);
-	if ((window.scrollY / window.scrollMaxY) > ratio)
+	if ((window.scrollY / scrollMaxY) > ratio)
 	{
 		_scrollDownAlert.classList.remove(REVEAL_CLASS);
 	}

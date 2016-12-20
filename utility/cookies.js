@@ -24,6 +24,20 @@ module.exports =
 	 */
 	formCookie: function(name, value)
 	{
-		_cookieManager.serialize(name, JSON.stringify(value), { path: '/' });
+		return _cookieManager.serialize(name, JSON.stringify(value), { path: '/' });
+	},
+
+	/**
+	 * Function responsible for parsing a cookie from a client machine
+	 *
+	 * @param {String} cookie - the raw cookie to deserialize
+	 *
+	 * @returns {Object} - an unwrapped cookie object
+	 *
+	 * @author kinsho
+	 */
+	parseCookie: function(cookie)
+	{
+		return _cookieManager.parse(cookie);
 	}
 };

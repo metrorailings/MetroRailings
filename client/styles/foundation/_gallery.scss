@@ -121,7 +121,9 @@
 {
 	@include transitionSettings($property: all, $duration: 0.35s);
 	@include shiftTransition($x: -50%, $y: -50%);
-	@extend %bigWhiteIcons;
+	@extend %bigIcons;
+
+	color: map-get($COLORS, whiteTheme);
 
 	position: fixed;
 	width: 80%;

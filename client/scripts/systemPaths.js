@@ -6,3 +6,4 @@
 
 System.paths.createOrder = '/client/scripts/createOrder/main.js';
 System.paths.payInvoice = '/client/scripts/payInvoice/main.js';
+System.paths.orderConfirmation = '/client/scripts/orderConfirmation/main.js';

@@ -1,29 +1,86 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+
 /* ----------------------- STYLES ----------------------------- */
 
 #personalInfoSection
 {
 	& > .formRow >.controlGrouping
 	{
-		& > label
-		{
-			width: 30%;
-		}
+		width: 100%;
+
 	}
 }
 
+// Input lengths
+
 #customerName
 {
-	width: 50%;
+	@include tabletUp()
+	{
+		width: 25%;
+	}
 }
 
-#customerPhone
+#customerPhoneNumberInputs
 {
-	width: 15%;
+	@extend %regularText;
+
+	display: flex;
+	align-items: center;
+
+	flex-wrap: wrap;
+
+	@include tabletUp()
+	{
+		width: 70%;
+	}
+
+	& > input
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+	}
+
+	& > .formDescriptiveText
+	{
+		margin-top: 10px;
+		width: 100%;
+	}
+}
+
+#customerPhoneAreaCode
+{
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	width: 100px;
+}
+
+#customerPhoneNumber1
+{
+	width: 100px;
+	margin-right: 10px;
+}
+
+#customerPhoneNumber2
+{
+	width: 100px;
+	margin-left: 10px;
 }
 
 #customerEmail
 {
-	width: 50%;
+	@include tabletUp()
+	{
+		width: 25%;
+	}
 }

@@ -6,19 +6,6 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#curvesSection
-{
-	&.rollDownSection
-	{
-		height: 150px;
-	}
-
-	&.reveal
-	{
-		height: 325px;
-	}
-}
-
 #curveInputContainer
 {
 	@extend %significantText;
@@ -55,7 +42,7 @@
 		radius: 10px;
 	}
 
-	height: 0px;
+	max-height: 0px;
 	margin: 20px;
 
 	overflow-y: hidden;
@@ -63,7 +50,7 @@
 
 	&.reveal
 	{
-		height: 175px;
+		max-height: 1000px;
 		border-color: map-get($COLORS, darkGrayTheme);
 	}
 }

@@ -11,7 +11,9 @@ import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CUSTOMER_PHONE_NUMBER_FIELD = 'customerPhone',
+var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
+	CUSTOMER_PHONE_NUMBER_ONE_FIELD = 'customerPhoneNumber1',
+	CUSTOMER_PHONE_NUMBER_TWO_FIELD = 'customerPhoneNumber2',
 	CUSTOMER_EMAIL_FIELD = 'customerEmail',
 	CUSTOMER_NAME_FIELD = 'customerName',
 
@@ -40,12 +42,15 @@ var CUSTOMER_PHONE_NUMBER_FIELD = 'customerPhone',
 
 	ERROR =
 	{
-		NAME_INVALID: 'Please enter your name here. We only tolerate alphabetical characters, spaces, and apostrophes here.',
+		NAME_INVALID: 'Please enter your name here. We only tolerate alphabetical characters, spaces, dashes, and apostrophes here.',
 		EMAIL_ADDRESS_INVALID: 'Please enter a valid e-mail address here.',
-		PHONE_NUMBER_LENGTH: 'Please enter a ten-digit phone number here.',
+		AREA_CODE_INVALID: 'Please enter a valid three-digit area code here.',
+		PHONE_ONE_INVALID: 'Please enter exactly three digits here.',
+		PHONE_TWO_INVALID: 'Please enter exactly four digits here.',
 
 		ADDRESS_INVALID: 'Please enter a valid address here. We only tolerate alphabetical characters, numbers, spaces, and periods here.',
-		CITY_INVALID: 'Please enter a valid city name here. We only tolerate alphabetical characters, spaces, and periods here.',
+		APT_SUITE_INVALID: 'Please enter a valid suite or apartment number here. We can only handle alphabetical characters, numbers, spaces, periods, and dashes here.',
+		CITY_INVALID: 'Please enter a valid city name here. We only tolerate alphabetical characters, spaces, dashes, and periods here.',
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
 		CC_NUMBER_INVALID: 'Please enter a valid credit card number. Keep in mind that we only accept Visa, Mastercard, and Discover cards.'
@@ -57,7 +62,9 @@ var _validationSet = new Set(),
 
 	// Elements
 	_nameField = document.getElementById(CUSTOMER_NAME_FIELD),
-	_phoneField = document.getElementById(CUSTOMER_PHONE_NUMBER_FIELD),
+	_areaCodeField = document.getElementById(CUSTOMER_AREA_CODE_FIELD),
+	_phoneOneField = document.getElementById(CUSTOMER_PHONE_NUMBER_ONE_FIELD),
+	_phoneTwoField = document.getElementById(CUSTOMER_PHONE_NUMBER_TWO_FIELD),
 	_emailField = document.getElementById(CUSTOMER_EMAIL_FIELD),
 
 	_streetAddressField = document.getElementById(CUSTOMER_ADDRESS_FIELD),
@@ -137,7 +144,7 @@ Object.defineProperty(viewModel, 'customerName',
 		value = (value ? value.trim() : '');
 		this.__customerName = value;
 
-		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, " '")));
+		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, " '-")));
 
 		rQueryClient.updateValidationOnField(isInvalid, _nameField, ERROR.NAME_INVALID, _validationSet);
 		rQueryClient.resetIfNecessary(_nameField, value, _validationSet);
@@ -145,26 +152,77 @@ Object.defineProperty(viewModel, 'customerName',
 	}
 });
 
-// Customer's phone number
-Object.defineProperty(viewModel, 'customerPhone',
+// Customer's area code
+Object.defineProperty(viewModel, 'areaCode',
 {
 	configurable: false,
 	enumerable: true,
 
 	get: () =>
 	{
-		return this.__customerPhone;
+		return this.__areaCode;
 	},
 
 	set: (value) =>
 	{
-		this.__customerPhone = value;
+		this.__areaCode = value;
 
-		// Test whether we have exactly the right amount of digits
-		var isInvalid = (value.length && value.length !== 10);
+		// Test whether we have a valid area code here
+		var isInvalid = ((value.length && value.length !== 3)) ||
+						!(formValidator.isNumeric(value));
 
-		rQueryClient.updateValidationOnField(isInvalid, _phoneField, ERROR.PHONE_NUMBER_LENGTH, _validationSet);
-		rQueryClient.resetIfNecessary(_phoneField, value, _validationSet);
+		rQueryClient.updateValidationOnField(isInvalid, _areaCodeField, ERROR.AREA_CODE_INVALID, _validationSet);
+		rQueryClient.resetIfNecessary(_areaCodeField, value, _validationSet);
+		_validate();
+	}
+});
+
+// Customer's phone number (first three digits)
+Object.defineProperty(viewModel, 'phoneOne',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return this.__phoneOne;
+	},
+
+	set: (value) =>
+	{
+		this.__phoneOne = value;
+
+		// Test whether we have a valid area code here
+		var isInvalid = ((value.length && value.length !== 3)) ||
+			!(formValidator.isNumeric(value));
+
+		rQueryClient.updateValidationOnField(isInvalid, _phoneOneField, ERROR.PHONE_ONE_INVALID, _validationSet);
+		rQueryClient.resetIfNecessary(_phoneOneField, value, _validationSet);
+		_validate();
+	}
+});
+
+// Customer's phone number (last four digits)
+Object.defineProperty(viewModel, 'phoneTwo',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return this.__phoneTwo;
+	},
+
+	set: (value) =>
+	{
+		this.__phoneTwo = value;
+
+		// Test whether we have a valid area code here
+		var isInvalid = ((value.length && value.length !== 4)) ||
+			!(formValidator.isNumeric(value));
+
+		rQueryClient.updateValidationOnField(isInvalid, _phoneTwoField, ERROR.PHONE_TWO_INVALID, _validationSet);
+		rQueryClient.resetIfNecessary(_phoneTwoField, value, _validationSet);
 		_validate();
 	}
 });
@@ -232,6 +290,10 @@ Object.defineProperty(viewModel, 'customerAptSuiteNumber',
 	{
 		this.__customerAptSuiteNumber = value;
 
+		// Test whether the value is a proper apartment or suite number
+		var isInvalid = (value.length && !(formValidator.isAlphaNumeric(value, ' .-')) );
+
+		rQueryClient.updateValidationOnField(isInvalid, _aptSuiteNumberField, ERROR.APT_SUITE_INVALID, _validationSet);
 		rQueryClient.resetIfNecessary(_aptSuiteNumberField, value, _validationSet);
 		_validate();
 	}
@@ -253,7 +315,7 @@ Object.defineProperty(viewModel, 'customerCity',
 		this.__customerCity = value;
 
 		// Test whether the value qualifies as a proper city name
-		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, ' .')) );
+		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, ' .-')) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _cityField, ERROR.CITY_INVALID, _validationSet);
 		rQueryClient.resetIfNecessary(_cityField, value, _validationSet);
@@ -297,7 +359,8 @@ Object.defineProperty(viewModel, 'customerZipCode',
 		this.__customerZipCode = value;
 
 		// Test whether the value qualifies as a valid zip code
-		var isInvalid = (value.length && value.length !== 5);
+		var isInvalid = ((value.length && value.length !== 5)) ||
+						!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _addressZipCodeField, ERROR.ZIP_CODE_INVALID, _validationSet);
 		rQueryClient.resetIfNecessary(_addressZipCodeField, value, _validationSet);

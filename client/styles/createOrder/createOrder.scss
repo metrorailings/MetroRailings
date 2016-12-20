@@ -6,6 +6,7 @@
 @import '../foundation/general';
 @import '../foundation/form';
 @import '../foundation/gallery';
+@import '../foundation/responsive';
 
 /* ----------------------- ANIMATIONS ----------------------------- */
 
@@ -27,7 +28,7 @@
 	100%
 	{
 		opacity: 1.0;
-		top: 45px;
+		top: 40px;
 	}
 }
 
@@ -47,7 +48,7 @@
 {
 	@include transitionSettings($property: all, $duration: 0.75s);
 
-	height: 0px;
+	max-height: 0px;
 
 	overflow: hidden;
 
@@ -58,6 +59,8 @@
 			top: 20px;
 			bottom: 20px;
 		}
+
+		max-height: 3000px;
 	}
 
 	&.overflowFix
@@ -66,17 +69,11 @@
 	}
 }
 
-.pictureButtonContainer, .pictureButtonContainerCheckbox
+.pictureButtonContainer
 {
 	@extend %significantText;
 
-	margin:
-	{
-		top: 20px;
-		bottom: 20px;
-	}
-
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 }
@@ -125,8 +122,7 @@
 
 #scrollDownLabel
 {
-	@include shiftTransition($x: -50%);
-	@include transitionSettings($property: top, $duration: 0.25s);
+	@include transitionSettings($property: all, $duration: 0.25s);
 	@extend %fixedButtonText;
 
 	border:
@@ -146,8 +142,6 @@
 	}
 
 	position: fixed;
-	top: 101%;
-	left: 50%;
 
 	height: 25px;
 	width: 250px;
@@ -156,9 +150,43 @@
 	background-color: map-get($COLORS, darkBlueTheme);
 	cursor: pointer;
 
+	@include desktopOnly()
+	{
+		@include shiftTransition($x: -50%);
+
+		border:
+		{
+			top-right-radius: 15px;
+			top-left-radius: 15px;
+		}
+
+		top: 101%;
+		left: 50%;
+	}
+
+	@include mobileOnly()
+	{
+		border:
+		{
+			top-left-radius: 15px;
+			bottom-left-radius: 15px;
+		}
+
+		top: calc(100% - 25px);
+		left: 101%;
+	}
+
 	&.reveal
 	{
-		top: calc(100% - 35px);
+		@include desktopOnly()
+		{
+			top: calc(100% - 35px);
+		}
+
+		@include mobileOnly()
+		{
+			left: calc(100% - 240px);
+		}
 	}
 
 	& > i

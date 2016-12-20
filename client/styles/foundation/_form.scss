@@ -4,9 +4,16 @@
 @import '../foundation/footer';
 @import '../foundation/fonts';
 @import '../foundation/animations';
+@import '../foundation/responsive';
 
 /* ----------------------- MIX-INS ----------------------------- */
 
+/**
+ * A mix-in designed to style the placeholder. This mix-in is designed to allow us to apply generic
+ * styling to placeholder text across different browsers
+ *
+ * @author kinsho
+ */
 @mixin stylePlaceholder()
 {
 	&::-moz-placeholder
@@ -32,37 +39,61 @@
 	margin:
 	{
 		left: 20px;
-		top: 15px;
-		bottom: 15px;
 	}
 
-	width: 98%;
-	text-align: left;
+	display: flex;
+	width: 100%;
 
-	display: inline-block;
-
-	&.flexed
+	@include tabletUp()
 	{
-		display: flex;
-		align-items: center;
+		margin:
+		{
+			top: 20px;
+			bottom: 20px;
+		}
+	}
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
 	}
 }
 
 .controlGrouping
 {
-	display: inline-block;
+	display: inline-flex;
+	flex-wrap: wrap;
+
+	@include phoneOnly()
+	{
+		margin:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
+		flex-direction: column;
+	}
 
 	& > label
 	{
 		@extend %formLabelText;
 
-		margin:
+		text-align: left;
+
+		@include phoneOnly()
 		{
-			left: 15px;
-			right: 15px;
+			width: 100%;
 		}
 
-		text-align: left;
+		@include tabletUp()
+		{
+			margin:
+			{
+				left: 20px;
+				right: 20px;
+			}
+		}
 
 		&.required::after
 		{
@@ -74,44 +105,45 @@
 
 	& > input
 	{
-		@extend %regularText;
-		@include stylePlaceholder()
+		@include phoneOnly()
 		{
-			color: map-get($COLORS, darkGrayTheme);
-		}
-
-		box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
-
-		&.error
-		{
-			background-color: map-get($COLORS, lightRedTheme);
-			border-color: map-get($COLORS, darkRedTheme);
+			width: 75%;
 		}
 	}
 
 	& > select
 	{
-		@extend %regularText;
-
-		box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
-
-		& > option:disabled
+		@include phoneOnly()
 		{
-			opacity: 0.6;
+			width: 75%;
 		}
 	}
+}
+
+.controlGroupingRow
+{
+	display: flex;
+	flex-direction: row;
 }
 
 .formDescriptiveText
 {
 	@extend %formDescriptiveText;
 
-	margin-left: 25px;
+	text-align: left;
+
+	@include phoneOnly()
+	{
+		margin-top: 10px;
+		width: 75%;
+	}
 }
 
 .requiredWarning
 {
-	@extend %formDescriptiveText;
+	@extend %italicizedFormDescriptiveText;
+
+	font-style: italic;
 
 	margin:
 	{
@@ -126,6 +158,23 @@
 }
 
 /* ----------------------- INPUT STYLES ----------------------------- */
+
+input[type=tel], input[type=text], input[type=email]
+{
+	@extend %regularText;
+	@include stylePlaceholder()
+	{
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+
+	&.error
+	{
+		background-color: map-get($COLORS, lightRedTheme);
+		border-color: map-get($COLORS, darkRedTheme);
+	}
+}
 
 input[type=checkbox]
 {
@@ -207,6 +256,21 @@ input[type=radio]
 	&:checked + label::before
 	{
 		background: map-get($COLORS, greenTheme);
+	}
+}
+
+select
+{
+	@extend %regularText;
+
+	@include desktopOnly()
+	{
+		box-shadow: 2px 2px 4px -1px map-get($COLORS, lightGrayTheme);
+	}
+
+	& > option:disabled
+	{
+		opacity: 0.6;
 	}
 }
 

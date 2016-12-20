@@ -2,26 +2,26 @@
 
     <div class='headlineQuestion'>Where will we be installing these railings?</div>
 
-    <span class='pictureButtonContainer'>
-        <span class='pictureButton' data-type='stairs'>
-            <div><img src='client/images/traditional-staircase.jpg' /></div>
-            <div>Stairs</div>
+    <div id='typeSelection'>
+        <span class='pictureButtonContainer'>
+            <span>
+                <input type='checkbox' id='stairsCheckbox' value='stairs' /><label for='stairsCheckbox'></label>
+            </span>
+            <span class='pictureButton' data-type='stairs'>
+                <div><img src='client/images/traditional-staircase.jpg' /></div>
+                <div>Stairs</div>
+            </span>
         </span>
-    </span>
 
-    <span class='pictureButtonContainer'>
-        <span class='pictureButton' data-type='deck'>
-            <div><img src='client/images/balcony-rail.jpg' /></div>
-            <div>Patio / Deck / Balcony</div>
+        <span class='pictureButtonContainer'>
+            <span>
+                <input type='checkbox' id='deckCheckbox' value='deck' /><label for='deckCheckbox'></label>
+            </span>
+            <span class='pictureButton' data-type='deck'>
+                <div><img src='client/images/balcony-rail.jpg' /></div>
+                <div>Patio / Deck / Balcony</div>
+            </span>
         </span>
-    </span>
-
-    <span class='pictureButtonContainerCheckbox'>
-        <input type='checkbox' id='stairsCheckbox' value='stairs' /><label for='stairsCheckbox'></label>
-    </span>
-
-    <span class='pictureButtonContainerCheckbox'>
-        <input type='checkbox' id='deckCheckbox' value='deck' /><label for='deckCheckbox'></label>
-    </span>
+    </div>
 
 </div>

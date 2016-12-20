@@ -4,6 +4,7 @@
 @import '../foundation/footer';
 @import '../foundation/fonts';
 @import '../foundation/animations';
+@import '../foundation/notifications';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -22,11 +23,6 @@ body
 .bolded
 {
 	@extend %boldFont;
-}
-
-a
-{
-	@extend %linkText;
 }
 
 // Page header stylings
@@ -95,6 +91,11 @@ p
 	line-height: 28px;
 
 	text-align: left;
+
+	a
+	{
+		@extend %regularLinkText;
+	}
 }
 
 // Classes that guarantee spacing around HTML elements incorporated within paragraph elements
@@ -150,11 +151,19 @@ p
 	}
 }
 
+// Styling to hide and show elements depending on what type of device the user accesses the website with
 .hideOnMobile
 {
-	@media only screen and (max-device-width: 727px)
+	@media only screen and (max-device-width: 1000px)
 	{
-		display: none;
+		display: none !important;
+	}
+}
+.hideOnDesktop
+{
+	@media only screen and (min-device-width: 1001px)
+	{
+		display: none !important;
 	}
 }
 

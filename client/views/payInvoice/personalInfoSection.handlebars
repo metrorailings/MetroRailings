@@ -12,10 +12,16 @@
 
     <div class='formRow'>
         <span class='controlGrouping'>
-            <label for='customerPhone' class='required'>Your Phone Number</label>
-            <input type='tel' id='customerPhone' placeholder='##########'/>
-            <span class='hint hint--right hint--always' data-hint=''></span>
-            <span class='formDescriptiveText'>(Please give us the best phone number that we can use to reach you during afternoon hours)</span>
+            <label for='customerPhoneAreaCode' class='required'>Your Phone Number</label>
+            <span id='customerPhoneNumberInputs' class='controlGroupingRow'>
+                (<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code' />)
+                <span class='hint hint--right hint--always' data-hint=''></span>
+                <input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###' >-
+                <span class='hint hint--right hint--always' data-hint=''></span>
+                <input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####' >
+                <span class='hint hint--right hint--always' data-hint=''></span>
+                <span class='formDescriptiveText'>Please give us the best phone number that we can use to reach you during afternoon hours.</span>
+            </span>
         </span>
     </div>
 

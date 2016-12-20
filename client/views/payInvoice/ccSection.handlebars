@@ -8,7 +8,7 @@
 
 	<div class='sectionHeadline'>Your Credit Card Details</div>
 
-	<div class='formRow flexed'>
+	<div id='creditCardNumberContainer' class='formRow'>
         <span class='controlGrouping'>
             <label for='creditCardNumber'>Credit Card Number</label>
             <input type='tel' id='creditCardNumber' />
@@ -18,38 +18,44 @@
 			<i id='mastercardCCIcon' class='fa fa-cc-mastercard'></i>
 			<i id='discoverCCIcon' class='fa fa-cc-discover'></i>
 		</span>
-		<span id='ccNumberHint' class='hint hint--right hint--medium hint--always' data-hint=''></span>
+		<span id='ccNumberHint' class='hint hint--right hint--large hint--always' data-hint=''></span>
 	</div>
 
 	<div id='creditCardSecurityInfo' class='formRow'>
         <span class='controlGrouping'>
             <label for='expirationDateMonth'>Expiration Date</label>
-            <select id='expirationDateMonth' >
-				<option value='' selected='selected' disabled>Month</option>
-				<option value='1'>January</option>
-				<option value='2'>February</option>
-				<option value='3'>March</option>
-				<option value='4'>April</option>
-				<option value='5'>May</option>
-				<option value='6'>June</option>
-				<option value='7'>July</option>
-				<option value='8'>August</option>
-				<option value='9'>September</option>
-				<option value='10'>October</option>
-				<option value='11'>November</option>
-				<option value='12'>December</option>
-			</select>
-            <select id='expirationDateYear' >
-				<option value='' selected='selected' disabled>Year</option>
-				{{#each expirationYears }}
-				    <option value='{{this}}'>{{this}}</option>
-				{{/each}}
-			</select>
+            <span class='controlGroupingRow'>
+                <select id='expirationDateMonth' >
+                    <option value='' selected='selected' disabled>Month</option>
+                    <option value='1'>January</option>
+                    <option value='2'>February</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                </select>
+                <select id='expirationDateYear' >
+                    <option value='' selected='selected' disabled>Year</option>
+                    {{#each expirationYears }}
+                        <option value='{{this}}'>{{this}}</option>
+                    {{/each}}
+                </select>
+            </span>
         </span>
         <span class='controlGrouping'>
             <label for='securityCode'>Security Code</label>
-            <input type='tel' id='securityCode' />
-            <i class='fa fa-question-mark hint hint--left' data-hint='The security code is either 3 or 4 digits on the back of your card'></i>
+            <span class='controlGroupingRow'>
+                <input type='tel' id='securityCode' maxlength='4' />
+                <span id='creditCardSecurityCodeHelp' class='hint hint--right hint--medium' data-hint='The security code is either 3 or 4 digits that stand out on the back of your card.'>
+                    <i class='fa fa-question-circle'></i>
+                </span>
+            </span>
         </span>
 	</div>
 

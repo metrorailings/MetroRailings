@@ -54,7 +54,7 @@ function setLength()
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Attach event listeners to the length input
-_lengthField.addEventListener('keypress', restrictLength);
+_lengthField.addEventListener('keydown', restrictLength);
 _lengthField.addEventListener('input', setLength);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------

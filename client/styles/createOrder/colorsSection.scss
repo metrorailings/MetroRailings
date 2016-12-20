@@ -2,16 +2,9 @@
 
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
-
-#colorSection
-{
-	&.rollDownSection
-	{
-		height: 600px;
-	}
-}
 
 #colorPicker
 {
@@ -20,38 +13,61 @@
 	justify-content: center;
 
 	padding-top: 30px;
+
+	@include mobileOnly()
+	{
+		flex-direction: column;
+	}
 }
 
 #colorDemo
 {
-	border-right:
-	{
-		color: map-get($COLORS, grayTheme);
-		width: 2px;
-		style: solid;
-	}
-
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-wrap: wrap;
+	flex-direction: column;
 
-	width: 30%;
-	padding-right: 30px;
-
-	& > span
+	@include desktopOnly()
 	{
+		border-right:
+		{
+			width: 2px;
+			style: solid;
+			color: map-get($COLORS, lightGrayTheme);
+		}
+
+		width: 30%;
+	}
+
+	@include mobileOnly()
+	{
+		border-bottom:
+		{
+			width: 2px;
+			style: solid;
+			color: map-get($COLORS, lightGrayTheme);
+		}
+
 		width: 100%;
-		position: relative;
+		margin-bottom: 30px;
 	}
 }
 
 #colorDemoPicture
 {
-	width: 260px;
-	height: 260px;
-
 	cursor: pointer;
+
+	@include desktopOnly
+	{
+		width: 260px;
+		height: 260px;
+	}
+
+	@include mobileOnly
+	{
+		width: 200px;
+		height: 200px;
+	}
 }
 
 #colorDemoName
@@ -62,7 +78,6 @@
 	letter-spacing: 0.1em;
 
 	margin-top: 25px;
-	width: 260px;
 }
 
 #colorSelector
@@ -72,8 +87,15 @@
 	justify-content: center;
 	flex-wrap: wrap;
 
-	width: 45%;
-	padding-left: 30px;
+	@include desktopOnly()
+	{
+		width: 45%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 100%;
+	}
 
 	& > span
 	{
@@ -82,15 +104,21 @@
 		justify-content: center;
 		flex-wrap: wrap;
 
-		width: 40%;
-		padding: 20px;
+		@include desktopOnly()
+		{
+			width: 40%;
+		}
+
+		@include mobileOnly()
+		{
+			width: 20%;
+		}
 	}
 }
 
 .colorContainer
 {
-	width: 95%;
-	font-size: 64px;
+	width: 100%;
 }
 
 .selectedArrow
@@ -119,11 +147,21 @@
 		color: map-get($COLORS, blackTheme);
 	}
 
-	width: 64px;
-	height: 64px;
 	display: inline-block;
 
 	cursor: pointer;
+
+	@include desktopOnly()
+	{
+		width: 64px;
+		height: 64px;
+	}
+
+	@include mobileOnly()
+	{
+		width: 32px;
+		height: 32px;
+	}
 }
 
 #whiteColor

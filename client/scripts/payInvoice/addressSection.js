@@ -72,33 +72,6 @@ function setZipCode()
 	vm.customerZipCode = _zipCodeField.value;
 }
 
-/**
- * A listener designed to limit the number of characters that can be typed into the zip code textfield.
- *
- * @param {Event} event - the event associated with the listener
- *
- * @author kinsho
- */
-function watchOverZipCode(event)
-{
-	var value = _zipCodeField.value;
-
-	if (event.charCode)
-	{
-		// Check if the user has gone past the prescribed length
-		if (value.length >= 5)
-		{
-			event.preventDefault();
-		}
-
-		// Check if the user is typing in something else besides numbers
-		if (event.charCode < 48 || event.charCode > 57)
-		{
-			event.preventDefault();
-		}
-	}
-}
-
 // ----------------- DATA INITIALIZATION -----------------------------
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
@@ -109,9 +82,6 @@ _aptSuiteNumberField.addEventListener('keyup', setAptSuiteNumber);
 _cityField.addEventListener('keyup', setCity);
 _stateField.addEventListener('change', setState);
 _zipCodeField.addEventListener('blur', setZipCode);
-
-// Attach specialized event listeners to the inputs that need to be watched
-_zipCodeField.addEventListener('keypress', watchOverZipCode);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 

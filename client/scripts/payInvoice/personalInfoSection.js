@@ -4,13 +4,17 @@ import vm from 'client/scripts/payInvoice/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var PHONE_NUMBER_TEXTFIELD = 'customerPhone',
+var AREA_CODE_TEXTFIELD = 'customerPhoneAreaCode',
+	PHONE_NUMBER_ONE = 'customerPhoneNumber1',
+	PHONE_NUMBER_TWO = 'customerPhoneNumber2',
 	NAME_TEXTFIELD = 'customerName',
 	EMAIL_TEXTFIELD = 'customerEmail';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _phoneField = document.getElementById(PHONE_NUMBER_TEXTFIELD),
+var _areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
+	_phoneOneField = document.getElementById(PHONE_NUMBER_ONE),
+	_phoneTwoField = document.getElementById(PHONE_NUMBER_TWO),
 	_nameField = document.getElementById(NAME_TEXTFIELD),
 	_emailField = document.getElementById(EMAIL_TEXTFIELD);
 
@@ -29,67 +33,33 @@ function setName()
 }
 
 /**
- * A listener to strip the dashes from the phone number when the user goes to modify the number
+ * A listener to set the customer's area code into the view model
  *
  * @author kinsho
  */
-function deformatPhoneNumber()
+function setAreaCode()
 {
-	_phoneField.value = _phoneField.value.split('-').join('');
+	vm.areaCode = _areaCodeField.value;
 }
 
 /**
- * A listener designed to limit the number of characters that can be typed into the phone textfield. Also, dashes
- * will be added into the number as necessary
- *
- * @param {Event} event - the event associated with the listener
+ * A listener to set the first part of the customer's phone number into the view model
  *
  * @author kinsho
  */
-function watchOverPhoneNumber(event)
+function setPhoneOne()
 {
-	var value = _phoneField.value;
-
-	if (event.charCode)
-	{
-		// Check if the user has gone past the prescribed length
-		if (value.length >= 10)
-		{
-			event.preventDefault();
-		}
-
-		// Check if the user is typing in something else besides numbers
-		if (event.charCode < 48 || event.charCode > 57)
-		{
-			event.preventDefault();
-		}
-	}
+	vm.phoneOne = _phoneOneField.value;
 }
 
 /**
- * A listener to set the customer's phone number into the view model and format the look of the phone number
- * on the screen
+ * A listener to set the second part of the customer's phone number into the view model
  *
  * @author kinsho
  */
-function setAndFormatPhoneNumber()
+function setPhoneTwo()
 {
-	var value = _phoneField.value;
-
-	vm.customerPhone = value;
-
-	// Format the value in the input field to look more like a traditional phone number
-	if (value.length >= 3)
-	{
-		value = value.substring(0, 3) + '-' + value.substring(3);
-	}
-
-	if (value.length >= 7)
-	{
-		value = value.substring(0, 7) + '-' + value.substring(7);
-	}
-
-	_phoneField.value = value;
+	vm.phoneTwo = _phoneTwoField.value;
 }
 
 /**
@@ -106,17 +76,17 @@ function setEmail()
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-// Attach specialized event listeners to the phone number input
-_phoneField.addEventListener('keypress', watchOverPhoneNumber);
-_phoneField.addEventListener('focus', deformatPhoneNumber);
-_phoneField.addEventListener('blur', setAndFormatPhoneNumber);
-
-// Attach event listeners to the email and name inputs
+// Attach event listeners to set data into the view model
+_areaCodeField.addEventListener('blur', setAreaCode);
+_phoneOneField.addEventListener('blur', setPhoneOne);
+_phoneTwoField.addEventListener('blur', setPhoneTwo);
 _emailField.addEventListener('blur', setEmail);
 _nameField.addEventListener('keyup', setName);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-vm.customerPhone = '';
+vm.areaCode = '';
+vm.phoneOne = '';
+vm.phoneTwo = '';
 vm.customerEmail = '';
 vm.customerName = '';

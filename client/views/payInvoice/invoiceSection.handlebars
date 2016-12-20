@@ -28,14 +28,18 @@
 					<br />
 					<span class='salesPrice'>$0 per foot (Off-season special)</span>
                 {{ else }}
-					&nbsp;
+					N/A
                 {{/unless}}
 			</span>
             <span>
                 {{#unless isCustomOrder}}
 					$0
                 {{ else }}
-					TBD <i class='fa fa-question-circle'></i>
+                    <span id='stylePriceCell' class='hint hint--bottom hint--medium' data-hint='The costs here will be
+                        determined after we meet and determine the scope of the customizations involved.'>
+                        <span>TBD</span>
+                        <i class='fa fa-question-circle'></i>
+                    </span>
                 {{/unless}}
 			</span>
 		</div>

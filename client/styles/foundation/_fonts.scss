@@ -24,15 +24,17 @@ $FONTS:
 	largeFontSize: 24px,
 	largePlusFontSize: 28px,
 	giganticFontSize: 36px,
+	giganticPlusFontSize: 48px,
 	enormousFontSize: 72px,
 
-	mobileTinyFontSize: 10px,
-	mobileSmallFontSize: 12px,
-	mobileRegularFontSize: 16px,
-	mobileRegularPlusFontSize: 18px,
-	mobileLargeFontSize: 20px,
-	mobileLargePlusFontSize: 24px,
-	mobileGiganticFontSize: 28px
+	mobile-tinyFontSize: 10px,
+	mobile-smallFontSize: 12px,
+	mobile-regularFontSize: 16px,
+	mobile-regularPlusFontSize: 18px,
+	mobile-largeFontSize: 20px,
+	mobile-largePlusFontSize: 24px,
+	mobile-giganticFontSize: 28px,
+	mobile-giganticPlusFontSize: 36px
 );
 
 /* ----------------------- MIX-INS ----------------------------- */
@@ -48,19 +50,24 @@ $FONTS:
  *
  * @author kinsho
  */
-@mixin basicFontSettings($weight: 400, $size: map-get($FONTS, smallFontSize), $family: Cardo, $style: normal, $color: null)
+@mixin basicFontSettings($weight: 400, $size: smallFontSize, $family: Cardo, $style: normal, $color: null)
 {
 	font:
 	{
 		weight: $weight;
-		size: $size;
+		size: map-get($FONTS, $size);
 		family: $family, sans-serif;
 		style: $style;
 	}
 
 	@if ($color)
 	{
-		color: $color;
+		color: map-get($COLORS, $color);
+	}
+
+	@media only screen and (max-device-width: 757px)
+	{
+		font-size: map-get($FONTS, mobile- + $size);
 	}
 }
 
@@ -80,58 +87,52 @@ $FONTS:
 /* --- Header stylings --- */
 %h3
 {
-	@include basicFontSettings($weight: 300, $size: map-get($FONTS, giganticFontSize), $family: Raleway);
+	@include basicFontSettings($weight: 300, $size: giganticFontSize, $family: Raleway);
 }
 
 %majorText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, largePlusFontSize), $family: Muli);
+	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
 }
 
 %sectionHeader
 {
-	@include basicFontSettings($weight: 200, $size: map-get($FONTS, largePlusFontSize), $family: Raleway, $color: map-get($COLORS, darkBlueTheme));
+	@include basicFontSettings($weight: 200, $size: largePlusFontSize, $family: Raleway, $color: darkBlueTheme);
 }
 
 /* --- Regular stylings --- */
 
 %regularText
 {
-	@include basicFontSettings($size: map-get($FONTS, regularFontSize));
+	@include basicFontSettings($size: regularFontSize);
 }
 
 %regularPlusText
 {
-	@include basicFontSettings($size: map-get($FONTS, regularPlusFontSize));
+	@include basicFontSettings($size: regularPlusFontSize);
 }
 
 %footerText
 {
-	@include basicFontSettings($size: map-get($FONTS, largeFontSize), $family: Palatino Linotype, $color: map-get($COLORS, whiteTheme));
+	@include basicFontSettings($size: largeFontSize, $family: Palatino Linotype, $color: whiteTheme);
 	letter-spacing: 0.2em;
 
 	@media only screen and (max-device-width: 727px)
 	{
-		@include basicFontSettings($size: map-get($FONTS, mobileRegularFontSize), $family: Palatino Linotype, $color: map-get($COLORS, whiteTheme));
 		letter-spacing: 0.1em;
 	}
 }
 
-%linkText
+%regularLinkText
 {
-	@include basicFontSettings($size: map-get($FONTS, regularFontSize), $family: Palatino Linotype, $color: map-get($COLORS, darkerBlueTheme));
+	@include basicFontSettings($weight: 700, $size: regularFontSize, $color: darkerBlueTheme);
 
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 %loaderText
 {
-	@include basicFontSettings($weight: 700, $size: map-get($FONTS, giganticFontSize), $family: Helvetica, $color: map-get($COLORS, darkBlueTheme));
-
-	@media only screen and (max-device-width: 727px)
-	{
-		font-size: map-get($FONTS, mobileLargePlusFontSize);
-	}
+	@include basicFontSettings($weight: 700, $size: giganticFontSize, $family: Helvetica, $color: darkBlueTheme);
 
 	letter-spacing: 0.2em;
 	text-transform: uppercase;
@@ -140,36 +141,41 @@ $FONTS:
 /* --- Form stylings --- */
 %formSectionHeaderText
 {
-	@include basicFontSettings($weight: 200, $size: map-get($FONTS, largeFontSize), $family: Muli);
+	@include basicFontSettings($weight: 200, $size: largeFontSize, $family: Muli);
 }
 
 %formDescriptiveText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularFontSize), $family: Cardo);
+	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: Cardo);
+}
+
+%italicizedFormDescriptiveText
+{
+	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: Cardo, $style: italic);
 }
 
 %formSelectText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularFontSize), $family: Playfair Display);
+	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: Playfair Display);
 }
 
 %formLabelText
 {
-	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFontSize), $family: Playfair Display);
+	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display);
 	letter-spacing: 0.05em;
 }
 
 /* --- Button stylings --- */
 %buttonText
 {
-	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFontSize), $family: Muli, $style: italic, $color: map-get($COLORS, whiteTheme));
+	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Muli, $style: italic, $color: whiteTheme);
 
 	text-shadow: 1px 1px map-get($COLORS, blackTheme);
 }
 
 %fixedButtonText
 {
-	@include basicFontSettings($weight: 300, $size: map-get($FONTS, smallFontSize), $family: Muli, $color: map-get($COLORS, whiteTheme));
+	@include basicFontSettings($weight: 300, $size: smallFontSize, $family: Muli, $color: whiteTheme);
 
 	text-shadow: 1px 1px map-get($COLORS, blackTheme);
 }
@@ -177,55 +183,61 @@ $FONTS:
 /* --- Tooltip stylings --- */
 %tooltipText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, tinyFontSize), $family: Palatino Linotype, $color: map-get($COLORS, whiteTheme));
+	@include basicFontSettings($weight: 400, $size: tinyFontSize, $family: Palatino Linotype, $color: whiteTheme);
 
 	letter-spacing: normal;
 }
 
 /* --- Icon styling --- */
-%bigWhiteIcons
+
+%bigIcons
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, giganticFontSize), $color: map-get($COLORS, whiteTheme));
+	@include basicFontSettings($weight: 400, $size: giganticFontSize, $family: FontAwesome);
 }
 
-%bigBlueIcons
+%significantIcons
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, giganticFontSize), $color: map-get($COLORS, darkBlueTheme));
+	@include basicFontSettings($weight: 400, $size: giganticPlusFontSize, $family: FontAwesome);
+}
+
+%regularPlusIcons
+{
+	@include basicFontSettings($weight: 400, $size: largeFontSize);
 }
 
 /* --- Table stylings --- */
 %tabularHeaderText
 {
-	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFont), $family: Playfair Display);
+	@include basicFontSettings($weight: 700, $size: regularPlusFont, $family: Playfair Display);
 }
 
 %tabularRegularText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularPlusFont), $family: Playfair Display);
+	@include basicFontSettings($weight: 400, $size: regularPlusFont, $family: Playfair Display);
 }
 
 %tabularLargeText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, largePlusFont), $family: Playfair Display);
+	@include basicFontSettings($weight: 400, $size: largePlusFont, $family: Playfair Display);
 }
 
 %tabularSpecialText
 {
-	@include basicFontSettings($weight: 700, $size: map-get($FONTS, regularPlusFont), $color: map-get($COLORS, darkBlueTheme), $family: Playfair Display);
+	@include basicFontSettings($weight: 700, $size: regularPlusFont, $color: darkBlueTheme, $family: Playfair Display);
 }
 
 /* --- Miscellany stylings --- */
 %smallSignificantText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, regularPlusFontSize), $family: Muli);
+	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Muli);
 }
 
 %significantText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, largeFontSize), $family: Muli);
+	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli);
 }
 
 %bigSignificantText
 {
-	@include basicFontSettings($weight: 400, $size: map-get($FONTS, largePlusFontSize), $family: Muli);
+	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
 }

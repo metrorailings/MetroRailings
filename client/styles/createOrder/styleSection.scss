@@ -2,16 +2,9 @@
 
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
-
-#styleSection
-{
-	&.rollDownSection
-	{
-		height: 1300px;
-	}
-}
 
 .styleContainer
 {
@@ -39,68 +32,131 @@
 
 	width: 95%;
 
+	@include mobileOnly()
+	{
+		flex-direction: column;
+	}
+
 	& > span
 	{
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		height: 300px;
-
 		&.pictureButtonContainer
 		{
 			@extend %smallSignificantText;
 
+			@include mobileOnly()
+			{
+				flex-direction: column-reverse;
+			}
+
 			img
 			{
-				width: 200px;
-				height: 200px;
+				@include mobileOnly()
+				{
+					width: 125px;
+					height: 125px;
+				}
+
+				@include desktopOnly()
+				{
+					width: 175px;
+					height: 175px;
+				}
+			}
+
+			& > span:nth-of-type(1)
+			{
+				@include mobileOnly()
+				{
+					margin-top: 25px;
+					margin-bottom: 20px;
+				}
+
+				@include desktopOnly()
+				{
+					margin-right: 25px;
+				}
+			}
+
+			& > .pictureButton
+			{
+				margin:
+				{
+					top: 15px;
+					bottom: 15px;
+				}
 			}
 		}
 
-		&:nth-child(1)
+		// Widths only need to be specified for desktop and certain tablet environments
+		&:nth-of-type(1)
 		{
-			width: 5%;
+			@include desktopOnly()
+			{
+				width: 32%;
+			}
 		}
-
-		&:nth-child(2)
+		&:nth-of-type(2)
 		{
-			width: 30%;
-		}
-
-		&:nth-child(3)
-		{
-			width: 60%;
+			@include desktopOnly()
+			{
+				width: 63%;
+			}
 		}
 	}
 }
 
 .styleDescription
 {
-	border-left:
+	margin:
 	{
-		width: 2px;
-		style: solid;
-		color: map-get($COLORS, lightGrayTheme);
+		top: 10px;
+		bottom: 10px;
 	}
 
-	flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	@include desktopOnly()
+	{
+		border-left:
+		{
+			width: 2px;
+			style: solid;
+			color: map-get($COLORS, lightGrayTheme);
+		}
+	}
+
+	@include mobileOnly()
+	{
+		border-top:
+		{
+			width: 2px;
+			style: solid;
+			color: map-get($COLORS, lightGrayTheme);
+		}
+	}
 
 	& > div
 	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
 		padding:
 		{
 			top: 10px;
 			bottom: 10px;
-			left: 25px;
-			right: 25px;
 		}
 
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
-		height: 130px;
+		height: 135px;
 		width: 100%;
 	}
 }
@@ -114,6 +170,8 @@
 		color: map-get($COLORS, lightGrayTheme);
 	}
 
+	width: 80%;
+
 	& > img
 	{
 		margin:
@@ -122,10 +180,19 @@
 			right: 20px;
 		}
 
-		width: 125px;
-		height: 125px;
-
 		cursor: pointer;
+
+		@include tabletUp()
+		{
+			width: 115px;
+			height: 115px;
+		}
+
+		@include phoneOnly()
+		{
+			width: 80px;
+			height: 80px;
+		}
 	}
 }
 

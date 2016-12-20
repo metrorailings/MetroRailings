@@ -27,12 +27,15 @@ module.exports = {
 	 * Function that clones an object in its entirety
 	 *
 	 * @param {Object} obj - the object to clone
+	 * @param {Object} [destObj] - if provided, this is the object that will be cloned into
 	 *
 	 * @returns {Object} - a copy of the passed object
 	 */
-	cloneObject: function (obj)
+	cloneObject: function (obj, destObj)
 	{
-		var keys = Object.keys(obj || {}), clone = {}, i;
+		var keys = Object.keys(obj || {}),
+			clone = destObj || {},
+			i;
 
 		for (i = 0; i < keys.length; i++) {
 

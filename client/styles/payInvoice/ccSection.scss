@@ -1,30 +1,49 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import '../foundation/animations';
-@import '../foundation/fonts';
+@import '../foundation/colors';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
 
 #ccSection > .sectionHeadline
 {
-	margin-bottom: 40px;
+	@include tabletUp()
+	{
+		margin-bottom: 40px;
+	}
 }
 
-#creditCardSecurityInfo > .controlGrouping
+#creditCardNumberContainer
 {
-	&:first-of-type
+	@include tabletUp()
 	{
-		width: 60%;
-	}
+		// Must flex this input container in order to properly align the credit card input field
+		// with the credit card icons that are placed right next to it
+		display: flex;
+		align-items: center;
 
-	&:last-of-type
-	{
-		width: 35%;
+		& > .controlGrouping
+		{
+			width: 40%;
+		}
 	}
 }
 
 #ccMerchantsAccepted
 {
+	text-align: left;
+
+	@include tabletUp()
+	{
+		margin-left: 25px;
+	}
+
+	@include phoneOnly()
+	{
+		margin-bottom: 20px;
+	}
+
 	& > i
 	{
 		@include transitionSettings($property: opacity, $duration: 0.75s);
@@ -46,23 +65,55 @@
 	}
 }
 
-#creditCardNumber
+#creditCardSecurityInfo > .controlGrouping
 {
-	width: 50%;
+	&:first-of-type
+	{
+		@include tabletUp()
+		{
+			width: 60%;
+		}
+	}
 }
 
-#expirationDateMonth
+// The hint icon for the credit card security code
+#creditCardSecurityCodeHelp
 {
-	width: 15%;
+	margin-left: 10px;
+
+	cursor: default;
+
+	& > i
+	{
+		font-size: 32px;
+		color: map-get($COLORS, darkBlueTheme);
+	}
+}
+
+// Input lengths
+// Keep in mind that these lengths are relative to the lengths of the container group that house these inputs
+#creditCardNumber
+{
+	@include tabletUp()
+	{
+		width: 50%;
+	}
 }
 
 #expirationDateYear
 {
-	width: 10%;
 	margin-left: 10px;
 }
 
 #securityCode
 {
-	width: 10%;
+	@include tabletUp()
+	{
+		width: 100px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 80px;
+	}
 }

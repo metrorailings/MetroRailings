@@ -3,9 +3,13 @@
 var _Q = require('q'),
 	_Handlebars = require('Handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+	objectHelper = global.OwlStakes.require('utility/objectHelper'),
+	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
+	newOrderModel = global.OwlStakes.require('validators/createOrder/newOrder'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	cookies = global.OwlStakes.require('utility/cookies');
+	cookieManager = global.OwlStakes.require('utility/cookies'),
+	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -92,13 +96,29 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	saveOrder: function (params)
+	saveOrder: _Q.async(function* (params)
 	{
 		console.log('Saving a new order into the system...');
 
-		return {
-			data: {},
-			cookie: cookies.formCookie(COOKIE_ORDER_NAME, params)
-		};
-	}
+		var validationModel = newOrderModel();
+
+		// Populate the validation model
+		objectHelper.cloneObject(params, validationModel);
+
+		// Verify that the model is valid before proceeding
+		if (validatorUtility.checkModel(validationModel))
+		{
+			return {
+				statusCode: responseCodes.OK,
+				data: {},
+				cookie: cookieManager.formCookie(COOKIE_ORDER_NAME, params)
+			};
+		}
+		else
+		{
+			return {
+				statusCode: responseCodes.BAD_REQUEST
+			};
+		}
+	})
 }

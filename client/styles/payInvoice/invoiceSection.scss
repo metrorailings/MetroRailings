@@ -2,6 +2,7 @@
 
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- MIX-INS ----------------------------- */
 
@@ -20,17 +21,41 @@
 
 		&:nth-of-type(1)
 		{
-			width: 50%;
+			@include tabletUp()
+			{
+				width: 50%;
+			}
+
+			@include phoneOnly()
+			{
+				width: 60%;
+			}
 		}
 
 		&:nth-of-type(2)
 		{
-			width: 25%;
+			@include tabletUp()
+			{
+				width: 25%;
+			}
+
+			@include phoneOnly()
+			{
+				display: none;
+			}
 		}
 
 		&:nth-of-type(3)
 		{
-			width: 20%;
+			@include tabletUp()
+			{
+				width: 20%;
+			}
+
+			@include phoneOnly()
+			{
+				width: 35%;
+			}
 		}
 	}
 }
@@ -76,7 +101,11 @@
 
 		&:first-of-type
 		{
-			border-left: none;
+			border:
+			{
+				left: none;
+				top-left-radius: 10px;
+			}
 		}
 
 		&:last-of-type
@@ -173,4 +202,21 @@
 .salesPrice
 {
 	@extend %tabularSpecialText;
+}
+
+#stylePriceCell
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	i
+	{
+		margin-left: 10px;
+
+		font-size: 24px;
+		color: map-get($COLORS, darkBlueTheme);
+
+		cursor: default;
+	}
 }

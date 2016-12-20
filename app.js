@@ -39,7 +39,7 @@ _http.createServer(function(request, response)
 				responseData = yield requestHandler.delegate(request);
 
 			// Send the response back
-			responseHandler.delegateSuccessResponse(request, response, responseData, url);
+			responseHandler.delegateResponse(request, response, responseData, url);
 		}
 		catch (exception)
 		{

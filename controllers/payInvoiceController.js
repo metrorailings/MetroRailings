@@ -2,17 +2,22 @@
 
 var _Q = require('q'),
 	_Handlebars = require('Handlebars'),
-	_cookieManager = require('cookie'),
 	_request = require('request'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
-	fileManager = global.OwlStakes.require('utility/fileManager');
+	fileManager = global.OwlStakes.require('utility/fileManager'),
+	objectHelper = global.OwlStakes.require('utility/objectHelper'),
+	confirmedOrderModel = global.OwlStakes.require('validators/payInvoice/submittedOrder'),
+	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
+	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+	cookieManager = global.OwlStakes.require('utility/cookies');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'payInvoice',
 
 	COOKIE_ORDER_NAME = 'order',
+	COOKIE_CUSTOMER_INFO = 'customerInfo',
 
 	CUSTOM_STYLE_KEYWORD = 'custom',
 	COST_PER_FOOT_OF_RAILING = '60',
@@ -76,7 +81,7 @@ module.exports =
 	init: _Q.async(function* (params, cookie)
 	{
 		var populatedPageTemplate,
-			cookieData = _cookieManager.parse(cookie || ''),
+			cookieData = cookieManager.parseCookie(cookie || ''),
 			orderData = cookieData[COOKIE_ORDER_NAME],
 			currentYear = new Date().getFullYear(),
 			pageData = {},
@@ -93,6 +98,7 @@ module.exports =
 
 		// Calculate the total price of the order
 		orderData.totalPrice = (orderData.length * COST_PER_FOOT_OF_RAILING).toFixed(2);
+		orderData.totalPrice = Math.max(orderData.totalPrice, 600.00);
 
 		// Populate some years that can then be populated into the expiration year dropdown
 		for (i = currentYear; i <= currentYear + 10; i++)
@@ -134,9 +140,50 @@ module.exports =
 
 		_request.get(CC_BIN_LIST_URL.replace(CC_NUMBER_PLACEHOLDER, params.ccNumber), (error, response) =>
 		{
+			// Return credit card data for successful responses or return a simple 'false' value should there be any
+			// other type of response returned
 			deferred.resolve((response.statusCode === 200 ? JSON.stringify(response.body) : JSON.stringify(false)));
 		});
 
 		return deferred.promise;
+	},
+
+	saveConfirmedOrder: function(params)
+	{
+		console.log('Saving a newly minted order into the system...');
+
+		var validationModel = confirmedOrderModel();
+
+		// Populate the validation model
+		objectHelper.cloneObject(params, validationModel);
+
+		// Verify that the model is valid before proceeding
+		if (validatorUtility.checkModel(validationModel))
+		{
+			// @TODO: Send data to database
+			// @TODO: Get confirmation number
+			// @TODO: Send e-mail to customer
+
+			return {
+				statusCode: responseCodes.OK,
+				data: {},
+
+				// Set up this cookie so that we can render some needed data into the order confirmation page
+				cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
+				{
+					areaCode: params.areaCode,
+					phoneOne: params.phoneOne,
+					phoneTwo: params.phoneTwo,
+					email: params.customerEmail,
+					confirmationNumber: 1234 // @TODO: Set actual confirmation number here
+				})
+			};
+		}
+		else
+		{
+			return {
+				statusCode: responseCodes.BAD_REQUEST
+			};
+		}
 	}
 }
