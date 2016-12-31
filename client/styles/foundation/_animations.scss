@@ -62,10 +62,11 @@
  * @param [$delay] - the amount of time to wait before the animation begins
  * @param [$iterations] - the number of times which to execute the animation
  * @param [$direction] - the direction in which the animation should play over time
+ * @param [$persist] - a flag indicating whether the end state of the animation should persist after the animation ends
  *
  * @author kinsho
  */
-@mixin animationSettings($keyframeSet: false, $duration: false, $timing: false, $delay: false, $iterations: 1, $direction: normal)
+@mixin animationSettings($keyframeSet: false, $duration: false, $timing: false, $delay: false, $iterations: 1, $direction: normal, $persist: false)
 {
 	@if ($keyframeSet)
 	{
@@ -110,6 +111,15 @@
 		-moz-animation-direction: $direction;
 		-ms-animation-direction: $direction;
 		-o-animation-direction: $direction;
+	}
+
+	@if ($persist)
+	{
+		animation-fill-mode: forwards;
+		-webkit-animation-fill-mode: forwards;
+		-moz-animation-fill-mode: forwards;
+		-ms-animation-fill-mode: forwards;
+		-o-animation-fill-mode: forwards;
 	}
 
 	animation-iteration-count: $iterations;

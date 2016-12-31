@@ -200,6 +200,11 @@ $FONTS:
 	@include basicFontSettings($weight: 400, $size: giganticPlusFontSize, $family: FontAwesome);
 }
 
+%regularIcons
+{
+	@include basicFontSettings($weight: 400, $size: regularFontSize);
+}
+
 %regularPlusIcons
 {
 	@include basicFontSettings($weight: 400, $size: largeFontSize);

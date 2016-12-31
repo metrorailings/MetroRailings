@@ -175,15 +175,13 @@ module.exports =
 					phoneOne: params.phoneOne,
 					phoneTwo: params.phoneTwo,
 					email: params.customerEmail,
-					confirmationNumber: 1234 // @TODO: Set actual confirmation number here
+					orderNumber: 1234 // @TODO: Set actual order number here
 				})
 			};
 		}
-		else
-		{
-			return {
-				statusCode: responseCodes.BAD_REQUEST
-			};
-		}
+
+		return {
+			statusCode: responseCodes.BAD_REQUEST
+		};
 	}
 }

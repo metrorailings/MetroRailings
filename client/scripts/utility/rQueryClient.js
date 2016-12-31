@@ -95,27 +95,24 @@ var rQueryClient =
 	},
 
 	/**
-	 * Function resets the value of a form field to an empty string should the value passed alongside that form
-	 * field be falsy
+	 * Function properly sets the content of a form field given a value. It also resets an empty value into the field
+	 * should the value passed alongside that form field be falsy
 	 *
-	 * @param {DOMElement} element - the form field that may need to be reset
-	 * @param {String} value - the value that may justify the resetting of the form field
+	 * @param {DOMElement} element - the form field that needs to be set
+	 * @param {String} value - the value to set or justify the resetting of the form field
 	 * @param {Set} [validationSet] - a set of form field IDs that denote which form fields currently have an erroneous value
 	 *
 	 * @author kinsho
 	 */
-	resetIfNecessary: function (element, value, validationSet)
+	setField: function (element, value, validationSet)
 	{
-		if ( !(value) )
-		{
-			element.value = '';
+		element.value = (value ? value : '');
 
-			// If the validation object is provided, remove the element's ID from that object to note that it is no longer
-			// in an erroneous state
-			if (validationSet)
-			{
-				validationSet.delete(element.id);
-			}
+		// If a value is not present and the validation object is provided, remove the element's ID from that object
+		// to note that it is no longer in an erroneous state
+		if (!value && validationSet)
+		{
+			validationSet.delete(element.id);
 		}
 	},
 

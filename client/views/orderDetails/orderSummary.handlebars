@@ -1,0 +1,30 @@
+<div id='orderSummary'>
+
+    <div class='dataGrouping'>
+        <span class='specializedLabel'>Order Number</span>
+        <span class='staticValue'>{{ id }}</span>
+    </div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    <i class='fa fa-tag fa-rotate-180'></i>
+		    Status
+		</span>
+		<span id='statusButtonSet' class='buttonSet'>
+            <input type='radio' class='statusRadio' id='openStatus' name='status' value='open' /> <label for='openStatus'>Open</label>
+			<input type='radio' class='statusRadio' id='consultStatus' name='status' value='consult' /> <label for='consultStatus'>Consult</label>
+            <input type='radio' class='statusRadio' id='productionStatus' name='status' value='production' /> <label for='productionStatus'>Production</label>
+            <input type='radio' class='statusRadio' id='installStatus' name='status' value='install' /> <label for='installStatus'>Install</label>
+            <input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed' /> <label for='closedStatus'>Closed</label>
+		</span>
+	</div>
+
+    <div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Order Notes
+		</span>
+		<textarea id='orderNotes'></textarea>
+    </div>
+
+</div>

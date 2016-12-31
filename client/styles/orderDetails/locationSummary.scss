@@ -1,0 +1,10 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#aptSuiteNo
+{
+	background-color:  map-get($COLORS, lightBlueTheme);
+}

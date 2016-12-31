@@ -13,7 +13,8 @@ var _Q = require('Q'),
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var UTILITY_FOLDER = 'utility',
-	GALLERY_TEMPLATE = 'gallery';
+	GALLERY_TEMPLATE = 'gallery',
+	CONFIRMATION_MODAL_TEMPLATE = 'confirmationModal';
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
@@ -32,6 +33,11 @@ var _compiledTemplates = [],
  * The template for the image gallery
  */
 _Handlebars.registerPartial('gallery', fileManager.fetchTemplateSync(UTILITY_FOLDER, GALLERY_TEMPLATE));
+
+/**
+ * The template for the confirmation modal
+ */
+_Handlebars.registerPartial('confirmationModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, CONFIRMATION_MODAL_TEMPLATE));
 
 // ----------------- GENERIC HELPERS --------------------------
 

@@ -147,7 +147,7 @@ Object.defineProperty(viewModel, 'customerName',
 		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, " '-")));
 
 		rQueryClient.updateValidationOnField(isInvalid, _nameField, ERROR.NAME_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_nameField, value, _validationSet);
+		rQueryClient.setField(_nameField, value, _validationSet);
 		_validate();
 	}
 });
@@ -172,7 +172,7 @@ Object.defineProperty(viewModel, 'areaCode',
 						!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _areaCodeField, ERROR.AREA_CODE_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_areaCodeField, value, _validationSet);
+		rQueryClient.setField(_areaCodeField, value, _validationSet);
 		_validate();
 	}
 });
@@ -197,7 +197,7 @@ Object.defineProperty(viewModel, 'phoneOne',
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _phoneOneField, ERROR.PHONE_ONE_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_phoneOneField, value, _validationSet);
+		rQueryClient.setField(_phoneOneField, value, _validationSet);
 		_validate();
 	}
 });
@@ -222,7 +222,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _phoneTwoField, ERROR.PHONE_TWO_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_phoneTwoField, value, _validationSet);
+		rQueryClient.setField(_phoneTwoField, value, _validationSet);
 		_validate();
 	}
 });
@@ -246,7 +246,7 @@ Object.defineProperty(viewModel, 'customerEmail',
 		var isInvalid = (value.length && !(formValidator.isEmail(value)) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_emailField, value, _validationSet);
+		rQueryClient.setField(_emailField, value, _validationSet);
 		_validate();
 	}
 });
@@ -270,7 +270,7 @@ Object.defineProperty(viewModel, 'customerAddress',
 		var isInvalid = (value.length && !(formValidator.isAlphaNumeric(value, ' .')) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _streetAddressField, ERROR.ADDRESS_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_streetAddressField, value, _validationSet);
+		rQueryClient.setField(_streetAddressField, value, _validationSet);
 		_validate();
 	}
 });
@@ -294,7 +294,7 @@ Object.defineProperty(viewModel, 'customerAptSuiteNumber',
 		var isInvalid = (value.length && !(formValidator.isAlphaNumeric(value, ' .-')) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _aptSuiteNumberField, ERROR.APT_SUITE_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_aptSuiteNumberField, value, _validationSet);
+		rQueryClient.setField(_aptSuiteNumberField, value, _validationSet);
 		_validate();
 	}
 });
@@ -318,7 +318,7 @@ Object.defineProperty(viewModel, 'customerCity',
 		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, ' .-')) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _cityField, ERROR.CITY_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_cityField, value, _validationSet);
+		rQueryClient.setField(_cityField, value, _validationSet);
 		_validate();
 	}
 });
@@ -338,7 +338,7 @@ Object.defineProperty(viewModel, 'customerState',
 	{
 		this.__customerState = value;
 
-		rQueryClient.resetIfNecessary(_stateField, value, _validationSet);
+		rQueryClient.setField(_stateField, value, _validationSet);
 		_validate();
 	}
 });
@@ -363,7 +363,7 @@ Object.defineProperty(viewModel, 'customerZipCode',
 						!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _addressZipCodeField, ERROR.ZIP_CODE_INVALID, _validationSet);
-		rQueryClient.resetIfNecessary(_addressZipCodeField, value, _validationSet);
+		rQueryClient.setField(_addressZipCodeField, value, _validationSet);
 		_validate();
 	}
 });
@@ -401,7 +401,7 @@ Object.defineProperty(viewModel, 'ccNumber',
 			rQueryClient.updateValidationOnField(false, _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet, _ccNumberHint);
 		}
 
-		rQueryClient.resetIfNecessary(_ccNumberField, value, _validationSet);
+		rQueryClient.setField(_ccNumberField, value, _validationSet);
 		_validate();
 	}
 });
@@ -421,7 +421,7 @@ Object.defineProperty(viewModel, 'ccSecurityCode',
 	{
 		this.__ccSecurityCode = value;
 
-		rQueryClient.resetIfNecessary(_ccSecurityCodeField, value, _validationSet);
+		rQueryClient.setField(_ccSecurityCodeField, value, _validationSet);
 		_validate();
 	}
 });
@@ -441,7 +441,7 @@ Object.defineProperty(viewModel, 'ccExpMonth',
 	{
 		this.__ccExpMonth = value;
 
-		rQueryClient.resetIfNecessary(_expirationMonthField, value, _validationSet);
+		rQueryClient.setField(_expirationMonthField, value, _validationSet);
 		_validate();
 	}
 });
@@ -461,7 +461,7 @@ Object.defineProperty(viewModel, 'ccExpYear',
 	{
 		this.__ccExpYear = value;
 
-		rQueryClient.resetIfNecessary(_expirationYearField, value, _validationSet);
+		rQueryClient.setField(_expirationYearField, value, _validationSet);
 		_validate();
 	}
 });

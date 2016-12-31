@@ -280,13 +280,12 @@ Object.defineProperty(viewModel, 'orderLength',
 	{
 		this.__orderLength = value;
 
+		// Make sure a valid length is put into the field
 		var isInvalid = ( !(formValidator.isNumeric(value)) ||
-			( value.length && !(window.parseInt(value, 10)) ) );
-
-		// Empty out the input field when the order length is initialized
-		rQueryClient.resetIfNecessary(_lengthField, value);
+						( value.length && !(window.parseInt(value, 10)) ) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _lengthField, ERROR.LENGTH_INVALID, _validationSet);
+		rQueryClient.setField(_lengthField, value);
 		_validate();
 
 		if (this.__userProgress <= 3)

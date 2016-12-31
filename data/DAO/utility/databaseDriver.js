@@ -78,7 +78,7 @@ module.exports =
 	 * Function responsible for reading data from the database.
 	 *
 	 * @param {String} collectionName - the name of the collection from which to read data
-	 * @param {Object} [query] - the query to execute
+	 * @param {Object} [params] - the parameters that will be used to filter the data
 	 * @param {Object} [sortCriteria] - the instructions that will be used to sort the result set
 	 * @param {Object} [aggregationOptions] - the options which to use to preprocess whatever data is returned
 	 *
@@ -124,7 +124,7 @@ module.exports =
 			if ((completeQuery.length) || (Object.keys(params).length))
 			{
 				console.log('Records will be filtered with the following parameters');
-				console.log( (completeQuery.length ? completeQuery : params) );
+//				console.log( (completeQuery.length ? completeQuery : params) );
 			}
 
 			if (keys.length)
@@ -363,5 +363,21 @@ module.exports =
 		};
 
 		return result;
+	},
+
+	/**
+	 * Function responsible for forming a query to search for all values greater than or equal to the passed value
+	 *
+	 * @param {any} value - the value that will be the base for the comparison
+	 *
+	 * @return {Object} - the query that will eventually join a larger query that will be consumed by the read function
+	 *
+	 * @author kinsho
+	 */
+	greaterThanOrEqualToOperator: function(value)
+	{
+		return {
+			$gt: value
+		};
 	}
 };

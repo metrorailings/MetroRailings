@@ -1,11 +1,14 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _cookieManager = require('cookie');
+var _cookieManager = require('cookie'),
+	_crypto = require('crypto'),
+	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-// ----------------- PRIVATE VARIABLES --------------------------
+var ADMIN_COOKIE = 'owl';
 
+// ----------------- PRIVATE VARIABLES --------------------------
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
@@ -39,5 +42,34 @@ module.exports =
 	parseCookie: function(cookie)
 	{
 		return _cookieManager.parse(cookie);
+	},
+
+	/**
+	 * Function responsible for generating an administrator cookie
+	 *
+	 * @param {String} username - the username for the admin
+	 * @param {String} password - the password for the admin
+	 * @param {boolean} rememberForAMonth - a flag indicating whether the cookie is to remain in effect for a month
+	 *
+	 * @returns {String} - a serialized admin cookie
+	 *
+	 * @author kinsho
+	 */
+	generateAdminCookie: function(username, password, rememberForAMonth)
+	{
+		var textToHash = username + password + new Date().getTime(),
+			hash = _crypto.createHmac('sha256', config.HASH_KEY).update(textToHash).digest('hex'),
+			cookieSerializerOptions =
+			{
+				path: '/'
+			};
+
+		// If the flag is set, ensure that this cookie remains in effect for a month
+		if (rememberForAMonth)
+		{
+			cookieSerializerOptions.maxAge = 60 * 60 * 24 * 31;
+		}
+
+		return _cookieManager.serialize(ADMIN_COOKIE, hash, cookieSerializerOptions);
 	}
 };

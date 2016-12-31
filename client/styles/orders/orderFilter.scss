@@ -1,0 +1,81 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#orderFilter
+{
+	border-top:
+	{
+		style: solid;
+		width: 2px;
+		color: map-get($COLORS, blackTheme);
+	}
+}
+
+.filterHeader
+{
+	@extend %formSectionHeaderText;
+
+	margin-right: 25px;
+}
+
+#stateFilter
+{
+	margin: 25px;
+
+	& > span:not(:first-of-type)
+	{
+		@extend %regularLinkText;
+
+		cursor: pointer;
+
+		&.selected
+		{
+			@extend %regularText;
+
+			text-decoration: underline;
+			cursor: default;
+		}
+
+		&::after
+		{
+			content: '|';
+
+			padding:
+			{
+				left: 20px;
+				right: 20px;
+			}
+
+			color: map-get($COLORS, blackTheme);
+			cursor: default;
+		}
+	}
+
+	& > span:last-of-type
+	{
+		&::after
+		{
+			content: '';
+
+			margin: 0px;
+		}
+	}
+}
+
+#searchFilter
+{
+	margin: 25px;
+}
+
+#searchFilterText
+{
+	width: 650px;
+	padding-right: 25px;
+}

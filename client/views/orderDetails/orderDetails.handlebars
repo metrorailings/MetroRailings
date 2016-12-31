@@ -1,0 +1,21 @@
+<div class='pageHeader'>
+	<h3>Order Details</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<p id='instructionText'>
+    You can modify any part of the order on this page. Please be aware that all fields marked blue are not required to
+    be filled out. Also, any change you make will be marked with a <i class='fa fa-tag fa-rotate-180'></i>
+</p>
+
+{{> orderSummary this }}
+
+{{> customerSummary this.customer }}
+
+{{> locationSummary }}
+
+{{> orderSpecifics }}
+
+{{> saveOrderChangesButton }}
+
+{{> confirmationModal }}

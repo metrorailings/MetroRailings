@@ -32,6 +32,39 @@
 	}
 }
 
+/**
+ * A mix-in designed to style most buttons across the application
+ *
+ * @author kinsho
+ */
+@mixin button($bgColor)
+{
+	@extend %buttonText;
+	@include transitionSettings($property: opacity, $duration: 0.75s);
+
+	border:
+	{
+		radius: 15px;
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	width: 100%;
+
+	padding: 10px;
+
+	cursor: pointer;
+
+	background-color: map-get($COLORS, $bgColor);
+	opacity: 1.0;
+
+	&:disabled
+	{
+		opacity: 0.4;
+	}
+}
+
 /* ----------------------- FORM STYLES ----------------------------- */
 
 .formRow
@@ -90,8 +123,8 @@
 		{
 			margin:
 			{
-				left: 20px;
-				right: 20px;
+				left: 10px;
+				right: 10px;
 			}
 		}
 
@@ -159,7 +192,7 @@
 
 /* ----------------------- INPUT STYLES ----------------------------- */
 
-input[type=tel], input[type=text], input[type=email]
+input[type=tel], input[type=text], input[type=email], input[type=password]
 {
 	@extend %regularText;
 	@include stylePlaceholder()
@@ -173,6 +206,44 @@ input[type=tel], input[type=text], input[type=email]
 	{
 		background-color: map-get($COLORS, lightRedTheme);
 		border-color: map-get($COLORS, darkRedTheme);
+	}
+}
+
+// Specialized input container meant to seemingly stow icons inside form fields
+.inputTextIcon
+{
+	border:
+	{
+		width: 3px;
+		style: inset;
+		radius: 0px;
+		color: map-get($COLORS, lighterGrayTheme);
+	}
+
+	padding: 3px;
+	display: inline-block;
+
+	& > input[type=text]
+	{
+		border: none;
+		box-shadow: none;
+
+		&:focus
+		{
+			outline: none;
+		}
+	}
+
+	& > i
+	{
+		margin:
+		{
+			left: 5px;
+			right: 5px;
+		}
+
+		color: map-get($COLORS, grayTheme);
+		cursor: pointer;
 	}
 }
 
@@ -214,7 +285,9 @@ input[type=checkbox]
 	}
 }
 
-input[type=radio]
+// We are wrapping all generic radio buttons in containers so as to differentiate these radio buttons from the ones
+// we use for buttonSet inputs
+.regularRadioInput > input[type=radio]
 {
 	display: none;
 
@@ -274,6 +347,13 @@ select
 	}
 }
 
+textarea
+{
+	@extend %regularText;
+
+	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+}
+
 // Styling for customized button sets
 .buttonSet
 {
@@ -317,6 +397,11 @@ select
 		{
 			background-color: map-get($COLORS, darkerGrayTheme);
 			color: map-get($COLORS, whiteTheme);
+		}
+
+		& + label::before
+		{
+
 		}
 	}
 }

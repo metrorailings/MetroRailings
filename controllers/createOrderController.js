@@ -108,10 +108,13 @@ module.exports =
 		// Verify that the model is valid before proceeding
 		if (validatorUtility.checkModel(validationModel))
 		{
+			// @TODO: Send data to database
+			// @TODO: Get order number
+
 			return {
 				statusCode: responseCodes.OK,
 				data: {},
-				cookie: cookieManager.formCookie(COOKIE_ORDER_NAME, params)
+				cookie: cookieManager.formCookie(COOKIE_ORDER_NAME, params) // @TODO: Load order number into the cookie
 			};
 		}
 		else

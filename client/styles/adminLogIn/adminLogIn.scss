@@ -1,0 +1,56 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#adminLogInSection
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	& > .formRow
+	{
+		width: 100%;
+		text-align: center;
+
+		& > .controlGrouping
+		{
+			margin:
+			{
+				left: auto;
+				right: auto;
+				top: 15px;
+				bottom: 15px;
+			}
+
+			display: flex;
+			align-items: center;
+		}
+	}
+}
+
+#adminSubmissionButton
+{
+	margin:
+	{
+		top: 15px;
+		left: auto;
+		right: auto;
+	}
+
+	@include tabletUp()
+	{
+		width: 20%;
+	}
+
+	@include phoneOnly()
+	{
+		width: 40%;
+	}
+}

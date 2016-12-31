@@ -10,7 +10,7 @@ var USER_NOTIFICATION_BAR = 'userNotificationBar',
 
 	REVEAL_CLASS = 'reveal',
 
-	GENERIC_SERVER_MESSAGE = 'We have an issue with our servers. Please reload this page and try again. If you see this' +
+	GENERIC_SERVER_MESSAGE = 'We have an issue with our servers. Please reload this page and try again. If you see this ' +
 		'message again, please contact us at ' + config.SUPPORT_PHONE_NUMBER;
 
 // ----------------- PRIVATE VARIABLES -----------------------------

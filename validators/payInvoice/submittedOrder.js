@@ -1,5 +1,5 @@
 /**
- * The validator model for a new order
+ * The validator model for a confirmed order
  */
 
 // ----------------- EXTERNAL MODULES --------------------------

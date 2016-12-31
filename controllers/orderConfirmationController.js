@@ -43,7 +43,8 @@ module.exports =
 		pageData =
 		{
 			phoneNumber: '(' + customerData.areaCode + ') ' + customerData.phoneOne + '-' + customerData.phoneTwo,
-			email: customerData.email
+			email: customerData.email,
+			orderNumber: customerData.orderNumber
 		};
 
 		// Now render the page template
