@@ -39,6 +39,9 @@
 		{
 			@extend %regularText;
 
+			color: map-get($COLORS, blackTheme);
+			font-weight: 700;
+
 			text-decoration: underline;
 			cursor: default;
 		}
@@ -78,4 +81,14 @@
 {
 	width: 650px;
 	padding-right: 25px;
+}
+
+#resetSearch
+{
+	visibility: hidden;
+
+	&.reveal
+	{
+		visibility: visible;
+	}
 }

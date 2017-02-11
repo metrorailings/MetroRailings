@@ -398,10 +398,5 @@ textarea
 			background-color: map-get($COLORS, darkerGrayTheme);
 			color: map-get($COLORS, whiteTheme);
 		}
-
-		& + label::before
-		{
-
-		}
 	}
 }

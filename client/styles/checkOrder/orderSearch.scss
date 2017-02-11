@@ -1,0 +1,113 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#orderSearch
+{
+	border-bottom:
+	{
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+		width: 2px;
+	}
+
+	padding-bottom: 30px;
+
+	& > p:first-of-type
+	{
+		text-align: center;
+	}
+
+	& > .formRow
+	{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+.controlGrouping
+{
+	border-right:
+	{
+		style: solid;
+		width: 2px;
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 30px;
+	}
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	& > label
+	{
+		margin-bottom: 10px;
+	}
+
+	&:nth-of-type(1)
+	{
+		width: 30%;
+
+		& > input
+		{
+			width: 100px;
+		}
+	}
+
+	&:nth-of-type(2)
+	{
+		width: 30%;
+
+		& > input
+		{
+			width: 250px;
+		}
+	}
+
+	&:nth-of-type(3)
+	{
+		width: 40%;
+		border-right: none;
+
+		& > input
+		{
+			width: 100px;
+		}
+	}
+}
+
+#orderSearchButtonContainer
+{
+	margin-top: 25px;
+}
+
+#orderSearchButton
+{
+	@include button($bgColor: darkGreenTheme);
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 300px;
+
+	& > i
+	{
+		margin-left: 10px;
+	}
+}

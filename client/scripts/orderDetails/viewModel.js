@@ -33,14 +33,16 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	SAVE_CHANGES_BUTTON_CONTAINER = 'saveChangesButtonContainer',
 	SAVE_CHANGES_BUTTON = 'saveChangesButton',
 
+	REVEAL_CLASS = 'reveal',
+	DATA_GROUPING_CLASS = 'dataGrouping',
+	FA_TAG_CLASS = 'fa-tag',
+
 	SUBMISSION_INSTRUCTIONS =
 	{
 		ERROR: 'At least one of the fields above has an erroneous value. Please fix the errors first.',
 		BLANK_FIELD: 'At least one of the fields above has been left empty. Every field that is not ' +
 			'tinted blue has to be populated.'
 	},
-
-	REVEAL_CLASS = 'reveal',
 
 	ERROR =
 	{
@@ -56,7 +58,6 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
-
 
 var _validationSet = new Set(),
 
@@ -109,7 +110,8 @@ function _validate()
  */
 function _markAsModified(isNotModified, inputContainer)
 {
-	var tagIcon = inputContainer.parentElement.firstElementChild.firstElementChild;
+	var groupingParent = rQueryClient.closestElementByClass(inputContainer, DATA_GROUPING_CLASS),
+		tagIcon = groupingParent.getElementsByClassName(FA_TAG_CLASS)[0];
 
 	if (isNotModified)
 	{
@@ -154,7 +156,7 @@ Object.defineProperty(viewModel, 'originalOrder',
 		this.__originalOrder = value;
 
 		// Copy over the values from the original order into the view model
-		viewModel.id = value.id;
+		viewModel._id = value._id;
 		viewModel.status = value.status;
 		viewModel.notes = value.notes;
 		viewModel.email = value.customer.email;

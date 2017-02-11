@@ -3,6 +3,7 @@
 @import '../foundation/fonts';
 @import '../foundation/colors';
 @import '../foundation/animations';
+@import '../foundation/responsive';
 
 /* ----------------------- ANIMATIONS ----------------------------- */
 
@@ -75,8 +76,8 @@
 	@include transitionSettings($property: background-color, $duration: 0.35s);
 
 	position: fixed;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 
 	top: 0;
 	left: 0;
@@ -104,14 +105,12 @@
 
 		& > #galleryControls
 		{
-			z-index: 4001;
 			opacity: 1.0;
 			background-color: rgba(0, 0, 0, 0.95);
 		}
 
 		& > #galleryPictureViewer
 		{
-			z-index: 4001;
 			opacity: 1.0;
 		}
 	}
@@ -135,6 +134,21 @@
 	z-index: -9999;
 	background-color: rgba(0, 0, 0, 0);
 	opacity: 0.0;
+
+	@include landscapeMobileOnly()
+	{
+		font-size: map-get($FONTS, regularPlusFont);
+
+		height: 100%;
+	}
+
+	@include portraitMobileOnly()
+	{
+		font-size: map-get($FONTS, regularPlusFont);
+
+		width: 100%;
+		height: 50%;
+	}
 }
 
 #galleryPictureViewer
@@ -151,6 +165,12 @@
 
 	z-index: -9999;
 	opacity: 0.0;
+
+	@include portraitMobileOnly()
+	{
+		width: 100%;
+		height: 30%;
+	}
 
 	&.fadeOutLeft
 	{
@@ -186,6 +206,11 @@
 	left: 80%;
 
 	cursor: pointer;
+
+	@include mobileOnly()
+	{
+		left: 90%;
+	}
 }
 
 #galleryLeftButton
@@ -198,6 +223,11 @@
 
 	cursor: pointer;
 	opacity: 1.0;
+
+	@include mobileOnly()
+	{
+		left: 35%;
+	}
 
 	&.hide
 	{
@@ -216,6 +246,11 @@
 
 	cursor: pointer;
 	opacity: 1.0;
+
+	@include mobileOnly()
+	{
+		left: 65%;
+	}
 
 	&.hide
 	{

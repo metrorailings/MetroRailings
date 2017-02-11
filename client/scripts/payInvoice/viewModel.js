@@ -5,13 +5,16 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import formValidator from 'utility/formValidator';
-import axios from 'client/scripts/utility/axios';
 import ccAllowed from 'shared/ccAllowed';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
+import scrollDown from 'client/scripts/utility/scrollDown';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
+var ORDER_FORM = 'orderForm',
+	AGREED_RADIO = 'agreedToTerms',
+
+	CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 	CUSTOMER_PHONE_NUMBER_ONE_FIELD = 'customerPhoneNumber1',
 	CUSTOMER_PHONE_NUMBER_TWO_FIELD = 'customerPhoneNumber2',
 	CUSTOMER_EMAIL_FIELD = 'customerEmail',
@@ -34,11 +37,14 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 	SUBMISSION_BUTTON_CONTAINER = 'orderSubmissionButtonContainer',
 
 	SHADE_CLASS = 'shade',
+	REVEAL_CLASS = 'reveal',
 
-	CC_VALIDATION_URL = 'payInvoice/validateCreditCard',
-
-	SUBMISSION_INSTRUCTIONS = 'In order to submit this order, please make sure you filled out all the required fields ' +
-		'above and please fill in your credit card information as well.',
+	SUBMISSION_INSTRUCTIONS =
+	{
+		ERROR: 'At least one of the fields above has an erroneous value. Please fix these errors prior to submitting this order.',
+		BLANK_FIELD: 'In order to submit this order, please make sure you filled out all the required fields ' +
+			'above and please fill in your credit card information as well.'
+	},
 
 	ERROR =
 	{
@@ -53,7 +59,9 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 		CITY_INVALID: 'Please enter a valid city name here. We only tolerate alphabetical characters, spaces, dashes, and periods here.',
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
-		CC_NUMBER_INVALID: 'Please enter a valid credit card number. Keep in mind that we only accept Visa, Mastercard, and Discover cards.'
+		CC_NUMBER_INVALID: 'Please enter only digits here in the credit card number field.',
+		CC_NUMBER_UNACCEPTABLE: 'Please enter a valid credit card number. Keep in mind that we only accept Visa, Mastercard, and Discover cards.',
+		CC_SECURITY_CODE_INVALID: 'Please put in a 3 or 4 digit code here.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -61,6 +69,9 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 var _validationSet = new Set(),
 
 	// Elements
+	_orderForm = document.getElementById(ORDER_FORM),
+	_agreedRadio = document.getElementById(AGREED_RADIO),
+
 	_nameField = document.getElementById(CUSTOMER_NAME_FIELD),
 	_areaCodeField = document.getElementById(CUSTOMER_AREA_CODE_FIELD),
 	_phoneOneField = document.getElementById(CUSTOMER_PHONE_NUMBER_ONE_FIELD),
@@ -98,7 +109,7 @@ function _toggleCCIconOpacity(brand)
 	{
 		// In the event that a brand is not passed into this function, simply remove the opacity
 		// class from all the icons
-		if ( !(brand) || (_creditCardIcons[i].id.toUpperCase().indexOf(brand) > -1))
+		if ( !(brand) || (_creditCardIcons[i].id.toLowerCase().indexOf(brand) > -1) )
 		{
 			_creditCardIcons[i].classList.remove(SHADE_CLASS);
 		}
@@ -128,6 +139,36 @@ var viewModel = {};
 // Remember that for form elements that have validation logic, the tooltip to relay errors to the user is attached
 // to the span element that follows these input elements
 
+// Agreed to agreement flag
+Object.defineProperty(viewModel, 'agreedToTerms',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return this.__agreedToTerms;
+	},
+
+	set: (value) =>
+	{
+		this.__agreedToTerms = value;
+
+		_agreedRadio.checked = value;
+
+		// Once the user has agreed to the terms, show the rest of the order form
+		if (value)
+		{
+			_orderForm.classList.add(REVEAL_CLASS);
+
+			window.setTimeout(() =>
+			{
+				scrollDown.showAlert(_areaCodeField);
+			}, 250);
+		}
+	}
+});
+
 // Customer's name
 Object.defineProperty(viewModel, 'customerName',
 {
@@ -141,12 +182,11 @@ Object.defineProperty(viewModel, 'customerName',
 
 	set: (value) =>
 	{
-		value = (value ? value.trim() : '');
+		// Ensure that the value does not simply consist of spaces
+		value = (value.trim() ? value : '');
 		this.__customerName = value;
 
-		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, " '-")));
-
-		rQueryClient.updateValidationOnField(isInvalid, _nameField, ERROR.NAME_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, " '-")), _nameField, ERROR.NAME_INVALID, _validationSet);
 		rQueryClient.setField(_nameField, value, _validationSet);
 		_validate();
 	}
@@ -243,9 +283,7 @@ Object.defineProperty(viewModel, 'customerEmail',
 		this.__customerEmail = value;
 
 		// Test whether the value qualifies as an e-mail address
-		var isInvalid = (value.length && !(formValidator.isEmail(value)) );
-
-		rQueryClient.updateValidationOnField(isInvalid, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isEmail(value)), _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
 		rQueryClient.setField(_emailField, value, _validationSet);
 		_validate();
 	}
@@ -267,9 +305,7 @@ Object.defineProperty(viewModel, 'customerAddress',
 		this.__customerAddress = value;
 
 		// Test whether the value is a proper address
-		var isInvalid = (value.length && !(formValidator.isAlphaNumeric(value, ' .')) );
-
-		rQueryClient.updateValidationOnField(isInvalid, _streetAddressField, ERROR.ADDRESS_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isAlphaNumeric(value, ' .')), _streetAddressField, ERROR.ADDRESS_INVALID, _validationSet);
 		rQueryClient.setField(_streetAddressField, value, _validationSet);
 		_validate();
 	}
@@ -291,9 +327,7 @@ Object.defineProperty(viewModel, 'customerAptSuiteNumber',
 		this.__customerAptSuiteNumber = value;
 
 		// Test whether the value is a proper apartment or suite number
-		var isInvalid = (value.length && !(formValidator.isAlphaNumeric(value, ' .-')) );
-
-		rQueryClient.updateValidationOnField(isInvalid, _aptSuiteNumberField, ERROR.APT_SUITE_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isAlphaNumeric(value, ' .-')), _aptSuiteNumberField, ERROR.APT_SUITE_INVALID, _validationSet);
 		rQueryClient.setField(_aptSuiteNumberField, value, _validationSet);
 		_validate();
 	}
@@ -315,9 +349,7 @@ Object.defineProperty(viewModel, 'customerCity',
 		this.__customerCity = value;
 
 		// Test whether the value qualifies as a proper city name
-		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, ' .-')) );
-
-		rQueryClient.updateValidationOnField(isInvalid, _cityField, ERROR.CITY_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, ' .-')) , _cityField, ERROR.CITY_INVALID, _validationSet);
 		rQueryClient.setField(_cityField, value, _validationSet);
 		_validate();
 	}
@@ -383,22 +415,25 @@ Object.defineProperty(viewModel, 'ccNumber',
 	{
 		this.__ccNumber = value;
 
-		if (value.length >= 6)
-		{
-			// Validate the credit card number to see if it's acceptable
-			axios.get(CC_VALIDATION_URL, { ccNumber : value }).then((data) =>
-			{
-				// Untangle the data
-				data = JSON.parse(data);
+		// Test whether the value contains any non-numeric character
+		var isInvalid = !(formValidator.isNumeric(value));
+		rQueryClient.updateValidationOnField(isInvalid, _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet, _ccNumberHint);
 
-				_toggleCCIconOpacity((data && ccAllowed[data.brand]) ? data.brand : '');
-				rQueryClient.updateValidationOnField( !(data && ccAllowed[data.brand]), _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet, _ccNumberHint);
-			});
-		}
-		else
+		// If valid, test whether the credit card number belongs to that of an acceptable brand
+		if (!(isInvalid))
 		{
-			_toggleCCIconOpacity('');
-			rQueryClient.updateValidationOnField(false, _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet, _ccNumberHint);
+			if (value.length >= 6)
+			{
+				var acceptedBrand = ccAllowed.checkCCNumber(value);
+
+				_toggleCCIconOpacity(acceptedBrand);
+				rQueryClient.updateValidationOnField( !(acceptedBrand), _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet, _ccNumberHint);
+			}
+			else
+			{
+				_toggleCCIconOpacity('');
+				rQueryClient.updateValidationOnField(false, _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet, _ccNumberHint);
+			}
 		}
 
 		rQueryClient.setField(_ccNumberField, value, _validationSet);
@@ -421,6 +456,11 @@ Object.defineProperty(viewModel, 'ccSecurityCode',
 	{
 		this.__ccSecurityCode = value;
 
+		// Test whether the value qualifies as a valid security code
+		var isInvalid = (value.length && (value.length < 3 || value.length > 4)) ||
+			!(formValidator.isNumeric(value));
+
+		rQueryClient.updateValidationOnField(isInvalid, _ccSecurityCodeField, ERROR.CC_SECURITY_CODE_INVALID, _validationSet);
 		rQueryClient.setField(_ccSecurityCodeField, value, _validationSet);
 		_validate();
 	}
@@ -466,7 +506,7 @@ Object.defineProperty(viewModel, 'ccExpYear',
 	}
 });
 
-// Form Validation Flag
+// Form validation flag
 Object.defineProperty(viewModel, 'isFormSubmissible',
 {
 	configurable: false,
@@ -481,8 +521,10 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	{
 		this.__isFormSubmissible = value;
 
-		_submissionButton.disabled = !value;
-		_submissionButtonContainer.dataset.hint = ( !value ? SUBMISSION_INSTRUCTIONS : '' );
+		// Set the look of the button depending on whether there are any errors on the form
+		_submissionButton.disabled = !(value);
+		_submissionButtonContainer.dataset.hint = ( value ? '' :
+			(_validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD));
 	}
 });
 

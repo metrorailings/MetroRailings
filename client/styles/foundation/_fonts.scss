@@ -84,15 +84,15 @@ $FONTS:
 	font-weight: 700;
 }
 
+%majorText
+{
+	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
+}
+
 /* --- Header stylings --- */
 %h3
 {
 	@include basicFontSettings($weight: 300, $size: giganticFontSize, $family: Raleway);
-}
-
-%majorText
-{
-	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
 }
 
 %sectionHeader
@@ -213,22 +213,22 @@ $FONTS:
 /* --- Table stylings --- */
 %tabularHeaderText
 {
-	@include basicFontSettings($weight: 700, $size: regularPlusFont, $family: Playfair Display);
+	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Raleway);
 }
 
 %tabularRegularText
 {
-	@include basicFontSettings($weight: 400, $size: regularPlusFont, $family: Playfair Display);
+	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Playfair Display);
 }
 
-%tabularLargeText
+%tabularLabelText
 {
-	@include basicFontSettings($weight: 400, $size: largePlusFont, $family: Playfair Display);
+	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display);
 }
 
 %tabularSpecialText
 {
-	@include basicFontSettings($weight: 700, $size: regularPlusFont, $color: darkBlueTheme, $family: Playfair Display);
+	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display, $color: darkBlueTheme);
 }
 
 /* --- Miscellany stylings --- */
@@ -240,6 +240,13 @@ $FONTS:
 %significantText
 {
 	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli);
+}
+
+%greenSignificantText
+{
+	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli, $color: darkGreenTheme);
+
+	text-shadow: 0.5px 0.5px map-get($COLORS, blackTheme);
 }
 
 %bigSignificantText

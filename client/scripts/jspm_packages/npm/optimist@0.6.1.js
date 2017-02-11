@@ -1,0 +1,1 @@
+module.exports = require("npm:optimist@0.6.1/index");

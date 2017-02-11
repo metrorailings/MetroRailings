@@ -16,13 +16,13 @@ footer
 		bottom: 5px;
 	}
 
+	padding-top: 10px;
+
 	height: 50px;
 	width: 100%;
 	display: block;
 
 	background-color: map-get($COLORS, blackTheme);
-
-	padding-top: 10px;
 
 	@media only screen and (max-device-width: 727px)
 	{

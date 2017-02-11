@@ -20,6 +20,8 @@ module.exports =
 	 * @returns {boolean} - a boolean indicating whether the string is indeed an e-mail address
 	 *
 	 * @author kinsho
+	 *
+	 * @TODO - Tighten up the validation logic to account for things like what type of characters are acceptable in the domain
 	 */
 	isEmail: function(str)
 	{

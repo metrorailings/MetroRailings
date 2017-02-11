@@ -60,53 +60,6 @@ function setCCSecurityCode()
 	vm.ccSecurityCode = _securityCodeField.value;
 }
 
-/**
- * A listener designed to regulate the type of characters that can be put into the model
- *
- * @param {Event} event - the event associated with the listener
- *
- * @author kinsho
- */
-function watchOverCCNumber(event)
-{
-	if (event.charCode)
-	{
-		// Check if the user is typing in something else besides numbers
-		if (event.charCode < 48 || event.charCode > 57)
-		{
-			event.preventDefault();
-		}
-	}
-}
-
-/**
- * A listener designed to limit the number of characters that can be typed into the security code textfield.
- * Listener also regulates the type of characters that can be put into the model
- *
- * @param {Event} event - the event associated with the listener
- *
- * @author kinsho
- */
-function watchOverSecurityCode(event)
-{
-	var value = _securityCodeField.value;
-
-	if (event.charCode)
-	{
-		// Check if the user has gone past the prescribed length
-		if (value.length >= 3)
-		{
-			event.preventDefault();
-		}
-
-		// Check if the user is typing in something else besides numbers
-		if (event.charCode < 48 || event.charCode > 57)
-		{
-			event.preventDefault();
-		}
-	}
-}
-
 // ----------------- DATA INITIALIZATION -----------------------------
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
@@ -116,10 +69,6 @@ _creditCardNumberField.addEventListener('keyup', setCCNumber);
 _expirationMonthField.addEventListener('change', setCCExpMonth);
 _expirationYearField.addEventListener('change', setCCExpYear);
 _securityCodeField.addEventListener('blur', setCCSecurityCode);
-
-// Attach specialized event listeners to the inputs that need to be watched
-_creditCardNumberField.addEventListener('keypress', watchOverCCNumber);
-_securityCodeField.addEventListener('keypress', watchOverSecurityCode);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 

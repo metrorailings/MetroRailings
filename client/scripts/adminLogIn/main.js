@@ -11,6 +11,7 @@ var USERNAME_TEXTFIELD = 'userName',
 	SUBMISSION_BUTTON = 'adminSubmissionButton',
 
 	LOG_IN_URL = 'admin/logIn',
+	ORDERS_URL = '/orders',
 
 	LOG_IN_INVALID_MESSAGE = 'Your username and password was not recognized as a legitimate combination.';
 
@@ -43,7 +44,8 @@ function logIn()
 
 	axios.post(LOG_IN_URL, data, true).then(() =>
 	{
-		console.log('Go on....');
+		// If successful, let's take the user to the orders page
+		window.location.href = ORDERS_URL;
 	}, () =>
 	{
 		notifier.showSpecializedServerError(LOG_IN_INVALID_MESSAGE);

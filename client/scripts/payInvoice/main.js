@@ -1,6 +1,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import personalInfoSection from 'client/scripts/payInvoice/personalInfoSection';
+import agreementSection from 'client/scripts/payInvoice/agreementSection';
 import addressSection from 'client/scripts/payInvoice/addressSection';
 import ccSection from 'client/scripts/payInvoice/ccSection';
 import submissionSection from 'client/scripts/payInvoice/submissionSection';

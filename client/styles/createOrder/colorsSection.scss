@@ -123,12 +123,18 @@
 
 .selectedArrow
 {
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
 	visibility: hidden;
 
 	font-size: 64px;
 	color: map-get($COLORS, noticeTheme);
 
-	margin-bottom: 10px;
+	cursor: default;
 
 	&.reveal
 	{

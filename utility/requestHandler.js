@@ -37,6 +37,7 @@ var _handlePostRequest = function(request)
 				urlObj = _url.parse(url, true),
 				routeSigns = urlObj.pathname.split('/'),
 				action = routeSigns[2],
+				cookie = request.headers.cookie, // All cookies sent along with the request
 				controller, // Name of the controller that will service the request
 				ctrl, // The instance of the actual controller to act upon
 				responseData;
@@ -50,7 +51,7 @@ var _handlePostRequest = function(request)
 
 			// Find the correct action method indicated within the URL, then invoke that action method with
 			// all the relevant parameters needed to properly service the POST request
-			responseData = yield ctrl[ router.findAction(action) ](JSON.parse(data));
+			responseData = yield ctrl[ router.findAction(action) ](JSON.parse(data), cookie);
 
 			deferred.resolve(responseData);
 		}));

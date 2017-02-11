@@ -1,0 +1,14 @@
+<div class='pageHeader'>
+    <h3>Check on your Orders</h3>
+    <div class='headerUnderline'></div>
+</div>
+
+{{> orderSearch }}
+
+<div id='orderListing' class='reveal'>
+    Any orders that match your search will appear here.
+</div>
+
+<script id='orderListingTemplate' type='text/x-handlebars-template'>
+    {{{ orderSearchListingTemplate }}}
+</script>

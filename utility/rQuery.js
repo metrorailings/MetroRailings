@@ -1,11 +1,3 @@
-// ----------------- EXTERNAL MODULES --------------------------
-
-// ----------------- ENUMS/CONSTANTS --------------------------
-
-// ----------------- PRIVATE VARIABLES --------------------------
-
-// ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
-
 // ----------------- MODULE DEFINITION --------------------------
 module.exports =
 {
@@ -29,7 +21,7 @@ module.exports =
 			// If the property is itself an object, run this function recursively on that property
 			if ((typeof obj[keys[i]] === 'object') && (obj[keys[i]] !== null))
 			{
-				cloneObj[keys[i]] = this.copy(obj[keys[i]]);
+				cloneObj[keys[i]] = this.copyObject(obj[keys[i]]);
 			}
 			else
 			{

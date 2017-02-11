@@ -6,6 +6,7 @@
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import formValidator from 'utility/formValidator';
+import scrollDown from 'client/scripts/utility/scrollDown';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -50,7 +51,7 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 		LENGTH_INVALID: 'Please enter a non-zero length here.'
 	},
 
-	SUBMISSION_INSTRUCTIONS = 'Please scroll above and put a proper length in the section where we ask you how much feet of railing you need.';
+	SUBMISSION_INSTRUCTIONS = 'Please scroll above and put a proper length in the section where we ask you how many feet of railing you need.';
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
@@ -187,14 +188,41 @@ function _toggleRailingTypeSpots()
 /**
  * A function designed to reveal the scroll alert on a delay in order to prevent browser lag
  *
+ * @param {HTMLElement} anchorElement - the element to which to tie a scrolling anchor to
+ *
  * @author kinsho
  */
 function _revealScrollAlert()
 {
+	var anchorSection;
+
+	// We need to figure out on which section to place the scrolling anchor before revealing the scrolling alert
+	switch (viewModel.userProgress)
+	{
+		case 2:
+			anchorSection = _curvesSection;
+			break;
+
+		case 3:
+			anchorSection = _lengthSection;
+			break;
+
+		case 4:
+			anchorSection = _styleSection;
+			break;
+
+		case 5:
+			anchorSection = _colorSection;
+			break;
+
+		default:
+			anchorSection = _curvesSection;
+	}
+
 	// Set this animation on a timeout to prevent browser lag
 	window.setTimeout(() =>
 	{
-		_scrollDownAlert.classList.add(REVEAL_CLASS);
+		scrollDown.showAlert(anchorSection);
 	}, 250);
 }
 
@@ -208,7 +236,7 @@ function _hideScrollAlert()
 	// Set this animation on a timeout to prevent browser lag
 	window.setTimeout(() =>
 	{
-		_scrollDownAlert.classList.remove(REVEAL_CLASS);
+		scrollDown.hideAlert();
 	}, 250);
 }
 

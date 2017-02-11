@@ -12,7 +12,11 @@
     "mongodb": "*",
     "html-minifier": "*",
     "sleep": "*",
-    "cookie": "*"
+    "cookie": "*",
+    "randomstring": "*",
+    "stripe": "*",
+    "nodemailer": "*",
+    "styliner": "*"
   },
   "jspm": {
     "directories": {
@@ -22,6 +26,7 @@
     "dependencies": {
       "axios": "npm:axios@^0.13.1",
       "es6-promise": "npm:es6-promise@^3.2.1",
+      "handlebars": "npm:handlebars@^4.0.6",
       "smoothScroll": "github:cferdinandi/smooth-scroll@^10.1.0"
     },
     "devDependencies": {

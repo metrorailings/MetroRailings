@@ -2,7 +2,7 @@
 
     <div class='dataGrouping'>
         <span class='specializedLabel'>Order Number</span>
-        <span class='staticValue'>{{ id }}</span>
+        <span class='staticValue'>{{ _id }}</span>
     </div>
 
 	<div class='dataGrouping'>
@@ -18,6 +18,8 @@
             <input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed' /> <label for='closedStatus'>Closed</label>
 		</span>
 	</div>
+
+    <!-- @TODO - For orders in consult status, allow the admin to set a date of visitation -->
 
     <div class='dataGrouping'>
 		<span class='specializedLabel'>

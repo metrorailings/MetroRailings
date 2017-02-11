@@ -11,7 +11,7 @@
 	<div id='creditCardNumberContainer' class='formRow'>
         <span class='controlGrouping'>
             <label for='creditCardNumber'>Credit Card Number</label>
-            <input type='tel' id='creditCardNumber' />
+            <input type='tel' id='creditCardNumber' maxlength='16' />
         </span>
 		<span id='ccMerchantsAccepted'>
 			<i id='visaCCIcon' class='fa fa-cc-visa'></i>
@@ -52,6 +52,7 @@
             <label for='securityCode'>Security Code</label>
             <span class='controlGroupingRow'>
                 <input type='tel' id='securityCode' maxlength='4' />
+                <span class='hint hint--right hint--small hint--always' data-hint=''></span>
                 <span id='creditCardSecurityCodeHelp' class='hint hint--right hint--medium' data-hint='The security code is either 3 or 4 digits that stand out on the back of your card.'>
                     <i class='fa fa-question-circle'></i>
                 </span>

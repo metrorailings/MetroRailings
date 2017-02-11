@@ -121,11 +121,6 @@ module.exports =
 
 			// Log the query about to be executed
 			console.log('About to scoop up records from ' + collectionName);
-			if ((completeQuery.length) || (Object.keys(params).length))
-			{
-				console.log('Records will be filtered with the following parameters');
-//				console.log( (completeQuery.length ? completeQuery : params) );
-			}
 
 			if (keys.length)
 			{
@@ -157,6 +152,57 @@ module.exports =
 		catch(error)
 		{
 			console.error('ERROR ---> databaseDriver.read');
+			throw(error);
+		}
+
+		return deferred.promise;
+	},
+
+	/**
+	 * Function responsible for reading and then modifying data within a database from the same transaction.
+	 *
+	 * @param {String} collectionName - the name of the collection from which to read data
+	 * @param {Object} updateInstructions - the instructions that will be used to update the data after the read is made
+	 * @param {Object} [params] - the parameters that will be used to filter the data
+	 * @param {Object} [sortCriteria] - the instructions that will be used to sort the result set
+	 *
+	 * @returns {Array<Object>} - the set of processed records which satisfy the query
+	 *
+	 * @author kinsho
+	 */
+	readThenModify: function(collectionName, updateInstructions, params, sortCriteria)
+	{
+		var collection,
+			results,
+			deferred = _Q.defer();
+
+		params = params || {};
+		sortCriteria = sortCriteria || {};
+
+		// Note that yielding will not be used here, given that the function that necessitates the need for
+		// generator stoppage in the first place is a function that is dynamically created at run-time. A clean
+		// transformation into a generator-friendly function is not possible, unfortunately
+		try
+		{
+			// Connect to the database and fetch the results
+			collection = db.collection(collectionName);
+
+			// Log the query about to be executed
+			console.log('About to do a simultaneous read and update on records from ' + collectionName);
+			results = collection.findAndModify(params, sortCriteria, updateInstructions).then(function(results)
+			{
+				if ( !(results.ok) )
+				{
+					deferred.reject();
+				}
+
+				console.log('Just performed a simultaneous read and update on at least one record in the ' + collectionName + ' collection');
+				deferred.resolve(results.value);
+			});
+		}
+		catch(error)
+		{
+			console.error('ERROR ---> databaseDriver.readThenModify');
 			throw(error);
 		}
 

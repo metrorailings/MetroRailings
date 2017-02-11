@@ -144,7 +144,7 @@
 
 #invoiceFooter
 {
-	@extend %tabularRegularText;
+	@extend %tabularHeaderText;
 
 	display: flex;
 	align-items: center;

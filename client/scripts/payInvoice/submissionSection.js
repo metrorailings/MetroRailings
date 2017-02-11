@@ -27,7 +27,8 @@ var _submitButton = document.getElementById(SUBMIT_BUTTON);
  */
 function submit()
 {
-	var data;
+	var order = window.MetroRailings.order,
+		data;
 
 	if (vm.isFormSubmissible)
 	{
@@ -45,25 +46,33 @@ function submit()
 			cvc: vm.ccSecurityCode
 		}, (status, token) =>
 		{
-			axios.toggleLoadingVeil();
-
 			if (status === 200)
 			{
 				// Organize the data that will need to be sent over the wire
 				data =
 				{
-					customerName: vm.customerName,
-					customerAreaCode: vm.areaCode,
-					customerPhoneOne: vm.phoneOne,
-					customerPhoneTwo: vm.phoneTwo,
-					customerEmail: vm.customerEmail,
-					customerAddress: vm.customerAddress,
-					customerAptSuiteNumber: vm.customerAptSuiteNumber,
-					customerCity: vm.customerCity,
-					customerState: vm.customerState,
-					customerZipCode: vm.customerZipCode,
-					ccToken: token.id
+					type: order.type,
+					color: order.color,
+					style: order.style,
+					length: order.length,
+					ccToken: token.id,
+
+					customer:
+					{
+						name: vm.customerName,
+						address: vm.customerAddress,
+						areaCode: vm.areaCode,
+						phoneOne: vm.phoneOne,
+						phoneTwo: vm.phoneTwo,
+						email: vm.customerEmail,
+						aptSuiteNumber: vm.customerAptSuiteNumber,
+						city: vm.customerCity,
+						state: vm.customerState,
+						zipCode: vm.customerZipCode,
+					}
 				};
+
+				axios.toggleLoadingVeil();
 
 				// Save the data
 				axios.post(SAVE_ORDER_URL, data, true).then(() =>
@@ -76,6 +85,7 @@ function submit()
 			}
 			else
 			{
+				axios.toggleLoadingVeil();
 				notifier.showSpecializedServerError(CREDIT_CARD_INVALID_MESSAGE);
 			}
 		});

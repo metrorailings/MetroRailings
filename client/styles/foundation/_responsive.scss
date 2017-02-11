@@ -96,13 +96,28 @@ $DEVICE_WIDTHS:
 }
 
 /*
- * Mix-in is responsible for enforcing CSS stylings only on viewports where the height is longer than the width
+ * Mix-in is responsible for enforcing CSS stylings only on mobile devices that are currently displaying content
+ * in portrait mode
  *
  * @author kinsho
  */
-@mixin portraitOnly()
+@mixin portraitMobileOnly()
 {
-	@media only screen and (orientation: portrait)
+	@media only screen and (max-device-width: map-get($DEVICE_WIDTHS, tabletMax)) and (orientation: portrait)
+	{
+		@content;
+	}
+}
+
+/*
+ * Mix-in is responsible for enforcing CSS stylings only on mobile devices that are currently displaying content
+ * in landscape mode
+ *
+ * @author kinsho
+ */
+@mixin landscapeMobileOnly()
+{
+	@media only screen and (max-device-width: map-get($DEVICE_WIDTHS, tabletMax)) and (orientation: landscape)
 	{
 		@content;
 	}

@@ -1,0 +1,53 @@
+<table id='header'>
+    <tr>
+        <th>Your order has been confirmed, {{customer.firstName}}</th>
+    </tr>
+    <tr>
+        <td>
+            We will be calling you shortly at ({{customer.areaCode}}){{customer.phoneOne}}-{{customer.phoneTwo}} in
+            order to schedule an appointment so that we can visit the address where you want to install railings and
+            confirm the measurements you have given us. Once again, thank you for ordering railings with us!
+        </td>
+    </tr>
+</table>
+
+<table id='orderRecap'>
+    <tr>
+        <th>Order Details</th>
+        <th>Installation Address</th>
+    </tr>
+    <tr>
+        <td>
+            <table id='orderDetails'>
+                <tr>
+                    <td class='plainLabel'>Type</td>
+                    <td class='infoCell'>{{#capitalize type}}{{/capitalize}}</td>
+                </tr>
+				<tr>
+					<td class='plainLabel'>Length</td>
+					<td class='infoCell'>{{length}}</td>
+				</tr>
+				<tr>
+					<td class='plainLabel'>Style</td>
+					<td class='infoCell'>{{#capitalize style}}{{/capitalize}}</td>
+				</tr>
+				<tr>
+					<td class='plainLabel'>Color</td>
+					<td class='infoCell'>{{#capitalize color}}{{/capitalize}}</td>
+				</tr>
+            </table>
+        </td>
+
+        <td>
+            <table id='installationAddress'>
+                <tr>
+                    <td>{{customer.address}}</td>
+                    {{#if customer.aptSuiteNumber }}
+						<td>{{customer.aptSuiteNumber}}</td>
+                    {{/if}}
+                    <td>{{customer.city}}, {{customer.state}} {{customer.zipCode}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

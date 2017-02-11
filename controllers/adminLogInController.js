@@ -15,13 +15,13 @@ var _Q = require('q'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
-	DAO = global.OwlStakes.require('data/DAO/adminLoginDAO');
+	DAO = global.OwlStakes.require('data/DAO/userDAO');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'adminLogIn',
 
-	COOKIE_ADMIN_INFO = 'owl';
+	ORDERS_PAGE_URL = '/orders';
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
@@ -37,8 +37,14 @@ module.exports =
 	 */
 	init: _Q.async(function* (params, cookie)
 	{
-		var populatedPageTemplate,
-			cookieData = cookieManager.parseCookie(cookie || '');
+		var populatedPageTemplate;
+
+		if (yield DAO.verifyAdminCookie(cookie))
+		{
+			console.log('Redirecting the admin to the orders page...');
+
+			return yield controllerHelper.renderRedirectView(ORDERS_PAGE_URL);
+		}
 
 		console.log('Loading the admin log in page...');
 
@@ -55,7 +61,8 @@ module.exports =
 	{
 		console.log('Going to try to log an admin into the system...');
 
-		var validationModel = logInModel();
+		var validationModel = logInModel(),
+			userCookie;
 
 		// Populate the validation model
 		objectHelper.cloneObject(params, validationModel);
@@ -63,12 +70,20 @@ module.exports =
 		// Verify that the model is valid before proceeding
 		if (validatorUtility.checkModel(validationModel))
 		{
-			if (yield DAO.checkCredentials(params.username, params.password))
+			if (yield DAO.checkAdminCredentials(params.username, params.password))
 			{
+				// Generate the cookie we will be using to keep the admin logged in
+				userCookie = cookieManager.generateAdminCookie(params.username, params.password, params.rememberMe);
+
+				// Store the cookie in the database so that it can be verified repeatedly as the admin navigates around
+				// restricted parts of the site
+				yield DAO.storeAdminCookie(params.username, userCookie);
+
+				// Return a successful response and ensure that the user cookie is included in the response as well
 				return {
 					statusCode: responseCodes.OK,
 					data: {},
-					cookie: cookieManager.generateAdminCookie(params.username, params.password, params.rememberMe)
+					cookie: userCookie
 				};
 			}
 		}

@@ -5,11 +5,12 @@
 @import '../foundation/loader';
 @import '../foundation/general';
 @import '../foundation/form';
-@import '../foundation/gallery';
+@import '../foundation/animations';
+@import '../foundation/scrollDownLabel';
 
 /* ----------------------- STYLES ----------------------------- */
 
-#personalInfoSection, #addressSection, #ccSection, #submissionSection
+#personalInfoSection, #agreementSection, #addressSection, #ccSection, #submissionSection
 {
 	border-top:
 	{
@@ -33,5 +34,18 @@
 	{
 		top: 20px;
 		bottom: 20px;
+	}
+}
+
+#orderForm
+{
+	@include transitionSettings($property: all, $duration: 0.7s);
+
+	max-height: 0px;
+	overflow: none;
+
+	&.reveal
+	{
+		max-height: 10000px;
 	}
 }

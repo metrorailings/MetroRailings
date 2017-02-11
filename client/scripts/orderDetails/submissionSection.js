@@ -17,6 +17,7 @@ var SUBMIT_BUTTON = 'saveChangesButton',
 	CHARGE_CONFIRMATION = "We will be <b>charging $::charge</b> to the customer's credit card. Are you sure you want to do this?",
 	CHARGE_PLACEHOLDER = '::charge',
 
+	ORDERS_PAGE_URL = '/orders',
 	SAVE_ORDER_URL = 'orderDetails/saveChanges';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -33,22 +34,51 @@ var _submitButton = document.getElementById(SUBMIT_BUTTON);
  */
 function _submitChanges()
 {
-	// Organize the data that will need to be sent over the wire
-	var data =
+	var numOfChangesMade,
+		data = {};
+
+	// Calculate the number of changes made to see if we should justify a connection to the server being made
+	numOfChangesMade = document.getElementsByClassName(TAG_ICON_CLASS + ' ' + REVEAL_CLASS).length;
+
+	// If no changes were made, take the user back to the orders page without even making a call to the server
+	if ( !(numOfChangesMade) )
 	{
+		window.location.href = ORDERS_PAGE_URL;
+		return;
+	}
+
+	// Otherwise, process to organize the data that will be sent over the wire
+	data =
+	{
+		_id: vm._id,
+		status: vm.status,
+		notes: vm.notes,
+		type: vm.type,
+		style: vm.style,
+		color: vm.color,
+		length: vm.length,
+		orderTotal: vm.orderTotal,
+		customer:
+		{
+			areaCode: vm.areaCode,
+			phoneOne: vm.phoneOne,
+			phoneTwo: vm.phoneTwo,
+			email: vm.email,
+			address: vm.address,
+			aptSuiteNo: vm.aptSuiteNo,
+			city: vm.city,
+			state: vm.state,
+			zipCode: vm.zipCode
+		}
 	};
 
-	// Save the data
-console.log("SAVED!");
-/**
 	axios.post(SAVE_ORDER_URL, data, true).then(() =>
 	{
-		console.log('SAVED!');
+		window.location.href = ORDERS_PAGE_URL;
 	}, () =>
 	{
 		notifier.showGenericServerError();
 	});
-*/
 }
 
 // ----------------- LISTENERS ---------------------------

@@ -2,17 +2,19 @@
 
     <div id='stateFilter'>
         <span class='filterHeader'>Status:</span>
-        <span>All</span>
-        <span>Open</span>
-		<span>Production</span>
-		<span>Install</span>
-		<span>Closed</span>
+        <span class='statusFilter' data-value=''>All</span>
+        <span class='statusFilter' data-value='open'>Open</span>
+        <span class='statusFilter' data-value='consult'>Consult</span>
+		<span class='statusFilter' data-value='production'>Production</span>
+		<span class='statusFilter' data-value='install'>Install</span>
+		<span class='statusFilter' data-value='closed'>Closed</span>
+        <span class='statusFilter' data-value='cancelled'>Cancelled</span>
     </div>
 
     <div id='searchFilter'>
         <span class='filterHeader'>Search:</span>
         <span class='inputTextIcon'>
-            <input id='searchFilterText' type='text' placeholder="Search by a customer's name, a location, order details, etc.">
+            <input id='searchFilterTextfield' type='text' placeholder="Search by any keyword....">
             <i id='resetSearch' class='fa fa-times-circle'></i>
         </span>
     </div>

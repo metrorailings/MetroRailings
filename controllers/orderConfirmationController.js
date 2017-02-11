@@ -5,7 +5,11 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _Q = require('q'),
+
+	config = global.OwlStakes.require('config/config'),
+
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies');
 
@@ -30,7 +34,7 @@ module.exports =
 	init: _Q.async(function* (params, cookie)
 	{
 		var populatedPageTemplate,
-			cookieData = cookieManager.parse(cookie || ''),
+			cookieData = cookieManager.parseCookie(cookie || ''),
 			customerData = cookieData[COOKIE_CUSTOMER_INFO],
 			pageData = {};
 
@@ -44,7 +48,8 @@ module.exports =
 		{
 			phoneNumber: '(' + customerData.areaCode + ') ' + customerData.phoneOne + '-' + customerData.phoneTwo,
 			email: customerData.email,
-			orderNumber: customerData.orderNumber
+			orderNumber: customerData.orderNumber,
+			supportPhoneNumber : config.SUPPORT_PHONE_NUMBER
 		};
 
 		// Now render the page template

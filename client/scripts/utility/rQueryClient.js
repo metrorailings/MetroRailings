@@ -33,6 +33,31 @@ var rQueryClient =
 	},
 
 	/**
+	 * Function that finds the closest ancestor of an element that contains a given class
+	 *
+	 * @param {HTMLElement} el - the element from which to begin the search
+	 * @param {String} tagName - the class name that will guide the search for the closest ancestor
+	 *
+	 * @returns {HTMLElement} - the closest ancestor (of the passed element) that contains the class
+	 *
+	 * @author kinsho
+	 */
+	closestElementByClass: function(el, className)
+	{
+		var parent = el.parentNode;
+
+		while (parent)
+		{
+			if (parent.classList.contains(className))
+			{
+				return parent;
+			}
+
+			parent = parent.parentNode;
+		}
+	},
+
+	/**
 	 * Function that takes a set of related checkboxes and toggles their values depending on which one of the checkboxes
 	 * is to be selected
 	 *
@@ -155,6 +180,34 @@ var rQueryClient =
 
 		// The view model has successfully passed validation testing
 		return true;
+	},
+
+	/**
+	 * Function that capitalizes the first letter of whatever string is passed to it
+	 *
+	 * @param {String} str - the string whose first letter is to be capitalized
+	 *
+	 * @returns {String} - the capitalized string that was passed into the function
+	 */
+	capitalize: function (str)
+	{
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+
+	/**
+	 * Function that checks whether a particular string begins with a specific set of characters
+	 *
+	 * @param {String} str - the string which to inspect
+	 * @param {String} phrase - the set of characters for which we will check for at the very beginning of the
+	 * 		passed string
+	 *
+	 * @returns {boolean} - a value indicating whether the passed string begins with the passed phrase
+	 *
+	 * @author kinsho
+	 */
+	beginsWith: function (str, phrase)
+	{
+		return(str.indexOf(phrase) === 0);
 	}
 };
 

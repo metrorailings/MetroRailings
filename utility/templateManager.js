@@ -14,7 +14,8 @@ var _Q = require('Q'),
 
 var UTILITY_FOLDER = 'utility',
 	GALLERY_TEMPLATE = 'gallery',
-	CONFIRMATION_MODAL_TEMPLATE = 'confirmationModal';
+	CONFIRMATION_MODAL_TEMPLATE = 'confirmationModal',
+	SCROLL_DOWN_TEMPLATE = 'scrollDownLabel';
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
@@ -38,6 +39,11 @@ _Handlebars.registerPartial('gallery', fileManager.fetchTemplateSync(UTILITY_FOL
  * The template for the confirmation modal
  */
 _Handlebars.registerPartial('confirmationModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, CONFIRMATION_MODAL_TEMPLATE));
+
+/**
+ * The template for the scroll down signifier
+ */
+_Handlebars.registerPartial('scrollDownLabel', fileManager.fetchTemplateSync(UTILITY_FOLDER, SCROLL_DOWN_TEMPLATE));
 
 // ----------------- GENERIC HELPERS --------------------------
 

@@ -2,15 +2,21 @@
 
 var _Q = require('q'),
 	_Handlebars = require('Handlebars'),
-	_request = require('request'),
+
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
-	confirmedOrderModel = global.OwlStakes.require('validators/payInvoice/submittedOrder'),
+	cookieManager = global.OwlStakes.require('utility/cookies'),
+
+	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
+
+	orderModel = global.OwlStakes.require('validators/payInvoice/order'),
+	customerModel = global.OwlStakes.require('validators/payInvoice/customer'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
-	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
-	cookieManager = global.OwlStakes.require('utility/cookies');
+
+	pricingStructure = global.OwlStakes.require('shared/pricingStructure'),
+	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -20,20 +26,16 @@ var CONTROLLER_FOLDER = 'payInvoice',
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
 
 	CUSTOM_STYLE_KEYWORD = 'custom',
-	COST_PER_FOOT_OF_RAILING = '60',
 
 	PARTIALS =
 	{
 		INVOICE_SECTION: 'invoiceSection',
+		AGREEMENT_SECTION: 'agreement',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
 		ADDRESS_SECTION: 'addressSection',
 		CC_SECTION: 'ccSection',
 		SUBMISSION_SECTION: 'submissionSection'
-	},
-
-	CC_BIN_LIST_URL = 'http://www.binlist.net/json/::ccNumber',
-
-	CC_NUMBER_PLACEHOLDER = '::ccNumber';
+	};
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
@@ -45,6 +47,11 @@ var CONTROLLER_FOLDER = 'payInvoice',
  * The template for the invoice that lists out all the aspects of the order for which the user will be charged
  */
 _Handlebars.registerPartial('railingsInvoice', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INVOICE_SECTION));
+
+/**
+ * The template for the terms of agreement
+ */
+_Handlebars.registerPartial('termsOfAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT_SECTION));
 
 /**
  * The template gathers information about the customer that we will be using to contact him or her
@@ -97,10 +104,9 @@ module.exports =
 		orderData.isCustomOrder = (orderData.style === CUSTOM_STYLE_KEYWORD);
 
 		// Calculate the total price of the order
-		orderData.totalPrice = (orderData.length * COST_PER_FOOT_OF_RAILING).toFixed(2);
-		orderData.totalPrice = Math.max(orderData.totalPrice, 600.00);
+		orderData.totalPrice = pricingStructure.calculateOrderTotal(orderData.length);
 
-		// Populate some years that can then be populated into the expiration year dropdown
+		// Find some years that can be placed into the expiration year dropdown as selectable options
 		for (i = currentYear; i <= currentYear + 10; i++)
 		{
 			expirationYears.push(i);
@@ -116,54 +122,31 @@ module.exports =
 		// Now render the page template
 		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
+		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
 	}),
 
-	/**
-	 * Action function that returns information determining whether a credit card number is acceptable
-	 *
-	 * @param {Object} params -
-	 * 		{
-	 * 			ccNumber {String} : the credit card number to validate
-	 * 		}
-	 *
-	 * @returns {Object || boolean} - either an object containing information about the credit card in context
-	 * 		or a false boolean value indicating nothing meaningful was returned from the binList service
-	 *
-	 * @author kinsho
-	 */
-	validateCreditCard: function(params)
-	{
-		console.log('Going to validate the following credit card number ----> ' + params.ccNumber);
-
-		var deferred = _Q.defer();
-
-		_request.get(CC_BIN_LIST_URL.replace(CC_NUMBER_PLACEHOLDER, params.ccNumber), (error, response) =>
-		{
-			// Return credit card data for successful responses or return a simple 'false' value should there be any
-			// other type of response returned
-			deferred.resolve((response.statusCode === 200 ? JSON.stringify(response.body) : JSON.stringify(false)));
-		});
-
-		return deferred.promise;
-	},
-
-	saveConfirmedOrder: function(params)
+	saveConfirmedOrder: _Q.async(function* (params)
 	{
 		console.log('Saving a newly minted order into the system...');
 
-		var validationModel = confirmedOrderModel();
+		var orderValidationModel = orderModel(),
+			customerValidationModel = customerModel();
 
-		// Populate the validation model
-		objectHelper.cloneObject(params, validationModel);
+		// Populate the customer validation model
+		objectHelper.cloneObject(params.customer, customerValidationModel);
 
-		// Verify that the model is valid before proceeding
-		if (validatorUtility.checkModel(validationModel))
+		// Populate the order validation model
+		objectHelper.cloneObject(params, orderValidationModel);
+
+		// Verify that both models are valid before proceeding
+		if (validatorUtility.checkModel(customerValidationModel) && validatorUtility.checkModel(orderValidationModel))
 		{
-			// @TODO: Send data to database
-			// @TODO: Get confirmation number
+			// Save the order into the database
+			yield DAO.saveNewOrder(params);
+
 			// @TODO: Send e-mail to customer
 
+			// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
 			return {
 				statusCode: responseCodes.OK,
 				data: {},
@@ -171,11 +154,11 @@ module.exports =
 				// Set up this cookie so that we can render some needed data into the order confirmation page
 				cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
 				{
-					areaCode: params.areaCode,
-					phoneOne: params.phoneOne,
-					phoneTwo: params.phoneTwo,
-					email: params.customerEmail,
-					orderNumber: 1234 // @TODO: Set actual order number here
+					areaCode: customerValidationModel.areaCode,
+					phoneOne: customerValidationModel.phoneOne,
+					phoneTwo: customerValidationModel.phoneTwo,
+					email: customerValidationModel.customerEmail,
+					orderNumber: orderValidationModel._id
 				})
 			};
 		}
@@ -183,5 +166,5 @@ module.exports =
 		return {
 			statusCode: responseCodes.BAD_REQUEST
 		};
-	}
+	})
 }

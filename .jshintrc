@@ -74,6 +74,7 @@
 		process: false,
 		d3: false,
 		Handlebars: false,
-		System: false
+		System: false,
+		Event: false
 	}
 }

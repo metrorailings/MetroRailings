@@ -11,9 +11,11 @@ var _Q = require('q'),
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var BASE_TEMPLATE_FILE = 'base',
+	REDIRECT_TEMPLATE_FILE = 'redirect',
 
 	HBARS_STYLESHEET_FILES = 'cssFiles',
 	HBARS_CONTENT_HTML = 'content',
+	HBARS_REDIRECT_URL = 'redirectURL',
 
 	HBARS_BOOTSTRAPPED_DATA = 'initialData',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
@@ -54,5 +56,24 @@ module.exports =
 		data[HBARS_CURRENT_YEAR] = new Date().getFullYear();
 
 		return yield templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
+	}),
+
+	/**
+	 * Basic function responsible for populating a template that immediate redirects the user to another page
+	 *
+	 * @param {String} redirectURL - the URL to reroute the user towards
+	 *
+	 * @param {String} - a fully populated string of HTML
+	 *
+	 * @author kinsho
+	 */
+	renderRedirectView: _Q.async(function* (redirectURL)
+	{
+		var data = {};
+
+		// Populate the redirect URL into the script that will immediately be executed when the page loads
+		data[HBARS_REDIRECT_URL] = redirectURL;
+
+		return yield templateManager.populateTemplate(data, '', REDIRECT_TEMPLATE_FILE);
 	})
 };

@@ -7,30 +7,7 @@
 @import '../foundation/form';
 @import '../foundation/gallery';
 @import '../foundation/responsive';
-
-/* ----------------------- ANIMATIONS ----------------------------- */
-
-// The animation responsible for keeping the arrows moving downward on the scroll down notifier
-@include keyframes($name: movingDown)
-{
-	0%
-	{
-		opacity: 0.0;
-		top: -5px;
-	}
-
-	10%
-	{
-		opacity: 1.0;
-		top: 0px;
-	}
-
-	100%
-	{
-		opacity: 1.0;
-		top: 40px;
-	}
-}
+@import '../foundation/scrollDownLabel';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -118,97 +95,8 @@
 .headlineQuestion
 {
 	@extend %majorText;
-}
 
-#scrollDownLabel
-{
-	@include transitionSettings($property: all, $duration: 0.25s);
-	@extend %fixedButtonText;
-
-	border:
-	{
-		style: solid;
-		width: 1px;
-		color: map-get($COLORS, blackTheme);
-
-		top-right-radius: 15px;
-		top-left-radius: 15px;
-	}
-
-	padding:
-	{
-		top: 5px;
-		bottom: 5px;
-	}
-
-	position: fixed;
-
-	height: 25px;
-	width: 250px;
-	z-index: 1000;
-
-	background-color: map-get($COLORS, darkBlueTheme);
-	cursor: pointer;
-
-	@include desktopOnly()
-	{
-		@include shiftTransition($x: -50%);
-
-		border:
-		{
-			top-right-radius: 15px;
-			top-left-radius: 15px;
-		}
-
-		top: 101%;
-		left: 50%;
-	}
-
-	@include mobileOnly()
-	{
-		border:
-		{
-			top-left-radius: 15px;
-			bottom-left-radius: 15px;
-		}
-
-		top: calc(100% - 25px);
-		left: 101%;
-	}
-
-	&.reveal
-	{
-		@include desktopOnly()
-		{
-			top: calc(100% - 35px);
-		}
-
-		@include mobileOnly()
-		{
-			left: calc(100% - 240px);
-		}
-	}
-
-	& > i
-	{
-		position: relative;
-
-		padding:
-		{
-			left: 15px;
-			right: 15px;
-		}
-
-		&:first-of-type
-		{
-			@include animationSettings($keyframeSet: movingDown, $duration: 2.5s, $timing: linear, $iterations: infinite);
-		}
-
-		&:last-of-type
-		{
-			@include animationSettings($keyframeSet: movingDown, $duration: 2.5s, $timing: linear, $iterations: infinite);
-		}
-	}
+	margin-bottom: 5px;
 }
 
 footer

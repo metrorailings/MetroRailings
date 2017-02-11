@@ -1,0 +1,24 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../email/email';
+
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#emailContent
+{
+	font-family: Cardo, Raleway, Times New Roman, Arial, sans-serif;
+}
+
+#header
+{
+	padding:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
+
+	font-size: 18px;
+}

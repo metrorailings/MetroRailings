@@ -1,0 +1,60 @@
+{{#if areThereOrders }}
+
+    {{#each orders}}
+        <div>
+        </div>
+
+		<div class='orderBlock'>
+
+            <div class='orderHeader'>
+                <span class='orderCell'><span class='orderLabel'>ORDER ID: </span> {{ this._id }}</span>
+                <span class='orderCell'><span class='orderLabel'>ORDER DATE: </span> {{#formatDate this.createDate }}{{/formatDate}}</span>
+            </div>
+
+			<div class='orderGrouping orderStatusSection'>
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Order Status</span>
+                    <span class='orderCell'>
+                        <p>{{#status_text this.status}}{{/status_text}}</p>
+                    </span>
+                </span>
+			</div>
+
+			<div class='orderGrouping'>
+                <span class='orderInfoSection'>
+                    <span class='orderIDCell'>
+                        <span>Order # {{ this._id }}</span>
+                        <span>Order Date{{ this.createDate }}</span>
+                    </span>
+                </span>
+
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Railings Details</span>
+                    <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
+                    <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
+                    <span class='orderCell'><span class='orderLabel'>Style:</span> {{#capitalize style }}{{/capitalize }}</span>
+                    <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize color }}{{/capitalize }}</span>
+                </span>
+
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Your Contact Information</span>
+                    <span class='orderCell'>{{ customer.name }}</span>
+                    <span class='orderCell'>{{ customer.email }}</span>
+                    <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+                </span>
+
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Installation Address</span>
+                    <span class='orderCell'>{{ customer.address }}</span>
+                    <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
+                </span>
+			</div>
+
+		</div>
+    {{/each}}
+
+{{else}}
+
+    No orders were found that matched the search keywords you gave us. Please double-check the search terms you gave us and try again.
+
+{{/if}}

@@ -1,0 +1,57 @@
+{{#each orders}}
+	<div id='order-{{ this._id }}' class='orderBlock'>
+
+		<div class='orderGrouping'>
+            <span class='orderInfoSection'>
+                <span class='orderIDCell'>
+                    {{ this._id }}
+                </span>
+                <span class='orderStatusCell'>
+                    {{#capitalize this.status }}{{/capitalize }}
+                </span>
+            </span>
+
+            <span class='orderInfoSection'>
+                <span class='orderInfoSectionHeader'>Customer Info</span>
+                <span class='orderCell'>{{ customer.name }}</span>
+                <span class='orderCell'>{{ customer.address }}</span>
+                <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
+                <span class='orderCell'>{{ customer.email }}</span>
+                <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+            </span>
+
+            <span class='orderInfoSection'>
+                <span class='orderInfoSectionHeader'>Order Details</span>
+                <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
+                <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
+                <span class='orderCell'><span class='orderLabel'>Style:</span> {{#capitalize style }}{{/capitalize }}</span>
+                <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize color }}{{/capitalize }}</span>
+            </span>
+		</div>
+
+        {{#if this.notes }}
+			<div class='orderGrouping orderNotesSection'>
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Notes</span>
+                    <span class='orderCell'>{{ note }}</span>
+                </span>
+			</div>
+        {{/if}}
+
+		<div class='orderGrouping orderNavButtons'>
+            {{#can_status_be_updated this.status}}
+                <span class='orderCell'>
+                    <span class='nextStatusLink' data-id={{ this._id }}>
+                        <i class='fa fa-level-up'></i>Move to {{#next_state this.status}}{{/next_state}}
+                    </span>
+                </span>
+            {{/can_status_be_updated}}
+            <span class='orderCell orderDetailsButtonContainer'>
+                <button class='orderDetailsButton' data-id={{ this._id }}>
+                    Edit<i class='fa fa-arrow-circle-o-right'></i>
+                </button>
+            </span>
+		</div>
+
+	</div>
+{{/each}}

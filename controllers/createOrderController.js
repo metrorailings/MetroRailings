@@ -2,13 +2,13 @@
 
 var _Q = require('q'),
 	_Handlebars = require('Handlebars'),
+
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
-	objectHelper = global.OwlStakes.require('utility/objectHelper'),
-	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
-	newOrderModel = global.OwlStakes.require('validators/createOrder/newOrder'),
+
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
+
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -88,7 +88,8 @@ module.exports =
 	}),
 
 	/**
-	 * Action method designed to validate and register a new order into the system
+	 * Action method designed to load specific order details into a cookie before proceeding to the next step of the
+	 * order process
 	 *
 	 * @param {Object} params - the parameters
 	 *
@@ -96,32 +97,14 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	saveOrder: _Q.async(function* (params)
+	saveOrder: function (params)
 	{
-		console.log('Saving a new order into the system...');
+		console.log('Wrapped the order into a cookie before proceeding to the last step of the order process...');
 
-		var validationModel = newOrderModel();
-
-		// Populate the validation model
-		objectHelper.cloneObject(params, validationModel);
-
-		// Verify that the model is valid before proceeding
-		if (validatorUtility.checkModel(validationModel))
-		{
-			// @TODO: Send data to database
-			// @TODO: Get order number
-
-			return {
-				statusCode: responseCodes.OK,
-				data: {},
-				cookie: cookieManager.formCookie(COOKIE_ORDER_NAME, params) // @TODO: Load order number into the cookie
-			};
-		}
-		else
-		{
-			return {
-				statusCode: responseCodes.BAD_REQUEST
-			};
-		}
-	})
+		return {
+			statusCode: responseCodes.OK,
+			data: {},
+			cookie: cookieManager.formCookie(COOKIE_ORDER_NAME, params)
+		};
+	}
 }

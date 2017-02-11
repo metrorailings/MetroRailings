@@ -4,23 +4,26 @@
 </div>
 
 <p>
-   Your order has been confirmed and saved into our database. We have e-mailed the order number to you.
+   Your order has been confirmed and one of our sales people will be reviewing the order soon. We have e-mailed the order details to you.
 </p>
 
-<div class='sectionHeadline'>Order Number: {{ orderNumber }}</div>
+<div id='orderInfo'>
+    <span>
+        <span class='bolded'>Your Order Number:</span> {{ orderNumber }}
+    </span>
+    <span>
+    	<span class='bolded'>Your Phone Number:</span> {{ phoneNumber }}
+    </span>
+    <span>
+	    <span class='bolded'>Your E-mail Address:</span> {{ email }}
+    </span>
+</div>
 
 <p>
-    It's very IMPORTANT that you double-check your contact information below. The next step is for us to reach
+    <span class='bolded'>It's very IMPORTANT that you double-check your contact information above.</span> The next step is for us to reach
     out to you and schedule an appointment where we can come by, verify your measurements, and discuss any other
     details relevant to your order prior to actually fulfilling the order.
 </p>
-
-<div id='contactInfo'>
-    <div>
-        <span>Phone Number: </span><span>{{ phoneNumber }}</span>
-		<span>E-mail Address: </span><span>{{ email }}</span>
-    </div>
-</div>
 
 <p>
     If any part of your contact information above is incorrect, please contact us immediately at
