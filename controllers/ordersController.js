@@ -66,7 +66,7 @@ module.exports =
 		// Render the page template
 		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
+		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {}, true);
 	}),
 
 	/**

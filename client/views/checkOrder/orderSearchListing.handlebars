@@ -6,27 +6,21 @@
 
 		<div class='orderBlock'>
 
-            <div class='orderHeader'>
-                <span class='orderCell'><span class='orderLabel'>ORDER ID: </span> {{ this._id }}</span>
-                <span class='orderCell'><span class='orderLabel'>ORDER DATE: </span> {{#formatDate this.createDate }}{{/formatDate}}</span>
+            <div class='orderGrouping'>
+                <span class='orderHeaderCell'><span class='orderHeaderLabel'>ORDER ID </span> {{ this._id }}</span>
+                <span class='orderHeaderCell'><span class='orderHeaderLabel'>ORDER DATE </span> {{#format_date this.createDate }}{{/format_date}}</span>
             </div>
 
 			<div class='orderGrouping orderStatusSection'>
                 <span class='orderInfoSection'>
-                    <span class='orderInfoSectionHeader'>Order Status</span>
                     <span class='orderCell'>
                         <p>{{#status_text this.status}}{{/status_text}}</p>
                     </span>
                 </span>
 			</div>
 
-			<div class='orderGrouping'>
-                <span class='orderInfoSection'>
-                    <span class='orderIDCell'>
-                        <span>Order # {{ this._id }}</span>
-                        <span>Order Date{{ this.createDate }}</span>
-                    </span>
-                </span>
+            <!-- Order Details (Desktop) -->
+			<div class='orderGrouping orderDataSection tabletUp'>
 
                 <span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>Railings Details</span>
@@ -41,14 +35,45 @@
                     <span class='orderCell'>{{ customer.name }}</span>
                     <span class='orderCell'>{{ customer.email }}</span>
                     <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+                    <span class='orderCell'>&nbsp;</span>
                 </span>
 
                 <span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>Installation Address</span>
                     <span class='orderCell'>{{ customer.address }}</span>
                     <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
+                    <span class='orderCell'>&nbsp;</span>
+                    <span class='orderCell'>&nbsp;</span>
                 </span>
 			</div>
+
+			<!-- Order Details (Phone) -->
+            <div class='orderGrouping phoneOnly'>
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Railings Details</span>
+                    <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
+                    <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
+                    <span class='orderCell'><span class='orderLabel'>Style:</span> {{#capitalize style }}{{/capitalize }}</span>
+                    <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize color }}{{/capitalize }}</span>
+                </span>
+            </div>
+
+			<div class='orderGrouping phoneOnly'>
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Your Contact Information</span>
+                    <span class='orderCell'>{{ customer.name }}</span>
+                    <span class='orderCell'>{{ customer.email }}</span>
+                    <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+                </span>
+            </div>
+
+            <div class='orderGrouping phoneOnly'>
+                <span class='orderInfoSection'>
+                    <span class='orderInfoSectionHeader'>Installation Address</span>
+                    <span class='orderCell'>{{ customer.address }}</span>
+                    <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
+                </span>
+            </div>
 
 		</div>
     {{/each}}

@@ -1,14 +1,16 @@
-<p id='instructionText'>
-	Over here, we can look and inspect all the orders in our system. Feel free to use the status and search filters below
-	to help you find certain orders quicker.
-</p>
+<div class='scrollableHorizontal'>
+	<p id='instructionText'>
+		Over here, we can look and inspect all the orders in our system. Feel free to use the status and search filters below
+		to help you find certain orders quicker.
+	</p>
 
-{{> orderFilter }}
+    {{> orderFilter }}
 
-<div id='orderListing'></div>
+	<div id='orderListing'></div>
 
-{{> confirmationModal }}
+    {{> confirmationModal }}
 
-<script id='orderListingTemplate' type='text/x-handlebars-template'>
-    {{{ orderListingTemplate }}}
-</script>
+	<script id='orderListingTemplate' type='text/x-handlebars-template'>
+        {{{ orderListingTemplate }}}
+	</script>
+</div>

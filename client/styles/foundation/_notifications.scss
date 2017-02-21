@@ -3,6 +3,7 @@
 @import '../foundation/colors';
 @import '../foundation/fonts';
 @import '../foundation/animations';
+@import '../foundation/responsive';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -24,61 +25,63 @@
 
 	background-color: map-get($COLORS, lightRedTheme);
 	position: fixed;
+	opacity: 0.0;
 
 	width: 100%;
-	height: 105px;
+	height: 140px;
 
-	@media only screen and (min-device-width: 1001px)
+	@include desktopOnly()
 	{
 		top: 100%;
 		left: 0%;
 	}
 
-	@media only screen and (max-device-width: 1000px)
+	@include mobileOnly()
 	{
-		top: calc(100% + 105px);
+		top: calc(100% - 135px);
 		left: 100%;
 	}
 
-	& > i
+	& > i:first-of-type
 	{
-		&:first-of-type
+		margin:
 		{
-			@extend %significantIcons;
-
-			color: map-get($COLORS, darkRedTheme);
-			width: 10%;
-
-			text-align: right;
-			margin-right: 25px;
+			left: 30px;
+			right: 25px;
 		}
 
-		&:last-of-type
-		{
-			font-size: 20px;
-
-			align-self: flex-start;
-			margin-top: 10px;
-
-			cursor: pointer;
-		}
-	}
-
-	& > span
-	{
-		width: 80%;
+		color: map-get($COLORS, darkRedTheme);
+		font-size: 48px;
 	}
 
 	&.reveal
 	{
-		@media only screen and (min-device-width: 1001px)
+		opacity: 1.0;
+
+		@include desktopOnly()
 		{
-			top: calc(100% - 100px);
+			top: calc(100% - 135px);
 		}
 
-		@media only screen and (max-device-width: 1000px)
+		@include mobileOnly()
 		{
 			left: 0%;
 		}
 	}
+}
+
+#userNotificationBarExit
+{
+	margin:
+	{
+		left: 25px;
+		right: 25px;
+		top: 10px;
+	}
+
+	font-size: 20px;
+
+	align-self: flex-start;
+
+	cursor: pointer;
 }

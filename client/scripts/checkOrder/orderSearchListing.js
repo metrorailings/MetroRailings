@@ -3,6 +3,7 @@
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 import statuses from 'shared/orderStatus';
+import dateUtility from 'shared/dateUtility';
 
 import vm from 'client/scripts/checkOrder/viewModel';
 
@@ -76,6 +77,23 @@ Handlebars.registerHelper('capitalize', function(str)
 Handlebars.registerHelper('status_text', function(status)
 {
 	return statuses.getVerboseStatusDescription(status);
+});
+
+/**
+ * Helper designed to format a given date into a format easily readable to the user
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('format_date', function(date)
+{
+	var dateObj = new Date(date),
+		month = dateUtility.ABBR_MONTHS[dateObj.getMonth()],
+		day = dateObj.getDate(),
+		ordinalSuffix = dateUtility.findOrdinalSuffix(day),
+		year = dateObj.getFullYear();
+
+	// Return the formatted date string
+	return month + ' ' + day + ordinalSuffix + ' ' + year;
 });
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------

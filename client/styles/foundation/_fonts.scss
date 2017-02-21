@@ -211,9 +211,15 @@ $FONTS:
 }
 
 /* --- Table stylings --- */
+
 %tabularHeaderText
 {
 	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Raleway);
+}
+
+%tabularSmallHeaderText
+{
+	@include basicFontSettings($weight: 700, $size: regularFontSize, $family: Raleway, $color: slateGrayTheme);
 }
 
 %tabularRegularText

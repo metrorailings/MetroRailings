@@ -8,7 +8,7 @@
 
 #ccSection > .sectionHeadline
 {
-	@include tabletUp()
+	@include desktopOnly()
 	{
 		margin-bottom: 40px;
 	}
@@ -16,7 +16,7 @@
 
 #creditCardNumberContainer
 {
-	@include tabletUp()
+	@include desktopOnly()
 	{
 		// Must flex this input container in order to properly align the credit card input field
 		// with the credit card icons that are placed right next to it
@@ -34,12 +34,12 @@
 {
 	text-align: left;
 
-	@include tabletUp()
+	@include desktopOnly()
 	{
 		margin-left: 25px;
 	}
 
-	@include phoneOnly()
+	@include mobileOnly()
 	{
 		margin-bottom: 20px;
 	}
@@ -69,7 +69,7 @@
 {
 	&:first-of-type
 	{
-		@include tabletUp()
+		@include desktopOnly()
 		{
 			width: 60%;
 		}
@@ -94,7 +94,7 @@
 // Keep in mind that these lengths are relative to the lengths of the container group that house these inputs
 #creditCardNumber
 {
-	@include tabletUp()
+	@include desktopOnly()
 	{
 		width: 50%;
 	}
@@ -107,12 +107,12 @@
 
 #securityCode
 {
-	@include tabletUp()
+	@include desktopOnly()
 	{
 		width: 100px;
 	}
 
-	@include phoneOnly()
+	@include mobileOnly()
 	{
 		width: 80px;
 	}

@@ -17,6 +17,7 @@ var BASE_TEMPLATE_FILE = 'base',
 	HBARS_CONTENT_HTML = 'content',
 	HBARS_REDIRECT_URL = 'redirectURL',
 
+	HBARS_IGNORE_SCALING = 'ignoreScaling',
 	HBARS_BOOTSTRAPPED_DATA = 'initialData',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
 	HBARS_CURRENT_YEAR = 'currentYear';
@@ -33,12 +34,13 @@ module.exports =
 	 * @param {String} directory - the modular name which can be used to pull resource files from
 	 * 		the file system
 	 * @param {Object} [bootData] - data to bootstrap into the page when it is initially loaded
+	 * @param {boolean} [ignoreScaling] - a flag indicating whether we should avoid doing any mobile scaling on the page
 	 *
 	 * @return {String} - a fully populated string of HTML
 	 *
 	 * @author kinsho
 	 */
-	renderInitialView: _Q.async(function* (content, directory, bootData)
+	renderInitialView: _Q.async(function* (content, directory, bootData, ignoreScaling)
 	{
 		var data = {};
 
@@ -54,6 +56,9 @@ module.exports =
 
 		// Load the current year into the view as well for copyright purposes
 		data[HBARS_CURRENT_YEAR] = new Date().getFullYear();
+
+		// Set a flag should we need to explicitly avoid any mobile scaling
+		data[HBARS_IGNORE_SCALING] = ignoreScaling;
 
 		return yield templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
 	}),

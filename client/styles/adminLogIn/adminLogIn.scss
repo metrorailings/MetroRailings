@@ -11,27 +11,58 @@
 	margin:
 	{
 		top: 20px;
-		bottom: 20px;
 	}
 
 	& > .formRow
 	{
-		width: 100%;
-		text-align: center;
-
-		& > .controlGrouping
+		margin:
 		{
-			margin:
+			left: 0px;
+			top: 0px;
+			bottom: 0px;
+		}
+
+		display: flex;
+		justify-content: center;
+
+		@include tabletUp()
+		{
+			padding:
 			{
-				left: auto;
-				right: auto;
 				top: 15px;
 				bottom: 15px;
 			}
-
-			display: flex;
-			align-items: center;
 		}
+	}
+}
+
+.fixedLabel
+{
+	width: 125px;
+}
+
+.controlGrouping
+{
+	display: flex;
+	align-items: center;
+
+	& > label
+	{
+		text-align: center;
+	}
+}
+
+#userName, #password
+{
+	@include phoneOnly()
+	{
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		width: 160px;
 	}
 }
 

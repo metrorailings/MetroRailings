@@ -26,31 +26,60 @@
 
 	& > .formRow
 	{
+		margin:
+		{
+			left: 0px;
+		}
+
 		display: flex;
 		justify-content: center;
-		align-items: center;
+
+		@include tabletUp()
+		{
+			align-items: center;
+		}
+
+		@include tabletOnly()
+		{
+			flex-wrap: wrap;
+		}
+
+		@include phoneOnly()
+		{
+			align-items: flex-start;
+		}
 	}
 }
 
 .controlGrouping
 {
-	border-right:
-	{
-		style: solid;
-		width: 2px;
-		color: map-get($COLORS, darkGrayTheme);
-	}
-
-	padding:
-	{
-		top: 20px;
-		bottom: 30px;
-	}
-
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	flex-direction: column;
+
+	@include tabletUp()
+	{
+		border-right:
+		{
+			style: solid;
+			width: 2px;
+			color: map-get($COLORS, darkGrayTheme);
+		}
+
+		padding:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		align-items: center;
+	}
+
+	@include phoneOnly()
+	{
+		margin-left: 25px;
+		align-items: flex-start;
+	}
 
 	& > label
 	{
@@ -59,7 +88,17 @@
 
 	&:nth-of-type(1)
 	{
-		width: 30%;
+		@include desktopOnly()
+		{
+			width: 30%;
+		}
+
+		@include tabletOnly()
+		{
+			width: calc(50% - 1px);
+
+			padding-bottom: 25px;
+		}
 
 		& > input
 		{
@@ -69,7 +108,18 @@
 
 	&:nth-of-type(2)
 	{
-		width: 30%;
+		@include desktopOnly()
+		{
+			width: 30%;
+		}
+
+		@include tabletOnly()
+		{
+			width: calc(50% - 1px);
+			padding-bottom: 25px;
+
+			border-right: none;
+		}
 
 		& > input
 		{
@@ -79,8 +129,26 @@
 
 	&:nth-of-type(3)
 	{
-		width: 40%;
-		border-right: none;
+		@include desktopOnly()
+		{
+			width: 40%;
+			border-right: none;
+		}
+
+		@include tabletOnly()
+		{
+			border-top:
+			{
+				style: solid;
+				width: 2px;
+				color: map-get($COLORS, darkGrayTheme);
+			}
+			border-right: none;
+
+			padding-top: 25px;
+
+			width: 100%;
+		}
 
 		& > input
 		{

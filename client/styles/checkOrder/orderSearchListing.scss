@@ -55,10 +55,21 @@
 	}
 
 	flex-direction: column;
-	width: 800px;
 
 	opacity: 1.0;
 	overflow: hidden;
+
+	box-shadow: 0px 8px 8px map-get($COLORS, darkGrayTheme);
+
+	@include desktopOnly()
+	{
+		width: 800px;
+	}
+
+	@include mobileOnly()
+	{
+		width: 80%;
+	}
 }
 
 .orderGrouping
@@ -70,10 +81,43 @@
 		color: map-get($COLORS, darkGrayTheme);
 	}
 
+	width: 100%;
+
 	flex-direction: row;
 
-	height: 230px;
-	width: 100%;
+	&:first-of-type
+	{
+		height: 50px;
+		padding-top: 10px;
+
+		background-color: map-get($COLORS, lightBlueTheme);
+	}
+
+	&:last-of-type
+	{
+		@include phoneOnly()
+		{
+			flex-direction: column;
+		}
+
+		border-bottom: none;
+	}
+
+	&.tabletUp
+	{
+		@include phoneOnly()
+		{
+			display: none;
+		}
+	}
+
+	&.phoneOnly
+	{
+		@include tabletUp()
+		{
+			display: none;
+		}
+	}
 }
 
 .orderInfoSection
@@ -81,16 +125,21 @@
 	flex-direction: column;
 	height: 100%;
 
+	@include phoneOnly()
+	{
+		width: 100%;
+	}
+
 	&:nth-of-type(1)
 	{
 		align-self: flex-start;
-		flex: 1;
+		flex: 2;
 	}
 
 	&:nth-of-type(2), &:nth-of-type(3)
 	{
 		justify-content: flex-start;
-		flex: 2;
+		flex: 3;
 	}
 
 	&:last-of-type > .orderInfoSectionHeader
@@ -99,41 +148,60 @@
 	}
 }
 
-.orderIDCell
+.orderHeaderCell
 {
 	@extend %significantText;
 
-	border-right:
-	{
-		style: solid;
-		width: 2px;
-		color: map-get($COLORS, darkGrayTheme);
-	}
-
 	width: 100%;
+	height: 100%;
 	flex: 1;
 
-	background-color: map-get($COLORS, lightBlueTheme);
+	padding-top: 5px;
+
+	&:first-of-type
+	{
+		text-align: left;
+		padding-left: 20px;
+	}
+
+	&:last-of-type
+	{
+		@include desktopOnly()
+		{
+			text-align: right;
+			padding-right: 20px;
+		}
+
+		@include mobileOnly()
+		{
+			display: none;
+		}
+	}
 }
 
 .orderInfoSectionHeader
 {
 	@extend %tabularHeaderText;
 
-	border:
+	border-bottom:
 	{
 		style: solid;
 		width: 2px;
 		color: map-get($COLORS, darkGrayTheme);
+	}
 
-		top: none;
-		left: none;
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
 	}
 
 	text-align: center;
 
 	width: 100%;
 	height: 30px;
+
+	flex: 1;
 
 	background-color: map-get($COLORS, lightBlueTheme);
 }
@@ -144,8 +212,8 @@
 
 	padding:
 	{
-		top: 5px;
-		bottom: 5px;
+		top: 10px;
+		bottom: 10px;
 		left: 10px;
 		right: 10px;
 	}
@@ -161,10 +229,47 @@
 	margin-right: 5px;
 }
 
+.orderHeaderLabel
+{
+	@extend %tabularSmallHeaderText;
+
+	margin-right: 5px;
+}
+
 .orderStatusSection
 {
-	& > .orderInfoSection
+	@include desktopOnly()
 	{
 		height: 150px;
+	}
+
+	@include tabletOnly()
+	{
+		height: 180px;
+	}
+
+	@include phoneOnly()
+	{
+		height: 200px;
+	}
+}
+
+.orderDataSection
+{
+	border-bottom: none;
+
+	& > .orderInfoSection
+	{
+		border-right:
+		{
+			style: solid;
+			width: 2px;
+			color: map-get($COLORS, darkGrayTheme);
+		}
+
+		&:last-of-type
+		{
+			border-right: none;
+		}
 	}
 }

@@ -7,7 +7,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 
         <!-- Mobile device scaling -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{#unless ignoreScaling}}
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{/unless}}
 
         <!-- Favicon -->
         <link rel="icon" href="favicon.ico">
