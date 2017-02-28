@@ -71,22 +71,14 @@
 {
 	margin:
 	{
-		left: 20px;
+		top: 20px;
+		bottom: 20px;
 	}
 
 	display: flex;
 	width: 100%;
 
-	@include tabletUp()
-	{
-		margin:
-		{
-			top: 20px;
-			bottom: 20px;
-		}
-	}
-
-	@include phoneOnly()
+	@include mobileOnly()
 	{
 		flex-direction: column;
 	}
@@ -94,15 +86,21 @@
 
 .controlGrouping
 {
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
 	display: flex;
 	flex-wrap: wrap;
 
-	@include phoneOnly()
+	@include mobileOnly()
 	{
 		margin:
 		{
-			top: 15px;
-			bottom: 15px;
+			top: 5px;
+			bottom: 5px;
 		}
 
 		flex-direction: column;
@@ -121,11 +119,6 @@
 
 		@include tabletUp()
 		{
-			margin:
-			{
-				left: 10px;
-				right: 10px;
-			}
 		}
 
 		&.required::after
