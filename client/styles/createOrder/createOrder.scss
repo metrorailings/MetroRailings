@@ -25,8 +25,13 @@
 {
 	@include transitionSettings($property: all, $duration: 0.75s);
 
-	max-height: 0px;
+	padding:
+	{
+		top: 0px;
+		bottom: 0px;
+	}
 
+	max-height: 0px;
 	overflow: hidden;
 
 	&.rollDownSection
@@ -96,7 +101,16 @@
 {
 	@extend %majorText;
 
-	margin-bottom: 5px;
+	margin:
+	{
+		bottom: 5px;
+	}
+
+	padding:
+	{
+		left: 10px;
+		right: 10px;
+	}
 }
 
 footer

@@ -36,71 +36,59 @@
 	{
 		flex-direction: column;
 	}
+}
 
-	& > span
+.pictureButtonContainer
+{
+	@extend %smallSignificantText;
+
+	@include mobileOnly()
 	{
-		&.pictureButtonContainer
+		flex-direction: column-reverse;
+
+		width: 100%;
+	}
+
+	@include desktopOnly()
+	{
+		width: 33%;
+	}
+
+	img
+	{
+		@include mobileOnly()
 		{
-			@extend %smallSignificantText;
-
-			@include mobileOnly()
-			{
-				flex-direction: column-reverse;
-			}
-
-			img
-			{
-				@include mobileOnly()
-				{
-					width: 125px;
-					height: 125px;
-				}
-
-				@include desktopOnly()
-				{
-					width: 175px;
-					height: 175px;
-				}
-			}
-
-			& > span:nth-of-type(1)
-			{
-				@include mobileOnly()
-				{
-					margin-top: 25px;
-					margin-bottom: 20px;
-				}
-
-				@include desktopOnly()
-				{
-					margin-right: 25px;
-				}
-			}
-
-			& > .pictureButton
-			{
-				margin:
-				{
-					top: 15px;
-					bottom: 15px;
-				}
-			}
+			width: 125px;
+			height: 125px;
 		}
 
-		// Widths only need to be specified for desktop and certain tablet environments
-		&:nth-of-type(1)
+		@include desktopOnly()
 		{
-			@include desktopOnly()
-			{
-				width: 32%;
-			}
+			width: 175px;
+			height: 175px;
 		}
-		&:nth-of-type(2)
+	}
+
+	& > span:nth-of-type(1)
+	{
+		@include mobileOnly()
 		{
-			@include desktopOnly()
-			{
-				width: 63%;
-			}
+			margin-top: 25px;
+			margin-bottom: 20px;
+		}
+
+		@include desktopOnly()
+		{
+			margin-right: 25px;
+		}
+	}
+
+	& > .pictureButton
+	{
+		margin:
+		{
+			top: 15px;
+			bottom: 15px;
 		}
 	}
 }
@@ -126,30 +114,24 @@
 			style: solid;
 			color: map-get($COLORS, lightGrayTheme);
 		}
+
+		width: 67%;
 	}
 
 	@include mobileOnly()
 	{
-		border-top:
-		{
-			width: 2px;
-			style: solid;
-			color: map-get($COLORS, lightGrayTheme);
-		}
+		width: 100%;
 	}
 
 	& > div
 	{
-		margin:
+		@include desktopOnly()
 		{
-			left: 10px;
-			right: 10px;
-		}
-
-		padding:
-		{
-			top: 10px;
-			bottom: 10px;
+			padding:
+			{
+				top: 10px;
+				bottom: 10px;
+			}
 		}
 
 		display: flex;
@@ -157,7 +139,27 @@
 		justify-content: center;
 
 		height: 135px;
-		width: 100%;
+		width: 80%;
+
+		@include mobileOnly()
+		{
+			border-top:
+			{
+				width: 2px;
+				style: solid;
+				color: map-get($COLORS, lightGrayTheme);
+			}
+
+			padding:
+			{
+				top: 15px;
+				bottom: 15px;
+				left: 10%;
+				right: 10%;
+			}
+
+			height: auto;
+		}
 	}
 }
 
@@ -169,8 +171,6 @@
 		style: solid;
 		color: map-get($COLORS, lightGrayTheme);
 	}
-
-	width: 80%;
 
 	& > img
 	{

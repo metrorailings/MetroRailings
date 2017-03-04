@@ -39,7 +39,7 @@
 			flex-direction: column-reverse;
 
 			height: 400px;
-			width: 49%;
+			width: 50%;
 		}
 
 		@include phoneOnly()
@@ -55,12 +55,12 @@
 		{
 			@include tabletUp()
 			{
-				margin-top: 25px;
+				margin-right: 25px;
 			}
 
 			@include phoneOnly()
 			{
-				margin-right: 25px;
+				margin-top: 25px;
 			}
 		}
 

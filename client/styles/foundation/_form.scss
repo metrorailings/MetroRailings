@@ -69,18 +69,15 @@
 
 .formRow
 {
-	margin:
+	@include desktopOnly()
 	{
-		top: 20px;
-		bottom: 20px;
-	}
+		margin:
+		{
+			top: 25px;
+			bottom: 25px;
+		}
 
-	display: flex;
-	width: 100%;
-
-	@include mobileOnly()
-	{
-		flex-direction: column;
+		display: flex;
 	}
 }
 
@@ -93,14 +90,14 @@
 	}
 
 	display: flex;
-	flex-wrap: wrap;
+	justify-content: flex-start;
 
 	@include mobileOnly()
 	{
 		margin:
 		{
-			top: 5px;
-			bottom: 5px;
+			top: 15px;
+			bottom: 15px;
 		}
 
 		flex-direction: column;
@@ -111,14 +108,17 @@
 		@extend %formLabelText;
 
 		text-align: left;
+		white-space: nowrap;
 
-		@include phoneOnly()
+		@include desktopOnly()
 		{
-			width: 100%;
+			margin-right: 10px;
 		}
 
-		@include tabletUp()
+		@include mobileOnly()
 		{
+			margin-bottom: 10px;
+			width: 100%;
 		}
 
 		&.required::after
@@ -126,22 +126,6 @@
 			content: '*';
 
 			margin-left: 3px;
-		}
-	}
-
-	& > input
-	{
-		@include phoneOnly()
-		{
-			width: 75%;
-		}
-	}
-
-	& > select
-	{
-		@include phoneOnly()
-		{
-			width: 75%;
 		}
 	}
 }
@@ -160,8 +144,14 @@
 
 	@include phoneOnly()
 	{
-		margin-top: 10px;
-		width: 75%;
+		margin:
+		{
+			top: 10px;
+			left: 10px;
+			right: 10px;
+		}
+
+		width: 100%;
 	}
 }
 

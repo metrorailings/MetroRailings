@@ -32,16 +32,12 @@
 
 #ccMerchantsAccepted
 {
-	text-align: left;
+	display: flex;
+	justify-content: flex-start;
 
 	@include desktopOnly()
 	{
 		margin-left: 25px;
-	}
-
-	@include mobileOnly()
-	{
-		margin-bottom: 20px;
 	}
 
 	& > i
@@ -97,6 +93,11 @@
 	@include desktopOnly()
 	{
 		width: 50%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 280px;
 	}
 }
 

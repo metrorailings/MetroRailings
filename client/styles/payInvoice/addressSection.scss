@@ -8,7 +8,7 @@
 {
 	@include desktopOnly()
 	{
-		width: 48%;
+		width: 50%;
 	}
 }
 
@@ -23,12 +23,12 @@
 
 		&:nth-of-type(2)
 		{
-			width: 25%;
+			width: 30%;
 		}
 
 		&:nth-of-type(3)
 		{
-			width: 25%;
+			width: 30%;
 		}
 	}
 }
@@ -39,7 +39,12 @@
 {
 	@include desktopOnly()
 	{
-		width: 35%;
+		width: 50%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 280px;
 	}
 }
 
@@ -47,7 +52,12 @@
 {
 	@include desktopOnly()
 	{
-		width: 25%;
+		width: 35%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 150px;
 	}
 }
 
@@ -57,6 +67,11 @@
 	{
 		width: 60%;
 	}
+
+	@include mobileOnly()
+	{
+		width: 280px;
+	}
 }
 
 #state
@@ -65,6 +80,11 @@
 	{
 		width: 60%;
 	}
+
+	@include mobileOnly()
+	{
+		width: 200px;
+	}
 }
 
 #addressZipCode
@@ -72,5 +92,10 @@
 	@include desktopOnly()
 	{
 		width: 50%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 200px;
 	}
 }

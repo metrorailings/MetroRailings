@@ -7,6 +7,7 @@
 @import '../foundation/notifications';
 @import '../foundation/loader';
 @import '../foundation/form';
+@import '../foundation/tooltip';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -109,6 +110,12 @@ p
 	}
 }
 
+// Generic list stylings
+li
+{
+	line-height: 28px;
+}
+
 // Classes that guarantee spacing around HTML elements incorporated within paragraph elements
 .spaceBeforeAndAfter
 {
@@ -168,12 +175,6 @@ p
 .navButton
 {
 	@include button($bgColor: darkBlueTheme);
-}
-
-// Styling for tooltips
-.hint::after, .hint::before
-{
-	@extend %tooltipText;
 }
 
 // Styling to allow horizontal scrollbars

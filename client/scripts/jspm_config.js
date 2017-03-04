@@ -1,19 +1,18 @@
 System.config({
-  "baseURL": "/",
-  "transpiler": "traceur",
-  "paths": {
-    "*": "*.js",
-    "github:*": "client/scripts/jspm_packages/github/*.js",
-    "npm:*": "client/scripts/jspm_packages/npm/*.js"
-  }
-});
+  baseURL: "/",
+  defaultJSExtensions: true,
+  transpiler: "traceur",
+  paths: {
+    "github:*": "client/scripts/jspm_packages/github/*",
+    "npm:*": "client/scripts/jspm_packages/npm/*"
+  },
 
-System.config({
-  "map": {
+  map: {
     "axios": "npm:axios@0.13.1",
     "es6-promise": "npm:es6-promise@3.2.1",
     "handlebars": "npm:handlebars@4.0.6",
     "smoothScroll": "github:cferdinandi/smooth-scroll@10.1.0",
+    "tooltip": "github:HubSpot/tooltip@1.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -153,9 +152,6 @@ System.config({
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:inherits@2.0.3": {
-      "util": "github:jspm/nodelibs-util@0.1.0"
-    },
     "npm:is-buffer@1.1.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
@@ -181,11 +177,6 @@ System.config({
     },
     "npm:process-nextick-args@1.0.7": {
       "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:process@0.11.6": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
     "npm:process@0.11.9": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -284,4 +275,3 @@ System.config({
     }
   }
 });
-

@@ -4,9 +4,10 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-import rQueryClient from 'client/scripts/utility/rQueryClient';
 import formValidator from 'utility/formValidator';
+import rQueryClient from 'client/scripts/utility/rQueryClient';
 import scrollDown from 'client/scripts/utility/scrollDown';
+import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -21,9 +22,7 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 	BARS_CHECKBOX = 'barsCheckbox',
 	COLLARS_CHECKBOX = 'collarsCheckbox',
 	CUSTOM_STYLING_CHECKBOX = 'customStylingCheckbox',
-	SUBMIT_BUTTON_CONTAINER = 'orderSubmissionButtonContainer',
 	SUBMIT_BUTTON = 'orderSubmissionButton',
-	SCROLL_DOWN_ALERT = 'scrollDownLabel',
 
 	LENGTH_SECTION = 'lengthSection',
 	STYLE_SECTION = 'styleSection',
@@ -73,9 +72,7 @@ var _validationSet = new Set(),
 	_lengthField = document.getElementById(RAILINGS_LENGTH_TEXTFIELD),
 	_styleCheckboxes = [document.getElementById(BARS_CHECKBOX), document.getElementById(COLLARS_CHECKBOX), document.getElementById(CUSTOM_STYLING_CHECKBOX)],
 	_selectedArrows = document.getElementsByClassName(SELECTED_ARROW_CLASS),
-	_submitButton = document.getElementById(SUBMIT_BUTTON),
-	_submitButtonContainer = document.getElementById(SUBMIT_BUTTON_CONTAINER),
-	_scrollDownAlert = document.getElementById(SCROLL_DOWN_ALERT);
+	_submitButton = document.getElementById(SUBMIT_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -464,8 +461,17 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	{
 		this.__isFormSubmissible = value;
 
+		// Set the look of the button depending on whether there are any errors on the form
 		_submitButton.disabled = !(value);
-		_submitButtonContainer.dataset.hint = (value ? '' : SUBMISSION_INSTRUCTIONS);
+
+		if (!(value))
+		{
+			tooltipManager.changeTextInTooltip(_submitButton, SUBMISSION_INSTRUCTIONS);
+		}
+		else
+		{
+			tooltipManager.closeTooltip(_submitButton, true);
+		}
 	}
 });
 

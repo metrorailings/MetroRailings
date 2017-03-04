@@ -1,6 +1,12 @@
+// ----------------- EXTERNAL MODULES --------------------------
+
+import tooltipManager from 'client/scripts/utility/tooltip';
+
 // ----------------- ENUM/CONSTANTS -----------------------------
 
 var ERROR_CLASS = 'error';
+
+// ----------------- PRIVATE VARIABLES -----------------------------
 
 // ----------------- MODULE -----------------------------
 
@@ -93,24 +99,29 @@ var rQueryClient =
 	 */
 	updateValidationOnField: function (showError, formField, errorMessage, validationSet, hintElement)
 	{
-		// If a hint element is not provided, just assume the hint element has been placed right next to the form
-		// field in context
-		hintElement = hintElement || formField.nextElementSibling;
+		var tooltipExists = false;
 
-		if (showError)
+		// If a hint element is not provided, just assume the form field itself is the element to attach a tooltip toward
+		hintElement = hintElement || formField;
+
+		tooltipExists = tooltipManager.doesTooltipExist(hintElement);
+
+		// If no tooltip has been instantiated before for the form field in context and one is needed, then instantiate one
+		// Keep in mind that we only need to flag something as an error once for an erroneous value
+		if (showError && !(tooltipExists))
 		{
 			formField.classList.add(ERROR_CLASS);
-			hintElement.dataset.hint = errorMessage;
+			tooltipManager.setUpTooltip(hintElement, errorMessage, true, tooltipManager.TOOLTIP_OPEN_ON.ALWAYS);
 
 			if (validationSet)
 			{
 				validationSet.add(formField.id);
 			}
 		}
-		else
+		else if (!(showError) && tooltipExists)
 		{
 			formField.classList.remove(ERROR_CLASS);
-			hintElement.dataset.hint = '';
+			tooltipManager.closeTooltip(hintElement, true);
 
 			if (validationSet)
 			{

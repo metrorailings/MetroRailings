@@ -21,7 +21,7 @@
 
 	& > span
 	{
-		width: 49%;
+		width: 50%;
 
 		& > input
 		{
@@ -36,8 +36,8 @@
 
 	border:
 	{
-		width: 1px;
-		color: map-get($COLORS, whiteTheme);
+		width: 0px;
+		color: map-get($COLORS, darkGrayTheme);
 		style: solid;
 		radius: 10px;
 	}
@@ -51,6 +51,6 @@
 	&.reveal
 	{
 		max-height: 1000px;
-		border-color: map-get($COLORS, darkGrayTheme);
+		border-width: 1px;
 	}
 }

@@ -183,28 +183,41 @@
 
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
 
 		height: 100%;
 
 		&:first-of-type
 		{
 			border-left: none;
+			justify-content: flex-end;
 
-			width: 80%;
 			padding-right: 20px;
+
+			@include tabletUp()
+			{
+				width: 75%;
+			}
+
+			@include phoneOnly()
+			{
+				width: 60%;
+			}
 		}
 
 		&:last-of-type
 		{
-			margin:
+			border-right: none;
+			justify-content: center;
+
+			@include tabletUp()
 			{
-				right: auto;
+				width: 25%;
 			}
 
-			border-right: none;
-
-			width: 20%;
+			@include phoneOnly()
+			{
+				width: 40%;
+			}
 		}
 	}
 }

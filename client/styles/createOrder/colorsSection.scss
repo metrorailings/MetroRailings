@@ -37,6 +37,7 @@
 		}
 
 		width: 30%;
+		padding-right: 20px;
 	}
 
 	@include mobileOnly()
@@ -49,7 +50,8 @@
 		}
 
 		width: 100%;
-		margin-bottom: 30px;
+		padding-bottom: 20px;
+		margin-bottom: 10px;
 	}
 }
 
@@ -109,9 +111,14 @@
 			width: 40%;
 		}
 
-		@include mobileOnly()
+		@include tabletOnly()
 		{
-			width: 20%;
+			width: 22%;
+		}
+
+		@include phoneOnly()
+		{
+			width: 25%;
 		}
 	}
 }
@@ -135,6 +142,11 @@
 	color: map-get($COLORS, noticeTheme);
 
 	cursor: default;
+
+	@include mobileOnly()
+	{
+		font-size: 48px;
+	}
 
 	&.reveal
 	{

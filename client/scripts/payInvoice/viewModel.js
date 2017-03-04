@@ -4,10 +4,12 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-import formValidator from 'utility/formValidator';
 import ccAllowed from 'shared/ccAllowed';
+
+import formValidator from 'utility/formValidator';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import scrollDown from 'client/scripts/utility/scrollDown';
+import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -34,7 +36,6 @@ var ORDER_FORM = 'orderForm',
 	CREDIT_CARD_HINT = 'ccNumberHint',
 
 	SUBMISSION_BUTTON = 'orderSubmissionButton',
-	SUBMISSION_BUTTON_CONTAINER = 'orderSubmissionButtonContainer',
 
 	SHADE_CLASS = 'shade',
 	REVEAL_CLASS = 'reveal',
@@ -91,8 +92,7 @@ var _validationSet = new Set(),
 	_expirationMonthField = document.getElementById(EXPIRATION_MONTH_DROPDOWN),
 	_expirationYearField = document.getElementById(EXPIRATION_YEAR_DROPDOWN),
 
-	_submissionButton = document.getElementById(SUBMISSION_BUTTON),
-	_submissionButtonContainer = document.getElementById(SUBMISSION_BUTTON_CONTAINER);
+	_submissionButton = document.getElementById(SUBMISSION_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -523,8 +523,15 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 
 		// Set the look of the button depending on whether there are any errors on the form
 		_submissionButton.disabled = !(value);
-		_submissionButtonContainer.dataset.hint = ( value ? '' :
-			(_validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD));
+
+		if (!(value))
+		{
+			tooltipManager.changeTextInTooltip(_submissionButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+		}
+		else
+		{
+			tooltipManager.closeTooltip(_submissionButton, true);
+		}
 	}
 });
 

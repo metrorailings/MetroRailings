@@ -27,7 +27,8 @@
       "axios": "npm:axios@^0.13.1",
       "es6-promise": "npm:es6-promise@^3.2.1",
       "handlebars": "npm:handlebars@^4.0.6",
-      "smoothScroll": "github:cferdinandi/smooth-scroll@^10.1.0"
+      "smoothScroll": "github:cferdinandi/smooth-scroll@^10.1.0",
+      "tooltip": "github:HubSpot/tooltip@^1.2.0"
     },
     "devDependencies": {
       "traceur": "github:jmcriffey/bower-traceur@0.0.88",

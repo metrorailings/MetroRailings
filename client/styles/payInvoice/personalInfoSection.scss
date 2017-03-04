@@ -37,12 +37,23 @@
 
 	& > input
 	{
-		width: 100px;
-
 		margin:
 		{
 			left: 10px;
 			right: 10px;
+		}
+
+		@include tabletUp()
+		{
+			width: 100px;
+		}
+
+		@include phoneOnly()
+		{
+			width: 70px;
+
+			// Shrink the font size so that we can safely fit all three phone input fields on the same row
+			font-size: 14px;
 		}
 	}
 
