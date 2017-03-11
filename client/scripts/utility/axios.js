@@ -6,6 +6,7 @@
 
 import _axios from 'axios';
 import _promise from 'es6-promise';
+import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -72,6 +73,10 @@ var axiosModule =
 	{
 		return new Promise((resolve, reject) =>
 		{
+			// Hide any outstanding notifications
+			notifier.hideErrorBar();
+			notifier.hideSuccessBar();
+
 			if (showLoader)
 			{
 				_toggleLoadingVeil();
@@ -115,6 +120,10 @@ var axiosModule =
 	{
 		return new Promise((resolve, reject) =>
 		{
+			// Hide any outstanding notifications
+			notifier.hideErrorBar();
+			notifier.hideSuccessBar();
+
 			if (showLoader)
 			{
 				_toggleLoadingVeil();

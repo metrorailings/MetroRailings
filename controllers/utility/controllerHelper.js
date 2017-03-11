@@ -5,6 +5,9 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _Q = require('q'),
+
+	config = global.OwlStakes.require('config/config'),
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
@@ -12,6 +15,9 @@ var _Q = require('q'),
 
 var BASE_TEMPLATE_FILE = 'base',
 	REDIRECT_TEMPLATE_FILE = 'redirect',
+
+	BOOTLEG_STRIPE_KEY = 'stripeKey',
+	BOOTLEG_SUPPORT_NUMBER = 'supportNumber',
 
 	HBARS_STYLESHEET_FILES = 'cssFiles',
 	HBARS_CONTENT_HTML = 'content',
@@ -43,6 +49,11 @@ module.exports =
 	renderInitialView: _Q.async(function* (content, directory, bootData, ignoreScaling)
 	{
 		var data = {};
+
+		// Augment the bootlegged data with other data that needs to be loaded for all pages
+		bootData = bootData || {};
+		bootData[BOOTLEG_STRIPE_KEY] = config.STRIPE_KEY;
+		bootData[BOOTLEG_SUPPORT_NUMBER] = config.SUPPORT_PHONE_NUMBER;
 
 		// Page-specific data to load into browser memory upon page load
 		data[HBARS_BOOTSTRAPPED_DATA] = JSON.stringify(bootData || {});

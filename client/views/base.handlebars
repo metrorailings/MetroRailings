@@ -34,6 +34,16 @@
         <script type='text/javascript' src="https://cdn.jsdelivr.net/drop/1.4.2/js/drop.min.js"></script>
 		<script type='text/javascript' src="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip.min.js"></script>
 
+        <!-- Load the reCAPTCHA library -->
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!--
+        Just for testing purposes...
+
+        <script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/tether@1.4.0/js/tether.js"></script>
+		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/drop@1.4.2/dist/js/drop.js"></script>
+		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/tooltip@1.2.0/dist/js/tooltip.js"></script>
+-->
     </head>
 
     <body>
@@ -64,13 +74,21 @@
         </footer>
 
         <!-- User notification bar -->
-        <div id='userNotificationBar'>
+        <div id='userNotificationBar' class='infoBar'>
             <i class='fa fa-exclamation-circle'></i>
             <span id='userNotificationMessage'>
                 <!-- Notification message will go here -->
             </span>
-            <i id='userNotificationBarExit' class='fa fa-times'></i>
+            <i id='userNotificationBarExit' class='fa fa-times infoBarExit'></i>
         </div>
+		<!-- User success bar -->
+		<div id='userSuccessBar' class='infoBar'>
+			<i class='fa fa-check-circle'></i>
+            <span id='userSuccessMessage'>
+                <!-- Success message will go here -->
+            </span>
+			<i id='userSuccessBarExit' class='fa fa-times infoBarExit'></i>
+		</div>
 
         <!-- Data to be bootstrapped when the page loads and before the other scripts are loaded -->
         <script>

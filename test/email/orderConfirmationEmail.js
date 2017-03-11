@@ -14,10 +14,12 @@ var _Q = require('q'),
 
 var ORDER =
 	{
+		_id: 1337,
 		type: 'stairs',
 		length: 15,
 		style: 'collars',
 		color: 'black',
+		orderTotal: 1200.00,
 		customer:
 		{
 			name: 'Rickin Shah',

@@ -207,7 +207,6 @@ Object.defineProperty(viewModel, 'areaCode',
 	{
 		this.__areaCode = value;
 
-		// Test whether we have a valid area code here
 		var isInvalid = ((value.length && value.length !== 3)) ||
 						!(formValidator.isNumeric(value));
 
@@ -232,7 +231,6 @@ Object.defineProperty(viewModel, 'phoneOne',
 	{
 		this.__phoneOne = value;
 
-		// Test whether we have a valid area code here
 		var isInvalid = ((value.length && value.length !== 3)) ||
 			!(formValidator.isNumeric(value));
 
@@ -257,7 +255,6 @@ Object.defineProperty(viewModel, 'phoneTwo',
 	{
 		this.__phoneTwo = value;
 
-		// Test whether we have a valid area code here
 		var isInvalid = ((value.length && value.length !== 4)) ||
 			!(formValidator.isNumeric(value));
 
@@ -521,11 +518,10 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	{
 		this.__isFormSubmissible = value;
 
-		// Set the look of the button depending on whether there are any errors on the form
-		_submissionButton.disabled = !(value);
 
 		if (!(value))
 		{
+			// Set up a tooltip indicating why the button is disabled
 			tooltipManager.changeTextInTooltip(_submissionButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
 		}
 		else

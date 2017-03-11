@@ -32,9 +32,9 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 
 	RAILINGS_TYPE_FILLER_CLASS = 'railingsTypeFillIn',
 	ROLL_DOWN_SECTION_CLASS = 'rollDownSection',
-	REVEAL_CLASS = 'reveal',
 	SELECTED_ARROW_CLASS = 'selectedArrow',
 	OVERFLOW_FIX_CLASS = 'overflowFix',
+	REVEAL_CLASS = 'reveal',
 
 	STAIRS_TYPE = 'stairs',
 	DECK_TYPE = 'deck',
@@ -461,12 +461,10 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	{
 		this.__isFormSubmissible = value;
 
-		// Set the look of the button depending on whether there are any errors on the form
-		_submitButton.disabled = !(value);
-
 		if (!(value))
 		{
-			tooltipManager.changeTextInTooltip(_submitButton, SUBMISSION_INSTRUCTIONS);
+			// Set up a tooltip indicating why the button is disabled
+			tooltipManager.setTooltip(_submitButton, SUBMISSION_INSTRUCTIONS);
 		}
 		else
 		{

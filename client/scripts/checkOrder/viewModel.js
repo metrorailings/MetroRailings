@@ -5,6 +5,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
+import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -12,7 +13,6 @@ var ORDER_ID_TEXTFIELD = 'orderId',
 	EMAIL_TEXTFIELD = 'orderEmail',
 	PHONE_TWO_TEXTFIELD = 'orderPhoneTwo',
 
-	ORDER_SEARCH_BUTTON_CONTAINER = 'orderSearchButtonContainer',
 	ORDER_SEARCH_BUTTON = 'orderSearchButton',
 
 	SEARCH_BUTTON_DISABLED_MESSAGE = 'You must fill out at least two of the search fields above before we can conduct an order search.';
@@ -24,7 +24,6 @@ var _orderIdField = document.getElementById(ORDER_ID_TEXTFIELD),
 	_emailField = document.getElementById(EMAIL_TEXTFIELD),
 	_phoneTwoField = document.getElementById(PHONE_TWO_TEXTFIELD),
 
-	_orderSearchButtonContainer = document.getElementById(ORDER_SEARCH_BUTTON_CONTAINER),
 	_orderSearchButton = document.getElementById(ORDER_SEARCH_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
@@ -140,10 +139,18 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	{
 		this.__isFormSubmissible = value;
 
-		// Figure out whether the button to submit the form should be disabled
-		// Also ensure that a tooltip is there to alert the user as to why the button may be disabled
-		_orderSearchButton.disabled = !(value);
-		_orderSearchButtonContainer.dataset.hint = (value ? '' : SEARCH_BUTTON_DISABLED_MESSAGE);
+		if ( !(value) )
+		{
+			// Ensure that a tooltip is there to alert the user as to why the button is disabled
+			if ( !(tooltipManager.doesTooltipExist(_orderSearchButton)) )
+			{
+				tooltipManager.setTooltip(_orderSearchButton, SEARCH_BUTTON_DISABLED_MESSAGE);
+			}
+		}
+		else
+		{
+			tooltipManager.closeTooltip(_orderSearchButton, true);
+		}
 	}
 });
 

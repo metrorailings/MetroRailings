@@ -76,6 +76,7 @@
 		Handlebars: false,
 		Tooltip: false,
 		System: false,
-		Event: false
+		Event: false,
+		grecaptcha: false
 	}
 }

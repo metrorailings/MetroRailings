@@ -7,18 +7,125 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#emailContent
+#orderRecap
 {
-	font-family: Cardo, Raleway, Times New Roman, Arial, sans-serif;
-}
-
-#header
-{
-	padding:
+	margin:
 	{
-		top: 25px;
-		bottom: 25px;
+		left: auto;
+		right: auto;
 	}
 
-	font-size: 18px;
+	width: 80%;
+
+	& > tr
+	{
+		& > th:not(.spacerCell)
+		{
+			border:
+			{
+				width: 1px;
+				color: map-get($COLORS, blackTheme);
+				style: solid;
+			}
+
+			padding: 10px;
+			text-align: center;
+
+			background-color: map-get($COLORS, lightBlueTheme);
+		}
+
+		& > td:not(.spacerCell)
+		{
+			border:
+			{
+				width: 1px;
+				color: map-get($COLORS, blackTheme);
+				style: solid;
+			}
+
+			width: 37.5%;
+
+			text-align: center;
+		}
+	}
+}
+
+.spacerCell
+{
+	border: none;
+	background-color: map-get($COLORS, whiteTheme);
+	width: 100px;
+}
+
+#orderDetails
+{
+	width: 100%;
+
+	& > tr > td
+	{
+		padding:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		width: 50%;
+		text-align: center;
+	}
+}
+
+#installationAddress
+{
+	width: 100%;
+
+	& > tr > td
+	{
+		font:
+		{
+			size: 15px;
+			weight: 400;
+		}
+
+		width: 100%;
+		text-align: center;
+	}
+}
+
+#totalPriceRow
+{
+	background-color: map-get($COLORS, lightGrayTheme);
+
+	& > td
+	{
+		padding:
+		{
+			top: 20px;
+			bottom: 20px;
+		}
+
+		border:
+		{
+			color: map-get($COLORS, blackTheme);
+			width: 1px;
+			style: solid;
+		}
+
+		&:nth-of-type(1)
+		{
+			border:
+			{
+				left: none;
+				bottom: none;
+			}
+		}
+
+		&:nth-of-type(2)
+		{
+			border:
+			{
+				right: none;
+				bottom: none;
+			}
+		}
+	}
 }

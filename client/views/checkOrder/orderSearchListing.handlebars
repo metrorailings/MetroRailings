@@ -1,9 +1,6 @@
 {{#if areThereOrders }}
 
     {{#each orders}}
-        <div>
-        </div>
-
 		<div class='orderBlock'>
 
             <div class='orderGrouping'>
@@ -20,7 +17,7 @@
 			</div>
 
             <!-- Order Details (Desktop) -->
-			<div class='orderGrouping orderDataSection tabletUp'>
+			<div class='orderGrouping orderDataSection'>
 
                 <span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>Railings Details</span>
@@ -35,45 +32,17 @@
                     <span class='orderCell'>{{ customer.name }}</span>
                     <span class='orderCell'>{{ customer.email }}</span>
                     <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
-                    <span class='orderCell'>&nbsp;</span>
+                    <span class='orderCell phoneOnly'>&nbsp;</span>
                 </span>
 
                 <span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>Installation Address</span>
                     <span class='orderCell'>{{ customer.address }}</span>
                     <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
-                    <span class='orderCell'>&nbsp;</span>
-                    <span class='orderCell'>&nbsp;</span>
+                    <span class='orderCell phoneOnly'>&nbsp;</span>
+                    <span class='orderCell phoneOnly'>&nbsp;</span>
                 </span>
 			</div>
-
-			<!-- Order Details (Phone) -->
-            <div class='orderGrouping phoneOnly'>
-                <span class='orderInfoSection'>
-                    <span class='orderInfoSectionHeader'>Railings Details</span>
-                    <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
-                    <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
-                    <span class='orderCell'><span class='orderLabel'>Style:</span> {{#capitalize style }}{{/capitalize }}</span>
-                    <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize color }}{{/capitalize }}</span>
-                </span>
-            </div>
-
-			<div class='orderGrouping phoneOnly'>
-                <span class='orderInfoSection'>
-                    <span class='orderInfoSectionHeader'>Your Contact Information</span>
-                    <span class='orderCell'>{{ customer.name }}</span>
-                    <span class='orderCell'>{{ customer.email }}</span>
-                    <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
-                </span>
-            </div>
-
-            <div class='orderGrouping phoneOnly'>
-                <span class='orderInfoSection'>
-                    <span class='orderInfoSectionHeader'>Installation Address</span>
-                    <span class='orderCell'>{{ customer.address }}</span>
-                    <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
-                </span>
-            </div>
 
 		</div>
     {{/each}}

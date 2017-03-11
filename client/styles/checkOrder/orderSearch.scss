@@ -47,119 +47,125 @@
 		@include phoneOnly()
 		{
 			align-items: flex-start;
-		}
-	}
-}
-
-.controlGrouping
-{
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-
-	@include tabletUp()
-	{
-		border-right:
-		{
-			style: solid;
-			width: 2px;
-			color: map-get($COLORS, darkGrayTheme);
+			flex-direction: column;
 		}
 
-		padding:
+		& > .controlGrouping
 		{
-			top: 10px;
-			bottom: 10px;
-		}
-
-		align-items: center;
-	}
-
-	@include phoneOnly()
-	{
-		margin-left: 25px;
-		align-items: flex-start;
-	}
-
-	& > label
-	{
-		margin-bottom: 10px;
-	}
-
-	&:nth-of-type(1)
-	{
-		@include desktopOnly()
-		{
-			width: 30%;
-		}
-
-		@include tabletOnly()
-		{
-			width: calc(50% - 1px);
-
-			padding-bottom: 25px;
-		}
-
-		& > input
-		{
-			width: 100px;
-		}
-	}
-
-	&:nth-of-type(2)
-	{
-		@include desktopOnly()
-		{
-			width: 30%;
-		}
-
-		@include tabletOnly()
-		{
-			width: calc(50% - 1px);
-			padding-bottom: 25px;
-
-			border-right: none;
-		}
-
-		& > input
-		{
-			width: 250px;
-		}
-	}
-
-	&:nth-of-type(3)
-	{
-		@include desktopOnly()
-		{
-			width: 40%;
-			border-right: none;
-		}
-
-		@include tabletOnly()
-		{
-			border-top:
+			padding:
 			{
-				style: solid;
-				width: 2px;
-				color: map-get($COLORS, darkGrayTheme);
+				top: 15px;
+				bottom: 15px;
 			}
-			border-right: none;
 
-			padding-top: 25px;
+			margin: 0px;
 
-			width: 100%;
-		}
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
 
-		& > input
-		{
-			width: 100px;
+			@include tabletUp()
+			{
+				border-right:
+				{
+					style: solid;
+					width: 2px;
+					color: map-get($COLORS, darkGrayTheme);
+				}
+
+				align-items: center;
+			}
+
+			@include phoneOnly()
+			{
+				margin-left: 25px;
+				align-items: flex-start;
+			}
+
+			& > label.searchLabel
+			{
+				margin-bottom: 10px;
+				white-space: normal;
+
+				@include tabletUp()
+				{
+					text-align: center;
+				}
+			}
+
+			&:nth-of-type(1)
+			{
+				@include desktopOnly()
+				{
+					width: 30%;
+				}
+
+				@include tabletOnly()
+				{
+					width: calc(50% - 1px);
+				}
+
+				& > input
+				{
+					width: 100px;
+				}
+			}
+
+			&:nth-of-type(2)
+			{
+				@include desktopOnly()
+				{
+					width: 30%;
+				}
+
+				@include tabletOnly()
+				{
+					width: calc(50% - 1px);
+
+					border-right: none;
+				}
+
+				& > input
+				{
+					width: 250px;
+				}
+			}
+
+			&:nth-of-type(3)
+			{
+				@include desktopOnly()
+				{
+					width: 40%;
+					border-right: none;
+				}
+
+				@include tabletOnly()
+				{
+					border-top:
+					{
+						style: solid;
+						width: 2px;
+						color: map-get($COLORS, darkGrayTheme);
+					}
+					border-right: none;
+
+					margin:
+					{
+						left: 50px;
+						right: 50px;
+						bottom: 35px;
+					}
+
+					width: 100%;
+				}
+
+				& > input
+				{
+					width: 100px;
+				}
+			}
 		}
 	}
-}
-
-#orderSearchButtonContainer
-{
-	margin-top: 25px;
 }
 
 #orderSearchButton
@@ -168,6 +174,7 @@
 
 	margin:
 	{
+		top: 25px;
 		left: auto;
 		right: auto;
 	}

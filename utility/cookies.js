@@ -7,11 +7,7 @@ var _cookieManager = require('cookie'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var ADMIN_COOKIE = 'owl',
-
-	ENCRYPTION_ALGORITHM = 'aes192',
-	ENCRYPTION_INPUT_TYPE = 'utf8',
-	ENCRYPTION_OUTPUT_TYPE = 'hex';
+var ADMIN_COOKIE = 'owl';
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
@@ -63,7 +59,7 @@ module.exports =
 	generateAdminCookie: function(username, password, rememberForAMonth)
 	{
 		var textToHash = username + '||' + password + '||' + new Date().getTime(),
-			cipher = _crypto.createCipher(ENCRYPTION_ALGORITHM, config.HASH_KEY),
+			cipher = _crypto.createCipher(config.ENCRYPTION_ALGORITHM, config.HASH_KEY),
 			cookieSerializerOptions =
 			{
 				path: '/'
@@ -71,8 +67,8 @@ module.exports =
 			cipherText;
 
 		// Encrypt whatever text needs to be encoded
-		cipherText = cipher.update(textToHash, ENCRYPTION_INPUT_TYPE, ENCRYPTION_OUTPUT_TYPE);
-		cipherText += cipher.final(ENCRYPTION_OUTPUT_TYPE);
+		cipherText = cipher.update(textToHash, config.ENCRYPTION_INPUT_TYPE, config.ENCRYPTION_OUTPUT_TYPE);
+		cipherText += cipher.final(config.ENCRYPTION_OUTPUT_TYPE);
 
 		// If the flag is set, ensure that this cookie remains in effect for a month
 		if (rememberForAMonth)
@@ -96,15 +92,15 @@ module.exports =
 	retrieveAdminCookie: function(cookie)
 	{
 		var cookieData = _cookieManager.parse(cookie || '')[ADMIN_COOKIE],
-			decipher = _crypto.createDecipher(ENCRYPTION_ALGORITHM, config.HASH_KEY),
+			decipher = _crypto.createDecipher(config.ENCRYPTION_ALGORITHM, config.HASH_KEY),
 			decipheredText,
 			adminData;
 
 		if (cookieData)
 		{
 			// Decrypt the cookie to see if we have meaningful data
-			decipheredText = decipher.update(cookieData, ENCRYPTION_OUTPUT_TYPE, ENCRYPTION_INPUT_TYPE);
-			decipheredText += decipher.final(ENCRYPTION_INPUT_TYPE);
+			decipheredText = decipher.update(cookieData, config.ENCRYPTION_OUTPUT_TYPE, config.ENCRYPTION_INPUT_TYPE);
+			decipheredText += decipher.final(config.ENCRYPTION_INPUT_TYPE);
 			adminData = decipheredText.split('||');
 
 			if (adminData.length === 3)

@@ -9,9 +9,11 @@ System.config({
 
   map: {
     "axios": "npm:axios@0.13.1",
+    "drop": "github:HubSpot/drop@1.4.2",
     "es6-promise": "npm:es6-promise@3.2.1",
     "handlebars": "npm:handlebars@4.0.6",
     "smoothScroll": "github:cferdinandi/smooth-scroll@10.1.0",
+    "tether": "github:HubSpot/tether@1.4.0",
     "tooltip": "github:HubSpot/tooltip@1.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",

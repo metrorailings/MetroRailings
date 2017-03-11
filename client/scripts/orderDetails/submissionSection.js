@@ -97,7 +97,7 @@ function submit()
 	if (vm.isFormValid)
 	{
 		// Hide any service-related error that may have popped up before
-		notifier.hideServerError();
+		notifier.hideErrorBar();
 
 		// If there are changes, show a confirmation modal confirming whether the admin wants to
 		// really save the changes he made to the order

@@ -111,7 +111,7 @@ var rQueryClient =
 		if (showError && !(tooltipExists))
 		{
 			formField.classList.add(ERROR_CLASS);
-			tooltipManager.setUpTooltip(hintElement, errorMessage, true, tooltipManager.TOOLTIP_OPEN_ON.ALWAYS);
+			tooltipManager.setTooltip(hintElement, errorMessage, true, tooltipManager.TOOLTIP_OPEN_ON.ALWAYS);
 
 			if (validationSet)
 			{

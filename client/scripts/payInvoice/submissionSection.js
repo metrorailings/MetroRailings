@@ -33,7 +33,7 @@ function submit()
 	if (vm.isFormSubmissible)
 	{
 		// Hide any service-related error that may have popped up before
-		notifier.hideServerError();
+		notifier.hideErrorBar();
 
 		// Show that loading veil before we reach out to Stripe to pre-verify the credit card
 		axios.toggleLoadingVeil();

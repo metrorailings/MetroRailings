@@ -76,11 +76,6 @@
 			margin-top: 25px;
 			margin-bottom: 20px;
 		}
-
-		@include desktopOnly()
-		{
-			margin-right: 25px;
-		}
 	}
 
 	& > .pictureButton

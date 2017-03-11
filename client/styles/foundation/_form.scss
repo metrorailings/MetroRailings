@@ -59,8 +59,9 @@
 	background-color: map-get($COLORS, $bgColor);
 	opacity: 1.0;
 
-	&:disabled
+	&.disabled
 	{
+		cursor: default;
 		opacity: 0.4;
 	}
 }
@@ -175,7 +176,7 @@
 
 /* ----------------------- INPUT STYLES ----------------------------- */
 
-input[type=tel], input[type=text], input[type=email], input[type=password]
+input[type=tel], input[type=text], input[type=email], input[type=password], textarea
 {
 	@extend %regularText;
 	@include stylePlaceholder()
@@ -184,6 +185,7 @@ input[type=tel], input[type=text], input[type=email], input[type=password]
 	}
 
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+	height: 1.3em;
 
 	&.error
 	{

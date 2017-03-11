@@ -1,10 +1,10 @@
 <table id='header'>
     <tr>
-        <th>Your order has been confirmed, {{customer.firstName}}</th>
+        <th>Thank you for your business, {{customer.firstName}}</th>
     </tr>
     <tr>
         <td>
-            We will be calling you shortly at ({{customer.areaCode}}){{customer.phoneOne}}-{{customer.phoneTwo}} in
+            We will be calling you shortly at&nbsp;<a href='#' class='telLink'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</a>&nbsp;in
             order to schedule an appointment so that we can visit the address where you want to install railings and
             confirm the measurements you have given us. Once again, thank you for ordering railings with us!
         </td>
@@ -13,19 +13,24 @@
 
 <table id='orderRecap'>
     <tr>
-        <th>Order Details</th>
-        <th>Installation Address</th>
+        <th class='tableHeader'>Order Details</th>
+        <th class='spacerCell'></th>
+        <th class='tableHeader'>Installation Address</th>
     </tr>
     <tr>
         <td>
             <table id='orderDetails'>
+				<tr>
+					<td class='plainLabel'>ID</td>
+					<td class='infoCell'>{{_id}}</td>
+				</tr>
                 <tr>
                     <td class='plainLabel'>Type</td>
                     <td class='infoCell'>{{#capitalize type}}{{/capitalize}}</td>
                 </tr>
 				<tr>
 					<td class='plainLabel'>Length</td>
-					<td class='infoCell'>{{length}}</td>
+					<td class='infoCell'>{{length}} feet</td>
 				</tr>
 				<tr>
 					<td class='plainLabel'>Style</td>
@@ -35,16 +40,26 @@
 					<td class='plainLabel'>Color</td>
 					<td class='infoCell'>{{#capitalize color}}{{/capitalize}}</td>
 				</tr>
+				<tr id='totalPriceRow'>
+					<td class='specialLabel'>Order Total</td>
+					<td class='significantInfoCell'>${{orderTotal}}</td>
+				</tr>
             </table>
         </td>
+
+        <td class='spacerCell'></td>
 
         <td>
             <table id='installationAddress'>
                 <tr>
                     <td>{{customer.address}}</td>
-                    {{#if customer.aptSuiteNumber }}
-						<td>{{customer.aptSuiteNumber}}</td>
-                    {{/if}}
+                </tr>
+                {{#if customer.aptSuiteNumber }}
+                    <tr>
+                        <td>{{customer.aptSuiteNumber}}</td>
+                    </tr>
+                {{/if}}
+                <tr>
                     <td>{{customer.city}}, {{customer.state}} {{customer.zipCode}}</td>
                 </tr>
             </table>

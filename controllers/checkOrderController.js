@@ -96,12 +96,12 @@ module.exports =
 			{
 				// Fetch and return any orders that satisfy the search criteria
 				orders = yield ordersDAO.searchOrdersByMisc(parseInt(params.orderID, 10), params.email, params.phoneTwo);
-
-				return {
-					statusCode: responseCodes.OK,
-					data: orders || []
-				};
 			}
+
+			return {
+				statusCode: responseCodes.OK,
+				data: orders || []
+			};
 		}
 
 		return {

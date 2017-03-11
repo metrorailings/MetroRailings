@@ -40,7 +40,7 @@ function logIn()
 	};
 
 	// Hide any server error that might have popped up before
-	notifier.hideServerError();
+	notifier.hideErrorBar();
 
 	axios.post(LOG_IN_URL, data, true).then(() =>
 	{
