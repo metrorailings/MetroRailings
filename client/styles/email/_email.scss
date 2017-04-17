@@ -19,6 +19,61 @@ table
 	}
 }
 
+/* ----------------------- MIX-INS ----------------------------- */
+
+/*
+ * Functional mix-in responsible for setting generic borders around table cells
+ *
+ * @param [$top] - a flag that allows us to specify whether the cell should have a top-side border
+ * @param [$right] - a flag that allows us to specify whether the cell should have a right-hand border
+ * @param [$left] - a flag that allows us to specify whether the cell should have a left-hand border
+ * @param [$bottom] - a flag that allows us to specify whether the cell should have a bottom-side border
+ *
+ * @author kinsho
+ */
+@mixin tabularBorder($top: true, $right: true, $left: true, $bottom: true)
+{
+	@if ($top)
+	{
+		border-top:
+		{
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+	}
+
+	@if ($right)
+	{
+		border-right:
+		{
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+	}
+
+	@if ($left)
+	{
+		border-left:
+		{
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+	}
+
+	@if ($bottom)
+	{
+		border-bottom:
+		{
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+	}
+}
+
 /* ----------------------- EMAIL STYLES ----------------------------- */
 
 .telLink
@@ -31,7 +86,6 @@ table
 #emailContent
 {
 	text-align: center;
-	border-collapse: collapse;
 
 	font-family: Cardo, Raleway, Times New Roman, Arial, sans-serif;
 }
@@ -41,7 +95,7 @@ table
 	margin:
 	{
 		top: 25px;
-		bottom: 40px;
+		bottom: 25px;
 		left: auto;
 		right: auto;
 	}
@@ -57,7 +111,7 @@ table
 		padding:
 		{
 			top: 20px;
-			bottom: 30px;
+			bottom: 20px;
 		}
 	}
 
@@ -79,14 +133,11 @@ table
 		bottom: 20px;
 	}
 
+	background-color: map-get($COLORS, blackTheme);
 	color: map-get($COLORS, whiteTheme);
 	letter-spacing: 0.1em;
 
 	width: 100%;
-
-	background-color: map-get($COLORS, blackTheme);
-
-	border-collapse: collapse;
 
 	& > tr > td
 	{
@@ -125,6 +176,8 @@ table
 
 .tableHeader
 {
+	@include tabularBorder();
+
 	font:
 	{
 		size: 15px;
@@ -132,7 +185,11 @@ table
 		style: italic;
 	}
 
+	padding: 15px;
+
 	text-align: center;
+
+	background-color: map-get($COLORS, lightBlueTheme);
 }
 
 .plainLabel

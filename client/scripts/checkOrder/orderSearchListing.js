@@ -38,10 +38,10 @@ function _renderOrders()
 		window.setTimeout(() =>
 		{
 			_orderListing.innerHTML = orderListingTemplate(
-				{
-					orders: vm.orders,
-					areThereOrders: !!(vm.orders.length)
-				});
+			{
+				orders: vm.orders,
+				areThereOrders: !!(vm.orders.length)
+			});
 
 			window.setTimeout(() =>
 			{

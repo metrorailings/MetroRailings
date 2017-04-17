@@ -8,9 +8,9 @@ var router = global.OwlStakes.require('config/router');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var INTERNAL_SERVER_ERROR_MESSAGE = "Something's up with our server here. We apologize for any inconvenience here," +
-	"but rest assured, the administrator has been notified and somebody will address this issue soon. Until " +
-	"then, please come back to this site later. Once again, we apologize for having to do this.",
+var INTERNAL_SERVER_ERROR_MESSAGE = 'Something\'s up with our server here. We apologize for any inconvenience here,' +
+	'but rest assured, the administrator has been notified and somebody will address this issue soon. Until ' +
+	'then, please come back to this site later. Once again, we apologize for having to do this.',
 
 	JSON_CONTENT_TYPE = 'application/json';
 
@@ -33,11 +33,11 @@ module.exports =
 		{
 			// Write out the important headers before launching the response back to the client
 			response.writeHead(200,
-			{
-				"Content-Type" : router.deduceContentType(url),
-				"Content-Encoding" : ( ( router.isResourceWanted(url) && !(router.isImage(url)) ) ? 'gzip' : ''),
-				"Access-Control-Allow-Origin" : "*"
-			});
+				{
+					'Content-Type' : router.deduceContentType(url),
+					'Content-Encoding' : ( ( router.isResourceWanted(url) && !(router.isImage(url)) ) ? 'gzip' : ''),
+					'Access-Control-Allow-Origin' : '*'
+				});
 
 			console.log('Response ready to be returned from URL: /' + url);
 
@@ -74,9 +74,9 @@ module.exports =
 	{
 		var responseHeaders =
 			{
-				"Content-Type" : JSON_CONTENT_TYPE,
-				"Content-Encoding" : '',
-				"Access-Control-Allow-Origin" : "*"
+				'Content-Type' : JSON_CONTENT_TYPE,
+				'Content-Encoding' : '',
+				'Access-Control-Allow-Origin' : '*'
 			};
 
 		if (cookie)
@@ -120,9 +120,9 @@ module.exports =
 
 		// Send a response back and close out this service call once and for all
 		response.end(JSON.stringify(
-		{
-			error: INTERNAL_SERVER_ERROR_MESSAGE
-		}));
+			{
+				error: INTERNAL_SERVER_ERROR_MESSAGE
+			}));
 	},
 
 	/**
@@ -140,12 +140,12 @@ module.exports =
 	{
 		switch(request.method)
 		{
-			case 'POST':
-				responseData = this.sendPostResponse(response, responseData.data, responseData.statusCode, url, responseData.cookie);
-				break;
-			default:
-				responseData = this.sendResponse(response, responseData, url);
-				break;
+		case 'POST':
+			responseData = this.sendPostResponse(response, responseData.data, responseData.statusCode, url, responseData.cookie);
+			break;
+		default:
+			responseData = this.sendResponse(response, responseData, url);
+			break;
 		}
 	}
 };

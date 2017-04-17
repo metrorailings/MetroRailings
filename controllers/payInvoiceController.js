@@ -3,11 +3,14 @@
 var _Q = require('q'),
 	_Handlebars = require('Handlebars'),
 
+	config = global.OwlStakes.require('config/config'),
+
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
+	mailer = global.OwlStakes.require('utility/mailer'),
 
 	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 
@@ -21,6 +24,10 @@ var _Q = require('q'),
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'payInvoice',
+
+	ORDER_RECEIPT_EMAIL = 'orderReceipt',
+	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
+	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	COOKIE_ORDER_NAME = 'order',
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
@@ -130,7 +137,9 @@ module.exports =
 		console.log('Saving a newly minted order into the system...');
 
 		var orderValidationModel = orderModel(),
-			customerValidationModel = customerModel();
+			customerValidationModel = customerModel(),
+			processedOrder,
+			mailHTML;
 
 		// Populate the customer validation model
 		objectHelper.cloneObject(params.customer, customerValidationModel);
@@ -141,17 +150,28 @@ module.exports =
 		// Verify that both models are valid before proceeding
 		if (validatorUtility.checkModel(customerValidationModel) && validatorUtility.checkModel(orderValidationModel))
 		{
-			// Save the order into the database
-			yield DAO.saveNewOrder(params);
+			try
+			{
+				// Save the order into the database
+				processedOrder = yield DAO.saveNewOrder(params);
+			}
+			catch(error)
+			{
+				return {
+					statusCode: responseCodes.BAD_REQUEST
+				};
+			}
 
-			// @TODO: Send e-mail to customer
+			// Send out an e-mail to the customer
+			mailHTML = yield mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
+			yield mailer.sendMail(mailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id));
 
 			// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
 			return {
 				statusCode: responseCodes.OK,
 				data: {},
 
-				// Set up this cookie so that we can render some needed data into the order confirmation page
+				// Set up this cookie so that we can render some needed data on the order confirmation page
 				cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
 				{
 					areaCode: customerValidationModel.areaCode,

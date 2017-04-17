@@ -6,6 +6,7 @@
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import formValidator from 'utility/formValidator';
+import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -25,12 +26,14 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	ZIP_CODE_TEXTFIELD = 'zipCode',
 
 	ORDER_TYPE_SELECT = 'orderType',
-	ORDER_STYLE_SELECT = 'orderStyle',
+	ORDER_POST_DESIGN_SELECT = 'orderPost',
+	ORDER_POST_END_SELECT = 'orderPostEnd',
+	ORDER_POST_CAP_SELECT = 'orderPostCap',
+	ORDER_CENTER_DESIGN_SELECT = 'orderCenterDesign',
 	ORDER_COLOR_SELECT = 'orderColor',
 	ORDER_LENGTH_TEXTFIELD = 'orderLength',
 	TOTAL_PRICE_TEXTFIELD = 'totalPrice',
 
-	SAVE_CHANGES_BUTTON_CONTAINER = 'saveChangesButtonContainer',
 	SAVE_CHANGES_BUTTON = 'saveChangesButton',
 
 	REVEAL_CLASS = 'reveal',
@@ -77,13 +80,15 @@ var _validationSet = new Set(),
 	_zipCodeField = document.getElementById(ZIP_CODE_TEXTFIELD),
 
 	_orderTypeField = document.getElementById(ORDER_TYPE_SELECT),
-	_orderStyleField = document.getElementById(ORDER_STYLE_SELECT),
+	_orderPostDesignField = document.getElementById(ORDER_POST_DESIGN_SELECT),
+	_orderPostEndField = document.getElementById(ORDER_POST_END_SELECT),
+	_orderPostCapField = document.getElementById(ORDER_POST_CAP_SELECT),
+	_orderCenterDesignField = document.getElementById(ORDER_CENTER_DESIGN_SELECT),
 	_orderColorField = document.getElementById(ORDER_COLOR_SELECT),
 	_orderLengthField = document.getElementById(ORDER_LENGTH_TEXTFIELD),
 	_totalPriceField = document.getElementById(TOTAL_PRICE_TEXTFIELD),
 
-	_saveButton = document.getElementById(SAVE_CHANGES_BUTTON),
-	_saveButtonContainer = document.getElementById(SAVE_CHANGES_BUTTON_CONTAINER);
+	_saveButton = document.getElementById(SAVE_CHANGES_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -159,6 +164,8 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel._id = value._id;
 		viewModel.status = value.status;
 		viewModel.notes = value.notes;
+		viewModel.pictures = value.pictures || [];
+
 		viewModel.email = value.customer.email;
 		viewModel.areaCode = value.customer.areaCode;
 		viewModel.phoneOne = value.customer.phoneOne;
@@ -168,9 +175,14 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.city = value.customer.city;
 		viewModel.state = value.customer.state;
 		viewModel.zipCode = value.customer.zipCode;
+
+		viewModel.postDesign = value.design.postDesign;
+		viewModel.postEnd = value.design.postEndDesign;
+		viewModel.postCap = value.design.postCapDesign;
+		viewModel.centerDesign = value.design.centerDesign;
+		viewModel.color = value.design.color;
+
 		viewModel.type = value.type;
-		viewModel.style = value.style;
-		viewModel.color = value.color;
 		viewModel.length = value.length;
 		viewModel.orderTotal = value.orderTotal;
 	}
@@ -213,6 +225,23 @@ Object.defineProperty(viewModel, 'notes',
 
 		rQueryClient.setField(_notesField, value);
 		_markAsModified((value === viewModel.originalOrder.notes), _notesField);
+	}
+});
+
+// Order Pictures
+Object.defineProperty(viewModel, 'pictures',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return this.__pictures;
+	},
+
+	set: (value) =>
+	{
+		this.__pictures = value;
 	}
 });
 
@@ -456,23 +485,83 @@ Object.defineProperty(viewModel, 'type',
 	}
 });
 
-// Order Style
-Object.defineProperty(viewModel, 'style',
+// Order Post Design
+Object.defineProperty(viewModel, 'postDesign',
 {
 	configurable: false,
 	enumerable: true,
 
 	get: () =>
 	{
-		return this.__style;
+		return this.__postDesign;
 	},
 
 	set: (value) =>
 	{
-		this.__style = value;
+		this.__postDesign = value;
 
-		rQueryClient.setField(_orderStyleField, value);
-		_markAsModified((value === viewModel.originalOrder.style), _orderStyleField);
+		rQueryClient.setField(_orderPostDesignField, value);
+		_markAsModified((value === viewModel.originalOrder.design.postDesign), _orderPostDesignField);
+	}
+});
+
+// Order Post End
+Object.defineProperty(viewModel, 'postEnd',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return this.__postEnd;
+	},
+
+	set: (value) =>
+	{
+		this.__postEnd = value;
+
+		rQueryClient.setField(_orderPostEndField, value);
+		_markAsModified((value === viewModel.originalOrder.design.postEndDesign), _orderPostEndField);
+	}
+});
+
+// Order Post Cap
+Object.defineProperty(viewModel, 'postCap',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return this.__postCap;
+	},
+
+	set: (value) =>
+	{
+		this.__postCap = value;
+
+		rQueryClient.setField(_orderPostCapField, value);
+		_markAsModified((value === viewModel.originalOrder.design.postCapDesign), _orderPostCapField);
+	}
+});
+
+// Order Center Design
+Object.defineProperty(viewModel, 'centerDesign',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return this.__centerDesign;
+	},
+
+	set: (value) =>
+	{
+		this.__centerDesign = value;
+
+		rQueryClient.setField(_orderCenterDesignField, value);
+		_markAsModified((value === viewModel.originalOrder.design.centerDesign), _orderCenterDesignField);
 	}
 });
 
@@ -492,7 +581,7 @@ Object.defineProperty(viewModel, 'color',
 		this.__color = value;
 
 		rQueryClient.setField(_orderColorField, value);
-		_markAsModified((value === viewModel.originalOrder.color), _orderColorField);
+		_markAsModified((value === viewModel.originalOrder.design.color), _orderColorField);
 	}
 });
 
@@ -517,7 +606,7 @@ Object.defineProperty(viewModel, 'length',
 
 		rQueryClient.updateValidationOnField(isInvalid, _orderLengthField, ERROR.LENGTH_INVALID, _validationSet);
 		rQueryClient.setField(_orderLengthField, value);
-		_markAsModified((window.parseInt(value, 10) === viewModel.originalOrder.length), _orderLengthField);
+		_markAsModified((value === viewModel.originalOrder.length), _orderLengthField);
 
 		_validate();
 	}
@@ -566,12 +655,22 @@ Object.defineProperty(viewModel, 'isFormValid',
 	{
 		this.__isFormValid = value;
 
-		// Set the look of the button depending on whether there are any errors on the form
-		_saveButtonContainer.dataset.hint = (value ? '' :
-			(_validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD));
-		_saveButton.disabled = !(value);
+		if (!(value))
+		{
+			// Set up a tooltip indicating why the button is disabled
+			tooltipManager.setTooltip(_saveButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+		}
+		else
+		{
+			tooltipManager.closeTooltip(_saveButton, true);
+		}
 	}
 });
+
+// ----------------- DATA INITIALIZATION -----------------------------
+
+// Load a copy of the original order into the view model
+viewModel.originalOrder = window.MetroRailings.order;
 
 // ----------------- EXPORT -----------------------------
 

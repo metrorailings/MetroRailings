@@ -6,6 +6,7 @@
 
 var _Q = require('q'),
 	_mongodb = require('mongodb'),
+
 	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -31,6 +32,7 @@ var client = _mongodb.MongoClient, // The client that will be used to instantiat
 connect = _Q.denodeify(client.connect);
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -38,7 +40,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	initialize: _Q.async(function* ()
+	initialize: async function ()
 	{
 		console.log('Connecting to the database using the following URL: ' + DATABASE_URL);
 
@@ -47,7 +49,7 @@ module.exports =
 			try
 			{
 				// Initialize the MongoDB client
-				db = yield connect(DATABASE_URL);
+				db = await connect(DATABASE_URL);
 				console.log('Connected to Mongo!');
 			}
 			catch(error)
@@ -57,7 +59,7 @@ module.exports =
 				throw(error);
 			}
 		}
-	}),
+	},
 
 	/**
 	 * Function responsible for closing the current connection to the database.
@@ -65,14 +67,14 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	closeDatabase: _Q.async(function* ()
+	closeDatabase: async function ()
 	{
 		if (db)
 		{
 			console.log('Closing the database now...');
-			yield db.close();
+			await db.close();
 		}
-	}),
+	},
 
 	/**
 	 * Function responsible for reading data from the database.
@@ -90,7 +92,6 @@ module.exports =
 	{
 		var collection,
 			completeQuery = [],
-			results,
 			keys,
 			deferred = _Q.defer(),
 			i;
@@ -124,7 +125,7 @@ module.exports =
 
 			if (keys.length)
 			{
-				results = collection.aggregate(completeQuery).sort(sortCriteria).toArray(function(err, results)
+				collection.aggregate(completeQuery).sort(sortCriteria).toArray(function(err, results)
 				{
 					if (err)
 					{
@@ -137,7 +138,7 @@ module.exports =
 			}
 			else
 			{
-				results = collection.find(params).sort(sortCriteria).toArray(function(err, results)
+				collection.find(params).sort(sortCriteria).toArray(function(err, results)
 				{
 					if (err)
 					{
@@ -173,7 +174,6 @@ module.exports =
 	readThenModify: function(collectionName, updateInstructions, params, sortCriteria)
 	{
 		var collection,
-			results,
 			deferred = _Q.defer();
 
 		params = params || {};
@@ -189,7 +189,7 @@ module.exports =
 
 			// Log the query about to be executed
 			console.log('About to do a simultaneous read and update on records from ' + collectionName);
-			results = collection.findAndModify(params, sortCriteria, updateInstructions).then(function(results)
+			collection.findAndModify(params, sortCriteria, updateInstructions).then(function(results)
 			{
 				if ( !(results.ok) )
 				{
@@ -222,7 +222,6 @@ module.exports =
 	bulkWrite : function (collectionName, ordered, data)
 	{
 		var collection,
-			results,
 			dataArgs = [],
 			i,
 			deferred = _Q.defer();
@@ -248,7 +247,7 @@ module.exports =
 				dataArgs.push(arguments[i]);
 			}
 
-			results = collection.bulkWrite(dataArgs, { ordered: ordered }, function(err, results)
+			collection.bulkWrite(dataArgs, { ordered: ordered }, function(err, results)
 			{
 				if (err)
 				{
@@ -288,10 +287,10 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	deleteAllRecordsFromCollection: _Q.async(function* (collectionName)
+	deleteAllRecordsFromCollection: async function (collectionName)
 	{
-		yield this.bulkWrite(collectionName, true, this.formDeleteManyQuery({}));
-	}),
+		await this.bulkWrite(collectionName, true, this.formDeleteManyQuery({}));
+	},
 
 	/**
 	 * Function responsible for forming a query to insert a single document into the database via bulkWrite

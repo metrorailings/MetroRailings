@@ -8,6 +8,7 @@ import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 import statuses from 'shared/orderStatus';
 
+import designModel from 'client/scripts/orders/designModel';
 import vm from 'client/scripts/orders/viewModel';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
@@ -91,6 +92,22 @@ function createNewModel(order)
 					}
 				}
 			}
+		}
+	});
+
+	Object.defineProperty(orderModel, 'design',
+	{
+		configurable: false,
+		enumerable: false,
+
+		get: () =>
+		{
+			return orderModel.__design;
+		},
+
+		set: (value) =>
+		{
+			orderModel.__design = new designModel(value);
 		}
 	});
 

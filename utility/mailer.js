@@ -6,6 +6,7 @@ var _nodemailer = require('nodemailer'),
 	_sass = require('node-sass'),
 
 	config = global.OwlStakes.require('config/config'),
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
@@ -97,13 +98,14 @@ module.exports =
 	 * @param {String} plainText - the unicode text that will show instead should the user's mail client not support HTML e-mails
 	 * @param {String} email - the e-mail address to which to send this e-mail
 	 * @param {String} subject - the subject to append to the e-mail
+	 * @param {String} [replyTo] - an e-mail address to reply back to should the recipient want to e-mail the sender
 	 * @param {String} [fromEntity] - the address that will be used to identify the sender
 	 *
 	 * @return {boolean} - a flag indicating whether the e-mail was sent successfully or rejected
 	 *
 	 * @author kinsho
 	 */
-	sendMail: _Q.async(function* (htmlText, plainText, email, subject, fromEntity)
+	sendMail: _Q.async(function* (htmlText, plainText, email, subject, replyTo, fromEntity)
 	{
 		console.log("Sending e-mail to " + email);
 
@@ -117,7 +119,8 @@ module.exports =
 					to: email,
 					subject: subject,
 					text: plainText,
-					html: htmlText
+					html: htmlText,
+					replyTo: replyTo || config.SUPPORT_MAILBOX
 				});
 
 			return !!(mail.accepted.length);

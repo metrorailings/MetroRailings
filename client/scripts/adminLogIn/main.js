@@ -29,6 +29,8 @@ var _usernameField = document.getElementById(USERNAME_TEXTFIELD),
 
 /**
  * Function is responsible for sending the credential data over the wire for authentication
+ *
+ * @author kinsho
  */
 function logIn()
 {
@@ -52,9 +54,25 @@ function logIn()
 	});
 }
 
+/**
+ * Function designed to submit the form once the 'enter' key is pressed
+ *
+ * @param {Event} event - the event associated with this listener
+ *
+ * @author kinsho
+ */
+function listenToEnter(event)
+{
+	if (event.keyCode === 13)
+	{
+		logIn();
+	}
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 document.getElementById(SUBMISSION_BUTTON).addEventListener('click', logIn);
+document.addEventListener('keyup', listenToEnter);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 

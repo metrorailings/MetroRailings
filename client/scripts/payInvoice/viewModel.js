@@ -33,7 +33,6 @@ var ORDER_FORM = 'orderForm',
 	EXPIRATION_MONTH_DROPDOWN = 'expirationDateMonth',
 	EXPIRATION_YEAR_DROPDOWN = 'expirationDateYear',
 	CREDIT_CARD_ICON_ROW = 'ccMerchantsAccepted',
-	CREDIT_CARD_HINT = 'ccNumberHint',
 
 	SUBMISSION_BUTTON = 'orderSubmissionButton',
 
@@ -86,7 +85,6 @@ var _validationSet = new Set(),
 	_addressZipCodeField = document.getElementById(CUSTOMER_ZIP_CODE_FIELD),
 
 	_creditCardIcons = document.getElementById(CREDIT_CARD_ICON_ROW).children,
-	_ccNumberHint = document.getElementById(CREDIT_CARD_HINT),
 	_ccNumberField = document.getElementById(CREDIT_CARD_TEXTFIELD),
 	_ccSecurityCodeField = document.getElementById(SECURITY_CODE_TEXTFIELD),
 	_expirationMonthField = document.getElementById(EXPIRATION_MONTH_DROPDOWN),
@@ -414,7 +412,7 @@ Object.defineProperty(viewModel, 'ccNumber',
 
 		// Test whether the value contains any non-numeric character
 		var isInvalid = !(formValidator.isNumeric(value));
-		rQueryClient.updateValidationOnField(isInvalid, _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet, _ccNumberHint);
+		rQueryClient.updateValidationOnField(isInvalid, _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet);
 
 		// If valid, test whether the credit card number belongs to that of an acceptable brand
 		if (!(isInvalid))
@@ -424,12 +422,12 @@ Object.defineProperty(viewModel, 'ccNumber',
 				var acceptedBrand = ccAllowed.checkCCNumber(value);
 
 				_toggleCCIconOpacity(acceptedBrand);
-				rQueryClient.updateValidationOnField( !(acceptedBrand), _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet, _ccNumberHint);
+				rQueryClient.updateValidationOnField( !(acceptedBrand), _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet);
 			}
 			else
 			{
 				_toggleCCIconOpacity('');
-				rQueryClient.updateValidationOnField(false, _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet, _ccNumberHint);
+				rQueryClient.updateValidationOnField(false, _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet);
 			}
 		}
 
@@ -522,7 +520,7 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 		if (!(value))
 		{
 			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.changeTextInTooltip(_submissionButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+			tooltipManager.setTooltip(_submissionButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
 		}
 		else
 		{

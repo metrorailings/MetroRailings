@@ -26,6 +26,11 @@ body
 	flex-direction: column;
 }
 
+button:focus
+{
+	outline: none;
+}
+
 // Generic font implementations
 .italicized
 {
@@ -181,4 +186,25 @@ li
 .scrollableHorizontal
 {
 	overflow-x: auto;
+}
+
+// Image tags designed to preload high-resolution images
+.preloadImage
+{
+	position: absolute;
+
+	width: 0px;
+	height: 0px;
+
+	left: 0;
+	top: 0;
+}
+
+.thinSeparator
+{
+	width: 100%;
+	height: 1px;
+	border-radius: 25px;
+
+	background-color: map-get($COLORS, lightGrayTheme);
 }

@@ -6,26 +6,44 @@
 
 /* ------------------ ANIMATIONS ----------------------- */
 
-@include keyframes($name: loadingColors)
+@include keyframes($name: bouncingBalls)
 {
 	0%
 	{
-		color: map-get($COLORS, darkBlueTheme);
+		@include scaleTransition($length: 0, $width: 0);
 	}
 
-	33%
+	40%
 	{
-		color: map-get($COLORS, darkGreenTheme);
+		@include scaleTransition($length: 1, $width: 1);
 	}
 
-	66%
+	80%
 	{
-		color: map-get($COLORS, darkRedTheme);
+		@include scaleTransition($length: 0, $width: 0);
 	}
 
 	100%
 	{
-		color: map-get($COLORS, darkBlueTheme);
+		@include scaleTransition($length: 0, $width: 0);
+	}
+}
+
+@include keyframes($name: fadeIntoView)
+{
+	0%
+	{
+		opacity: 0.0;
+	}
+
+	70%
+	{
+		opacity: 0.0;
+	}
+
+	100%
+	{
+		opacity: 1.0;
 	}
 }
 
@@ -42,29 +60,87 @@
 	top: 0;
 	left: 0;
 
-	background-color: map-get($COLORS, blackTheme);
+	background-color: map-get($COLORS, whiteTheme);
 	opacity: 0;
 	z-index: -9999;
 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
 	&.show
 	{
-		z-index: 9999;
 		opacity: 0.7;
+	}
+
+	&.pageLoad
+	{
+		opacity: 1.0;
+	}
+
+	&.surface
+	{
+		z-index: 9999;
+	}
+
+	& > div
+	{
+		margin:
+		{
+			top: 25px;
+			bottom: 25px;
+		}
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
 	}
 }
 
-.loader
+#loadingText
 {
-	@include shiftTransition($x: -50%, $y: -50%);
-	@include animationSettings($keyframeSet: loadingColors, $duration: 4s, $timing: linear, $iterations: infinite);
 	@extend %loaderText;
+	@include animationSettings($keyframeSet: fadeIntoView, $duration: 1.5s, $timing: linear, $iterations: 1, $persist: true);
+}
 
+.loadingBall
+{
+	@include animationSettings($keyframeSet: bouncingBalls, $duration: 1.5s, $timing: ease-in-out, $iterations: infinite);
+	animation-fill-mode: both;
+	-webkit-animation-fill-mode: both;
+	-moz-animation-fill-mode: both;
+	-ms-animation-fill-mode: both;
+	-o-animation-fill-mode: both;
+
+	margin:
+	{
+		left: 30px;
+		right: 30px;
+	}
+
+	width: 50px;
 	height: 50px;
-	line-height: 50px;
 
-	position: absolute;
-	top: 50%;
-	left: 50%;
+	background-color: map-get($COLORS, darkBlueTheme);
+	border-radius: 100%;
 
-	text-align: center;
+	&:nth-of-type(2)
+	{
+		animation-delay: 0.15s;
+		-webkit-animation-delay: 0.15s;
+		-moz-animation-delay: 0.15s;
+		-ms-animation-delay: 0.15s;
+		-o-animation-delay: 0.15s;
+	}
+
+	&:nth-of-type(3)
+	{
+		animation-delay: 0.3s;
+		-webkit-animation-delay: 0.3s;
+		-moz-animation-delay: 0.3s;
+		-ms-animation-delay: 0.3s;
+		-o-animation-delay: 0.3s;
+	}
 }

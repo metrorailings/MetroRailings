@@ -11,7 +11,12 @@ import notifier from 'client/scripts/utility/notifications';
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var LOADING_VEIL = 'baseLoaderOverlay',
-	VISIBILITY_CLASS = 'show';
+	VISIBILITY_CLASS = 'show',
+
+	DEFAULT_CONFIG =
+	{
+		timeout: 20000
+	};
 
 // ----------------- PRIVATE MEMBERS --------------------------
 
@@ -62,15 +67,20 @@ var axiosModule =
 	 *
 	 * @param {String} url - the URL towards which to direct the request
 	 * @param {Object} payload - a hashmap of data to send over the wire
-	 * @param {boolean} showLoader - a flag indicating whether a loading animation should be shown to the user
+	 * @param {boolean} [showLoader] - a flag indicating whether a loading animation should be shown to the user
 	 * 		until the AJAX request returns back with data from the server
+	 * @param {Object} [requestHeaders] - request headers that modify the nature of this connection
 	 *
 	 * @returns {Promise<Object>} - an object containing either data from an external source or a a plain old rejection
 	 *
 	 * @author kinsho
 	 */
-	post: function(url, payload, showLoader)
+	post: function(url, payload, showLoader, requestHeaders)
 	{
+		var configObj = DEFAULT_CONFIG;
+
+		configObj.headers = requestHeaders || {};
+
 		return new Promise((resolve, reject) =>
 		{
 			// Hide any outstanding notifications
@@ -82,7 +92,7 @@ var axiosModule =
 				_toggleLoadingVeil();
 			}
 
-			_axiosConnection.post(url, payload).then((response) =>
+			_axiosConnection.post(url, payload, configObj).then((response) =>
 			{
 				if (showLoader)
 				{
@@ -170,11 +180,8 @@ var axiosModule =
 // Simulate promise functionality should the browser not support the syntax of promises
 _promise.polyfill();
 
-// Configure axios by generating a new instance with custom configuration properties
-_axiosConnection = _axios.create(
-{
-	timeout : 20000
-});
+// Generate a new instance of axios
+_axiosConnection = _axios.create({});
 
 // ----------------- EXPORT ---------------------------
 

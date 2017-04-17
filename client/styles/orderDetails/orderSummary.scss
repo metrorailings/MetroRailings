@@ -1,10 +1,20 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import '../foundation/colors';
+@import '../foundation/form';
 
 /* ----------------------- STYLES ----------------------------- */
 
 #orderNotes
 {
 	background-color:  map-get($COLORS, lightBlueTheme);
+
+	height: 140px;
+}
+
+#uploadPictureButton
+{
+	@include button($bgColor: darkGreenTheme);
+
+	width: 250px;
 }

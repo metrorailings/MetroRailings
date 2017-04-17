@@ -4,8 +4,6 @@ import vm from 'client/scripts/createOrder/viewModel';
 import typeSection from 'client/scripts/createOrder/typeSection';
 import curvesSection from 'client/scripts/createOrder/curvesSection';
 import lengthSection from 'client/scripts/createOrder/lengthSection';
-import styleSection from 'client/scripts/createOrder/styleSection';
-import colorSection from 'client/scripts/createOrder/colorsSection';
 import submissionSection from 'client/scripts/createOrder/submissionSection';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------

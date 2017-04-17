@@ -6,10 +6,10 @@ import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var SUBMIT_BUTTON = 'orderSubmissionButton',
+var SUBMIT_BUTTON = 'submissionButton',
 
-	SAVE_ORDER_URL = 'createOrder/saveOrder',
-	PAY_INVOICE_URL = '/payInvoice';
+	CONTINUE_ORDER_URL = 'createOrder/continueWithOrder',
+	DESIGN_URL = '/design';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -34,15 +34,13 @@ function submit()
 		{
 			type: vm.orderType,
 			length: vm.orderLength,
-			style: vm.orderStyle,
-			color: vm.orderColor
 		};
 
-		// Save the data
-		axios.post(SAVE_ORDER_URL, data, true).then(() =>
+		// Submit the user's inputs so far
+		axios.post(CONTINUE_ORDER_URL, data, true).then(() =>
 		{
-			// If successful, let's take the user to the invoice page to complete the order
-			window.location.href = PAY_INVOICE_URL;
+			// If successful, let's take the user to the design page to continue the order
+			window.location.href = DESIGN_URL;
 		}, () =>
 		{
 			notifier.showGenericServerError();

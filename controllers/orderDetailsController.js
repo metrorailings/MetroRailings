@@ -4,8 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-	_Handlebars = require('Handlebars'),
+var _Handlebars = require('Handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
@@ -15,7 +14,9 @@ var _Q = require('q'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-	usersDAO = global.OwlStakes.require('data/DAO/userDAO');
+	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
+
+	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
@@ -29,10 +30,9 @@ var CONTROLLER_FOLDER = 'orderDetails',
 		CUSTOMER_INFO: 'customerSummary',
 		LOCATION_INFO: 'locationSummary',
 		ORDER_SPECIFICS: 'orderSpecifics',
-		SAVE_BUTTON: 'submissionSection'
+		SAVE_BUTTON: 'submissionSection',
+		ORDER_PICTURES: 'orderPictures'
 	};
-
-// ----------------- PRIVATE VARIABLES --------------------------
 
 // ----------------- PARTIAL TEMPLATES --------------------------
 
@@ -69,29 +69,35 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (params, cookie)
+	init: async function (params, cookie)
 	{
 		var populatedPageTemplate,
 			orderNumber = params ? parseInt(params.orderNumber, 10) : undefined,
-			pageData = {};
+			pageData =
+			{
+				dropboxToken: config.DROPBOX_TOKEN
+			};
 
-		if ( !(yield usersDAO.verifyAdminCookie(cookie)) )
+		if ( !(await usersDAO.verifyAdminCookie(cookie)) )
 		{
 			console.log('Redirecting the user to the log-in page...');
 
-			return yield controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
+			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
 		console.log('Loading the order details page...');
 
 		// Fetch the data that will be needed to properly render the page
-		pageData = yield ordersDAO.searchOrderById(orderNumber);
+		pageData.order = await ordersDAO.searchOrderById(orderNumber);
+
+		// Load the template that we will be using to render the images
+		pageData.picturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES);
 
 		// Now render the page template
-		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: pageData }, true);
-	}),
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true);
+	},
 
 	/**
 	 * Function meant to save all updates that may have been made to a particular order
@@ -100,20 +106,44 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	saveChanges: _Q.async(function* (params, cookie)
+	saveChanges: async function (params, cookie)
 	{
-		if (yield usersDAO.verifyAdminCookie(cookie))
+		if (await usersDAO.verifyAdminCookie(cookie))
 		{
 			var username = cookieManager.retrieveAdminCookie(cookie)[0];
 
 			console.log('Saving changes made to an order...');
 
-			yield ordersDAO.saveChangesToOrder(params, username);
+			await ordersDAO.saveChangesToOrder(params, username);
 		}
 
 		return {
 			statusCode: responseCodes.OK,
 			data: {}
 		};
-	})
+	},
+
+	/**
+	 * Function meant to attach new image metadata to the order associated with the new image
+	 *
+	 * @params {Object} params - the ID of the order to modify and the new picture metadata
+	 *
+	 * @author kinsho
+	 */
+	saveNewPicture: async function (params, cookie)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie))
+		{
+			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+
+			console.log('Saving a new picture to the order...');
+
+			await ordersDAO.saveNewPicToOrder(params.id, params.imgMeta, username);
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
+	}
 };

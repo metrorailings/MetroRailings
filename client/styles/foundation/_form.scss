@@ -40,7 +40,7 @@
 @mixin button($bgColor)
 {
 	@extend %buttonText;
-	@include transitionSettings($property: opacity, $duration: 0.75s);
+	@include transitionSettings($property: all, $duration: 0.25s);
 
 	border:
 	{
@@ -53,11 +53,19 @@
 	width: 100%;
 
 	padding: 10px;
+	top: 0px;
 
 	cursor: pointer;
 
 	background-color: map-get($COLORS, $bgColor);
+	box-shadow: 0px 5px 10px map-get($COLORS, blackTheme);
 	opacity: 1.0;
+
+	&:active
+	{
+		top: 5px;
+		box-shadow: 0px 3px 3px map-get($COLORS, blackTheme);
+	}
 
 	&.disabled
 	{
@@ -192,6 +200,13 @@ input[type=tel], input[type=text], input[type=email], input[type=password], text
 		background-color: map-get($COLORS, lightRedTheme);
 		border-color: map-get($COLORS, darkRedTheme);
 	}
+}
+
+// Hide all file inputs from view, as the browser's native file input control looks ugly and
+// should be replaced
+input[type=file]
+{
+	display: none;
 }
 
 // Specialized input container meant to seemingly stow icons inside form fields

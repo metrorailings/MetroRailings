@@ -1,6 +1,6 @@
 <table id='header'>
     <tr>
-        <th>Thank you for your business, {{customer.firstName}}</th>
+        <th>Thank you for your business, {{customer.nickname}}</th>
     </tr>
     <tr>
         <td>
@@ -13,21 +13,19 @@
 
 <table id='orderRecap'>
     <tr>
-        <th class='tableHeader'>Order Details</th>
-        <th class='spacerCell'></th>
-        <th class='tableHeader'>Installation Address</th>
-    </tr>
-    <tr>
         <td>
             <table id='orderDetails'>
+                <tr>
+					<th class='tableHeader' colspan=2>Order Details</th>
+                </tr>
 				<tr>
-					<td class='plainLabel'>ID</td>
+					<td class='plainLabel'>Order ID</td>
 					<td class='infoCell'>{{_id}}</td>
 				</tr>
-                <tr>
-                    <td class='plainLabel'>Type</td>
-                    <td class='infoCell'>{{#capitalize type}}{{/capitalize}}</td>
-                </tr>
+				<tr>
+					<td class='plainLabel'>Type</td>
+					<td class='infoCell'>{{#capitalize type}}{{/capitalize}}</td>
+				</tr>
 				<tr>
 					<td class='plainLabel'>Length</td>
 					<td class='infoCell'>{{length}} feet</td>
@@ -47,22 +45,23 @@
             </table>
         </td>
 
-        <td class='spacerCell'></td>
-
-        <td>
-            <table id='installationAddress'>
-                <tr>
-                    <td>{{customer.address}}</td>
-                </tr>
+		<td>
+			<table id='installationAddress'>
+				<tr>
+					<th class='tableHeader'>Installation Address</th>
+				</tr>
+				<tr>
+					<td id='addressCell'>{{customer.address}}</td>
+				</tr>
                 {{#if customer.aptSuiteNumber }}
-                    <tr>
-                        <td>{{customer.aptSuiteNumber}}</td>
-                    </tr>
+					<tr>
+						<td id='aptSuiteNumberCell'>{{customer.aptSuiteNumber}}</td>
+					</tr>
                 {{/if}}
-                <tr>
-                    <td>{{customer.city}}, {{customer.state}} {{customer.zipCode}}</td>
-                </tr>
-            </table>
-        </td>
+				<tr>
+					<td id='cityStateCell'>{{customer.city}}, {{customer.state}} {{customer.zipCode}}</td>
+				</tr>
+			</table>
+		</td>
     </tr>
 </table>

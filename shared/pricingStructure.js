@@ -4,7 +4,7 @@
  * @module pricingStructure
  */
 
-// ----------------- PRIVATE FUNCTIONS --------------------------
+// ----------------- ENUMS/CONSTANTS --------------------------
 
 var COST_PER_FOOT_OF_RAILING = 60.00,
 	MINIMUM_TOTAL = 600.00;

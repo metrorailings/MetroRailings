@@ -5,12 +5,15 @@ var _randomstring = require('randomstring');
 // ----------------- ENUM/CONSTANTS -----------------------------
 
 var TYPES = ['stairs', 'deck'],
-	STYLES = ['bars', 'collars', 'custom'],
 	COLORS = ['white', 'black', 'silver', 'mahogany'],
 	STATES = ['NJ'],
 	CITIES = ['North Plainfield', 'Watchung', 'Warren', 'Clifton', 'Passaic', 'Parsippany'],
 	DOMAINS = ['gmail.com', 'aol.com', 'outlook.com', 'yahoo.com'],
 	STATUSES = ['open', 'consult', 'production', 'install', 'closed', 'cancelled'],
+	POST_DESIGNS = ['BP', 'BPC', 'SP',],
+	POST_END_DESIGNS = ['VOL', 'LT', 'SCRL'],
+	POST_CAP_DESIGNS = ['BALL', 'SQ', 'MIX'],
+	CENTER_DESIGNS = ['NONE', 'SC', 'HRT', 'RHRT', 'DIA', 'TLP', 'GALE'],
 
 	ID =
 	{
@@ -101,12 +104,18 @@ module.exports = function(status, dateCreatedBy, modificationDate)
 		lastModifiedDate: modificationDate,
 		status: status,
 		type: _randomSelect(TYPES),
-		style: _randomSelect(STYLES),
-		color: _randomSelect(COLORS),
 		length: Math.floor(Math.random() * 20) + 20,
 		orderTotal: Math.floor(Math.random() * 1200) + 1200,
 		ccToken: GENERIC_CC_TOKEN,
 		notes: '',
+		design:
+		{
+			postDesign: _randomSelect(POST_DESIGNS),
+			postEndDesign: _randomSelect(POST_END_DESIGNS),
+			postCapDesign: _randomSelect(POST_CAP_DESIGNS),
+			centerDesign: _randomSelect(CENTER_DESIGNS),
+			color: _randomSelect(COLORS),
+		},
 		customer:
 		{
 			name: _randomstring.generate(FIRST_NAME) + ' ' + _randomstring.generate(LAST_NAME),

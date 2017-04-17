@@ -145,8 +145,13 @@
 
 	flex-direction: row;
 
-	height: 180px;
 	width: 100%;
+
+	// Webkit browsers need to have the container heights explicitly defined to properly align the cell groupings
+	@include webkitOnly()
+	{
+		height: 350px;
+	}
 }
 
 .orderInfoSection
@@ -221,6 +226,12 @@
 		left: none;
 	}
 
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
 	text-align: center;
 
 	width: 100%;
@@ -233,11 +244,7 @@
 {
 	@extend %tabularRegularText;
 
-	padding:
-	{
-		left: 10px;
-		right: 10px;
-	}
+	padding: 10px;
 
 	width: 100%;
 	flex: 1;
@@ -254,6 +261,11 @@
 {
 	height: auto;
 	min-height: 80px;
+
+	& > .orderInfoSection > .orderCell
+	{
+		color: map-get($COLORS, mahoganyTheme);
+	}
 }
 
 .nextStatusLink
@@ -292,5 +304,16 @@
 	& > i
 	{
 		margin-left: 10px;
+	}
+}
+
+#nothingToDisplay
+{
+	@extend %tabularHeaderText;
+
+	padding:
+	{
+		top: 50px;
+		bottom: 50px;
 	}
 }

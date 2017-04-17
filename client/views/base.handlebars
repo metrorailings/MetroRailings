@@ -17,6 +17,7 @@
         <!-- Load all third-party stylesheets here --->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
 
         <!-- Load all the application-specific CSS files for this page -->
         {{#cssFiles}}
@@ -33,9 +34,6 @@
 		<script type='text/javascript' src="https://cdn.jsdelivr.net/tether/1.4.0/tether.min.js"></script>
         <script type='text/javascript' src="https://cdn.jsdelivr.net/drop/1.4.2/js/drop.min.js"></script>
 		<script type='text/javascript' src="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip.min.js"></script>
-
-        <!-- Load the reCAPTCHA library -->
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <!--
         Just for testing purposes...
@@ -54,8 +52,15 @@
         </div>
 
         <!-- Loading veil -->
-        <div id='baseLoaderOverlay'>
-            <div class='loader'>Loading</div>
+        <div id='baseLoaderOverlay' class='{{#if waitForPageLoad}}pageLoad surface{{/if}}'>
+            <div>
+                <span id='loadingText'>Loading</span>
+            </div>
+            <div>
+                <span class="loadingBall"></span>
+                <span class="loadingBall"></span>
+                <span class="loadingBall"></span>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -73,22 +78,8 @@
             </span>
         </footer>
 
-        <!-- User notification bar -->
-        <div id='userNotificationBar' class='infoBar'>
-            <i class='fa fa-exclamation-circle'></i>
-            <span id='userNotificationMessage'>
-                <!-- Notification message will go here -->
-            </span>
-            <i id='userNotificationBarExit' class='fa fa-times infoBarExit'></i>
-        </div>
-		<!-- User success bar -->
-		<div id='userSuccessBar' class='infoBar'>
-			<i class='fa fa-check-circle'></i>
-            <span id='userSuccessMessage'>
-                <!-- Success message will go here -->
-            </span>
-			<i id='userSuccessBarExit' class='fa fa-times infoBarExit'></i>
-		</div>
+        {{> notificationBar }}
+        {{> successBar }}
 
         <!-- Data to be bootstrapped when the page loads and before the other scripts are loaded -->
         <script>
@@ -104,7 +95,7 @@
             <!-- In development environments, multiple scripts should be loaded in order to facilitate any needed debugging
             Load the bootloading scripts along with the base script that is responsible for instantiating all other
             scripts relevant to the page -->
-            <script src="client/scripts/jspm_packages/system.js" ></script>
+            <script src="client/scripts/jspm_packages/system.src.js" ></script>
             <script src="client/scripts/jspm_config.js" ></script>
             <script src="client/scripts/systemPaths.js" ></script>
             <script src="client/scripts/plugins/facebook.js" ></script>

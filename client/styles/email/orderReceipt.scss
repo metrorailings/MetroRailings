@@ -15,53 +15,35 @@
 		right: auto;
 	}
 
-	width: 80%;
+	width: 100%;
 
-	& > tr
+	& > tr > td
 	{
-		& > th:not(.spacerCell)
+		padding:
 		{
-			border:
-			{
-				width: 1px;
-				color: map-get($COLORS, blackTheme);
-				style: solid;
-			}
-
-			padding: 10px;
-			text-align: center;
-
-			background-color: map-get($COLORS, lightBlueTheme);
+			left: 20px;
+			right: 20px;
 		}
 
-		& > td:not(.spacerCell)
+		vertical-align: top;
+
+		&:first-child
 		{
-			border:
-			{
-				width: 1px;
-				color: map-get($COLORS, blackTheme);
-				style: solid;
-			}
+			width: 60%;
+		}
 
-			width: 37.5%;
-
-			text-align: center;
+		&:last-child
+		{
+			width: 40%;
 		}
 	}
-}
-
-.spacerCell
-{
-	border: none;
-	background-color: map-get($COLORS, whiteTheme);
-	width: 100px;
 }
 
 #orderDetails
 {
 	width: 100%;
 
-	& > tr > td
+	.plainLabel, .infoCell
 	{
 		padding:
 		{
@@ -72,22 +54,15 @@
 		width: 50%;
 		text-align: center;
 	}
-}
 
-#installationAddress
-{
-	width: 100%;
-
-	& > tr > td
+	.plainLabel
 	{
-		font:
-		{
-			size: 15px;
-			weight: 400;
-		}
+		@include tabularBorder($top: false, $right: false, $bottom: false);
+	}
 
-		width: 100%;
-		text-align: center;
+	.infoCell
+	{
+		@include tabularBorder($top: false, $left: false, $bottom: false);
 	}
 }
 
@@ -103,29 +78,39 @@
 			bottom: 20px;
 		}
 
-		border:
-		{
-			color: map-get($COLORS, blackTheme);
-			width: 1px;
-			style: solid;
-		}
-
-		&:nth-of-type(1)
-		{
-			border:
-			{
-				left: none;
-				bottom: none;
-			}
-		}
-
-		&:nth-of-type(2)
-		{
-			border:
-			{
-				right: none;
-				bottom: none;
-			}
-		}
+		@include tabularBorder();
 	}
+}
+
+#installationAddress
+{
+	width: 100%;
+
+	td
+	{
+		font:
+		{
+			size: 15px;
+			weight: 400;
+		}
+
+		padding:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		width: 100%;
+		text-align: center;
+	}
+}
+
+#addressCell, #aptSuiteNumberCell
+{
+	@include tabularBorder($top: false, $bottom: false);
+}
+
+#cityStateCell
+{
+	@include tabularBorder($top: false);
 }

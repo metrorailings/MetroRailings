@@ -1,5 +1,5 @@
 /**
- * The view model for the order creation process flow
+ * The view model for the first step of the order creation process flow
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -19,31 +19,17 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 	ENCLOSURE_HELP_MESSAGE = 'enclosureHelp',
 	STAIRS_HELP_MESSAGE = 'stairsHelp',
 	RAILINGS_LENGTH_TEXTFIELD = 'railingsLength',
-	BARS_CHECKBOX = 'barsCheckbox',
-	COLLARS_CHECKBOX = 'collarsCheckbox',
-	CUSTOM_STYLING_CHECKBOX = 'customStylingCheckbox',
-	SUBMIT_BUTTON = 'orderSubmissionButton',
+	SUBMIT_BUTTON = 'submissionButton',
 
-	LENGTH_SECTION = 'lengthSection',
-	STYLE_SECTION = 'styleSection',
 	CURVES_SECTION = 'curvesSection',
-	COLOR_SECTION = 'colorSection',
+	LENGTH_SECTION = 'lengthSection',
 	SUBMISSION_SECTION = 'submissionSection',
 
-	RAILINGS_TYPE_FILLER_CLASS = 'railingsTypeFillIn',
 	ROLL_DOWN_SECTION_CLASS = 'rollDownSection',
-	SELECTED_ARROW_CLASS = 'selectedArrow',
-	OVERFLOW_FIX_CLASS = 'overflowFix',
 	REVEAL_CLASS = 'reveal',
 
 	STAIRS_TYPE = 'stairs',
 	DECK_TYPE = 'deck',
-	STAIRCASE_KEYWORD = 'staircase',
-	ENCLOSURE_KEYWORD = 'enclosure',
-
-	BARS_STYLE = 'bars',
-	COLLARS_STYLE = 'collars',
-	CUSTOM_STYLE = 'custom',
 
 	ERROR =
 	{
@@ -58,20 +44,16 @@ var _validationSet = new Set(),
 
 	// Elements
 	_curvesSection = document.getElementById(CURVES_SECTION),
-	_styleSection = document.getElementById(STYLE_SECTION),
 	_lengthSection = document.getElementById(LENGTH_SECTION),
-	_colorSection = document.getElementById(COLOR_SECTION),
 	_submissionSection = document.getElementById(SUBMISSION_SECTION),
+
 	_typeCheckboxes = [document.getElementById(STAIRS_CHECKBOX), document.getElementById(DECK_CHECKBOX)],
 	_curvesYesRadio = document.getElementById(CURVES_YES_RADIO),
 	_curvesNoRadio = document.getElementById(CURVES_NO_RADIO),
 	_curvesYesMessage = document.getElementById(CURVES_YES_MESSAGE),
-	_railingsTypeFillInSpots = document.getElementsByClassName(RAILINGS_TYPE_FILLER_CLASS),
 	_enclosureHelpSection = document.getElementById(ENCLOSURE_HELP_MESSAGE),
 	_stairsHelpSection = document.getElementById(STAIRS_HELP_MESSAGE),
 	_lengthField = document.getElementById(RAILINGS_LENGTH_TEXTFIELD),
-	_styleCheckboxes = [document.getElementById(BARS_CHECKBOX), document.getElementById(COLLARS_CHECKBOX), document.getElementById(CUSTOM_STYLING_CHECKBOX)],
-	_selectedArrows = document.getElementsByClassName(SELECTED_ARROW_CLASS),
 	_submitButton = document.getElementById(SUBMIT_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
@@ -105,71 +87,22 @@ function _toggleSections(progress)
 
 	if (progress >= 4)
 	{
-		_styleSection.classList.add(ROLL_DOWN_SECTION_CLASS);
-	}
-	else
-	{
-		_styleSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
-	}
-
-	if (progress >= 5)
-	{
-		window.setTimeout(_toggleOverflow, 1000, true);
-
-		_colorSection.classList.add(ROLL_DOWN_SECTION_CLASS);
 		_submissionSection.classList.add(ROLL_DOWN_SECTION_CLASS);
 	}
 	else
 	{
-		_toggleOverflow(false);
-
-		_colorSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
 		_submissionSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
 	}
 }
 
 /**
- * Toggles the overflow styling on the sections to accommodate tooltips
- *
- * @param {boolean} toMakeVisible - determines whether to set the overflow styling on the sections to be visible
- *
- * @author kinsho
- */
-function _toggleOverflow(toMakeVisible)
-{
-	if (toMakeVisible)
-	{
-		_curvesSection.classList.add(OVERFLOW_FIX_CLASS);
-		_lengthSection.classList.add(OVERFLOW_FIX_CLASS);
-		_styleSection.classList.add(OVERFLOW_FIX_CLASS);
-		_colorSection.classList.add(OVERFLOW_FIX_CLASS);
-		_submissionSection.classList.add(OVERFLOW_FIX_CLASS);
-	}
-	else
-	{
-		_curvesSection.classList.remove(OVERFLOW_FIX_CLASS);
-		_lengthSection.classList.remove(OVERFLOW_FIX_CLASS);
-		_styleSection.classList.remove(OVERFLOW_FIX_CLASS);
-		_colorSection.classList.remove(OVERFLOW_FIX_CLASS);
-		_submissionSection.classList.remove(OVERFLOW_FIX_CLASS);
-	}
-}
-
-/**
- * A function that changes some text and adjust the visibility of certain paragraphs in accordance to the type of railings
- * that a customer needs
+ * A function that changes some text and adjust the visibility of certain paragraphs in accordance to the
+ * type of railings that a customer needs
  *
  * @author kinsho
  */
 function _toggleRailingTypeSpots()
 {
-	var i;
-
-	for (i = _railingsTypeFillInSpots.length - 1; i >= 0; i--)
-	{
-		_railingsTypeFillInSpots[i].innerHTML = (viewModel.orderType === STAIRS_TYPE ? STAIRCASE_KEYWORD : ENCLOSURE_KEYWORD);
-	}
-
 	if (viewModel.orderType === STAIRS_TYPE)
 	{
 		_enclosureHelpSection.classList.remove(REVEAL_CLASS);
@@ -183,48 +116,24 @@ function _toggleRailingTypeSpots()
 }
 
 /**
- * A function designed to reveal the scroll alert on a delay in order to prevent browser lag
- *
- * @param {HTMLElement} anchorElement - the element to which to tie a scrolling anchor to
+ * A function designed to reveal the scroll alert programmatically
  *
  * @author kinsho
  */
 function _revealScrollAlert()
 {
-	var anchorSection;
-
-	// We need to figure out on which section to place the scrolling anchor before revealing the scrolling alert
-	switch (viewModel.userProgress)
-	{
-		case 2:
-			anchorSection = _curvesSection;
-			break;
-
-		case 3:
-			anchorSection = _lengthSection;
-			break;
-
-		case 4:
-			anchorSection = _styleSection;
-			break;
-
-		case 5:
-			anchorSection = _colorSection;
-			break;
-
-		default:
-			anchorSection = _curvesSection;
-	}
+	var revealedSections = document.getElementsByClassName(ROLL_DOWN_SECTION_CLASS),
+		lastSection = revealedSections[revealedSections.length - 1];
 
 	// Set this animation on a timeout to prevent browser lag
 	window.setTimeout(() =>
 	{
-		scrollDown.showAlert(anchorSection);
+		scrollDown.showAlert(lastSection);
 	}, 250);
 }
 
 /**
- * A function designed to hide the scroll alert on a delay in order to prevent browser lag
+ * A function designed to hide the scroll alert programmatically
  *
  * @author kinsho
  */
@@ -281,90 +190,25 @@ Object.defineProperty(viewModel, 'orderType',
 			rQueryClient.setCheckboxSets(_typeCheckboxes, DECK_CHECKBOX);
 			_toggleRailingTypeSpots();
 
-			viewModel.userProgress = 2;
+			// If the user is already in the midst of selecting designs, reset the designs they have selected so far
+			// and display text alerting the users to select designs again
+			if (viewModel.userProgress > 100)
+			{
+				viewModel.postDesign = '';
+				viewModel.postEndDesign = '';
+				viewModel.postCapDesign = '';
+				viewModel.centerDesign = '';
+
+				_toggleSections(4);
+			}
+			else
+			{
+				viewModel.userProgress = 2;
+			}
 		}
 		else
 		{
 			rQueryClient.setCheckboxSets(_typeCheckboxes);
-		}
-	}
-});
-
-// Railings Length
-Object.defineProperty(viewModel, 'orderLength',
-{
-	configurable: false,
-	enumerable: true,
-
-	get: () =>
-	{
-		return this.__orderLength;
-	},
-
-	set: (value) =>
-	{
-		this.__orderLength = value;
-
-		// Make sure a valid length is put into the field
-		var isInvalid = ( !(formValidator.isNumeric(value)) ||
-						( value.length && !(window.parseInt(value, 10)) ) );
-
-		rQueryClient.updateValidationOnField(isInvalid, _lengthField, ERROR.LENGTH_INVALID, _validationSet);
-		rQueryClient.setField(_lengthField, value);
-		_validate();
-
-		if (this.__userProgress <= 3)
-		{
-			// For a better user experience, unveil the next section after a bit of a delay, provided that the value in
-			// the length field is still valid
-			window.setTimeout(() =>
-			{
-				if (window.parseInt(value, 10))
-				{
-					viewModel.userProgress = 4;
-				}
-			}, 1000);
-		}
-	}
-});
-
-// Railings Style
-Object.defineProperty(viewModel, 'orderStyle',
-{
-	configurable: false,
-	enumerable: false,
-
-	get: () =>
-	{
-		return this.__orderStyle;
-	},
-
-	set: (value) =>
-	{
-		this.__orderStyle = value;
-
-		// Adjust the style checkboxes on the page accordingly
-		if (value === BARS_STYLE)
-		{
-			rQueryClient.setCheckboxSets(_styleCheckboxes, BARS_CHECKBOX);
-
-			viewModel.userProgress = 5;
-		}
-		else if (value === COLLARS_STYLE)
-		{
-			rQueryClient.setCheckboxSets(_styleCheckboxes, COLLARS_CHECKBOX);
-
-			viewModel.userProgress = 5;
-		}
-		else if (value === CUSTOM_STYLE)
-		{
-			rQueryClient.setCheckboxSets(_styleCheckboxes, CUSTOM_STYLING_CHECKBOX);
-
-			viewModel.userProgress = 5;
-		}
-		else
-		{
-			rQueryClient.setCheckboxSets(_styleCheckboxes);
 		}
 	}
 });
@@ -414,34 +258,40 @@ Object.defineProperty(viewModel, 'curvesNecessary',
 	}
 });
 
-// Railings Color
-Object.defineProperty(viewModel, 'orderColor',
+// Railings Length
+Object.defineProperty(viewModel, 'orderLength',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
-		return this.__orderColor;
+		return this.__orderLength;
 	},
 
 	set: (value) =>
 	{
-		var i;
+		this.__orderLength = value;
 
-		this.__orderColor = value;
+		// Make sure a valid length is put into the field
+		var isInvalid = ( !(formValidator.isNumeric(value)) ||
+						( value.length && !(window.parseInt(value, 10)) ) );
 
-		// Mark which color the user selected
-		for (i = _selectedArrows.length - 1; i >= 0; i--)
+		rQueryClient.updateValidationOnField(isInvalid, _lengthField, ERROR.LENGTH_INVALID, _validationSet);
+		rQueryClient.setField(_lengthField, value);
+		_validate();
+
+		if (this.__userProgress <= 3)
 		{
-			if (_selectedArrows[i].dataset.color === value)
+			// For a better user experience, unveil the next section after a bit of a delay, provided that the value in
+			// the length field is still valid
+			window.setTimeout(() =>
 			{
-				_selectedArrows[i].classList.add(REVEAL_CLASS);
-			}
-			else
-			{
-				_selectedArrows[i].classList.remove(REVEAL_CLASS);
-			}
+				if (window.parseInt(value, 10))
+				{
+					viewModel.userProgress = 4;
+				}
+			}, 1000);
 		}
 	}
 });
@@ -486,7 +336,8 @@ Object.defineProperty(viewModel, 'userProgress',
 
 	set: (value) =>
 	{
-		if ((this.__userProgress < value) || (value === 1))
+		// A three-digit progress value signifies that the user is currently in the midst of selecting rail designs
+		if ((this.__userProgress < value) || (value === 1) || (value >= 100))
 		{
 			this.__userProgress = value;
 

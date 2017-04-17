@@ -4,18 +4,25 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('Q'),
-	_Handlebars = require('Handlebars'),
+var _Handlebars = require('Handlebars'),
 	_htmlMinifier = require('html-minifier').minify,
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	rQuery = global.OwlStakes.require('utility/rQuery');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var UTILITY_FOLDER = 'utility',
-	GALLERY_TEMPLATE = 'gallery',
-	CONFIRMATION_MODAL_TEMPLATE = 'confirmationModal',
-	SCROLL_DOWN_TEMPLATE = 'scrollDownLabel';
+
+	PARTIALS =
+	{
+		GALLERY: 'gallery',
+		CONFIRMATION_MODAL: 'confirmationModal',
+		SCROLL_DOWN: 'scrollDownLabel',
+		OPTIONS_CAROUSEL: 'optionsCarousel',
+		NOTIFICATION_BAR: 'notificationBar',
+		SUCCESS_BAR: 'successBar'
+	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
@@ -33,17 +40,32 @@ var _compiledTemplates = [],
 /**
  * The template for the image gallery
  */
-_Handlebars.registerPartial('gallery', fileManager.fetchTemplateSync(UTILITY_FOLDER, GALLERY_TEMPLATE));
+_Handlebars.registerPartial('gallery', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.GALLERY));
 
 /**
  * The template for the confirmation modal
  */
-_Handlebars.registerPartial('confirmationModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, CONFIRMATION_MODAL_TEMPLATE));
+_Handlebars.registerPartial('confirmationModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.CONFIRMATION_MODAL));
 
 /**
  * The template for the scroll down signifier
  */
-_Handlebars.registerPartial('scrollDownLabel', fileManager.fetchTemplateSync(UTILITY_FOLDER, SCROLL_DOWN_TEMPLATE));
+_Handlebars.registerPartial('scrollDownLabel', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.SCROLL_DOWN));
+
+/**
+ * The template for the options carousel
+ */
+_Handlebars.registerPartial('optionsCarousel', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.OPTIONS_CAROUSEL));
+
+/**
+ * The template for the notification bar
+ */
+_Handlebars.registerPartial('notificationBar', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.NOTIFICATION_BAR));
+
+/**
+ * The template for the success bar
+ */
+_Handlebars.registerPartial('successBar', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.SUCCESS_BAR));
 
 // ----------------- GENERIC HELPERS --------------------------
 
@@ -100,10 +122,10 @@ _Handlebars.registerHelper('iterate_keys', function(obj, block)
 	for (i = 0; i < keys.length; i++)
 	{
 		output += block.fn(
-		{
-			key: keys[i],
-			value: obj[keys[i]]
-		});
+			{
+				key: keys[i],
+				value: obj[keys[i]]
+			});
 	}
 
 	return output;
@@ -150,7 +172,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	populateTemplate: _Q.async(function* (data, templateDirectory, templateName)
+	populateTemplate: async function (data, templateDirectory, templateName)
 	{
 		var template;
 
@@ -159,12 +181,12 @@ module.exports =
 		template = _compiledTemplates[templateDirectory + '-' + templateName];
 		if ( !(template) )
 		{
-			template = yield fileManager.fetchTemplate(templateDirectory, templateName);
+			template = await fileManager.fetchTemplate(templateDirectory, templateName);
 			template = _Handlebars.compile(template);
 			_compiledTemplates[templateDirectory + '-' + templateName] = template;
 		}
 
 		// Feed the data into the template and return the resulting HTML after it has been minified
 		return _htmlMinifier(template(data), _htmlMinifierConfig);
-	})
+	}
 };

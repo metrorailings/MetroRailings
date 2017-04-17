@@ -59,6 +59,9 @@ Handlebars.registerHelper('next_state', function(str)
 	return rQueryClient.capitalize(statuses.moveStatusToNextLevel(str));
 });
 
+/**
+ * Helper designed to determine whether an order can have its status updated to the next level
+ */
 Handlebars.registerHelper('can_status_be_updated', function(str, block)
 {
 	if (statuses.moveStatusToNextLevel(str))
@@ -130,8 +133,8 @@ function _displayListings(orders)
 
 /**
  * Function meant to render the passed list of orders into a viewable HTML format.
- * The order listings will fade out of view for a second before fading back into view
- * with the newly rendered collection of orders
+ * The order listings will fade out of view for a second before fading back into view with the newly rendered
+ * collection of orders
  *
  * @param {Array<Object>} orders - the orders to put on the screen
  *

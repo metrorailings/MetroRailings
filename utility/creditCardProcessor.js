@@ -6,6 +6,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
+	// Import the configuration file first as we need it to properly instantiate the stripe module
 var config = global.OwlStakes.require('config/config'),
 
 	_Q = require('q'),
@@ -47,9 +48,9 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	generateCustomerRecord: _Q.async(function* (ccToken, name, email)
+	generateCustomerRecord: async function (ccToken, name, email)
 	{
-		var customer = yield _createCustomer(
+		var customer = await _createCustomer(
 			{
 				source: ccToken,
 				metadata: { Name: name },
@@ -58,7 +59,7 @@ module.exports =
 			});
 
 		return customer.id;
-	}),
+	},
 
 	/**
 	 * Function responsible for charging a customer's credit card
@@ -71,19 +72,19 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	chargeTotal: _Q.async(function* (orderTotal, customerID, orderID)
+	chargeTotal: async function (orderTotal, customerID, orderID)
 	{
-		var charge = yield _chargeCard(
+		var charge = await _chargeCard(
 			{
 				amount: orderTotal * 100,
 				customer: customerID,
 				currency: ACCEPTABLE_CURRENCY,
-				metadata: { "Order ID" : orderID },
+				metadata: { 'Order ID' : orderID },
 				description: TRANSACTION_DESCRIPTION.CHARGE.replace(ORDER_ID_PLACEHOLDER, orderID)
 			});
 
 		return charge.id;
-	}),
+	},
 
 	/**
 	 * Function responsible for refunding some money back to a customer
@@ -96,7 +97,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	refundMoney: _Q.async(function* (refundAmount, transactionIDs, orderID)
+	refundMoney: async function (refundAmount, transactionIDs, orderID)
 	{
 		var transaction,
 			amountLeft, amountToRefund,
@@ -105,7 +106,7 @@ module.exports =
 		// Loop through all the charges for an order in order to refund the money
 		for (i = 0; i < transactionIDs.length; i++)
 		{
-			transaction = yield _retrieveTransaction(transactionIDs[i]);
+			transaction = await _retrieveTransaction(transactionIDs[i]);
 
 			// Figure out how much money is left to refund from this transaction
 			amountLeft = transaction.amount - transaction.amount_refunded;
@@ -116,12 +117,12 @@ module.exports =
 				amountToRefund = (refundAmount - amountLeft > 0 ? amountLeft : refundAmount);
 
 				// Now refund money from the transaction currently in context
-				yield _refundMoney(
-				{
-					charge: transaction.id,
-					amount: amountToRefund * 100,
-					metadata: { "Order ID" : orderID },
-				});
+				await _refundMoney(
+					{
+						charge: transaction.id,
+						amount: amountToRefund * 100,
+						metadata: { 'Order ID' : orderID },
+					});
 
 				// Update the variable we use to track the money left to give back to the customer
 				refundAmount -= amountToRefund;
@@ -135,5 +136,5 @@ module.exports =
 		}
 
 		return true;
-	})
+	}
 };

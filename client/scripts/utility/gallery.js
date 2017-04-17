@@ -14,6 +14,7 @@ var GALLERY_OVERLAY = 'galleryOverlay',
 	SHOW_CLASS = 'show',
 	HIDE_CLASS = 'hide',
 	SURFACE_CLASS = 'surface',
+	DISABLED_CLASS = 'disabled',
 	FADE_CLASSES =
 	{
 		OUT_LEFT: 'fadeOutLeft',
@@ -26,6 +27,7 @@ var GALLERY_OVERLAY = 'galleryOverlay',
 
 var _imageURLs = [], // The list of image URLs to show within the gallery
 	_currentIndex, // The index of the picture currently loaded into the gallery viewer
+	_transitioning, // A flag indicating whether we are in the middle of transitioning between photos
 
 	// Gallery elements
 	_galleryOverlay = document.getElementById(GALLERY_OVERLAY),
@@ -69,9 +71,35 @@ function _toggleControlsVisibility()
 	}
 }
 
+/**
+ * A function that alters the look of the slider controls so that they can look either disabled or enabled depending
+ * on whether the gallery is in the midst of switching out photos
+ *
+ * @param {Boolean} disable - a flag indicating whether to disable the controls in appearance
+ *
+ * @author kinsho
+ */
+function _disableEnableControls(disable)
+{
+	if (disable)
+	{
+		_transitioning = true;
+
+		_galleryLeftSlider.classList.add(DISABLED_CLASS);
+		_galleryRightSlider.classList.add(DISABLED_CLASS);
+	}
+	else
+	{
+		_transitioning = false;
+
+		_galleryLeftSlider.classList.remove(DISABLED_CLASS);
+		_galleryRightSlider.classList.remove(DISABLED_CLASS);
+	}
+}
+
 // ----------------- LISTENERS --------------------------
 
-// The following are animation listeners designed to gracefully manage the gallery sliding
+// The following are animation listeners designed to gracefully manage the gallery sliding and fading
 
 function fadeInLeft()
 {
@@ -79,8 +107,8 @@ function fadeInLeft()
 
 	_currentIndex += 1;
 	_galleryPicture.src = _imageURLs[_currentIndex];
-
 	_galleryPictureViewer.classList.add(FADE_CLASSES.IN_LEFT);
+
 	_toggleControlsVisibility();
 	_galleryPictureViewer.addEventListener('animationend', removeFadeTracesAndUpdateGallery);
 }
@@ -91,8 +119,8 @@ function fadeInRight()
 
 	_currentIndex -= 1;
 	_galleryPicture.src = _imageURLs[_currentIndex];
-
 	_galleryPictureViewer.classList.add(FADE_CLASSES.IN_RIGHT);
+
 	_toggleControlsVisibility();
 	_galleryPictureViewer.addEventListener('animationend', removeFadeTracesAndUpdateGallery);
 }
@@ -101,6 +129,7 @@ function removeFadeTracesAndUpdateGallery()
 {
 	_galleryPictureViewer.removeEventListener('animationend', removeFadeTracesAndUpdateGallery);
 
+	_disableEnableControls(false);
 	_galleryPictureViewer.classList.remove(FADE_CLASSES.OUT_LEFT);
 	_galleryPictureViewer.classList.remove(FADE_CLASSES.OUT_RIGHT);
 	_galleryPictureViewer.classList.remove(FADE_CLASSES.IN_LEFT);
@@ -120,11 +149,12 @@ function desurface()
  */
 function goToNextPhoto()
 {
-	// Keep the logic from executing if we are on the last photo in the gallery
-	if (_currentIndex !== (_imageURLs.length - 1))
+	// Keep the logic from executing if we are on the last photo in the gallery or currently in the midst of a transition
+	if (_currentIndex !== (_imageURLs.length - 1) && !(_transitioning))
 	{
-		_galleryPictureViewer.addEventListener('animationend', fadeInLeft);
+		_disableEnableControls(true);
 
+		_galleryPictureViewer.addEventListener('animationend', fadeInLeft);
 		_galleryPictureViewer.classList.add(FADE_CLASSES.OUT_LEFT);
 	}
 }
@@ -136,12 +166,35 @@ function goToNextPhoto()
  */
 function goToPrevPhoto()
 {
-	// Keep the logic from executing if we are on the first photo in the gallery
-	if (_currentIndex !== 0)
+	// Keep the logic from executing if we are on the first photo in the gallery or currently in the midst of a transition
+	if ((_currentIndex !== 0) && !(_transitioning))
 	{
-		_galleryPictureViewer.addEventListener('animationend', fadeInRight);
+		_disableEnableControls(true);
 
+		_galleryPictureViewer.addEventListener('animationend', fadeInRight);
 		_galleryPictureViewer.classList.add(FADE_CLASSES.OUT_RIGHT);
+	}
+}
+
+/**
+ * Function will detect whether the right or left arrow keys were pressed and will slide the gallery accordingly
+ *
+ * @param {Event} event - the event object associated with this listener
+ *
+ * @author kinsho
+ */
+function detectArrowKeys(event)
+{
+	// Left arrow key
+	if (event.keyCode === 37)
+	{
+		goToPrevPhoto();
+	}
+
+	// Right arrow key
+	else if (event.keyCode === 39)
+	{
+		goToNextPhoto();
 	}
 }
 
@@ -152,11 +205,7 @@ function goToPrevPhoto()
  */
 function exitGallery()
 {
-	_currentIndex = 0;
-	_imageURLs = [];
-
 	_galleryOverlay.addEventListener('transitionend', desurface);
-
 	_galleryOverlay.classList.remove(SHOW_CLASS);
 }
 
@@ -180,8 +229,14 @@ var galleryModule =
 		_imageURLs = URLs;
 
 		_galleryPicture.src = _imageURLs[index];
-		_galleryOverlay.classList.add(SHOW_CLASS, SURFACE_CLASS);
-		_toggleControlsVisibility();
+		_galleryOverlay.classList.add(SURFACE_CLASS);
+
+		// Set any animations on a slight delay following the surfacing of the gallery
+		window.setTimeout(() =>
+		{
+			_galleryOverlay.classList.add(SHOW_CLASS);
+			_toggleControlsVisibility();
+		}, 50);
 	}
 };
 
@@ -192,6 +247,9 @@ var galleryModule =
 // Attach the gallery sliders to the appropriate icons
 _galleryLeftSlider.addEventListener('click', goToPrevPhoto);
 _galleryRightSlider.addEventListener('click', goToNextPhoto);
+
+// Set it up so that the keyboard can also move the gallery around
+document.addEventListener('keydown', detectArrowKeys);
 
 // Put up the listeners to allow the user to exit the gallery
 _galleryExitIcon.addEventListener('click', exitGallery);

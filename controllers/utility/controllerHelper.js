@@ -4,9 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-
-	config = global.OwlStakes.require('config/config'),
+var config = global.OwlStakes.require('config/config'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
@@ -24,11 +22,13 @@ var BASE_TEMPLATE_FILE = 'base',
 	HBARS_REDIRECT_URL = 'redirectURL',
 
 	HBARS_IGNORE_SCALING = 'ignoreScaling',
+	HBARS_WAIT_PAGE_LOAD = 'waitForPageLoad',
 	HBARS_BOOTSTRAPPED_DATA = 'initialData',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
 	HBARS_CURRENT_YEAR = 'currentYear';
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -41,12 +41,14 @@ module.exports =
 	 * 		the file system
 	 * @param {Object} [bootData] - data to bootstrap into the page when it is initially loaded
 	 * @param {boolean} [ignoreScaling] - a flag indicating whether we should avoid doing any mobile scaling on the page
+	 * @param {boolean} [displayAfterPageLoad] - a flag indicating whether we should wait for the page to completely load before
+	 * 		showing it to the user
 	 *
 	 * @return {String} - a fully populated string of HTML
 	 *
 	 * @author kinsho
 	 */
-	renderInitialView: _Q.async(function* (content, directory, bootData, ignoreScaling)
+	renderInitialView: async function (content, directory, bootData, ignoreScaling, displayAfterPageLoad)
 	{
 		var data = {};
 
@@ -62,7 +64,7 @@ module.exports =
 		data[HBARS_CONTENT_HTML] = content;
 
 		// Other assets specific to the page being loaded
-		data[HBARS_STYLESHEET_FILES] = yield fileManager.fetchStylesheets(directory);
+		data[HBARS_STYLESHEET_FILES] = await fileManager.fetchStylesheets(directory);
 		data[HBARS_LAUNCH_SCRIPT] = directory;
 
 		// Load the current year into the view as well for copyright purposes
@@ -71,8 +73,11 @@ module.exports =
 		// Set a flag should we need to explicitly avoid any mobile scaling
 		data[HBARS_IGNORE_SCALING] = ignoreScaling;
 
-		return yield templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
-	}),
+		// Set a flag indicating whether we need to show the loader as the page loads all its content
+		data[HBARS_WAIT_PAGE_LOAD] = displayAfterPageLoad;
+
+		return await templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
+	},
 
 	/**
 	 * Basic function responsible for populating a template that immediate redirects the user to another page
@@ -83,13 +88,13 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	renderRedirectView: _Q.async(function* (redirectURL)
+	renderRedirectView: async function (redirectURL)
 	{
 		var data = {};
 
 		// Populate the redirect URL into the script that will immediately be executed when the page loads
 		data[HBARS_REDIRECT_URL] = redirectURL;
 
-		return yield templateManager.populateTemplate(data, '', REDIRECT_TEMPLATE_FILE);
-	})
+		return await templateManager.populateTemplate(data, '', REDIRECT_TEMPLATE_FILE);
+	}
 };

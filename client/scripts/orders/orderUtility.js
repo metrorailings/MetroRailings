@@ -101,8 +101,9 @@ var orderManagerModule =
 		changedOrders.sort(_sortOrders);
 		existingOrders.unshift(...changedOrders);
 
+		// @TODO: Set up caching of orders
 		// Ensure that the currently reconciled collection of orders are saved into the user's local browser cache
-		window.localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(existingOrders));
+		// window.localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(existingOrders));
 
 		return changedOrderCount;
 	},

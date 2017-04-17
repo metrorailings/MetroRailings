@@ -6,8 +6,6 @@ import vm from 'client/scripts/orders/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var LOCAL_STORAGE_ORDERS_KEY = 'metroRailings.orders';
-
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
@@ -29,10 +27,16 @@ function triggerPing()
 // ----------------- DATA INITIALIZATION -----------------------------
 
 // Retrieve the orders either from the local browser cache or from the back-end
-vm.orders = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_KEY) || '[]');
+
+// @TODO: Set up caching of orders
+// vm.orders = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_KEY) || '[]');
+vm.orders = [];
 vm.pingTheServer = true;
 
 // ----------------- PAGE INITIALIZATION -----------------------------
 
 // Set up a regular timer to check the service for newly-updated data
-window.setInterval(triggerPing, 20000);
+window.setInterval(triggerPing, 45000);
+
+// Scroll to the top when the page loads
+window.scrollTo(0, 0);

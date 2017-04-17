@@ -7,11 +7,12 @@
 @import '../foundation/form';
 @import '../foundation/gallery';
 @import '../foundation/responsive';
+@import '../foundation/optionsCarousel';
 @import '../foundation/scrollDownLabel';
 
 /* ----------------------- STYLES ----------------------------- */
 
-#typeSection, #lengthSection, #styleSection, #curvesSection, #colorSection, #submissionSection
+#typeSection, #lengthSection, #curvesSection, #submissionSection
 {
 	border-top:
 	{
@@ -21,7 +22,7 @@
 	}
 }
 
-#lengthSection, #styleSection, #curvesSection, #colorSection, #submissionSection
+#lengthSection, #curvesSection, #submissionSection
 {
 	@include transitionSettings($property: all, $duration: 0.75s);
 
@@ -44,11 +45,6 @@
 
 		max-height: 3000px;
 	}
-
-	&.overflowFix
-	{
-		overflow: visible;
-	}
 }
 
 .pictureButtonContainer
@@ -58,11 +54,16 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	label::before
+	{
+		margin-top: 20px;
+	}
 }
 
 .pictureButton
 {
-	@include transitionSettings($property: all, $duration: 0.25s);
+	@include transitionSettings($property: all, $duration: 0.6s);
 
 	border:
 	{
@@ -73,7 +74,6 @@
 	}
 
 	position: relative;
-	top: 0px;
 	padding: 20px;
 
 	background-color: map-get($COLORS, lightBlueTheme);
@@ -81,10 +81,12 @@
 
 	cursor: pointer;
 
+	top: 0px;
+
 	&.pressDown
 	{
-		top: 5px;
 		box-shadow: 0px 3px 3px map-get($COLORS, darkGrayTheme);
+		top: 5px;
 	}
 
 	& > div
@@ -104,10 +106,6 @@
 	margin:
 	{
 		bottom: 5px;
-	}
-
-	padding:
-	{
 		left: 10px;
 		right: 10px;
 	}
@@ -115,5 +113,5 @@
 
 footer
 {
-	margin-top: 0px;
+	margin-top: 0px !important;
 }

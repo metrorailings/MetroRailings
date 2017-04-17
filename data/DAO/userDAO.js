@@ -1,7 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-	_crypto = require('crypto'),
+var _crypto = require('crypto'),
 
 	config = global.OwlStakes.require('config/config'),
 
@@ -30,7 +29,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	checkAdminCredentials: _Q.async(function* (username, password)
+	checkAdminCredentials: async function (username, password)
 	{
 		var dbResults,
 			// The password has to be hashed first prior to verification
@@ -38,11 +37,11 @@ module.exports =
 
 		try
 		{
-			dbResults = yield mongo.read(ADMINS_COLLECTION,
-			{
-				username: username,
-				password: hash
-			});
+			dbResults = await mongo.read(ADMINS_COLLECTION,
+				{
+					username: username,
+					password: hash
+				});
 
 			return !!(dbResults.length);
 		}
@@ -53,7 +52,7 @@ module.exports =
 
 			return false;
 		}
-	}),
+	},
 
 	/**
 	 * Function responsible for storing new administrator cookies into the database for future verification
@@ -66,7 +65,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	storeAdminCookie: _Q.async(function* (username, cookie)
+	storeAdminCookie: async function (username, cookie)
 	{
 		var cookieRecord =
 			{
@@ -78,7 +77,7 @@ module.exports =
 		try
 		{
 			// Overwrite any old cookie records for the user in context, should one exists
-			yield mongo.bulkWrite(COOKIES_COLLECTION, true, mongo.formUpdateOneQuery({ username: username }, cookieRecord, true));
+			await mongo.bulkWrite(COOKIES_COLLECTION, true, mongo.formUpdateOneQuery({ username: username }, cookieRecord, true));
 
 			return true;
 		}
@@ -89,7 +88,7 @@ module.exports =
 
 			return false;
 		}
-	}),
+	},
 
 	/**
 	 * Function responsible for verifying that a cookie is a valid admin cookie
@@ -100,7 +99,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	verifyAdminCookie: _Q.async(function* (cookie)
+	verifyAdminCookie: async function (cookie)
 	{
 		var	username = cookieManager.retrieveAdminCookie(cookie)[0],
 			dbResults;
@@ -113,12 +112,12 @@ module.exports =
 
 		try
 		{
-			dbResults = yield mongo.read(COOKIES_COLLECTION,
-			{
-				username: username,
-				// Search only against the part of the cookie responsible for logging in admins
-				cookie: cookieManager.parseCookie(cookie)[ADMIN_COOKIE]
-			});
+			dbResults = await mongo.read(COOKIES_COLLECTION,
+				{
+					username: username,
+					// Search only against the part of the cookie responsible for logging in admins
+					cookie: cookieManager.parseCookie(cookie)[ADMIN_COOKIE]
+				});
 
 			return !!(dbResults.length);
 		}
@@ -129,5 +128,5 @@ module.exports =
 
 			return false;
 		}
-	})
+	}
 };

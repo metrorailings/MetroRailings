@@ -15,21 +15,22 @@ var _Q = require('q'),
 
 var CONTROLLER_FOLDER = 'createOrder',
 
-	COOKIE_ORDER_NAME = 'order',
+	COOKIE_ORDER_NAME = 'basicOrderInfo',
 
 	PARTIALS =
 	{
 		TYPE_SECTION: 'typeSection',
 		CURVES_SECTION: 'curvesSection',
 		LENGTH_SECTION: 'lengthSection',
-		STYLE_SECTION: 'styleSection',
+		POST_SECTION: 'postSection',
+		POST_END_SECTION: 'postEndSection',
+		POST_CAP_SECTION: 'postCapSection',
+		CENTER_DESIGN_SECTION: 'centerDesignSection',
 		COLORS_SECTION: 'colorsSection',
-		SUBMISSION_SECTION: 'submissionSection'
+		SUBMISSION_SECTION: 'submissionSection',
+		DESIGN_TEMPLATE: 'designTemplate',
+		OPTIONS_CAROUSEL: 'optionsCarousel'
 	};
-
-// ----------------- PRIVATE VARIABLES --------------------------
-
-// ----------------- PRIVATE FUNCTIONS --------------------------
 
 // ----------------- PARTIAL TEMPLATES --------------------------
 
@@ -50,16 +51,6 @@ _Handlebars.registerPartial('createOrderCurvesSection', fileManager.fetchTemplat
  * The template for the step in which the user specifies the length of railing needed for the project
  */
 _Handlebars.registerPartial('createOrderLengthSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LENGTH_SECTION));
-
-/**
- * The template for the step in which the user specifies the style of railing needed for the project
- */
-_Handlebars.registerPartial('createOrderStyleSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.STYLE_SECTION));
-
-/**
- * The template for the step in which the user specifies the color he or she wants for the railings
- */
-_Handlebars.registerPartial('createOrderColorSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.COLORS_SECTION));
 
 /**
  * The template for the submission button
@@ -97,9 +88,9 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	saveOrder: function (params)
+	continueWithOrder: function (params)
 	{
-		console.log('Wrapped the order into a cookie before proceeding to the last step of the order process...');
+		console.log('Wrapped the order into a cookie before proceeding to the design phase of the order process...');
 
 		return {
 			statusCode: responseCodes.OK,

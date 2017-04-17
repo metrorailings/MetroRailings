@@ -16,11 +16,13 @@
             <input type='radio' class='statusRadio' id='productionStatus' name='status' value='production' /> <label for='productionStatus'>Production</label>
             <input type='radio' class='statusRadio' id='installStatus' name='status' value='install' /> <label for='installStatus'>Install</label>
             <input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed' /> <label for='closedStatus'>Closed</label>
+            <input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled' /><label for='cancelledStatus'>Cancelled</label>
 		</span>
 	</div>
 
-    <!-- @TODO - For orders in consult status, allow the admin to set a date of visitation -->
+    <!-- @TODO - For orders in open status, allow the admin to set a date of visitation -->
 
+    <!-- @TODO - Allow multiple notes to be stored, one on top of another --->
     <div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
@@ -29,4 +31,8 @@
 		<textarea id='orderNotes'></textarea>
     </div>
 
+    <div class='dataGrouping'>
+        <span class='specializedLabel'>Pictures</span>
+        <span id='picturesListing'><!-- Show pictures here --></span>
+    </div>
 </div>

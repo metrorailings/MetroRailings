@@ -24,8 +24,19 @@
                 <span class='orderInfoSectionHeader'>Order Details</span>
                 <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
                 <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
-                <span class='orderCell'><span class='orderLabel'>Style:</span> {{#capitalize style }}{{/capitalize }}</span>
-                <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize color }}{{/capitalize }}</span>
+                {{#if design.postDesign }}
+					<span class='orderCell'><span class='orderLabel'>Post Design:</span> {{design.postDesign}}</span>
+                {{/if}}
+                {{#if design.postEndDesign}}
+					<span class='orderCell'><span class='orderLabel'>Post End:</span> {{design.postEndDesign}}</span>
+                {{/if}}
+                {{#if design.postCapDesign}}
+					<span class='orderCell'><span class='orderLabel'>Post Cap:</span> {{design.postCapDesign}}</span>
+                {{/if}}
+                {{#if design.centerDesign}}
+					<span class='orderCell'><span class='orderLabel'>Center Design:</span> {{design.centerDesign}}</span>
+                {{/if}}
+                <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize design.color }}{{/capitalize }}</span>
             </span>
 		</div>
 
@@ -33,7 +44,7 @@
 			<div class='orderGrouping orderNotesSection'>
                 <span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>Notes</span>
-                    <span class='orderCell'>{{ note }}</span>
+                    <span class='orderCell'>{{ notes }}</span>
                 </span>
 			</div>
         {{/if}}
@@ -46,7 +57,7 @@
                     </span>
                 </span>
             {{/can_status_be_updated}}
-            <span class='orderCell orderDetailsButtonContainer'>
+            <span class='orderCell'>
                 <button class='orderDetailsButton' data-id={{ this._id }}>
                     Edit<i class='fa fa-arrow-circle-o-right'></i>
                 </button>
@@ -55,3 +66,7 @@
 
 	</div>
 {{/each}}
+
+{{#unless orders.length}}
+    <div id='nothingToDisplay'>Nothing to display here...</div>
+{{/unless}}

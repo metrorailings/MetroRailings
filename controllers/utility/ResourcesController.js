@@ -7,6 +7,7 @@
 var _Q = require('q'),
 	_sass = require('node-sass'),
 	_zlib = require('zlib'),
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	router = global.OwlStakes.require('config/router');
 
@@ -30,6 +31,7 @@ var fileCache = {}; // A cache of file contents that help to keep the database f
 var zlibGZipper = _Q.denodeify(_zlib.gzip);
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -37,14 +39,14 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (url)
+	init: async function (url)
 	{
 		var fileContents,
 			gzipContents;
 
 		// If the file has already been retrieved once before from the database, we should be able to return the file
 		// from our local cache
-		if (fileCache[url] && false)
+		if (fileCache[url])
 		{
 			console.log('The file referenced by ' + url + ' was already stored in the local cache!');
 			return fileCache[url];
@@ -52,22 +54,22 @@ module.exports =
 
 		try
 		{
-			fileContents = yield fileManager.fetchFile(url);
+			fileContents = await fileManager.fetchFile(url);
 
 			if (url.endsWith(SCSS_EXTENSION))
 			{
 				fileContents = _sass.renderSync(
-				{
-					data: fileContents,
-					includePaths: SCSS_INCLUDE_PATHS,
-					outputStyle: COMPRESSED_KEYWORD
-				}).css;
+					{
+						data: fileContents,
+						includePaths: SCSS_INCLUDE_PATHS,
+						outputStyle: COMPRESSED_KEYWORD
+					}).css;
 			}
 
 			// gzip the file contents only if the file is not an image
 			if ( !(router.isImage(url)) )
 			{
-				gzipContents = yield zlibGZipper(fileContents);
+				gzipContents = await zlibGZipper(fileContents);
 			}
 			else
 			{
@@ -85,5 +87,5 @@ module.exports =
 			console.error('ERROR ---> ResourcesController.initAction');
 			throw error;
 		}
-	})
+	}
 };

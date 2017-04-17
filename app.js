@@ -8,7 +8,6 @@ global.OwlStakes =
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _http = require('http'),
-	_Q = require('q'),
 	requestHandler = global.OwlStakes.require('utility/requestHandler'),
 	responseHandler = global.OwlStakes.require('utility/responseHandler'),
 	databaseDriver = global.OwlStakes.require('data/DAO/utility/databaseDriver');
@@ -16,10 +15,10 @@ var _http = require('http'),
 // ----------------- OPENING LOGIC --------------------------
 
 // Open up a connection to the database
-_Q.spawn(function* ()
+(async function()
 {
-	yield databaseDriver.initialize();
-});
+	await databaseDriver.initialize();
+}());
 
 // Define a server that will act as a gateway point for all incoming server requests
 _http.createServer(function(request, response)
@@ -30,13 +29,13 @@ _http.createServer(function(request, response)
 	// Use only for development purposes
 	// _event.setMaxListeners(0);
 
-	_Q.spawn(function* ()
+	(async function ()
 	{
 		try
 		{
 			// Manage the request through the requestManager
 			var url = request.url.trim(),
-				responseData = yield requestHandler.delegate(request);
+				responseData = await requestHandler.delegate(request);
 
 			// Send the response back
 			responseHandler.delegateResponse(request, response, responseData, url);
@@ -47,7 +46,7 @@ _http.createServer(function(request, response)
 			console.trace();
 			responseHandler.sendInternalServerErrorResponse(response, request.url.trim());
 		}
-	});
+	}());
 
 }).listen(3000);
 

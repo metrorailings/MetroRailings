@@ -12,6 +12,7 @@ $DEVICE_WIDTHS:
 
 /* ----------------------- MIX-INS ----------------------------- */
 
+
 /*
  * Mix-in is responsible for enforcing CSS stylings only on devices that can (at minimum) support resolution
  * expected from a desktop environment
@@ -121,4 +122,18 @@ $DEVICE_WIDTHS:
 	{
 		@content;
 	}
+}
+
+/*
+ * Mix-in is responsible for enforcing CSS stylings only on webkit browsers
+ *
+ * @author kinsho
+ */
+@mixin webkitOnly()
+{
+	@media screen and (-webkit-min-device-pixel-ratio:0)
+	{
+		@content;
+	}
+
 }

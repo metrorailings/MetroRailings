@@ -17,9 +17,4 @@ import submissionSection from 'client/scripts/orderDetails/submissionSection';
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-// ----------------- DATA INITIALIZATION -----------------------------
-
-// Load a copy of the original order into the view model
-vm.originalOrder = window.MetroRailings.order;
-
 // ----------------- PAGE INITIALIZATION -----------------------------

@@ -89,6 +89,23 @@ $FONTS:
 	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
 }
 
+/* --- Home Fonts --- */
+%metroRailingsTitle
+{
+	@include basicFontSettings($weight: 200, $family: Cardo, $color: whiteTheme);
+
+	letter-spacing: 4px;
+	text-shadow: 1px 1px map-get($COLORS, blackTheme);
+}
+
+%metroRailingsSlogan
+{
+	@include basicFontSettings($weight: 200, $family: Cardo, $color: whiteTheme, $style: italic);
+
+	letter-spacing: 2px;
+	text-shadow: 1px 1px map-get($COLORS, blackTheme);
+}
+
 /* --- Header stylings --- */
 %h3
 {
@@ -98,6 +115,13 @@ $FONTS:
 %sectionHeader
 {
 	@include basicFontSettings($weight: 200, $size: largePlusFontSize, $family: Raleway, $color: darkBlueTheme);
+}
+
+%specialSectionHeader
+{
+	@include basicFontSettings($weight: 700, $size: largePlusFontSize, $family: Raleway);
+
+	letter-spacing: 3px;
 }
 
 /* --- Regular stylings --- */
@@ -110,6 +134,13 @@ $FONTS:
 %regularPlusText
 {
 	@include basicFontSettings($size: regularPlusFontSize);
+}
+
+%decorativeText
+{
+	@include basicFontSettings($size: regularPlusFontSize, $family: Raleway, $weight: 300);
+
+	letter-spacing: 0.75px;
 }
 
 %footerText
@@ -251,8 +282,6 @@ $FONTS:
 %greenSignificantText
 {
 	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli, $color: darkGreenTheme);
-
-	text-shadow: 0.5px 0.5px map-get($COLORS, blackTheme);
 }
 
 %bigSignificantText

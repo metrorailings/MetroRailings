@@ -4,8 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-	_Handlebars = require('Handlebars'),
+var _Handlebars = require('Handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
@@ -46,28 +45,28 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (params, cookie)
+	init: async function (params, cookie)
 	{
 		var pageData = {},
 			populatedPageTemplate;
 
-		if ( !(yield usersDAO.verifyAdminCookie(cookie)) )
+		if ( !(await usersDAO.verifyAdminCookie(cookie)) )
 		{
 			console.log('Redirecting the user to the log-in page...');
 
-			return yield controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
+			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
 		console.log('Loading the orders page...');
 
 		// Grab the raw HTML of the order listing template
-		pageData.orderListingTemplate = yield fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.LISTING);
+		pageData.orderListingTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.LISTING);
 
 		// Render the page template
-		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {}, true);
-	}),
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {}, true);
+	},
 
 	/**
 	 * Function meant to search for all orders that were modified after a particular date
@@ -79,21 +78,20 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	searchOrders: _Q.async(function* (params, cookie)
+	searchOrders: async function (params, cookie)
 	{
-		if (yield usersDAO.verifyAdminCookie(cookie))
+		if (await usersDAO.verifyAdminCookie(cookie))
 		{
 			console.log('Searching for newly modified orders...');
 
-			var newData = yield ordersDAO.searchOrdersByDate(new Date(params.date));
+			var newData = await ordersDAO.searchOrdersByDate(new Date(params.date));
 
 			return JSON.stringify(newData);
 		}
 
 		// Return a meaningless response for unauthorized calls
 		return JSON.stringify('');
-	}),
-
+	},
 
 	/**
 	 * Function meant to move an order along to the next phase of development
@@ -105,22 +103,22 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	updateStatus: _Q.async(function* (params, cookie)
+	updateStatus: async function (params, cookie)
 	{
 		var updatedData;
 
-		if (yield usersDAO.verifyAdminCookie(cookie))
+		if (await usersDAO.verifyAdminCookie(cookie))
 		{
 			var username = cookieManager.retrieveAdminCookie(cookie)[0];
 
 			console.log('Updating a status on order ' + params.orderID);
 
-			updatedData = yield ordersDAO.updateStatus(parseInt(params.orderID, 10), username);
+			updatedData = await ordersDAO.updateStatus(parseInt(params.orderID, 10), username);
 		}
 
 		return {
 			statusCode: responseCodes.OK,
 			data: updatedData || {}
 		};
-	})
+	}
 };
