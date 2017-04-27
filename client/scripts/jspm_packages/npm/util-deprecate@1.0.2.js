@@ -1,1 +1,1 @@
-module.exports = require("npm:util-deprecate@1.0.2/browser");
+module.exports = require("npm:util-deprecate@1.0.2/browser.js");

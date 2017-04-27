@@ -1,8 +1,8 @@
 /* */ 
 (function(process) {
-  var cliui = require("cliui"),
-      decamelize = require("decamelize"),
-      wsize = require("window-size");
+  var cliui = require('cliui'),
+      decamelize = require('decamelize'),
+      wsize = require('window-size');
   module.exports = function(yargs) {
     var self = {};
     var fails = [];
@@ -256,4 +256,4 @@
     };
     return self;
   };
-})(require("process"));
+})(require('process'));

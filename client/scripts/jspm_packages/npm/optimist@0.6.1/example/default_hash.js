@@ -1,5 +1,5 @@
 /* */ 
-var argv = require("../index").default({
+var argv = require('../index').default({
   x: 10,
   y: 10
 }).argv;

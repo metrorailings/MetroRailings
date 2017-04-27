@@ -1,2 +1,2 @@
 /* */ 
-console.dir(require("../index").argv);
+console.dir(require('../index').argv);

@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module","./handlebars.runtime","./handlebars/compiler/ast","./handlebars/compiler/base","./handlebars/compiler/compiler","./handlebars/compiler/javascript-compiler","./handlebars/compiler/visitor","./handlebars/no-conflict"], function (exports, module, _handlebarsRuntime, _handlebarsCompilerAst, _handlebarsCompilerBase, _handlebarsCompilerCompiler, _handlebarsCompilerJavascriptCompiler, _handlebarsCompilerVisitor, _handlebarsNoConflict) {
+define(['exports', 'module', './handlebars.runtime', './handlebars/compiler/ast', './handlebars/compiler/base', './handlebars/compiler/compiler', './handlebars/compiler/javascript-compiler', './handlebars/compiler/visitor', './handlebars/no-conflict'], function (exports, module, _handlebarsRuntime, _handlebarsCompilerAst, _handlebarsCompilerBase, _handlebarsCompilerCompiler, _handlebarsCompilerJavascriptCompiler, _handlebarsCompilerVisitor, _handlebarsNoConflict) {
   'use strict';
 
   // istanbul ignore next

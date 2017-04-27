@@ -1,0 +1,27 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/general';
+
+/* ----------------------- STYLES ----------------------------- */
+
+p
+{
+	text-align: center;
+}
+
+#contactUsForm, #submissionSection
+{
+	border-top:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 10px;
+	}
+}

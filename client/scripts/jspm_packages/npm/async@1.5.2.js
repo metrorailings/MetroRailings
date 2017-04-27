@@ -1,1 +1,1 @@
-module.exports = require("npm:async@1.5.2/lib/async");
+module.exports = require("npm:async@1.5.2/lib/async.js");

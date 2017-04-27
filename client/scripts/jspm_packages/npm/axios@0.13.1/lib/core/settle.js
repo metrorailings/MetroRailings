@@ -1,6 +1,6 @@
 /* */ 
 'use strict';
-var createError = require("./createError");
+var createError = require('./createError');
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
   if (!response.status || !validateStatus || validateStatus(response.status)) {

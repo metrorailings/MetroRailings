@@ -1,7 +1,7 @@
 /* */ 
 (function(process) {
   'use strict';
-  var utils = require("../utils/common");
+  var utils = require('../utils/common');
   var Z_FIXED = 4;
   var Z_BINARY = 0;
   var Z_TEXT = 1;
@@ -146,7 +146,7 @@
       }
     }
     if (overflow === 0) {
-      return ;
+      return;
     }
     do {
       bits = max_length - 1;
@@ -600,4 +600,4 @@
   exports._tr_flush_block = _tr_flush_block;
   exports._tr_tally = _tr_tally;
   exports._tr_align = _tr_align;
-})(require("process"));
+})(require('process'));

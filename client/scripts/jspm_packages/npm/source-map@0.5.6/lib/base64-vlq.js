@@ -1,5 +1,5 @@
 /* */ 
-var base64 = require("./base64");
+var base64 = require('./base64');
 var VLQ_BASE_SHIFT = 5;
 var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
 var VLQ_BASE_MASK = VLQ_BASE - 1;

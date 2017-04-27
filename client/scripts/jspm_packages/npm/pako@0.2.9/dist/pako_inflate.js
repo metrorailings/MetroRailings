@@ -83,7 +83,7 @@
           arraySet: function(dest, src, src_offs, len, dest_offs) {
             if (src.subarray && dest.subarray) {
               dest.set(src.subarray(src_offs, src_offs + len), dest_offs);
-              return ;
+              return;
             }
             for (var i = 0; i < len; i++) {
               dest[dest_offs + i] = src[src_offs + i];
@@ -137,7 +137,7 @@
       }, {}],
       2: [function(require, module, exports) {
         'use strict';
-        var utils = require("./common");
+        var utils = require('./common');
         var STR_APPLY_OK = true;
         var STR_APPLY_UIA_OK = true;
         try {
@@ -596,16 +596,16 @@
           strm.avail_out = (_out < end ? 257 + (end - _out) : 257 - (_out - end));
           state.hold = hold;
           state.bits = bits;
-          return ;
+          return;
         };
       }, {}],
       8: [function(require, module, exports) {
         'use strict';
-        var utils = require("../utils/common");
-        var adler32 = require("./adler32");
-        var crc32 = require("./crc32");
-        var inflate_fast = require("./inffast");
-        var inflate_table = require("./inftrees");
+        var utils = require('../utils/common');
+        var adler32 = require('./adler32');
+        var crc32 = require('./crc32');
+        var inflate_fast = require('./inffast');
+        var inflate_table = require('./inftrees');
         var CODES = 0;
         var LENS = 1;
         var DISTS = 2;
@@ -1810,7 +1810,7 @@
       }],
       9: [function(require, module, exports) {
         'use strict';
-        var utils = require("../utils/common");
+        var utils = require('../utils/common');
         var MAXBITS = 15;
         var ENOUGH_LENS = 852;
         var ENOUGH_DISTS = 592;
@@ -2025,13 +2025,13 @@
       }, {}],
       "/lib/inflate.js": [function(require, module, exports) {
         'use strict';
-        var zlib_inflate = require("./zlib/inflate");
-        var utils = require("./utils/common");
-        var strings = require("./utils/strings");
-        var c = require("./zlib/constants");
-        var msg = require("./zlib/messages");
-        var ZStream = require("./zlib/zstream");
-        var GZheader = require("./zlib/gzheader");
+        var zlib_inflate = require('./zlib/inflate');
+        var utils = require('./utils/common');
+        var strings = require('./utils/strings');
+        var c = require('./zlib/constants');
+        var msg = require('./zlib/messages');
+        var ZStream = require('./zlib/zstream');
+        var GZheader = require('./zlib/gzheader');
         var toString = Object.prototype.toString;
         function Inflate(options) {
           if (!(this instanceof Inflate))
@@ -2199,4 +2199,4 @@
       }]
     }, {}, [])("/lib/inflate.js");
   });
-})(require("process"));
+})(require('process'));

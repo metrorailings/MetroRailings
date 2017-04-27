@@ -1,1 +1,1 @@
-module.exports = require("npm:axios@0.13.1/index");
+module.exports = require("npm:axios@0.13.1/index.js");

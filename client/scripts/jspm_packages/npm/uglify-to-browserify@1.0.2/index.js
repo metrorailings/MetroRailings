@@ -1,8 +1,8 @@
 /* */ 
 'use strict';
-var fs = require("fs");
-var PassThrough = require("stream").PassThrough;
-var Transform = require("stream").Transform;
+var fs = require('fs');
+var PassThrough = require('stream').PassThrough;
+var Transform = require('stream').Transform;
 if (typeof Transform === 'undefined') {
   throw new Error('UglifyJS only supports browserify when using node >= 0.10.x');
 }

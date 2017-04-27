@@ -1,11 +1,11 @@
 /* */ 
 (function(process) {
   'use strict';
-  var utils = require("../utils/common");
-  var adler32 = require("./adler32");
-  var crc32 = require("./crc32");
-  var inflate_fast = require("./inffast");
-  var inflate_table = require("./inftrees");
+  var utils = require('../utils/common');
+  var adler32 = require('./adler32');
+  var crc32 = require('./crc32');
+  var inflate_fast = require('./inffast');
+  var inflate_table = require('./inftrees');
   var CODES = 0;
   var LENS = 1;
   var DISTS = 2;
@@ -1201,4 +1201,4 @@
   exports.inflateGetHeader = inflateGetHeader;
   exports.inflateSetDictionary = inflateSetDictionary;
   exports.inflateInfo = 'pako inflate (from Nodeca project)';
-})(require("process"));
+})(require('process'));

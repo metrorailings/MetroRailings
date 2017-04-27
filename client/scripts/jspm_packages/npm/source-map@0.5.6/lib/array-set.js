@@ -1,5 +1,5 @@
 /* */ 
-var util = require("./util");
+var util = require('./util');
 var has = Object.prototype.hasOwnProperty;
 function ArraySet() {
   this._array = [];

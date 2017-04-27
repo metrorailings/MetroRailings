@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module","../base","../exception","../utils","./code-gen"], function (exports, module, _base, _exception, _utils, _codeGen) {
+define(['exports', 'module', '../base', '../exception', '../utils', './code-gen'], function (exports, module, _base, _exception, _utils, _codeGen) {
   'use strict';
 
   // istanbul ignore next

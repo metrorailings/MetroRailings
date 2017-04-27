@@ -177,23 +177,23 @@ Object.defineProperty(viewModel, 'orders',
 
 	get: () =>
 	{
-		return this.__orders;
+		return viewModel.__orders;
 	},
 
 	set: (value) =>
 	{
-		var prevValue = this.__orders;
+		var prevValue = viewModel.__orders;
 
 		// If we are initializing this collection from a cached array, ensure each cached order is properly
 		// wrapped in a view model object and then render any open orders on the screen
 		if (!(prevValue) && value.length)
 		{
-			this.__orders = orderUtility.wrapOrdersInModels(value);
+			viewModel.__orders = orderUtility.wrapOrdersInModels(value);
 			_renderOrders(true);
 		}
 		else
 		{
-			this.__orders = value || [];
+			viewModel.__orders = value || [];
 		}
 	}
 });
@@ -206,12 +206,12 @@ Object.defineProperty(viewModel, 'statusFilter',
 
 	get: () =>
 	{
-		return this.__statusFilter;
+		return viewModel.__statusFilter;
 	},
 
 	set: (value) =>
 	{
-		this.__statusFilter = value;
+		viewModel.__statusFilter = value;
 
 		// Properly indicate to the user by which status are the orders being filtered
 		for (var i = _statusFilterLinks.length - 1; i >= 0; i--)
@@ -239,12 +239,12 @@ Object.defineProperty(viewModel, 'searchFilter',
 
 	get: () =>
 	{
-		return this.__searchFilter;
+		return viewModel.__searchFilter;
 	},
 
 	set: (value) =>
 	{
-		this.__searchFilter = value;
+		viewModel.__searchFilter = value;
 
 		// Reset the search filter should the value be empty
 		rQueryClient.setField(_searchFilter, value);
@@ -279,7 +279,7 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	get: () =>
 	{
-		return this.__pingTheServer;
+		return viewModel.__pingTheServer;
 	},
 
 	set: () =>

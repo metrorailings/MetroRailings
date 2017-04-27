@@ -1,6 +1,6 @@
 /* */ 
-var test = require("tap").test;
-var nextTick = require("./index");
+var test = require('tap').test;
+var nextTick = require('./index');
 test('should work', function(t) {
   t.plan(5);
   nextTick(function(a) {

@@ -1,13 +1,13 @@
 /* */ 
 (function(process) {
   'use strict';
-  var zlib_inflate = require("./zlib/inflate");
-  var utils = require("./utils/common");
-  var strings = require("./utils/strings");
-  var c = require("./zlib/constants");
-  var msg = require("./zlib/messages");
-  var ZStream = require("./zlib/zstream");
-  var GZheader = require("./zlib/gzheader");
+  var zlib_inflate = require('./zlib/inflate');
+  var utils = require('./utils/common');
+  var strings = require('./utils/strings');
+  var c = require('./zlib/constants');
+  var msg = require('./zlib/messages');
+  var ZStream = require('./zlib/zstream');
+  var GZheader = require('./zlib/gzheader');
   var toString = Object.prototype.toString;
   function Inflate(options) {
     if (!(this instanceof Inflate))
@@ -164,4 +164,4 @@
   exports.inflate = inflate;
   exports.inflateRaw = inflateRaw;
   exports.ungzip = inflate;
-})(require("process"));
+})(require('process'));

@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","../exception","../utils","./ast"], function (exports, _exception, _utils, _ast) {
+define(['exports', '../exception', '../utils', './ast'], function (exports, _exception, _utils, _ast) {
   /* eslint-disable new-cap */
 
   'use strict';

@@ -219,57 +219,6 @@ var rQueryClient =
 		beginsWith: function (str, phrase)
 		{
 			return(str.indexOf(phrase) === 0);
-		},
-
-		/**
-		 * Function takes a generator function and returns a wrapper function over that generator that can then be used
-		 * to execute that entire generator function in one invocation
-		 *
-		 * @param {Function} genFunc - the generator function to wrap
-		 *
-		 * @returns {Function} - the wrapper function that will be used to effectively execute the entirety of that
-		 * 		generator function in one go
-		 *
-		 * @author kinsho
-		 */
-		runToFinish: function (genFunc)
-		{
-			// Keep in mind the thisContext refers to what "this" should be set to when the generator function is invoked
-			return (thisContext) => {
-
-				var genIter,
-					progress;
-
-				return new Promise((resolve) =>
-				{
-					// Function meant to run the generator function until it reaches a breakpoint
-					function runIter()
-					{
-						progress = genIter.next();
-
-						// Once we're done running the generator function, simply return whatever was the final value
-						// returned from the generator
-						if (progress.done)
-						{
-							resolve(progress.value);
-						}
-						// Else assume that we are waiting on some asynchronous logic to execute before further continuing
-						// with the generator
-						else
-						{
-							progress.value.then(() =>
-							{
-								runIter();
-							});
-						}
-					}
-
-
-					genIter = genFunc.apply(thisContext, [...arguments].slice(1));
-
-					runIter();
-				});
-			};
 		}
 	};
 

@@ -112,7 +112,7 @@
       }
       function forEach(obj, fn) {
         if (obj === null || typeof obj === 'undefined') {
-          return ;
+          return;
         }
         if (typeof obj !== 'object' && !isArray(obj)) {
           obj = [obj];
@@ -404,10 +404,10 @@
           request.timeout = config.timeout;
           request[loadEvent] = function handleLoad() {
             if (!request || (request.readyState !== 4 && !xDomain)) {
-              return ;
+              return;
             }
             if (request.status === 0) {
-              return ;
+              return;
             }
             var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
             var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
@@ -518,7 +518,7 @@
           var parts = [];
           utils.forEach(params, function serialize(val, key) {
             if (val === null || typeof val === 'undefined') {
-              return ;
+              return;
             }
             if (utils.isArray(val)) {
               key = key + '[]';
@@ -682,4 +682,4 @@
     }]);
   });
   ;
-})(require("process"));
+})(require('process'));

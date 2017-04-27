@@ -1,6 +1,6 @@
 /* */ 
 (function(process) {
-  const tty = require("tty");
+  const tty = require('tty');
   module.exports = (function() {
     var width;
     var height;
@@ -23,4 +23,4 @@
       width: width
     };
   })();
-})(require("process"));
+})(require('process'));

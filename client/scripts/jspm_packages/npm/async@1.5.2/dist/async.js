@@ -33,7 +33,7 @@
     function _once(fn) {
       return function() {
         if (fn === null)
-          return ;
+          return;
         fn.apply(this, arguments);
         fn = null;
       };
@@ -234,7 +234,7 @@
               if (running <= 0) {
                 callback(null);
               }
-              return ;
+              return;
             }
             running += 1;
             iterator(obj[key], key, only_once(function(err) {
@@ -442,7 +442,7 @@
       });
       _arrayEach(keys, function(k) {
         if (hasError)
-          return ;
+          return;
         var task = _isArray(tasks[k]) ? tasks[k] : [tasks[k]];
         var taskCallback = _restParam(function(err, args) {
           runningTasks--;
@@ -810,7 +810,7 @@
         },
         resume: function() {
           if (q.paused === false) {
-            return ;
+            return;
           }
           q.paused = false;
           var resumeCount = Math.min(q.concurrency, q.tasks.length);
@@ -1051,4 +1051,4 @@
       root.async = async;
     }
   }());
-})(require("process"));
+})(require('process'));

@@ -1,6 +1,6 @@
 /* */ 
-var assert = require("assert");
-var wordwrap = require("../index");
+var assert = require('assert');
+var wordwrap = require('../index');
 exports.hard = function() {
   var s = 'Assert from {"type":"equal","ok":false,"found":1,"wanted":2,' + '"stack":[],"id":"b7ddcd4c409de8799542a74d1a04689b",' + '"browser":"chrome/6.0"}';
   ;

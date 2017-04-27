@@ -1,7 +1,7 @@
 /* */ 
 (function(process) {
   'use strict';
-  var utils = require("./common");
+  var utils = require('./common');
   var STR_APPLY_OK = true;
   var STR_APPLY_UIA_OK = true;
   try {
@@ -145,4 +145,4 @@
     }
     return (pos + _utf8len[buf[pos]] > max) ? pos : max;
   };
-})(require("process"));
+})(require('process'));

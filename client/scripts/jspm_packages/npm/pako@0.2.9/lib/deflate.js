@@ -1,10 +1,10 @@
 /* */ 
 'use strict';
-var zlib_deflate = require("./zlib/deflate");
-var utils = require("./utils/common");
-var strings = require("./utils/strings");
-var msg = require("./zlib/messages");
-var ZStream = require("./zlib/zstream");
+var zlib_deflate = require('./zlib/deflate');
+var utils = require('./utils/common');
+var strings = require('./utils/strings');
+var msg = require('./zlib/messages');
+var ZStream = require('./zlib/zstream');
 var toString = Object.prototype.toString;
 var Z_NO_FLUSH = 0;
 var Z_FINISH = 4;

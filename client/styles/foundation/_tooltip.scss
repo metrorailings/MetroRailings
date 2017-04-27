@@ -1,0 +1,59 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+
+/* ----------------------- TOOLTIP STYLES ----------------------------- */
+
+.tooltip-element
+{
+	@include transitionSettings($property: opacity, $duration: 0.25s);
+	@extend %tooltipText;
+
+	display: block;
+	opacity: 0.0;
+
+	&.tooltip-after-open
+	{
+		opacity: 1.0;
+	}
+}
+
+.tooltipLarge
+{
+	@include tabletUp()
+	{
+		max-width: 400px;
+	}
+
+	@include phoneOnly()
+	{
+		max-width: 250px;
+	}
+}
+
+.tooltipMedium
+{
+	@include tabletUp()
+	{
+		max-width: 300px;
+	}
+
+	@include phoneOnly()
+	{
+		max-width: 175px;
+	}
+}
+
+.tooltipSmall
+{
+	@include tabletUp()
+	{
+		max-width: 200px;
+	}
+
+	@include phoneOnly()
+	{
+		max-width: 125px;
+	}
+}

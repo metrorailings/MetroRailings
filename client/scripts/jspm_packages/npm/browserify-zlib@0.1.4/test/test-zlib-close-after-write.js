@@ -1,6 +1,6 @@
 /* */ 
-var tape = require("tape");
-var zlib = require("../src/index");
+var tape = require('tape');
+var zlib = require('../src/index');
 tape(function(t) {
   t.plan(1);
   zlib.gzip('hello', function(err, out) {

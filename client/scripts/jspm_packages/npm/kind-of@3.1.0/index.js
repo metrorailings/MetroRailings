@@ -1,6 +1,6 @@
 /* */ 
 (function(Buffer) {
-  var isBuffer = require("is-buffer");
+  var isBuffer = require('is-buffer');
   var toString = Object.prototype.toString;
   module.exports = function kindOf(val) {
     if (typeof val === 'undefined') {
@@ -90,4 +90,4 @@
     }
     return 'object';
   };
-})(require("buffer").Buffer);
+})(require('buffer').Buffer);

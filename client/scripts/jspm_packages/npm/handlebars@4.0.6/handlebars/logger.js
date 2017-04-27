@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module","./utils"], function (exports, module, _utils) {
+define(['exports', 'module', './utils'], function (exports, module, _utils) {
   'use strict';
 
   var logger = {

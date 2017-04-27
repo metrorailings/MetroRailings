@@ -2,6 +2,7 @@
 
 @import '../foundation/colors';
 @import '../foundation/form';
+@import '../foundation/gallery';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -10,11 +11,4 @@
 	background-color:  map-get($COLORS, lightBlueTheme);
 
 	height: 140px;
-}
-
-#uploadPictureButton
-{
-	@include button($bgColor: darkGreenTheme);
-
-	width: 250px;
 }

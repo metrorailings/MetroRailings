@@ -1,10 +1,10 @@
 /* */ 
 (function(Buffer, process) {
-  var common = require("../common");
-  var assert = require("assert");
-  var zlib = require("zlib");
-  var path = require("path");
-  var fs = require("fs");
+  var common = require('../common');
+  var assert = require('assert');
+  var zlib = require('zlib');
+  var path = require('path');
+  var fs = require('fs');
   var file = fs.readFileSync(path.resolve(common.fixturesDir, 'person.jpg')),
       chunkSize = 24 * 1024,
       opts = {
@@ -35,4 +35,4 @@
   process.once('exit', function() {
     assert.deepEqual(actual, expected);
   });
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

@@ -197,6 +197,13 @@ $FONTS:
 }
 
 /* --- Button stylings --- */
+%smallButtonText
+{
+	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: Muli, $color: whiteTheme);
+
+	text-shadow: 0.5px 0.5px map-get($COLORS, blackTheme);
+}
+
 %buttonText
 {
 	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Muli, $style: italic, $color: whiteTheme);

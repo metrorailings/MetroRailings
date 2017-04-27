@@ -1,8 +1,8 @@
 /* */ 
 (function(Buffer, process) {
-  var assert = require("assert");
-  var zlib = require("../src/index");
-  var path = require("path");
+  var assert = require('assert');
+  var zlib = require('../src/index');
+  var path = require('path');
   var zlibPairs = [[zlib.Deflate, zlib.Inflate], [zlib.Gzip, zlib.Gunzip], [zlib.Deflate, zlib.Unzip], [zlib.Gzip, zlib.Unzip], [zlib.DeflateRaw, zlib.InflateRaw]];
   var trickle = [128, 1024, 1024 * 1024];
   var chunkSize = [128, 1024, 1024 * 16, 1024 * 1024];
@@ -18,7 +18,7 @@
     windowBits = [15];
     strategy = [0];
   }
-  var fs = require("fs");
+  var fs = require('fs');
   if (process.env.FAST) {
     zlibPairs = [[zlib.Gzip, zlib.Unzip]];
   }
@@ -27,8 +27,8 @@
     'elipses.txt': fs.readFileSync(__dirname + '/fixtures/elipses.txt'),
     'empty.txt': fs.readFileSync(__dirname + '/fixtures/empty.txt')
   };
-  var util = require("util");
-  var stream = require("stream");
+  var util = require('util');
+  var stream = require('stream');
   function BufferStream() {
     this.chunks = [];
     this.length = 0;
@@ -70,15 +70,15 @@
   SlowStream.prototype.resume = function() {
     var self = this;
     if (self.ended)
-      return ;
+      return;
     self.emit('resume');
     if (!self.chunk)
-      return ;
+      return;
     self.paused = false;
     emit();
     function emit() {
       if (self.paused)
-        return ;
+        return;
       if (self.offset >= self.length) {
         self.ended = true;
         return self.emit('end');
@@ -97,7 +97,7 @@
     self.resume();
     return self.ended;
   };
-  var tape = require("tape");
+  var tape = require('tape');
   Object.keys(tests).forEach(function(file) {
     var test = tests[file];
     chunkSize.forEach(function(chunkSize) {
@@ -136,4 +136,4 @@
       });
     });
   });
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

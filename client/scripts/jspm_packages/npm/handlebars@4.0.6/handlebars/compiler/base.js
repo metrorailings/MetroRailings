@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","./parser","./whitespace-control","./helpers","../utils"], function (exports, _parser, _whitespaceControl, _helpers, _utils) {
+define(['exports', './parser', './whitespace-control', './helpers', '../utils'], function (exports, _parser, _whitespaceControl, _helpers, _utils) {
   'use strict';
 
   exports.__esModule = true;

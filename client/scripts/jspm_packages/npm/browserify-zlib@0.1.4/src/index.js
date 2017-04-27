@@ -1,9 +1,9 @@
 /* */ 
 (function(Buffer, process) {
   var Transform = require('readable-stream/transform');
-  var binding = require("./binding");
-  var util = require("util");
-  var assert = require("assert").ok;
+  var binding = require('./binding');
+  var util = require('util');
+  var assert = require('assert').ok;
   binding.Z_MIN_WINDOWBITS = 8;
   binding.Z_MAX_WINDOWBITS = 15;
   binding.Z_DEFAULT_WINDOWBITS = 15;
@@ -322,7 +322,7 @@
     if (callback)
       process.nextTick(callback);
     if (this._closed)
-      return ;
+      return;
     this._closed = true;
     this._binding.close();
     var self = this;
@@ -376,7 +376,7 @@
     req.callback = callback;
     function callback(availInAfter, availOutAfter) {
       if (self._hadError)
-        return ;
+        return;
       var have = availOutBefore - availOutAfter;
       assert(have >= 0, 'have should not go down');
       if (have > 0) {
@@ -402,7 +402,7 @@
         var newReq = self._binding.write(flushFlag, chunk, inOff, availInBefore, self._buffer, self._offset, self._chunkSize);
         newReq.callback = callback;
         newReq.buffer = chunk;
-        return ;
+        return;
       }
       if (!async)
         return false;
@@ -416,4 +416,4 @@
   util.inherits(DeflateRaw, Zlib);
   util.inherits(InflateRaw, Zlib);
   util.inherits(Unzip, Zlib);
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

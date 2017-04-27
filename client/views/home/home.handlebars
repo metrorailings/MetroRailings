@@ -1,0 +1,37 @@
+<div id='homeContainer'>
+    <div id='homeBanner1' class='show'></div><div id='homeBanner2'></div>
+
+    <!-- Desktop Only -->
+	<div id='desktopTitleBackground'>
+        <div id='desktopTitle'>Metro Railings</div>
+        <div id='desktopSlogan'>{{slogan}}</div>
+    </div>
+
+    <!-- Tablet Only -->
+	<div id='tabletTitleBackground'>
+		<div id='tabletTitle'>Metro Railings</div>
+		<div id='tabletSlogan'>{{slogan}}</div>
+	</div>
+
+    <!-- Phone Only -->
+	<div id='phoneTitleBackground'>
+		<div id='phoneTitle'>Metro Railings</div>
+		<div id='phoneSlogan'>{{slogan}}</div>
+	</div>
+
+</div>
+
+<!-- Preloading all the images needed for the home banner -->
+{{#homeBannerImages}}
+	<img class='preloadImage bannerImage' src='{{path}}' />
+{{/homeBannerImages}}
+
+{{> aboutUs }}
+
+{{> homeGallerySection }}
+
+{{> homeOrderSection }}
+
+{{> thankYouSection }}
+
+{{> gallery }}

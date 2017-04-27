@@ -5,6 +5,7 @@
 @import '../foundation/responsive';
 @import '../foundation/colors';
 @import '../foundation/animations';
+@import '../foundation/gallery';
 
 /* ----------------------- ANIMATIONS ----------------------------- */
 
@@ -257,7 +258,7 @@
 	margin-right: 5px;
 }
 
-.orderNotesSection, .orderNavButtons
+.orderNotesSection, .orderNavButtons, .orderPictures
 {
 	height: auto;
 	min-height: 80px;
@@ -268,12 +269,18 @@
 	}
 }
 
-.nextStatusLink
+.picturesContainer
+{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.nextStatusLink, .printLink, .loadPicturesLink
 {
 	@extend %regularLinkText;
-
-	margin-right: auto;
-	margin-left: 20px;
 
 	&:hover
 	{
@@ -286,6 +293,26 @@
 		font-size: 20px;
 
 		margin-right: 10px;
+	}
+}
+
+.loadPicturesLink
+{
+	@include transitionSettings($property: opacity, $duration: 0.3s);
+
+	padding:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
+
+	width: 100%;
+
+	opacity: 1.0;
+
+	&.hide
+	{
+		opacity: 0.0;
 	}
 }
 

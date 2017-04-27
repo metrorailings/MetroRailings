@@ -1,0 +1,37 @@
+<table id='header'>
+	<tr>
+		<th>Customer Support</th>
+	</tr>
+</table>
+
+<table id='supportRequest'>
+	<tr>
+		<th class='tableHeader'>Name</th>
+		<td class='infoCell'>{{name}}</td>
+	</tr>
+
+	{{#if orderId}}
+	    <tr>
+	        <th class='tableHeader'>Order ID</th>
+	        <td class='infoCell'>{{orderId}}</td>
+	    </tr>
+	{{/if}}
+
+    {{#if email}}
+		<tr>
+			<th class='tableHeader'>E-mail Address</th>
+			<td class='infoCell'>{{email}}</td>
+		</tr>
+    {{/if}}
+
+    {{#if phoneNumber}}
+		<tr>
+			<th class='tableHeader'>Phone Number</th>
+			<td class='infoCell'>{{phoneNumber}}</td>
+		</tr>
+    {{/if}}
+
+    <tr>
+        <td class='infoCell' colspan=2>{{comments}}</td>
+    </tr>
+</table>

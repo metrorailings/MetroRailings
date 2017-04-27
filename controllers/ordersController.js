@@ -14,7 +14,9 @@ var _Handlebars = require('Handlebars'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
 	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
-	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO');
+	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
+
+	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
@@ -25,7 +27,9 @@ var CONTROLLER_FOLDER = 'orders',
 	PARTIALS =
 	{
 		FILTER: 'orderFilter',
-		LISTING: 'orderListing'
+		LISTING: 'orderListing',
+		PICTURES: 'orderPictures',
+		PRINT: 'orderPrint'
 	};
 
 // ----------------- PRIVATE VARIABLES --------------------------
@@ -47,8 +51,12 @@ module.exports =
 	 */
 	init: async function (params, cookie)
 	{
-		var pageData = {},
-			populatedPageTemplate;
+		var populatedPageTemplate,
+			pageData = {},
+			bootData =
+			{
+				dropboxToken: config.DROPBOX_TOKEN
+			};
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie)) )
 		{
@@ -62,10 +70,16 @@ module.exports =
 		// Grab the raw HTML of the order listing template
 		pageData.orderListingTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.LISTING);
 
+		// Grab the raw HTML of the template we'll use to print out details for any order
+		pageData.orderPrintTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.PRINT);
+
+		// Grab the raw HTML of the order pictures template
+		pageData.orderPicturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.PICTURES);
+
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {}, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, bootData, true);
 	},
 
 	/**

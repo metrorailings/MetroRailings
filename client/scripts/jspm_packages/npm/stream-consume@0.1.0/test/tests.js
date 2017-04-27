@@ -1,13 +1,13 @@
 /* */ 
 "use strict";
-var consume = require("../index");
-var Stream = require("stream");
+var consume = require('../index');
+var Stream = require('stream');
 var Readable = Stream.Readable;
 var Writable = Stream.Writable;
 var Duplex = Stream.Duplex;
-var should = require("should");
-var through = require("through2");
-require("mocha");
+var should = require('should');
+var through = require('through2');
+require('mocha');
 describe('stream-consume', function() {
   it('should cause a Readable stream to complete if it\'s not piped anywhere', function(done) {
     var rs = new Readable({highWaterMark: 2});

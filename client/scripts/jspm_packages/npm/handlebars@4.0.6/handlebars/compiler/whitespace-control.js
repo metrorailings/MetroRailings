@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module","./visitor"], function (exports, module, _visitor) {
+define(['exports', 'module', './visitor'], function (exports, module, _visitor) {
   'use strict';
 
   // istanbul ignore next

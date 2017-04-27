@@ -1,6 +1,6 @@
 /* */ 
 'use strict';
-var bind = require("./helpers/bind");
+var bind = require('./helpers/bind');
 var toString = Object.prototype.toString;
 function isArray(val) {
   return toString.call(val) === '[object Array]';
@@ -58,7 +58,7 @@ function isStandardBrowserEnv() {
 }
 function forEach(obj, fn) {
   if (obj === null || typeof obj === 'undefined') {
-    return ;
+    return;
   }
   if (typeof obj !== 'object' && !isArray(obj)) {
     obj = [obj];

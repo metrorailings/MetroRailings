@@ -1,0 +1,36 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../email/email';
+
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#header
+{
+	margin-bottom: 0px !important;
+}
+
+#supportRequest
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 75%;
+
+	td, th
+	{
+		@include tabularBorder();
+
+		padding: 15px;
+	}
+}
+
+.tableHeader
+{
+	background-color: map-get($COLORS, lightBlueTheme);
+}

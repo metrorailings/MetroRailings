@@ -1,6 +1,6 @@
 /* */ 
 'use strict';
-var utils = require("../utils");
+var utils = require('../utils');
 module.exports = (utils.isStandardBrowserEnv() ? (function standardBrowserEnv() {
   return {
     write: function write(name, value, expires, path, domain, secure) {

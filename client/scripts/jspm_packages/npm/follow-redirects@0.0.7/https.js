@@ -1,2 +1,2 @@
 /* */ 
-module.exports = require("./index").https;
+module.exports = require('./index').https;

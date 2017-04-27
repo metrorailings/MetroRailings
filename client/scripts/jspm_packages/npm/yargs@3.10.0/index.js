@@ -1,11 +1,11 @@
 /* */ 
 (function(process) {
-  var assert = require("assert"),
-      path = require("path"),
-      Completion = require("./lib/completion"),
-      Parser = require("./lib/parser"),
-      Usage = require("./lib/usage"),
-      Validation = require("./lib/validation");
+  var assert = require('assert'),
+      path = require('path'),
+      Completion = require('./lib/completion'),
+      Parser = require('./lib/parser'),
+      Usage = require('./lib/usage'),
+      Validation = require('./lib/validation');
   Argv(process.argv.slice(2));
   var exports = module.exports = Argv;
   function Argv(processArgs, cwd) {
@@ -18,7 +18,7 @@
       cwd = process.cwd();
     self.$0 = process.argv.slice(0, 2).map(function(x, i) {
       if (i === 0 && /\b(node|iojs)$/.test(x))
-        return ;
+        return;
       var b = rebase(cwd, x);
       return x.match(/^\//) && b.length < x.length ? b : x;
     }).join(' ').trim();
@@ -325,7 +325,7 @@
       return validation;
     };
     self.terminalWidth = function() {
-      return require("window-size").width;
+      return require('window-size').width;
     };
     Object.defineProperty(self, 'argv', {
       get: function() {
@@ -380,7 +380,7 @@
               process.exit(0);
             }
           });
-          return ;
+          return;
         }
       });
       validation.nonOptionCount(argv);
@@ -416,4 +416,4 @@
       }
     });
   }
-})(require("process"));
+})(require('process'));

@@ -1,10 +1,10 @@
 /* */ 
 (function(Buffer, process) {
-  var msg = require("pako/lib/zlib/messages");
-  var zstream = require("pako/lib/zlib/zstream");
-  var zlib_deflate = require("pako/lib/zlib/deflate");
-  var zlib_inflate = require("pako/lib/zlib/inflate");
-  var constants = require("pako/lib/zlib/constants");
+  var msg = require('pako/lib/zlib/messages');
+  var zstream = require('pako/lib/zlib/zstream');
+  var zlib_deflate = require('pako/lib/zlib/deflate');
+  var zlib_inflate = require('pako/lib/zlib/inflate');
+  var constants = require('pako/lib/zlib/constants');
   for (var key in constants) {
     exports[key] = constants[key];
   }
@@ -58,7 +58,7 @@
     }
     if (status !== exports.Z_OK) {
       this._error(status);
-      return ;
+      return;
     }
     this.write_in_progress = false;
     this.init_done = true;
@@ -143,7 +143,7 @@
   Zlib.prototype.close = function() {
     if (this.write_in_progress) {
       this.pending_close = true;
-      return ;
+      return;
     }
     this.pending_close = false;
     if (this.mode === exports.DEFLATE || this.mode === exports.GZIP || this.mode === exports.DEFLATERAW) {
@@ -175,4 +175,4 @@
       this.close();
   };
   exports.Zlib = Zlib;
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

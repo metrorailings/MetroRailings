@@ -1,7 +1,7 @@
 /* */ 
 (function(process) {
-  var spawn = require("child_process").spawn;
-  var test = require("tap").test;
+  var spawn = require('child_process').spawn;
+  var test = require('tap').test;
   test('dotSlashEmpty', testCmd('./bin.js', []));
   test('dotSlashArgs', testCmd('./bin.js', ['a', 'b', 'c']));
   test('nodeEmpty', testCmd('node bin.js', []));
@@ -50,4 +50,4 @@
       });
     };
   }
-})(require("process"));
+})(require('process'));

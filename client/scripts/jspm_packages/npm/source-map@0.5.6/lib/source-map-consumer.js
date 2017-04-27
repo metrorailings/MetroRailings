@@ -1,9 +1,9 @@
 /* */ 
-var util = require("./util");
-var binarySearch = require("./binary-search");
-var ArraySet = require("./array-set").ArraySet;
-var base64VLQ = require("./base64-vlq");
-var quickSort = require("./quick-sort").quickSort;
+var util = require('./util');
+var binarySearch = require('./binary-search');
+var ArraySet = require('./array-set').ArraySet;
+var base64VLQ = require('./base64-vlq');
+var quickSort = require('./quick-sort').quickSort;
 function SourceMapConsumer(aSourceMap) {
   var sourceMap = aSourceMap;
   if (typeof aSourceMap === 'string') {

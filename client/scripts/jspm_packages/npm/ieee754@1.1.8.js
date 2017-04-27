@@ -1,1 +1,1 @@
-module.exports = require("npm:ieee754@1.1.8/index");
+module.exports = require("npm:ieee754@1.1.8/index.js");

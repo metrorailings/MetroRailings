@@ -1,1 +1,0 @@
-module.exports = require("npm:es6-promise@3.2.1/dist/es6-promise");

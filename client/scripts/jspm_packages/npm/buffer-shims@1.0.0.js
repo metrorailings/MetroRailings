@@ -1,1 +1,1 @@
-module.exports = require("npm:buffer-shims@1.0.0/index");
+module.exports = require("npm:buffer-shims@1.0.0/index.js");

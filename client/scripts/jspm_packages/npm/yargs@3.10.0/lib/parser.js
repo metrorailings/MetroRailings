@@ -1,7 +1,7 @@
 /* */ 
 (function(process) {
-  var camelCase = require("camelcase"),
-      path = require("path");
+  var camelCase = require('camelcase'),
+      path = require('path');
   function increment(orig) {
     return orig !== undefined ? orig + 1 : 0;
   }
@@ -355,4 +355,4 @@
       newAliases: newAliases
     };
   };
-})(require("process"));
+})(require('process'));

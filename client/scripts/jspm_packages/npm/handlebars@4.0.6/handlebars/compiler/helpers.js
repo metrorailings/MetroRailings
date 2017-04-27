@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","../exception"], function (exports, _exception) {
+define(['exports', '../exception'], function (exports, _exception) {
   'use strict';
 
   exports.__esModule = true;
