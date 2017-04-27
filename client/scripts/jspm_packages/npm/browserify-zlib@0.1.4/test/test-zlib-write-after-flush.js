@@ -1,7 +1,7 @@
 /* */ 
-var tape = require("tape");
-var zlib = require("../src/index");
-var fs = require("fs");
+var tape = require('tape');
+var zlib = require('../src/index');
+var fs = require('fs');
 tape('write after flush', function(t) {
   t.plan(2);
   var gzip = zlib.createGzip();

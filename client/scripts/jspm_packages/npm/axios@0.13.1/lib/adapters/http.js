@@ -1,19 +1,19 @@
 /* */ 
 (function(Buffer, process) {
   'use strict';
-  var utils = require("../utils");
-  var settle = require("../core/settle");
-  var buildURL = require("../helpers/buildURL");
-  var http = require("./xhr");
-  var https = require("https");
-  var httpFollow = require("follow-redirects").http;
-  var httpsFollow = require("follow-redirects").https;
-  var url = require("url");
-  var zlib = require("zlib");
-  var pkg = require("../../package.json!systemjs-json");
-  var Buffer = require("buffer").Buffer;
-  var createError = require("../core/createError");
-  var enhanceError = require("../core/enhanceError");
+  var utils = require('../utils');
+  var settle = require('../core/settle');
+  var buildURL = require('../helpers/buildURL');
+  var http = require('./xhr');
+  var https = require('https');
+  var httpFollow = require('follow-redirects').http;
+  var httpsFollow = require('follow-redirects').https;
+  var url = require('url');
+  var zlib = require('zlib');
+  var pkg = require('../../package.json!systemjs-json');
+  var Buffer = require('buffer').Buffer;
+  var createError = require('../core/createError');
+  var enhanceError = require('../core/enhanceError');
   module.exports = function httpAdapter(config) {
     return new Promise(function dispatchHttpRequest(resolve, reject) {
       var data = config.data;
@@ -71,7 +71,7 @@
       }
       var req = transport.request(options, function handleResponse(res) {
         if (aborted)
-          return ;
+          return;
         clearTimeout(timer);
         timer = null;
         var stream = res;
@@ -103,7 +103,7 @@
           });
           stream.on('error', function handleStreamError(err) {
             if (aborted)
-              return ;
+              return;
             reject(enhanceError(err, config));
           });
           stream.on('end', function handleStreamEnd() {
@@ -118,7 +118,7 @@
       });
       req.on('error', function handleRequestError(err) {
         if (aborted)
-          return ;
+          return;
         reject(enhanceError(err, config));
       });
       if (config.timeout && !timer) {
@@ -135,4 +135,4 @@
       }
     });
   };
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

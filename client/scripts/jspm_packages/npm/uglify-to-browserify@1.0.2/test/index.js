@@ -1,12 +1,12 @@
 /* */ 
-var fs = require("fs");
-var br = require("../index");
+var fs = require('fs');
+var br = require('../index');
 var test = fs.readFileSync(require.resolve('uglify-js/test/run-tests.js'), 'utf8').replace(/^#.*\n/, '');
 var transform = br(require.resolve('uglify-js'));
 transform.pipe(fs.createWriteStream(__dirname + '/output.js')).on('close', function() {
   Function('module,require', test)({filename: require.resolve('uglify-js/test/run-tests.js')}, function(name) {
     if (name === '../tools/node') {
-      return require("./output");
+      return require('./output');
     } else if (/^[a-z]+$/.test(name)) {
       return require(name);
     } else {

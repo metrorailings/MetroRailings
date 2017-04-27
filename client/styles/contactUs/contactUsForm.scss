@@ -1,0 +1,115 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#nameAndOrderRow > .controlGrouping
+{
+	@include desktopOnly()
+	{
+		width: 50%;
+	}
+}
+
+.controlGroupingRow
+{
+	flex-wrap: wrap;
+
+	@include phoneOnly()
+	{
+		margin-bottom: 40px;
+	}
+}
+
+// Input lengths
+#customerName
+{
+	@include desktopOnly()
+	{
+		width: 55%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 280px;
+	}
+}
+
+#orderId
+{
+	width: 120px;
+}
+
+#customerEmail
+{
+	@include desktopOnly()
+	{
+		width: 80%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 280px;
+	}
+}
+
+#customerPhoneNumberInputs
+{
+	@extend %regularText;
+
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+
+	& > input
+	{
+		@include tabletUp()
+		{
+			margin:
+			{
+				left: 10px;
+				right: 10px;
+			}
+
+			width: 100px;
+		}
+
+		@include phoneOnly()
+		{
+			margin:
+			{
+				left: 5px;
+				right: 5px;
+			}
+
+			width: 70px;
+
+			// Shrink the font size so that we can safely fit all three phone input fields on the same row
+			font-size: 14px;
+		}
+	}
+}
+
+.formDescriptiveText
+{
+	margin-top: 10px;
+	width: 100%;
+}
+
+#comments
+{
+	@include tabletUp()
+	{
+		width: 600px;
+		height: 150px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 80%;
+		height: 300px;
+	}
+}

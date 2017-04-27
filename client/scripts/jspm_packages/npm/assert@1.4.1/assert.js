@@ -29,7 +29,7 @@
     }
     return !!(b != null && b._isBuffer);
   }
-  var util = require("util");
+  var util = require('util');
   var hasOwn = Object.prototype.hasOwnProperty;
   var pSlice = Array.prototype.slice;
   var functionsHaveNames = (function() {
@@ -63,7 +63,7 @@
   var regex = /\s*function\s+([^\(\s]*)\s*/;
   function getName(func) {
     if (!util.isFunction(func)) {
-      return ;
+      return;
     }
     if (functionsHaveNames) {
       return func.name;
@@ -312,4 +312,4 @@
     }
     return keys;
   };
-})(require("buffer").Buffer);
+})(require('buffer').Buffer);

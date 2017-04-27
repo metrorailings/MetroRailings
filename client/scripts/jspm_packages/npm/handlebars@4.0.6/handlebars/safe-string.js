@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module"], function (exports, module) {
+define(['exports', 'module'], function (exports, module) {
   // Build out our basic SafeString type
   'use strict';
 

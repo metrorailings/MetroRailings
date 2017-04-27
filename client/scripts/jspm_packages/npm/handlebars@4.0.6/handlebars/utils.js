@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports"], function (exports) {
+define(['exports'], function (exports) {
   'use strict';
 
   exports.__esModule = true;

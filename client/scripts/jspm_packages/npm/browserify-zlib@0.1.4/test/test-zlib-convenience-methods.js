@@ -1,7 +1,7 @@
 /* */ 
 (function(Buffer) {
-  var tape = require("tape");
-  var zlib = require("../src/index");
+  var tape = require('tape');
+  var zlib = require('../src/index');
   var expect = 'blahblahblahblahblahblah';
   var opts = {
     level: 9,
@@ -28,4 +28,4 @@
       t.deepEqual(result, new Buffer(expect), 'Should get original string after ' + method[0] + '/' + method[1] + ' without options.');
     });
   });
-})(require("buffer").Buffer);
+})(require('buffer').Buffer);

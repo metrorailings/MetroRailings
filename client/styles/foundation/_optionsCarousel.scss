@@ -1,0 +1,338 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+@import '../foundation/responsive';
+
+/* ----------------------- ANIMATIONS ----------------------------- */
+
+// The animations responsible for moving the carousel left and right
+@include keyframes($name: shiftOutLeft)
+{
+	0%
+	{
+		left: 0;
+	}
+
+	100%
+	{
+		left: -120%;
+	}
+}
+
+@include keyframes($name: shiftInLeft)
+{
+	0%
+	{
+		left: 120%;
+	}
+
+	100%
+	{
+		left: 0;
+	}
+}
+
+@include keyframes($name: shiftOutRight)
+{
+	0%
+	{
+		left: 0;
+	}
+
+	100%
+	{
+		left: 120%;
+	}
+}
+
+@include keyframes($name: shiftInRight)
+{
+	0%
+	{
+		left: -120%;
+	}
+
+	100%
+	{
+		left: 0;
+	}
+}
+
+/* ----------------------- STYLES ----------------------------- */
+
+.optionsCarousel
+{
+	margin:
+	{
+		top: 25px;
+		bottom: 25px;
+		left: auto;
+		right: auto;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.optionsSelector
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	margin:
+	{
+		left: 45px;
+		right: 45px;
+		bottom: 30px;
+	}
+}
+
+.carouselPreviewOption
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	position: relative;
+
+	@include tabletUp()
+	{
+		margin:
+		{
+			left: 25px;
+			right: 25px;
+		}
+	}
+
+	@include phoneOnly()
+	{
+		width: 50%;
+	}
+
+	& > i
+	{
+		font-size: 36px;
+		color: map-get($COLORS, whiteTheme);
+		text-shadow: 1px 1px 5px map-get($COLORS, blackTheme);
+
+		position: absolute;
+		z-index: 200;
+		top: 15px;
+		left: 70%;
+
+		opacity: 0.0;
+
+		&.show
+		{
+			opacity: 1.0;
+		}
+	}
+}
+
+.carouselPreviewPic
+{
+	@include transitionSettings($property: all, $duration: 0.3s);
+
+	margin:
+	{
+		top: 5px;
+		bottom: 15px;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 4px;
+		style: solid;
+	}
+
+	filter: grayscale(100%) contrast(50%);
+	-webkit-filter: grayscale(100%) contrast(50%);
+
+	cursor: pointer;
+
+	@include tabletUp()
+	{
+		width: 150px;
+		height: 150px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 100px;
+		height: 100px;
+	}
+
+	&.selected
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+
+		filter: grayscale(0%) contrast(150%);
+		-webkit-filter: grayscale(0%) contrast(150%);
+	}
+}
+
+.carouselPreviewLabel
+{
+	@extend %formSelectText;
+
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+}
+
+.carouselPreviewLabelContainer
+{
+	@include transitionSettings($property: all, $duration: 0.3s);
+	@extend %formSelectText;
+
+	border:
+	{
+		radius: 2px;
+		style: solid;
+		width: 2px;
+	}
+
+	padding:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	cursor: pointer;
+
+	background-color: map-get($COLORS, lightGrayTheme);
+
+	@include tabletUp()
+	{
+		width: 150px;
+		height: 150px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 100px;
+		height: 100px;
+	}
+
+	&.selected
+	{
+		border:
+		{
+			width: 4px;
+			color: map-get($COLORS, darkBlueTheme);
+		}
+
+		background-color: map-get($COLORS, lightGreenTheme);
+	}
+}
+
+.carouselContent
+{
+	margin:
+	{
+		top: 10px;
+		bottom: 15px;
+	}
+
+	padding-bottom: 10px;
+	width: 100%;
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.carouselControl
+{
+	@extend %greenSignificantText;
+	@include transitionSettings($property: opacity, $duration: 0.25s);
+
+	margin:
+	{
+		left: 15px;
+		right: 15px;
+	}
+
+	opacity: 1.0;
+	cursor: pointer;
+
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 12.5%;
+
+	@include phoneOnly()
+	{
+		display: none;
+	}
+
+	&.hide
+	{
+		opacity: 0.0;
+		cursor: default;
+	}
+}
+
+.viewerBox
+{
+	overflow: hidden;
+
+	@include tabletUp()
+	{
+		width: 75%;
+	}
+
+	@include phoneOnly()
+	{
+		width: 95%;
+	}
+}
+
+.optionViewer
+{
+	width: 100%;
+	position: relative;
+
+	&.shiftOutLeft
+	{
+		@include animationSettings($keyframeSet: shiftOutLeft, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftInLeft
+	{
+		@include animationSettings($keyframeSet: shiftInLeft, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftOutRight
+	{
+		@include animationSettings($keyframeSet: shiftOutRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftInRight
+	{
+		@include animationSettings($keyframeSet: shiftInRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+}
+
+.fa-chevron-left, .fa-chevron-right
+{
+	font-size: map-get($FONTS, giganticPlusFontSize);
+}

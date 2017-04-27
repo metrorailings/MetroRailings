@@ -1,8 +1,8 @@
 /* */ 
 'use strict';
-var utils = require("./utils");
-var bind = require("./helpers/bind");
-var Axios = require("./core/Axios");
+var utils = require('./utils');
+var bind = require('./helpers/bind');
+var Axios = require('./core/Axios');
 function createInstance(defaultConfig) {
   var context = new Axios(defaultConfig);
   var instance = bind(Axios.prototype.request, context);
@@ -18,4 +18,4 @@ axios.create = function create(defaultConfig) {
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = require("./helpers/spread");
+axios.spread = require('./helpers/spread');

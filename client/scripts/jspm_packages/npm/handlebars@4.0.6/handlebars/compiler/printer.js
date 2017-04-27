@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","./visitor"], function (exports, _visitor) {
+define(['exports', './visitor'], function (exports, _visitor) {
   /* eslint-disable new-cap */
   'use strict';
 

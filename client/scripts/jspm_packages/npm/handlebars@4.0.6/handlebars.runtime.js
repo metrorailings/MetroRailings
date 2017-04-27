@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module","./handlebars/base","./handlebars/safe-string","./handlebars/exception","./handlebars/utils","./handlebars/runtime","./handlebars/no-conflict"], function (exports, module, _handlebarsBase, _handlebarsSafeString, _handlebarsException, _handlebarsUtils, _handlebarsRuntime, _handlebarsNoConflict) {
+define(['exports', 'module', './handlebars/base', './handlebars/safe-string', './handlebars/exception', './handlebars/utils', './handlebars/runtime', './handlebars/no-conflict'], function (exports, module, _handlebarsBase, _handlebarsSafeString, _handlebarsException, _handlebarsUtils, _handlebarsRuntime, _handlebarsNoConflict) {
   'use strict';
 
   // istanbul ignore next

@@ -1,8 +1,8 @@
 /* */ 
 (function(process) {
-  var Hash = require("hashish");
-  var optimist = require("../index");
-  var test = require("tap").test;
+  var Hash = require('hashish');
+  var optimist = require('../index');
+  var test = require('tap').test;
   test('usageFail', function(t) {
     var r = checkUsage(function() {
       return optimist('-x 10 -z 20'.split(' ')).usage('Usage: $0 -x NUM -y NUM').demand(['x', 'y']).argv;
@@ -232,4 +232,4 @@
     };
   }
   ;
-})(require("process"));
+})(require('process'));

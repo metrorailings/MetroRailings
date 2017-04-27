@@ -1,0 +1,33 @@
+<div id='orderDetails'>
+	<span class='sectionHeader'>Order Details</span>
+
+	<span class='orderLabel'>Type:</span> {{#capitalize order.type }}{{/capitalize }}</span>
+
+	<span class='orderLabel'>Length:</span> {{ order.length }} feet
+
+	{{#if order.design.postDesign }}
+		<span class='orderLabel'>Post Design:</span> {{order.design.postDesign}}
+	{{/if}}
+
+	{{#if order.design.postEndDesign}}
+		<span class='orderLabel'>Post End:</span> {{order.design.postEndDesign}}
+	{{/if}}
+
+	{{#if order.design.postCapDesign}}
+		<span class='orderLabel'>Post Cap:</span> {{order.design.postCapDesign}}
+	{{/if}}
+
+	{{#if order.design.centerDesign}}
+		<span class='orderLabel'>Center Design:</span> {{order.design.centerDesign}}
+	{{/if}}
+
+	<span class='orderLabel'>Color:</span> {{#capitalize order.design.color }}{{/capitalize }}
+</div>
+
+<div id='orderPictures'>
+	{{#if order.pictures}}
+		{{#each order.pictures}}
+			<img src='{{fullLink}}' />
+		{{/each}}
+	{{/if}}
+</div>

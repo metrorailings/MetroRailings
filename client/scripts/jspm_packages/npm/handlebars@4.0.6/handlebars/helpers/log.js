@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module"], function (exports, module) {
+define(['exports', 'module'], function (exports, module) {
   'use strict';
 
   module.exports = function (instance) {

@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","module"], function (exports, module) {
+define(['exports', 'module'], function (exports, module) {
   'use strict';
 
   var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];

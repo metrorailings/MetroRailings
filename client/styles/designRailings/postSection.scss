@@ -1,0 +1,15 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#postSection
+{
+	border-top:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+}

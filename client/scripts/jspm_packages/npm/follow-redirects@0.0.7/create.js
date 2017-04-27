@@ -1,10 +1,10 @@
 /* */ 
 (function(process) {
   'use strict';
-  var url = require("url");
-  var debug = require("debug")('follow-redirects');
-  var assert = require("assert");
-  var consume = require("stream-consume");
+  var url = require('url');
+  var debug = require('debug')('follow-redirects');
+  var assert = require('assert');
+  var consume = require('stream-consume');
   module.exports = function(_nativeProtocols) {
     var nativeProtocols = {};
     var publicApi = {maxRedirects: 5};
@@ -111,4 +111,4 @@
     }
   }
   var urlProps = ['protocol', 'slashes', 'auth', 'host', 'port', 'hostname', 'hash', 'search', 'query', 'pathname', 'path', 'href'];
-})(require("process"));
+})(require('process'));

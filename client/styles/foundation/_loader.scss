@@ -72,15 +72,16 @@
 	&.show
 	{
 		opacity: 0.7;
+		background-color: map-get($COLORS, blackTheme);
+
+		z-index: 9999;
 	}
 
 	&.pageLoad
 	{
 		opacity: 1.0;
-	}
+		background-color: map-get($COLORS, whiteTheme);
 
-	&.surface
-	{
 		z-index: 9999;
 	}
 

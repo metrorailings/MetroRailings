@@ -1,6 +1,6 @@
 /* */ 
-var tape = require("tape"),
-    zlib = require("../src/index");
+var tape = require('tape'),
+    zlib = require('../src/index');
 tape('non-strings', function(t) {
   var nonStringInputs = [1, true, {a: 1}, ['a']];
   t.plan(12);

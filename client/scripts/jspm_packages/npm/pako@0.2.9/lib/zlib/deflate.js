@@ -1,11 +1,11 @@
 /* */ 
 (function(Buffer) {
   'use strict';
-  var utils = require("../utils/common");
-  var trees = require("./trees");
-  var adler32 = require("./adler32");
-  var crc32 = require("./crc32");
-  var msg = require("./messages");
+  var utils = require('../utils/common');
+  var trees = require('./trees');
+  var adler32 = require('./adler32');
+  var crc32 = require('./crc32');
+  var msg = require('./messages');
   var Z_NO_FLUSH = 0;
   var Z_PARTIAL_FLUSH = 1;
   var Z_FULL_FLUSH = 3;
@@ -70,7 +70,7 @@
       len = strm.avail_out;
     }
     if (len === 0) {
-      return ;
+      return;
     }
     utils.arraySet(strm.output, s.pending_buf, s.pending_out, len, strm.next_out);
     strm.next_out += len;
@@ -1024,4 +1024,4 @@
   exports.deflateEnd = deflateEnd;
   exports.deflateSetDictionary = deflateSetDictionary;
   exports.deflateInfo = 'pako deflate (from Nodeca project)';
-})(require("buffer").Buffer);
+})(require('buffer').Buffer);

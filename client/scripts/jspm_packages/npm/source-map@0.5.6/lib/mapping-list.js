@@ -1,5 +1,5 @@
 /* */ 
-var util = require("./util");
+var util = require('./util');
 function generatedPositionAfter(mappingA, mappingB) {
   var lineA = mappingA.generatedLine;
   var lineB = mappingB.generatedLine;

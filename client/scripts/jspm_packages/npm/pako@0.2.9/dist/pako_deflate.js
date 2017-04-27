@@ -83,7 +83,7 @@
           arraySet: function(dest, src, src_offs, len, dest_offs) {
             if (src.subarray && dest.subarray) {
               dest.set(src.subarray(src_offs, src_offs + len), dest_offs);
-              return ;
+              return;
             }
             for (var i = 0; i < len; i++) {
               dest[dest_offs + i] = src[src_offs + i];
@@ -137,7 +137,7 @@
       }, {}],
       2: [function(require, module, exports) {
         'use strict';
-        var utils = require("./common");
+        var utils = require('./common');
         var STR_APPLY_OK = true;
         var STR_APPLY_UIA_OK = true;
         try {
@@ -330,11 +330,11 @@
       }, {}],
       5: [function(require, module, exports) {
         'use strict';
-        var utils = require("../utils/common");
-        var trees = require("./trees");
-        var adler32 = require("./adler32");
-        var crc32 = require("./crc32");
-        var msg = require("./messages");
+        var utils = require('../utils/common');
+        var trees = require('./trees');
+        var adler32 = require('./adler32');
+        var crc32 = require('./crc32');
+        var msg = require('./messages');
         var Z_NO_FLUSH = 0;
         var Z_PARTIAL_FLUSH = 1;
         var Z_FULL_FLUSH = 3;
@@ -399,7 +399,7 @@
             len = strm.avail_out;
           }
           if (len === 0) {
-            return ;
+            return;
           }
           utils.arraySet(strm.output, s.pending_buf, s.pending_out, len, strm.next_out);
           strm.next_out += len;
@@ -1376,7 +1376,7 @@
       }, {}],
       7: [function(require, module, exports) {
         'use strict';
-        var utils = require("../utils/common");
+        var utils = require('../utils/common');
         var Z_FIXED = 4;
         var Z_BINARY = 0;
         var Z_TEXT = 1;
@@ -1521,7 +1521,7 @@
             }
           }
           if (overflow === 0) {
-            return ;
+            return;
           }
           do {
             bits = max_length - 1;
@@ -1996,11 +1996,11 @@
       }, {}],
       "/lib/deflate.js": [function(require, module, exports) {
         'use strict';
-        var zlib_deflate = require("./zlib/deflate");
-        var utils = require("./utils/common");
-        var strings = require("./utils/strings");
-        var msg = require("./zlib/messages");
-        var ZStream = require("./zlib/zstream");
+        var zlib_deflate = require('./zlib/deflate');
+        var utils = require('./utils/common');
+        var strings = require('./utils/strings');
+        var msg = require('./zlib/messages');
+        var ZStream = require('./zlib/zstream');
         var toString = Object.prototype.toString;
         var Z_NO_FLUSH = 0;
         var Z_FINISH = 4;
@@ -2154,4 +2154,4 @@
       }]
     }, {}, [])("/lib/deflate.js");
   });
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

@@ -1,0 +1,33 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#gallerySection
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	background-color: map-get($COLORS, steelBlueTheme);
+	color: map-get($COLORS, whiteTheme);
+}
+
+#expandGalleryRow
+{
+	@extend %regularText;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 15px;
+	}
+
+	color: map-get($COLORS, whiteTheme);
+
+	cursor: pointer;
+	text-decoration: underline;
+}

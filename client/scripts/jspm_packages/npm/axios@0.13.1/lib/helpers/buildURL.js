@@ -1,6 +1,6 @@
 /* */ 
 'use strict';
-var utils = require("../utils");
+var utils = require('../utils');
 function encode(val) {
   return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
 }
@@ -17,7 +17,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
     var parts = [];
     utils.forEach(params, function serialize(val, key) {
       if (val === null || typeof val === 'undefined') {
-        return ;
+        return;
       }
       if (utils.isArray(val)) {
         key = key + '[]';

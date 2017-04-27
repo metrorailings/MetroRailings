@@ -1,0 +1,43 @@
+<div class='optionsCarousel'>
+
+    <div class='optionsSelector'>
+        {{#options}}
+            {{#if previewImage }}
+				<span class='carouselPreviewOption'>
+                    <img class='carouselPreviewPic shiftTrigger' src='{{ previewImage }}' data-index='{{ @index }}' />
+                    <div class='carouselPreviewLabel'>{{ label }}</div>
+                    <i class='selectedIcon fa fa-check-circle-o'></i>
+                </span>
+            {{else}}
+				<span class='carouselPreviewOption'>
+                    <div class='carouselPreviewLabelContainer shiftTrigger' data-index='{{ @index }}'>{{ label }}</div>
+                    <div class='carouselPreviewLabel'></div>
+                    <i class='selectedIcon fa fa-check-circle-o'></i>
+                </span>
+            {{/if}}
+        {{/options}}
+    </div>
+
+    <div class='thinSeparator'></div>
+
+    <div class='carouselContent'>
+
+        <span class='carouselControl' data-index=''>
+            <i class='fa fa-chevron-left'></i>
+            <span class='controlLabel'>Previous</span>
+        </span>
+
+        <span class='viewerBox'>
+            <span class='optionViewer' data-option-active=''>
+                <!-- Insert options data here -->
+            </span>
+        </span>
+
+        <span class='carouselControl' data-index=''>
+            <i class='fa fa-chevron-right'></i>
+            <span class='controlLabel'>Next</span>
+        </span>
+
+    </div>
+
+</div>

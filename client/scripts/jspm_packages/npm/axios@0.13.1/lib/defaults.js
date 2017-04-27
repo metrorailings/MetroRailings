@@ -1,7 +1,7 @@
 /* */ 
 'use strict';
-var utils = require("./utils");
-var normalizeHeaderName = require("./helpers/normalizeHeaderName");
+var utils = require('./utils');
+var normalizeHeaderName = require('./helpers/normalizeHeaderName');
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 var DEFAULT_CONTENT_TYPE = {'Content-Type': 'application/x-www-form-urlencoded'};
 function setContentTypeIfUnset(headers, value) {

@@ -1,0 +1,60 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#aboutUsSection
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+#aboutUsText
+{
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, darkGrayTheme);
+		style: solid;
+
+		top-left-radius: 25px;
+		bottom-right-radius: 25px;
+
+		top: none;
+		bottom: none;
+	}
+
+	padding:
+	{
+		left: 30px;
+		right: 30px;
+	}
+
+	width: 80%;
+
+	@include tabletUp()
+	{
+		border-width: 4px;
+	}
+
+	@include phoneOnly()
+	{
+		border:
+		{
+			width: 2px;
+
+			top-right-radius: 25px;
+			bottom-left-radius: 25px;
+		}
+	}
+}

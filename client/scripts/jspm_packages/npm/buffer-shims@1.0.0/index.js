@@ -1,7 +1,7 @@
 /* */ 
 (function(Buffer) {
   'use strict';
-  var buffer = require("buffer");
+  var buffer = require('buffer');
   var Buffer = buffer.Buffer;
   var SlowBuffer = buffer.SlowBuffer;
   var MAX_LEN = buffer.kMaxLength || 2147483647;
@@ -106,4 +106,4 @@
     }
     return new SlowBuffer(size);
   };
-})(require("buffer").Buffer);
+})(require('buffer').Buffer);

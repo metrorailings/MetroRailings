@@ -1,8 +1,8 @@
 /* */ 
 (function(process) {
-  var optimist = require("../index");
-  var path = require("path");
-  var test = require("tap").test;
+  var optimist = require('../index');
+  var path = require('path');
+  var test = require('tap').test;
   var $0 = 'node ./' + path.relative(process.cwd(), __filename);
   test('short boolean', function(t) {
     var parse = optimist.parse(['-b']);
@@ -383,4 +383,4 @@
     t.same(parsed.other, 'false');
     t.end();
   });
-})(require("process"));
+})(require('process'));

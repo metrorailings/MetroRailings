@@ -1,11 +1,11 @@
 /* */ 
 'use strict';
-var defaults = require("../defaults");
-var utils = require("../utils");
-var InterceptorManager = require("./InterceptorManager");
-var dispatchRequest = require("./dispatchRequest");
-var isAbsoluteURL = require("../helpers/isAbsoluteURL");
-var combineURLs = require("../helpers/combineURLs");
+var defaults = require('../defaults');
+var utils = require('../utils');
+var InterceptorManager = require('./InterceptorManager');
+var dispatchRequest = require('./dispatchRequest');
+var isAbsoluteURL = require('../helpers/isAbsoluteURL');
+var combineURLs = require('../helpers/combineURLs');
 function Axios(defaultConfig) {
   this.defaults = utils.merge(defaults, defaultConfig);
   this.interceptors = {

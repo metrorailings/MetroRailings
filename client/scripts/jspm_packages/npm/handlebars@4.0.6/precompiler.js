@@ -1,7 +1,7 @@
 /* */ 
 "format cjs";
 (function(process) {
-  define(["exports","async","fs","./handlebars","path","source-map","uglify-js"], function(exports, _async, _fs, _handlebars, _path, _sourceMap, _uglifyJs) {
+  define(['exports', 'async', 'fs', './handlebars', 'path', 'source-map', 'uglify-js'], function(exports, _async, _fs, _handlebars, _path, _sourceMap, _uglifyJs) {
     'use strict';
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : {'default': obj};
@@ -131,7 +131,7 @@
     module.exports.cli = function(opts) {
       if (opts.version) {
         console.log(_handlebars.VERSION);
-        return ;
+        return;
       }
       if (!opts.templates.length && !opts.hasDirectory) {
         throw new _handlebars.Exception('Must define at least one template or directory.');
@@ -246,4 +246,4 @@
       return value;
     }
   });
-})(require("process"));
+})(require('process'));

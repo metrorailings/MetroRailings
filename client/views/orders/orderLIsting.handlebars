@@ -57,6 +57,11 @@
                     </span>
                 </span>
             {{/can_status_be_updated}}
+			<span class='orderCell'>
+				<span class='printLink' data-id='{{ this._id }}'>
+					<i class='fa fa-print'></i>Print Order
+				</span>
+			</span>
             <span class='orderCell'>
                 <button class='orderDetailsButton' data-id={{ this._id }}>
                     Edit<i class='fa fa-arrow-circle-o-right'></i>
@@ -64,7 +69,16 @@
             </span>
 		</div>
 
+        {{#if this.pictures }}
+            <div class='orderGrouping orderPictures'>
+                <span class='orderInfoSection' data-id={{ this._id }}>
+					<span class='orderInfoSectionHeader'>Pictures</span>
+					<span class='loadPicturesLink' data-id={{ this._id }}>Load Pictures...</span>
+                </span>
+            </div>
+        {{/if}}
 	</div>
+
 {{/each}}
 
 {{#unless orders.length}}

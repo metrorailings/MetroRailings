@@ -1,0 +1,43 @@
+<div class='designTemplate'>
+
+    {{#if designImages.length}}
+        <div class='designImageContainer'>
+            <div class='designImages'>
+                {{#designImages}}
+                    <img class='designPreview {{#if @first}}selected{{/if}}' src='{{this}}' />
+                {{/designImages}}
+            </div>
+
+            <div>
+                <img class='enlargedCarouselPicture' src='{{designImages.[0]}}' />
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if label}}
+		<div class='designName'>{{ label }}</div>
+    {{/if}}
+
+    {{#if designDescription}}
+		<div class='designDescription'>{{designDescription}}</div>
+
+        {{#if price}}
+			<div class='designPrice'>{{price}} per {{unit}}</div>
+        {{/if}}
+
+        <button class='designChosenButton {{#if isSelected}}selected{{else}}unselected{{/if}}' data-vm-prop={{vmProp}} data-design-code={{id}}>
+            <span class='unselected {{#if isSelected}}hide{{/if}}'>
+                Select this Option
+            </span>
+            <span class='selected {{#unless isSelected}}hide{{/unless}}'>
+                Selected<i class='fa fa-check-circle-o'></i>
+            </span>
+        </button>
+
+    {{else}}
+        <div class='noDesignSelected'>
+            Over here, you will see more information about whatever design you select above.
+        </div>
+    {{/if}}
+
+</div>

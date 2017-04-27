@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","./utils","./exception","./helpers","./decorators","./logger"], function (exports, _utils, _exception, _helpers, _decorators, _logger) {
+define(['exports', './utils', './exception', './helpers', './decorators', './logger'], function (exports, _utils, _exception, _helpers, _decorators, _logger) {
   'use strict';
 
   exports.__esModule = true;

@@ -1,0 +1,40 @@
+<div id='contactUsForm'>
+
+	<div id='nameAndOrderRow' class='formRow'>
+        <span class='controlGrouping'>
+            <label for='customerName' class='required'>Your Name</label>
+            <input type='text' id='customerName' />
+        </span>
+
+        <span class='controlGrouping controlGroupingRow'>
+            <label for='orderId'>Order ID</label>
+            <input type='tel' id='orderId'/>
+            <span class='formDescriptiveText'>Optional and only necessary if you are inquiring about a particular order</span>
+		</span>
+	</div>
+
+    <div class='formRow'>
+        <span id='customerPhoneNumberInputs' class='controlGrouping controlGroupingRow'>
+            <label for='customerPhoneAreaCode' class='required'>Your Phone Number</label>
+            (<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code' />)
+            <input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###' >-
+            <input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####' >
+            <span class='formDescriptiveText'>Please give us the best phone number that we can use to reach you during afternoon hours.</span>
+        </span>
+    </div>
+
+    <div class='formRow'>
+        <span class='controlGrouping'>
+            <label for='customerEmail' class='required'>Your E-mail Address</label>
+            <input type='email' id='customerEmail'/>
+		</span>
+    </div>
+
+	<div class='formRow'>
+        <span class='controlGrouping'>
+            <label for='comments' class='required'>Comments</label>
+            <textarea id='comments'></textarea>
+		</span>
+	</div>
+
+</div>

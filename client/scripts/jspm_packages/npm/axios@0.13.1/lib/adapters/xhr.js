@@ -1,13 +1,13 @@
 /* */ 
 (function(process) {
   'use strict';
-  var utils = require("../utils");
-  var settle = require("../core/settle");
-  var buildURL = require("../helpers/buildURL");
-  var parseHeaders = require("../helpers/parseHeaders");
-  var isURLSameOrigin = require("../helpers/isURLSameOrigin");
-  var createError = require("../core/createError");
-  var btoa = (typeof window !== 'undefined' && window.btoa) || require("../helpers/btoa");
+  var utils = require('../utils');
+  var settle = require('../core/settle');
+  var buildURL = require('../helpers/buildURL');
+  var parseHeaders = require('../helpers/parseHeaders');
+  var isURLSameOrigin = require('../helpers/isURLSameOrigin');
+  var createError = require('../core/createError');
+  var btoa = (typeof window !== 'undefined' && window.btoa) || require('../helpers/btoa');
   module.exports = function xhrAdapter(config) {
     return new Promise(function dispatchXhrRequest(resolve, reject) {
       var requestData = config.data;
@@ -34,10 +34,10 @@
       request.timeout = config.timeout;
       request[loadEvent] = function handleLoad() {
         if (!request || (request.readyState !== 4 && !xDomain)) {
-          return ;
+          return;
         }
         if (request.status === 0) {
-          return ;
+          return;
         }
         var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
         var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
@@ -61,7 +61,7 @@
         request = null;
       };
       if (utils.isStandardBrowserEnv()) {
-        var cookies = require("../helpers/cookies");
+        var cookies = require('../helpers/cookies');
         var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ? cookies.read(config.xsrfCookieName) : undefined;
         if (xsrfValue) {
           requestHeaders[config.xsrfHeaderName] = xsrfValue;
@@ -101,4 +101,4 @@
       request.send(requestData);
     });
   };
-})(require("process"));
+})(require('process'));

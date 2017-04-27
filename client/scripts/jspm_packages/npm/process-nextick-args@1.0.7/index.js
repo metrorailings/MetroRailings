@@ -40,4 +40,4 @@
         });
     }
   }
-})(require("process"));
+})(require('process'));

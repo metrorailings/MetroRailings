@@ -1,7 +1,7 @@
 /* */ 
 (function(process) {
-  var fs = require("fs"),
-      path = require("path");
+  var fs = require('fs'),
+      path = require('path');
   module.exports = function(yargs, usage) {
     var self = {completionKey: 'get-yargs-completions'};
     self.getCompletion = function(done) {
@@ -44,4 +44,4 @@
     };
     return self;
   };
-})(require("process"));
+})(require('process'));

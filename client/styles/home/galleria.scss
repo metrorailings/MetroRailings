@@ -1,0 +1,74 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.galleriaPack
+{
+	@include transitionSettings($property: max-height, $duration: 3s, $timing: ease-out);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+
+	max-height: 0px;
+	overflow: hidden;
+
+	&.show
+	{
+		max-height: 3000px;
+	}
+
+	& > span
+	{
+		margin:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
+		@include desktopOnly()
+		{
+			width: 33%;
+			height: 250px;
+		}
+
+		@include tabletOnly()
+		{
+			width: 33%;
+			height: 185px;
+		}
+
+		@include phoneOnly()
+		{
+			width: 50%;
+			height: 125px;
+		}
+
+		& > img
+		{
+			cursor: pointer;
+
+			@include desktopOnly()
+			{
+				width: 250px;
+				height: 250px;
+			}
+
+			@include tabletOnly()
+			{
+				width: 185px;
+				height: 185px;
+			}
+
+			@include phoneOnly()
+			{
+				width: 125px;
+				height: 125px;
+			}
+		}
+	}
+}

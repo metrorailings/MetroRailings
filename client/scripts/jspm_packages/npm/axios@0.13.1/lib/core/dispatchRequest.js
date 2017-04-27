@@ -1,8 +1,8 @@
 /* */ 
 (function(process) {
   'use strict';
-  var utils = require("../utils");
-  var transformData = require("./transformData");
+  var utils = require('../utils');
+  var transformData = require('./transformData');
   module.exports = function dispatchRequest(config) {
     config.headers = config.headers || {};
     config.data = transformData(config.data, config.headers, config.transformRequest);
@@ -14,9 +14,9 @@
     if (typeof config.adapter === 'function') {
       adapter = config.adapter;
     } else if (typeof XMLHttpRequest !== 'undefined') {
-      adapter = require("../adapters/xhr");
+      adapter = require('../adapters/xhr');
     } else if (typeof process !== 'undefined') {
-      adapter = require("../adapters/xhr");
+      adapter = require('../adapters/xhr');
     }
     return Promise.resolve(config).then(adapter).then(function onFulfilled(response) {
       response.data = transformData(response.data, response.headers, config.transformResponse);
@@ -28,4 +28,4 @@
       return Promise.reject(error);
     });
   };
-})(require("process"));
+})(require('process'));

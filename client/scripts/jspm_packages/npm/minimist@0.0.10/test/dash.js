@@ -1,6 +1,6 @@
 /* */ 
-var parse = require("../index");
-var test = require("tape");
+var parse = require('../index');
+var test = require('tape');
 test('-', function(t) {
   t.plan(5);
   t.deepEqual(parse(['-n', '-']), {

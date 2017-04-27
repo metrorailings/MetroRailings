@@ -1,6 +1,6 @@
 /* */ 
-var optimist = require("../index");
-var test = require("tap").test;
+var optimist = require('../index');
+var test = require('tap').test;
 test('-', function(t) {
   t.plan(5);
   t.deepEqual(fix(optimist.parse(['-n', '-'])), {

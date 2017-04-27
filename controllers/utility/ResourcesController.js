@@ -49,7 +49,7 @@ module.exports =
 		if (fileCache[url])
 		{
 			console.log('The file referenced by ' + url + ' was already stored in the local cache!');
-			return fileCache[url];
+//			return fileCache[url];
 		}
 
 		try

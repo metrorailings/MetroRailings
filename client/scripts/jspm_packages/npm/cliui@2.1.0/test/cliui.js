@@ -1,6 +1,6 @@
 /* */ 
-require("chai").should();
-var cliui = require("../index");
+require('chai').should();
+var cliui = require('../index');
 describe('cliui', function() {
   describe('div', function() {
     it("wraps text at 'width' if a single column is given", function() {

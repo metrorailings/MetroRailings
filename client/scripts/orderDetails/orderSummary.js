@@ -4,21 +4,22 @@ import vm from 'client/scripts/orderDetails/viewModel';
 
 import axios from 'client/scripts/utility/axios';
 import dropbox from 'client/scripts/utility/dropbox';
-import rQueryClient from 'client/scripts/utility/rQueryClient';
+import gallery from 'client/scripts/utility/gallery';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
 	UPLOAD_PICTURE_INPUT = 'uploadPictureInput',
-	PICTURES_LISTING = 'picturesListing',
+	PICTURES_LISTING = 'picturesListingContainer',
 	ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	LOADING_VEIL = 'baseLoaderOverlay',
 
 	SAVE_PICTURES_URL = 'orderDetails/saveNewPicture',
 
 	VISIBILITY_CLASS = 'show',
-	STATUS_RADIO_BUTTONS = 'statusRadio';
+	STATUS_RADIO_BUTTONS = 'statusRadio',
+	UPLOADED_IMAGES_CLASS = 'uploadedImageThumbnail';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -42,15 +43,18 @@ var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PIC
  *
  * @author kinsho
  */
-function* _renderImageListing_gen()
+async function _renderImageListing()
 {
+	var imageElements,
+		i;
+
 	// Cycle through each picture to see if there's a link that we can use to view the picture
 	// If not, generate that link
 	for (i = vm.pictures.length - 1; i >= 0; i--)
 	{
 		if ( !(vm.pictures[i].fullLink) )
 		{
-			vm.pictures[i].fullLink = yield dropbox.fetchLink(vm.pictures[i]);
+			vm.pictures[i].fullLink = await dropbox.fetchLink(vm.pictures[i]);
 		}
 	}
 
@@ -58,12 +62,16 @@ function* _renderImageListing_gen()
 
 	// Reset all the listeners for the section
 	document.getElementById(UPLOAD_PICTURE_BUTTON).addEventListener('click', triggerFileBrowser);
-	document.getElementById(UPLOAD_PICTURE_INPUT).addEventListener('change', rQueryClient.runToFinish(uploadImage));
+	document.getElementById(UPLOAD_PICTURE_INPUT).addEventListener('change', uploadImage);
+
+	imageElements = _picturesContainer.getElementsByClassName(UPLOADED_IMAGES_CLASS);
+	for (i = imageElements.length - 1; i >= 0; i--)
+	{
+		imageElements[i].addEventListener('click', openGallery);
+	}
 }
 
 // ----------------- PROCESSED GENERATOR FUNCTIONS ---------------------------
-
-var _renderImageListing = rQueryClient.runToFinish(_renderImageListing_gen);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -100,12 +108,31 @@ function triggerFileBrowser()
 }
 
 /**
+ * Listener responsible for opening up a gallery so that the viewer can take a better look at an uploaded picture
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function openGallery(event)
+{
+	var imageURLs = [];
+
+	// Cycle through each of the uploaded images and collect their src links
+	for (var i = 0; i < vm.pictures.length; i++)
+	{
+		imageURLs.push(vm.pictures[i].fullLink);
+	}
+	gallery.open(imageURLs, window.parseInt(event.currentTarget.dataset.index, 10));
+}
+
+/**
  * Listener responsible for uploading an image to Dropbox and then recording metadata about
  * the remote Dropbox file in the server
  *
  * @author kinsho
  */
-function* uploadImage()
+async function uploadImage()
 {
 	var fileToUpload = document.getElementById(UPLOAD_PICTURE_INPUT).files[0],
 		imageNameComponents = fileToUpload.name.split('.'),
@@ -119,13 +146,14 @@ function* uploadImage()
 
 	_loadingVeil.classList.add(VISIBILITY_CLASS);
 
-	imgMetadata = yield dropbox.uploadFile(fileToUpload, revisedFileName);
-	saveData.imgMeta = imgMetadata;
-	vm.pictures.push(imgMetadata);
+	imgMetadata = await dropbox.uploadFile(fileToUpload, revisedFileName);
+	saveData.imgMeta = imgMetadata.data;
+	vm.pictures.push(saveData.imgMeta);
 
-	yield axios.post(SAVE_PICTURES_URL, saveData, false);
+	await axios.post(SAVE_PICTURES_URL, saveData, false);
 
-	yield _renderImageListing();
+	_loadingVeil.classList.remove(VISIBILITY_CLASS);
+	_renderImageListing();
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------

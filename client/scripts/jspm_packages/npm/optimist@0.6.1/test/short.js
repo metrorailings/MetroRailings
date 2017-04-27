@@ -1,6 +1,6 @@
 /* */ 
-var optimist = require("../index");
-var test = require("tap").test;
+var optimist = require('../index');
+var test = require('tap').test;
 test('-n123', function(t) {
   t.plan(1);
   var parse = optimist.parse(['-n123']);

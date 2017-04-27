@@ -33,4 +33,4 @@
     });
   }
   module.exports = lazyCache;
-})(require("process"));
+})(require('process'));

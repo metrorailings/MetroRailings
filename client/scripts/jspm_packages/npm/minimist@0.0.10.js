@@ -1,1 +1,1 @@
-module.exports = require("npm:minimist@0.0.10/index");
+module.exports = require("npm:minimist@0.0.10/index.js");

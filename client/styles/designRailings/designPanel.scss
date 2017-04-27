@@ -1,0 +1,273 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+@import '../foundation/responsive';
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.designTemplate
+{
+	@extend %formSectionHeaderText;
+
+	margin:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.designImageContainer
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	@include desktopOnly()
+	{
+		flex-direction: row;
+	}
+
+	@include mobileOnly()
+	{
+		flex-direction: column-reverse;
+	}
+
+	& > div
+	{
+		@include desktopOnly()
+		{
+			margin:
+			{
+				left: 40px;
+				right: 40px;
+			}
+		}
+
+		@include mobileOnly()
+		{
+			margin:
+			{
+				top: 30px;
+				bottom: 30px;
+			}
+		}
+	}
+}
+
+.designImages
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include desktopOnly()
+	{
+		flex-direction: column;
+	}
+
+	@include mobileOnly()
+	{
+		flex-direction: row;
+	}
+}
+
+.designPreview
+{
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 6px;
+		style: solid;
+	}
+
+	@include desktopOnly()
+	{
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		height: 175px;
+		width: 175px;
+	}
+
+	@include tabletOnly()
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		height: 125px;
+		width: 125px;
+	}
+
+	@include phoneOnly()
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		height: 75px;
+		width: 75px;
+	}
+
+	cursor: pointer;
+
+	&.selected
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+	}
+}
+
+.enlargedCarouselPicture
+{
+	@include transitionSettings($property: opacity, $duration: 0.35s);
+
+	@include desktopOnly()
+	{
+		height: 400px;
+		width: 400px;
+	}
+
+	@include tabletOnly()
+	{
+		height: 350px;
+		width: 350px;
+	}
+
+	@include phoneOnly()
+	{
+		height: 250px;
+		width: 250px;
+	}
+
+	opacity: 1.0;
+
+	&.fade
+	{
+		opacity: 0.0;
+	}
+}
+
+.designName
+{
+	padding:
+	{
+		left: 15px;
+		right: 15px;
+		bottom: 5px;
+	}
+
+	border-bottom:
+	{
+		color: map-get($COLORS, grayTheme);
+		width: 1px;
+		style: solid;
+	}
+
+	@include desktopOnly()
+	{
+		margin:
+		{
+			top: 25px;
+			bottom: 25px;
+		}
+	}
+
+	@include mobileOnly()
+	{
+		margin:
+		{
+			top: 12.5px;
+			bottom: 12.5px;
+		}
+	}
+}
+
+.designDescription
+{
+	@extend %formDescriptiveText;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+		left: 15px;
+		right: 15px;
+	}
+
+	text-align: left;
+}
+
+.designChosenButton
+{
+	@include button($bgColor: whiteTheme);
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	@include tabletUp()
+	{
+		width: 250px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 175px;
+	}
+
+	&.selected
+	{
+		background-color: map-get($COLORS, darkGreenTheme);
+	}
+
+	&.unselected
+	{
+		background-color: map-get($COLORS, indianRedTheme);
+	}
+
+	& > .unselected, & > .selected
+	{
+		display: block;
+		width: 100%;
+
+		&.hide
+		{
+			display: none;
+		}
+	}
+
+	i
+	{
+		margin-left: 10px;
+	}
+}
+
+.noDesignSelected
+{
+	color: map-get($COLORS, darkerGrayTheme);
+
+	margin-bottom: 90%;
+}

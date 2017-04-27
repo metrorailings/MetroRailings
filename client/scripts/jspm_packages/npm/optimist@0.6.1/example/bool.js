@@ -1,6 +1,6 @@
 /* */ 
-var util = require("util");
-var argv = require("../index").argv;
+var util = require('util');
+var argv = require('../index').argv;
 if (argv.s) {
   util.print(argv.fr ? 'Le chat dit: ' : 'The cat says: ');
 }

@@ -1,11 +1,11 @@
 /* */ 
 (function(Buffer, process) {
-  var crypto = require("crypto");
-  var stream = require("stream");
+  var crypto = require('crypto');
+  var stream = require('stream');
   var Stream = stream.Stream;
-  var util = require("util");
-  var tape = require("tape");
-  var zlib = require("../src/index");
+  var util = require('util');
+  var tape = require('tape');
+  var zlib = require('../src/index');
   function RandomReadStream(opt) {
     Stream.call(this);
     this.readable = true;
@@ -33,15 +33,15 @@
   };
   RandomReadStream.prototype._process = function() {
     if (this._processing)
-      return ;
+      return;
     if (this._paused)
-      return ;
+      return;
     this._processing = true;
     if (!this._remaining) {
       this._hash = this._hasher.digest('hex').toLowerCase().trim();
       this._processing = false;
       this.emit('end');
-      return ;
+      return;
     }
     var block = this._opt.block;
     var jitter = this._opt.jitter;
@@ -112,4 +112,4 @@
       t.end();
     });
   });
-})(require("buffer").Buffer, require("process"));
+})(require('buffer').Buffer, require('process'));

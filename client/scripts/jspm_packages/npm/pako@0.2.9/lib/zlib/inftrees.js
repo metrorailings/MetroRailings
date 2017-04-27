@@ -1,7 +1,7 @@
 /* */ 
 (function(process) {
   'use strict';
-  var utils = require("../utils/common");
+  var utils = require('../utils/common');
   var MAXBITS = 15;
   var ENOUGH_LENS = 852;
   var ENOUGH_DISTS = 592;
@@ -181,4 +181,4 @@
     opts.bits = root;
     return 0;
   };
-})(require("process"));
+})(require('process'));

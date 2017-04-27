@@ -212,33 +212,33 @@ function exitGallery()
 // ----------------- MODULE ---------------------------
 
 var galleryModule =
-{
-	/**
-	 * Function responsible for initializing a new bunch of photos into the gallery and opening up
-	 * the viewer
-	 *
-	 * @param {Array<String>} URLs - a collection of image URLs that will fetch the images to be shown by
-	 * 		the gallery
-	 * @param {Number} index - the index value determining which image to show first in the gallery
-	 *
-	 * @author kinsho
-	 */
-	open: function(URLs, index)
 	{
-		_currentIndex = index;
-		_imageURLs = URLs;
-
-		_galleryPicture.src = _imageURLs[index];
-		_galleryOverlay.classList.add(SURFACE_CLASS);
-
-		// Set any animations on a slight delay following the surfacing of the gallery
-		window.setTimeout(() =>
+		/**
+		 * Function responsible for initializing a new bunch of photos into the gallery and opening up
+		 * the viewer
+		 *
+		 * @param {Array<String>} URLs - a collection of image URLs that will fetch the images to be shown by
+		 * 		the gallery
+		 * @param {Number} index - the index value determining which image to show first in the gallery
+		 *
+		 * @author kinsho
+		 */
+		open: function(URLs, index)
 		{
-			_galleryOverlay.classList.add(SHOW_CLASS);
-			_toggleControlsVisibility();
-		}, 50);
-	}
-};
+			_currentIndex = index;
+			_imageURLs = URLs;
+
+			_galleryPicture.src = _imageURLs[index];
+			_galleryOverlay.classList.add(SURFACE_CLASS);
+
+			// Set any animations on a slight delay following the surfacing of the gallery
+			window.setTimeout(() =>
+			{
+				_galleryOverlay.classList.add(SHOW_CLASS);
+				_toggleControlsVisibility();
+			}, 50);
+		}
+	};
 
 // ----------------- CONFIGURATION ---------------------------
 

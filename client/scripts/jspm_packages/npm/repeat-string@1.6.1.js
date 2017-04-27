@@ -1,1 +1,1 @@
-module.exports = require("npm:repeat-string@1.6.1/index");
+module.exports = require("npm:repeat-string@1.6.1/index.js");

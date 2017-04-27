@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-define(["exports","./decorators/inline"], function (exports, _decoratorsInline) {
+define(['exports', './decorators/inline'], function (exports, _decoratorsInline) {
   'use strict';
 
   exports.__esModule = true;

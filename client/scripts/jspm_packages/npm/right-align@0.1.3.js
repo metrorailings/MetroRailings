@@ -1,1 +1,1 @@
-module.exports = require("npm:right-align@0.1.3/index");
+module.exports = require("npm:right-align@0.1.3/index.js");

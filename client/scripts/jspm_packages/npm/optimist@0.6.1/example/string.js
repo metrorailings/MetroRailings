@@ -1,4 +1,4 @@
 /* */ 
-var argv = require("../index").string('x', 'y').argv;
+var argv = require('../index').string('x', 'y').argv;
 ;
 console.dir([argv.x, argv.y]);

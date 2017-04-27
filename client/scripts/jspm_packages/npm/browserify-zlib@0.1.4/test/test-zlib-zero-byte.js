@@ -1,7 +1,7 @@
 /* */ 
 (function(Buffer) {
-  var tape = require("tape");
-  var zlib = require("../src/index");
+  var tape = require('tape');
+  var zlib = require('../src/index');
   tape('zero byte', function(t) {
     t.plan(2);
     var gz = zlib.Gzip();
@@ -19,4 +19,4 @@
     gz.write(emptyBuffer);
     gz.end();
   });
-})(require("buffer").Buffer);
+})(require('buffer').Buffer);
