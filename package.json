@@ -16,7 +16,8 @@
     "randomstring": "*",
     "stripe": "*",
     "nodemailer": "*",
-    "styliner": "*"
+    "styliner": "*",
+    "jspm": "*"
   },
   "jspm": {
     "directories": {

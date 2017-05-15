@@ -1,5 +1,10 @@
-*.iml
-.idea
+# Created by .ignore support plugin (hsz.mobi)
+
+prod/buildScript.sh
+prod/build.src.js
+prod/build.min.js
+**/*.map
+client/scripts/jspm_packages
+node_modules
 MetroRailings.iml
-node_modules/*
-npm-debug.log
+.idea/

@@ -45,6 +45,7 @@ var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PIC
  * The partial to render the HTML containing the vital order details that will need to be print out for shop purposes
  */
 var orderPrintTemplate = Handlebars.compile(document.getElementById(ORDER_PRINT_TEMPLATE).innerHTML);
+
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
 /**
@@ -130,8 +131,8 @@ async function printOrder()
 		orderID = window.parseInt(currentTarget.dataset.id, 10),
 		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
 		order = vm.orders[orderIndex],
-		pictures = order.pictures,
-		printWindow = window.open('', '', 'left=0,top=0,width=1,height=1,toolbar=0,scrollbars=1,status=0'),
+		pictures = order.pictures || [],
+		printWindow = window.open('', '', 'left=360,top=10,width=1,height=1,toolbar=0,scrollbars=1,status=0'),
 		i;
 
 	// Fetch a link to each picture
