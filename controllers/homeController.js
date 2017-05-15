@@ -1,11 +1,10 @@
 /**
- * @module orderConfirmationController
+ * @module homeController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-	_Handlebars = require('Handlebars'),
+var _Handlebars = require('Handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 
@@ -104,7 +103,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (params, cookie, request)
+	init: async function (params, cookie, request)
 	{
 		var redirectURL = request.headers.referer,
 			redirectHost = METRO_KEYWORD,
@@ -124,25 +123,25 @@ module.exports =
 			GENERIC_SLOGAN : CUSTOMIZED_SLOGAN.replace(LOCALITY_PLACEHOLDER, rQuery.capitalize(redirectHost)));
 
 		// Fetch all the images that we will need to display on the home page
-		templateData.homeBannerImages = yield fileManager.fetchImagePaths(CONTROLLER_FOLDER);
-		pageData.galleryImages = yield fileManager.fetchImagePaths(GALLERY_FOLDER);
-		templateData.thankYouImages = yield fileManager.fetchImagePaths(THANK_YOU_FOLDER);
+		templateData.homeBannerImages = await fileManager.fetchImagePaths(CONTROLLER_FOLDER);
+		pageData.galleryImages = await fileManager.fetchImagePaths(GALLERY_FOLDER);
+		templateData.thankYouImages = await fileManager.fetchImagePaths(THANK_YOU_FOLDER);
 
 		// Fetch the galleria template as well so that we can add pictures to the gallery from within the client
-		templateData.galleriaTemplate = yield fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.GALLERIA);
+		templateData.galleriaTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.GALLERIA);
 
 		// Do not forget to set up default gallery pics that are instantly visible when the page loads
 		defaultGalleriaData.group = DEFAULT_KEYWORD;
 		defaultGalleriaData.pictures = pageData.galleryImages.slice(0, 6); // Yes, we are assuming more than 6 images in the gallery here
 		defaultGalleriaData.show = true;
-		templateData.defaultGalleria = yield templateManager.populateTemplate(defaultGalleriaData, CONTROLLER_FOLDER, PARTIALS.GALLERIA);
+		templateData.defaultGalleria = await templateManager.populateTemplate(defaultGalleriaData, CONTROLLER_FOLDER, PARTIALS.GALLERIA);
 
 		// Only images that have not been loaded yet need to be sent over to the client in bootstrapped form
 		pageData.galleryImages = pageData.galleryImages.slice(6);
 
 		// Now render the page template
-		populatedPageTemplate = yield templateManager.populateTemplate(templateData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(templateData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, false, true);
-	})
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, false, true);
+	}
 };

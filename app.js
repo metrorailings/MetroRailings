@@ -48,9 +48,9 @@ _http.createServer(function(request, response)
 		}
 	}());
 
-}).listen(3000);
+}).listen(80);
 
 // ----------------- END --------------------------
 
 console.log('Server started!');
-console.log('Listening on port 3000...');
+console.log('Listening on port 80...');

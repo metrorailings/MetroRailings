@@ -2,16 +2,11 @@
  * @main socialLinks
  */
 
-// ----------------- EXTERNAL MODULES --------------------------
-
-
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var FACEBOOK_SHARE_ICON = 'facebookShareLink',
 	REDDIT_SHARE_ICON = 'redditShareLink',
 	TWITTER_SHARE_ICON = 'twitterShareLink';
-
-// ----------------- PRIVATE FUNCTIONS ---------------------------
 
 // ----------------- LISTENERS ---------------------------
 
@@ -20,13 +15,13 @@ function shareOnFacebook()
 	window.FB.ui(
 	{
 		method: 'share',
-		href: 'https://www.nuforcfun.com',
+		href: 'https://www.metrorailings.com',
 	}, function() {});
 }
 
 function shareOnTwitter()
 {
-	window.location = '//twitter.com/intent/tweet?text=http://www.nuforcfun.com';
+	window.location = '//twitter.com/intent/tweet?text=http://www.metrorailings.com';
 	return false;
 }
 
