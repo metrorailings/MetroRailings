@@ -1,0 +1,151 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+@import '../foundation/responsive';
+
+/* ----------------------- GENERAL STYLES ----------------------------- */
+
+#topMenu
+{
+	border-bottom:
+	{
+		color: map-get($COLORS, blackTheme);
+		width: 3px;
+		style: solid;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: map-get($COLORS, smokeWhiteTheme);
+
+	width: 100%;
+
+	@include phoneOnly()
+	{
+		flex-wrap: wrap;
+	}
+
+	// Hide all the links intended to be shown only on tablet and desktop environments
+	& > .topMenuLink
+	{
+		@include phoneOnly()
+		{
+			display: none;
+		}
+	}
+}
+
+.topMenuLink
+{
+	@extend %topMenuText;
+
+	margin:
+	{
+		left: 20px;
+		right: 20px;
+	}
+
+	flex: 1;
+	text-align: center;
+
+	text-decoration: none;
+	color: map-get($COLORS, darkGreyTheme) !important;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+}
+
+#topMenuLogoContainer
+{
+	margin-left: 10px;
+
+	@include tabletUp()
+	{
+		text-align: center;
+	}
+
+	@include phoneOnly()
+	{
+		flex: 1;
+
+		text-align: left;
+	}
+}
+
+#topMenuLogo
+{
+	cursor: pointer;
+
+	@include desktopOnly()
+	{
+		height: 100px;
+	}
+
+	@include mobileOnly()
+	{
+		height: 60px;
+	}
+}
+
+#topMenuExpander
+{
+	@include tabletUp()
+	{
+		display: none;
+	}
+
+	@include phoneOnly()
+	{
+		flex: 1;
+		margin-right: 40px;
+		text-align: right;
+
+		font-size: 24px;
+
+		&:focus + #mobileTopMenuLinks
+		{
+			max-height: 1000px;
+		}
+	}
+}
+
+#mobileTopMenuLinks
+{
+	@include tabletUp()
+	{
+		display: none;
+	}
+
+	@include phoneOnly()
+	{
+		@include transitionSettings($property: all, $duration: 0.5s);
+
+		max-height: 0px;
+		overflow: hidden;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+
+		& > .topMenuLink
+		{
+			margin:
+			{
+				top: 20px;
+				bottom: 20px;
+				left: 0px;
+				right: 0px;
+			}
+
+			width: 50%;
+			flex: none;
+		}
+	}
+}

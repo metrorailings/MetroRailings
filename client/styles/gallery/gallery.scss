@@ -1,0 +1,38 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/animations';
+@import '../foundation/gallery';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#galleryCollection
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.galleryPicture
+{
+	margin: 25px;
+
+	cursor: pointer;
+
+	@include tabletUp()
+	{
+		width: 250px;
+		height: 250px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 130px;
+		height: 130px;
+	}
+}
