@@ -22,10 +22,6 @@ var SCSS_EXTENSION = '.scss',
 
 	COMPRESSED_KEYWORD = 'compressed';
 
-// ----------------- PRIVATE VARIABLES --------------------------
-
-var fileCache = {}; // A cache of file contents that help to keep the database from being ringed every time a resource request comes in
-
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
 var zlibGZipper = _Q.denodeify(_zlib.gzip);
@@ -43,14 +39,6 @@ module.exports =
 	{
 		var fileContents,
 			gzipContents;
-
-		// If the file has already been retrieved once before from the database, we should be able to return the file
-		// from our local cache
-		if (fileCache[url])
-		{
-			console.log('The file referenced by ' + url + ' was already stored in the local cache!');
-//			return fileCache[url];
-		}
 
 		try
 		{
@@ -75,9 +63,6 @@ module.exports =
 			{
 				gzipContents = fileContents;
 			}
-
-			// Store the compressed file contents in a local cache for future references
-			fileCache[url] = gzipContents;
 
 			// Now return the compressed contents
 			return gzipContents;

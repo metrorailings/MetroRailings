@@ -4,6 +4,7 @@ import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 import statuses from 'shared/orderStatus';
 import dateUtility from 'shared/dateUtility';
+import designTranslator from 'shared/designs/translator';
 
 import vm from 'client/scripts/checkOrder/viewModel';
 
@@ -42,6 +43,7 @@ function _renderOrders()
 				orders: vm.orders,
 				areThereOrders: !!(vm.orders.length)
 			});
+
 
 			window.setTimeout(() =>
 			{
@@ -96,6 +98,16 @@ Handlebars.registerHelper('format_date', function(date)
 	return month + ' ' + day + ordinalSuffix + ' ' + year;
 });
 
+/**
+ * Handlebars helper function designed to map a design's code name to a full name
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
+{
+	return designTranslator.findDesignName(designCode);
+});
+
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
@@ -110,8 +122,3 @@ var orderListingTemplate = Handlebars.compile(document.getElementById(ORDER_LIST
 
 // Set up a listener that we can use to publicly tell this module to render a new batch of orders
 document.addEventListener(ORDER_RENDER_EVENT, _renderOrders);
-
-
-// ----------------- DATA INITIALIZATION -----------------------------
-
-// ----------------- PAGE INITIALIZATION -----------------------------

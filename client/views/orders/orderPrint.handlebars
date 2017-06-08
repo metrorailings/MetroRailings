@@ -1,27 +1,98 @@
+<!--
+	For the sake of simplicity and keeping clutter away from the main code, keep the styling for this print page
+	inside the actual HTML
+-->
+<style>
+	#orderDetails
+	{
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+
+		font-family: 'Times New Roman';
+		font-size: 18px;
+		font-weight: 400;
+
+		height: 300px;
+	}
+
+	#orderDetails > div
+	{
+		margin-top: 20px;
+		margin-bottom: 20px;
+
+		flex: 1;
+	}
+
+	.orderLabel
+	{
+		font-weight: 700;
+		margin-right: 8px;
+	}
+
+	#sectionHeader
+	{
+		font-family: Helvetica;
+		font-weight: 700;
+		font-size: 24px;
+
+		text-align: center;
+		text-decoration: underline;
+
+		margin-bottom: 20px;
+	}
+
+	#orderPictures
+	{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+	#orderPictures img
+	{
+		margin-top: 25px;
+		margin-bottom: 25px;
+
+		max-width: 500px;
+		max-height: 500px;
+	}
+</style>
+
+<div id='sectionHeader'>Order {{id}} Details</div>
+
 <div id='orderDetails'>
-	<span class='sectionHeader'>Order Details</span>
+	<div>
+		<span class='orderLabel'>Type:</span> {{#capitalize order.type }}{{/capitalize }}
+	</div>
 
-	<span class='orderLabel'>Type:</span> {{#capitalize order.type }}{{/capitalize }}</span>
+	<div>
+		<span class='orderLabel'>Length:</span> {{ order.length }} feet
+	</div>
 
-	<span class='orderLabel'>Length:</span> {{ order.length }} feet
+	<div>
+		<span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name }}
+	</div>
 
-	{{#if order.design.postDesign }}
-		<span class='orderLabel'>Post Design:</span> {{order.design.postDesign}}
+	{{#if order.design.postEnd}}
+	<div>
+		<span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name }}
+	</div>
 	{{/if}}
 
-	{{#if order.design.postEndDesign}}
-		<span class='orderLabel'>Post End:</span> {{order.design.postEndDesign}}
+	{{#if order.design.postCap}}
+	<div>
+		<span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name }}
+	</div>
 	{{/if}}
 
-	{{#if order.design.postCapDesign}}
-		<span class='orderLabel'>Post Cap:</span> {{order.design.postCapDesign}}
-	{{/if}}
+	<div>
+		<span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name }}
+	</div>
 
-	{{#if order.design.centerDesign}}
-		<span class='orderLabel'>Center Design:</span> {{order.design.centerDesign}}
-	{{/if}}
-
-	<span class='orderLabel'>Color:</span> {{#capitalize order.design.color }}{{/capitalize }}
+	<div>
+		<span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name order.design.color }}{{/map_design_code_to_full_name }}
+	</div>
 </div>
 
 <div id='orderPictures'>

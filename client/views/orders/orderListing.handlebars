@@ -24,19 +24,15 @@
                 <span class='orderInfoSectionHeader'>Order Details</span>
                 <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
                 <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
-                {{#if design.postDesign }}
-					<span class='orderCell'><span class='orderLabel'>Post Design:</span> {{design.postDesign}}</span>
+				<span class='orderCell'><span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name design.post}}{{/map_design_code_to_full_name}}</span>
+                {{#if design.postEnd }}
+					<span class='orderCell'><span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name design.postEnd}}{{/map_design_code_to_full_name}}</span>
                 {{/if}}
-                {{#if design.postEndDesign}}
-					<span class='orderCell'><span class='orderLabel'>Post End:</span> {{design.postEndDesign}}</span>
+                {{#if design.postCap }}
+					<span class='orderCell'><span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</span>
                 {{/if}}
-                {{#if design.postCapDesign}}
-					<span class='orderCell'><span class='orderLabel'>Post Cap:</span> {{design.postCapDesign}}</span>
-                {{/if}}
-                {{#if design.centerDesign}}
-					<span class='orderCell'><span class='orderLabel'>Center Design:</span> {{design.centerDesign}}</span>
-                {{/if}}
-                <span class='orderCell'><span class='orderLabel'>Color:</span> {{#capitalize design.color }}{{/capitalize }}</span>
+				<span class='orderCell'><span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</span>
+                <span class='orderCell'><span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name design.color }}{{/map_design_code_to_full_name }}</span>
             </span>
 		</div>
 

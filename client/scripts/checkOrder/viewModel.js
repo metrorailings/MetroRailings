@@ -53,12 +53,12 @@ Object.defineProperty(viewModel, 'orderID',
 
 	get: () =>
 	{
-		return this.__orderID;
+		return viewModel.__orderID;
 	},
 
 	set: (value) =>
 	{
-		this.__orderID = value;
+		viewModel.__orderID = value;
 
 		rQueryClient.setField(_orderIdField, value);
 		_checkWhetherFormIsSubmissible();
@@ -73,12 +73,12 @@ Object.defineProperty(viewModel, 'email',
 
 	get: () =>
 	{
-		return this.__email;
+		return viewModel.__email;
 	},
 
 	set: (value) =>
 	{
-		this.__email = value;
+		viewModel.__email = value;
 
 		rQueryClient.setField(_emailField, value);
 		_checkWhetherFormIsSubmissible();
@@ -93,7 +93,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 
 	get: () =>
 	{
-		return this.__phoneTwo;
+		return viewModel.__phoneTwo;
 	},
 
 	set: (value) =>
@@ -101,7 +101,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 		rQueryClient.setField(_phoneTwoField, value);
 
 		// Only set the value into the view model if we have a four-digit value
-		this.__phoneTwo = (value.length === 4 ? value : '');
+		viewModel.__phoneTwo = (value.length === 4 ? value : '');
 
 		_checkWhetherFormIsSubmissible();
 	}
@@ -115,12 +115,12 @@ Object.defineProperty(viewModel, 'orders',
 
 	get: () =>
 	{
-		return this.__orders;
+		return viewModel.__orders;
 	},
 
 	set: (value) =>
 	{
-		this.__orders = value;
+		viewModel.__orders = value;
 	}
 });
 
@@ -132,12 +132,12 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 
 	get: () =>
 	{
-		return this.__isFormSubmissible;
+		return viewModel.__isFormSubmissible;
 	},
 
 	set: (value) =>
 	{
-		this.__isFormSubmissible = value;
+		viewModel.__isFormSubmissible = value;
 
 		if ( !(value) )
 		{

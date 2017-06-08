@@ -11,10 +11,6 @@ import submissionSection from 'client/scripts/createOrder/submissionSection';
 var PICTURE_BUTTON_CLASS = 'pictureButton',
 	PRESS_DOWN_CLASS = 'pressDown';
 
-// ----------------- PRIVATE VARIABLES ---------------------------
-
-// ----------------- PRIVATE FUNCTIONS ---------------------------
-
 // ----------------- LISTENERS ---------------------------
 
 /**

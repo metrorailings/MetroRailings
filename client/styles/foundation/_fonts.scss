@@ -143,6 +143,12 @@ $FONTS:
 	letter-spacing: 0.75px;
 }
 
+%topMenuText
+{
+	@include basicFontSettings($size: smallFontSize, $family: Raleway, $color: darkGreyTheme);
+	letter-spacing: 0.1em;
+}
+
 %footerText
 {
 	@include basicFontSettings($size: largeFontSize, $family: Palatino Linotype, $color: whiteTheme);

@@ -4,9 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-
-	config = global.OwlStakes.require('config/config'),
+var config = global.OwlStakes.require('config/config'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 
@@ -31,7 +29,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (params, cookie)
+	init: async function (params, cookie)
 	{
 		var populatedPageTemplate,
 			cookieData = cookieManager.parseCookie(cookie || ''),
@@ -53,8 +51,8 @@ module.exports =
 		};
 
 		// Now render the page template
-		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
-	})
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
+	}
 };

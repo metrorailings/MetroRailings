@@ -83,6 +83,19 @@ table
 	cursor: text !important;
 }
 
+#logoHeader
+{
+	background-color: map-get($COLORS, logoBlueTheme);
+
+	text-align: center;
+
+	& > img
+	{
+		max-width: 225px;
+		max-height: 225px;
+	}
+}
+
 #emailContent
 {
 	text-align: center;

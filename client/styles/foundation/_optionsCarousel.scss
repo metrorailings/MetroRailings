@@ -119,10 +119,22 @@
 		width: 50%;
 	}
 
+	&.restricted
+	{
+		& > .carouselPreviewPic
+		{
+			cursor: default;
+		}
+
+		& > .restrictedIcon
+		{
+			opacity: 1.0;
+		}
+	}
+
 	& > i
 	{
 		font-size: 36px;
-		color: map-get($COLORS, whiteTheme);
 		text-shadow: 1px 1px 5px map-get($COLORS, blackTheme);
 
 		position: absolute;
@@ -137,6 +149,16 @@
 			opacity: 1.0;
 		}
 	}
+}
+
+.selectedIcon
+{
+	color: map-get($COLORS, whiteTheme);
+}
+
+.restrictedIcon
+{
+	color: map-get($COLORS, redTheme);
 }
 
 .carouselPreviewPic
@@ -259,51 +281,15 @@
 	align-items: center;
 }
 
-.carouselControl
-{
-	@extend %greenSignificantText;
-	@include transitionSettings($property: opacity, $duration: 0.25s);
-
-	margin:
-	{
-		left: 15px;
-		right: 15px;
-	}
-
-	opacity: 1.0;
-	cursor: pointer;
-
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-
-	width: 12.5%;
-
-	@include phoneOnly()
-	{
-		display: none;
-	}
-
-	&.hide
-	{
-		opacity: 0.0;
-		cursor: default;
-	}
-}
-
 .viewerBox
 {
-	overflow: hidden;
-
-	@include tabletUp()
+	margin:
 	{
-		width: 75%;
+		left: 20px;
+		right: 20px;
 	}
 
-	@include phoneOnly()
-	{
-		width: 95%;
-	}
+	width: 100%;
 }
 
 .optionViewer
@@ -330,9 +316,4 @@
 	{
 		@include animationSettings($keyframeSet: shiftInRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
 	}
-}
-
-.fa-chevron-left, .fa-chevron-right
-{
-	font-size: map-get($FONTS, giganticPlusFontSize);
 }

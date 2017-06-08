@@ -7,7 +7,7 @@ global.OwlStakes =
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
+var templateManager = global.OwlStakes.require('utility/templateManager'),
 	mailer = global.OwlStakes.require('utility/mailer');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -17,8 +17,6 @@ var ORDER =
 		_id: 1337,
 		type: 'stairs',
 		length: 15,
-		style: 'collars',
-		color: 'black',
 		orderTotal: 1200.00,
 		customer:
 		{
@@ -31,7 +29,15 @@ var ORDER =
 			areaCode: '908',
 			phoneOne: '251',
 			phoneTwo: '0105'
+		},
+		design:
+		{
+			post: 'P-BPC',
+			postCap: 'PC-SQ',
+			center: 'CD-RHRT',
+			color: 'black'
 		}
+
 	},
 
 	RECIPIENT_ADDRESS = 'kinsho@gmail.com',
@@ -41,22 +47,22 @@ var ORDER =
 // ----------------- INITIALIZATION --------------------------
 
 // Open up a connection to the database
-_Q.spawn(function* ()
+((async function ()
 {
 	var htmlText;
 
-	ORDER.customer.firstName = ORDER.customer.name.trim().split(' ')[0];
+	ORDER.customer.nickname = ORDER.customer.name.trim().split(' ')[0];
 
 	// Generate the e-mail
-	htmlText = yield mailer.generateFullEmail('orderReceipt', ORDER, 'orderReceipt');
+	htmlText = await mailer.generateFullEmail('orderReceipt', ORDER, 'orderReceipt');
 
 	// Log out the e-mail
 	console.log(htmlText);
 
 	// Now send the e-mail
-	yield mailer.sendMail(htmlText, '', RECIPIENT_ADDRESS, ORDER_CONFIRMED, SENDER_NAME);
+	await mailer.sendMail(htmlText, '', RECIPIENT_ADDRESS, ORDER_CONFIRMED, SENDER_NAME);
 
 	// Close out this program
-	console.log("Done!");
+	console.log('Done!');
 	process.exit();
-});
+})());

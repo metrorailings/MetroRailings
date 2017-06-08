@@ -143,15 +143,18 @@ async function printOrder()
 			pictures[i].fullLink = await dropbox.fetchLink(pictures[i]);
 		}
 	}
-
-	// Generate the HTML to print out
+	order.pictures = pictures;
 
 	// Use the newly initialized window to print out details relating to the order
 	printWindow.document.write(orderPrintTemplate({order: order}));
 	printWindow.document.close();
 	printWindow.focus();
-	printWindow.print();
-	printWindow.close();
+
+	printWindow.addEventListener('load', () =>
+	{
+		printWindow.print();
+		printWindow.close();
+	});
 }
 
 /**

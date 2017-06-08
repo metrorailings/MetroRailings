@@ -1,6 +1,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import vm from 'client/scripts/payInvoice/viewModel';
+
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 
@@ -9,6 +10,7 @@ import notifier from 'client/scripts/utility/notifications';
 var SUBMIT_BUTTON = 'orderSubmissionButton',
 
 	SAVE_ORDER_URL = 'payInvoice/saveConfirmedOrder',
+	ORDER_CONFIRMATION_URL = 'orderConfirmation',
 
 	CREDIT_CARD_INVALID_MESSAGE = 'Your credit card failed our authentication process. Please fix your credit card ' +
 			'information and try again.';
@@ -52,10 +54,9 @@ function submit()
 				data =
 				{
 					type: order.type,
-					color: order.color,
-					style: order.style,
 					length: order.length,
 					ccToken: token.id,
+					design: order.design,
 
 					customer:
 					{
@@ -77,7 +78,8 @@ function submit()
 				// Save the data
 				axios.post(SAVE_ORDER_URL, data, true).then(() =>
 				{
-					console.log('SAVED!');
+					// If successful, let's take the user to the order confirmation page to conclude this ordering process
+					window.location.href = ORDER_CONFIRMATION_URL;
 				}, () =>
 				{
 					notifier.showGenericServerError();

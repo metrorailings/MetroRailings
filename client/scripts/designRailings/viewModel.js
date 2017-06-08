@@ -14,7 +14,6 @@ var	POST_SECTION = 'postSection',
 	POST_END_SECTION = 'postEndSection',
 	POST_CAP_SECTION = 'postCapSection',
 	CENTER_DESIGN_SECTION = 'centerDesignSection',
-	COLOR_SECTION = 'colorSection',
 	SUBMISSION_SECTION = 'submissionSection',
 
 	ROLL_DOWN_SECTION_CLASS = 'rollDownSection',
@@ -33,7 +32,6 @@ var _postSection = document.getElementById(POST_SECTION),
 	_postEndSection = document.getElementById(POST_END_SECTION),
 	_postCapSection = document.getElementById(POST_CAP_SECTION),
 	_centerDesignSection = document.getElementById(CENTER_DESIGN_SECTION),
-	_colorSection = document.getElementById(COLOR_SECTION),
 	_submissionSection = document.getElementById(SUBMISSION_SECTION),
 
 	_designSections = document.getElementsByClassName(DESIGN_SECTION_CLASS),
@@ -58,24 +56,21 @@ function _revealNextSection()
 	for (i = 0; i < _designSections.length; i++)
 	{
 		doShow = true;
-		restrictionsData = restrictions.sections[_designSections[i].id].restrictions;
+		restrictionsData = restrictions.sections[_designSections[i].id];
 
-		// Should restrictions be found, go over each restriction to determine whether to show this section
-		if (restrictionsData)
+		// Should there be restrictions, go over each restriction to determine whether to show this section
+		propertiesToExamine = Object.keys(restrictionsData);
+
+		// Loop over each restriction and test properties within the view model
+		for (j = 0; j < propertiesToExamine.length; j++)
 		{
-			propertiesToExamine = Object.keys(restrictionsData);
+			restriction = restrictionsData[propertiesToExamine[j]];
+			examinationResult = restriction[ viewModel[propertiesToExamine[j]] ];
 
-			// Loop over each restriction and test properties within the view model
-			for (j = 0; j < propertiesToExamine.length; j++)
+			if (!(examinationResult))
 			{
-				restriction = restrictionsData[propertiesToExamine[j]];
-				examinationResult = restriction[ viewModel[propertiesToExamine[j]] ];
-
-				if (!(examinationResult))
-				{
-					doShow = false;
-					break;
-				}
+				doShow = false;
+				break;
 			}
 		}
 
@@ -95,9 +90,6 @@ function _revealNextSection()
 			}
 			else
 			{
-				// Reset the section prior to its reveal
-				_resetDesignCarousel(i);
-
 				_designSections[i].classList.add(ROLL_DOWN_SECTION_CLASS);
 
 				// Show the scrolling label to alert the user to go to the next section to be completed
@@ -115,16 +107,10 @@ function _revealNextSection()
 		}
 	}
 
-	// If we have cycled through all the design-oriented sections, show the last remaining sections and shuffle off
-	if (i === _designSections.length)
+	// If we have cycled through all the design-oriented sections, show the submission sections and shuffle off
+	if (i === _designSections.length - 1)
 	{
-		_colorSection.classList.add(ROLL_DOWN_SECTION_CLASS);
 		_submissionSection.classList.add(ROLL_DOWN_SECTION_CLASS);
-	}
-	else
-	{
-		_colorSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
-		_submissionSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
 	}
 }
 
@@ -138,13 +124,22 @@ function _revealNextSection()
 function _resetDesignCarousel(index)
 {
 	// Ensure that setter logic is avoided here
-	viewModel[_designSections[index].dataset.vmProp] = '';
+	if (_designSections[index].dataset.vmProp)
+	{
+		viewModel[_designSections[index].dataset.vmProp] = '';
+	}
 
 	// Reset the carousel now that it is to be hidden
 	// Set up a timeout here to reset the carousel after it is rolled up from view
 	window.setTimeout(() =>
 	{
-		_designSections[index].querySelector('.' + DESIGN_CAROUSEL_CLASS).dispatchEvent(new Event(RESET_CAROUSEL_LISTENER));
+		var carousel = _designSections[index].querySelector('.' + DESIGN_CAROUSEL_CLASS);
+
+		// Only reset carousels for design sections that feature carousels
+		if (carousel)
+		{
+			carousel.dispatchEvent(new Event(RESET_CAROUSEL_LISTENER));
+		}
 	}, 300);
 }
 
@@ -157,12 +152,15 @@ function _resetDesignCarousel(index)
  */
 function _hideSections(sectionID)
 {
+	// A flag that marks when to start hiding sections
 	var enterHidingPhase = false;
 
 	for (var i = 0; i < _designSections.length; i++)
 	{
-		if (enterHidingPhase)
+		// Only hide the section and execute any hiding logic if the section is exposed
+		if (enterHidingPhase && _designSections[i].classList.contains(ROLL_DOWN_SECTION_CLASS))
 		{
+			_resetDesignCarousel(i);
 			_designSections[i].classList.remove(ROLL_DOWN_SECTION_CLASS);
 		}
 
@@ -171,6 +169,10 @@ function _hideSections(sectionID)
 			enterHidingPhase = true;
 		}
 	}
+
+	// Given that this will need to be invoked by logic that assumes that the user still needs to specify
+	// design options, we will need to hide the submission button
+	_submissionSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
 }
 
 /**
@@ -195,19 +197,19 @@ function _scrollDown()
 var viewModel = {};
 
 // Railings Type
-Object.defineProperty(viewModel, 'railingType',
+Object.defineProperty(viewModel, 'orderType',
 {
 	configurable: false,
 	enumerable: true,
 
 	get: () =>
 	{
-		return viewModel.__railingType;
+		return viewModel.__orderType;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__railingType = value;
+		viewModel.__orderType = value;
 	}
 });
 

@@ -5,7 +5,10 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var formValidator = global.OwlStakes.require('utility/formValidator'),
-	validatorUtility = global.OwlStakes.require('validators/validatorUtility');
+
+	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
+
+	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator');
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -15,31 +18,11 @@ var VALID_TYPES =
 		deck: true
 	},
 
-	VALID_STYLES =
-	{
-		bars: true,
-		collars: true,
-		custom: true
-	},
-
-	VALID_COLORS =
-	{
-		white: true,
-		black: true,
-		silver: true,
-		mahogany: true
-	},
-
 	ORDER_TYPE = 'type',
 	ORDER_LENGTH = 'length',
-	ORDER_STYLE = 'style',
-	ORDER_COLOR = 'color',
+	ORDER_DESIGN = 'design',
 	CC_TOKEN = 'ccToken',
 	CUSTOMER = 'customer';
-
-// ----------------- PRIVATE VARIABLES -----------------------------
-
-// ----------------- PRIVATE FUNCTIONS -----------------------------
 
 // ----------------- VALIDATION MODEL DEFINITION -----------------------------
 
@@ -88,37 +71,34 @@ function createNewModel()
 		}
 	});
 
-	// Railings Style
-	Object.defineProperty(validationModel, ORDER_STYLE,
+	// Railings Design
+	Object.defineProperty(validationModel, ORDER_DESIGN,
 	{
 		configurable: false,
 		enumerable: true,
 
 		get: () =>
 		{
-			return validationModel['__' + ORDER_STYLE];
+			return validationModel['__' + ORDER_DESIGN];
 		},
 
 		set: (value) =>
 		{
-			validatorUtility.validateProperty(VALID_STYLES[value], validationModel, ORDER_STYLE, value);
-		}
-	});
+			var keys = Object.keys(value),
+				i;
 
-	// Railings Color
-	Object.defineProperty(validationModel, ORDER_COLOR,
-	{
-		configurable: false,
-		enumerable: true,
+			// Cycle through each design option to ensure that the design selections are all valid selections
+			for (i = keys.length - 1; i >= 0; i--)
+			{
+				if (pricingCalculator.findDesignPricing(value[keys[i]]))
+				{
+					continue;
+				}
 
-		get: () =>
-		{
-			return validationModel['__' + ORDER_COLOR];
-		},
+				return false;
+			}
 
-		set: (value) =>
-		{
-			validatorUtility.validateProperty(VALID_COLORS[value], validationModel, ORDER_COLOR, value);
+			validationModel['__' + ORDER_DESIGN] = value;
 		}
 	});
 
@@ -158,7 +138,7 @@ function createNewModel()
 
 	// -------- Configuration -------------
 
-	validationModel.requiredProps = [ORDER_COLOR, ORDER_LENGTH, ORDER_TYPE, ORDER_STYLE, CC_TOKEN, CUSTOMER];
+	validationModel.requiredProps = [ORDER_LENGTH, ORDER_TYPE, ORDER_DESIGN, CC_TOKEN, CUSTOMER];
 
 	return validationModel;
 }

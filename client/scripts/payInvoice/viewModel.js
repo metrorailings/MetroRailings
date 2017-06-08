@@ -145,12 +145,12 @@ Object.defineProperty(viewModel, 'agreedToTerms',
 
 	get: () =>
 	{
-		return this.__agreedToTerms;
+		return viewModel.__agreedToTerms;
 	},
 
 	set: (value) =>
 	{
-		this.__agreedToTerms = value;
+		viewModel.__agreedToTerms = value;
 
 		_agreedRadio.checked = value;
 
@@ -175,16 +175,16 @@ Object.defineProperty(viewModel, 'customerName',
 
 	get: () =>
 	{
-		return this.__customerName;
+		return viewModel.__customerName;
 	},
 
 	set: (value) =>
 	{
 		// Ensure that the value does not simply consist of spaces
 		value = (value.trim() ? value : '');
-		this.__customerName = value;
+		viewModel.__customerName = value;
 
-		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, " '-")), _nameField, ERROR.NAME_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, ' \'-')), _nameField, ERROR.NAME_INVALID, _validationSet);
 		rQueryClient.setField(_nameField, value, _validationSet);
 		_validate();
 	}
@@ -198,12 +198,12 @@ Object.defineProperty(viewModel, 'areaCode',
 
 	get: () =>
 	{
-		return this.__areaCode;
+		return viewModel.__areaCode;
 	},
 
 	set: (value) =>
 	{
-		this.__areaCode = value;
+		viewModel.__areaCode = value;
 
 		var isInvalid = ((value.length && value.length !== 3)) ||
 						!(formValidator.isNumeric(value));
@@ -222,12 +222,12 @@ Object.defineProperty(viewModel, 'phoneOne',
 
 	get: () =>
 	{
-		return this.__phoneOne;
+		return viewModel.__phoneOne;
 	},
 
 	set: (value) =>
 	{
-		this.__phoneOne = value;
+		viewModel.__phoneOne = value;
 
 		var isInvalid = ((value.length && value.length !== 3)) ||
 			!(formValidator.isNumeric(value));
@@ -246,12 +246,12 @@ Object.defineProperty(viewModel, 'phoneTwo',
 
 	get: () =>
 	{
-		return this.__phoneTwo;
+		return viewModel.__phoneTwo;
 	},
 
 	set: (value) =>
 	{
-		this.__phoneTwo = value;
+		viewModel.__phoneTwo = value;
 
 		var isInvalid = ((value.length && value.length !== 4)) ||
 			!(formValidator.isNumeric(value));
@@ -270,12 +270,12 @@ Object.defineProperty(viewModel, 'customerEmail',
 
 	get: () =>
 	{
-		return this.__customerEmail;
+		return viewModel.__customerEmail;
 	},
 
 	set: (value) =>
 	{
-		this.__customerEmail = value;
+		viewModel.__customerEmail = value;
 
 		// Test whether the value qualifies as an e-mail address
 		rQueryClient.updateValidationOnField(!(formValidator.isEmail(value)), _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
@@ -292,12 +292,12 @@ Object.defineProperty(viewModel, 'customerAddress',
 
 	get: () =>
 	{
-		return this.__customerAddress;
+		return viewModel.__customerAddress;
 	},
 
 	set: (value) =>
 	{
-		this.__customerAddress = value;
+		viewModel.__customerAddress = value;
 
 		// Test whether the value is a proper address
 		rQueryClient.updateValidationOnField(!(formValidator.isAlphaNumeric(value, ' .')), _streetAddressField, ERROR.ADDRESS_INVALID, _validationSet);
@@ -314,12 +314,12 @@ Object.defineProperty(viewModel, 'customerAptSuiteNumber',
 
 	get: () =>
 	{
-		return this.__customerAptSuiteNumber;
+		return viewModel.__customerAptSuiteNumber;
 	},
 
 	set: (value) =>
 	{
-		this.__customerAptSuiteNumber = value;
+		viewModel.__customerAptSuiteNumber = value;
 
 		// Test whether the value is a proper apartment or suite number
 		rQueryClient.updateValidationOnField(!(formValidator.isAlphaNumeric(value, ' .-')), _aptSuiteNumberField, ERROR.APT_SUITE_INVALID, _validationSet);
@@ -336,12 +336,12 @@ Object.defineProperty(viewModel, 'customerCity',
 
 	get: () =>
 	{
-		return this.__customerCity;
+		return viewModel.__customerCity;
 	},
 
 	set: (value) =>
 	{
-		this.__customerCity = value;
+		viewModel.__customerCity = value;
 
 		// Test whether the value qualifies as a proper city name
 		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, ' .-')) , _cityField, ERROR.CITY_INVALID, _validationSet);
@@ -358,12 +358,12 @@ Object.defineProperty(viewModel, 'customerState',
 
 	get: () =>
 	{
-		return this.__customerState;
+		return viewModel.__customerState;
 	},
 
 	set: (value) =>
 	{
-		this.__customerState = value;
+		viewModel.__customerState = value;
 
 		rQueryClient.setField(_stateField, value, _validationSet);
 		_validate();
@@ -378,12 +378,12 @@ Object.defineProperty(viewModel, 'customerZipCode',
 
 	get: () =>
 	{
-		return this.__customerZipCode;
+		return viewModel.__customerZipCode;
 	},
 
 	set: (value) =>
 	{
-		this.__customerZipCode = value;
+		viewModel.__customerZipCode = value;
 
 		// Test whether the value qualifies as a valid zip code
 		var isInvalid = ((value.length && value.length !== 5)) ||
@@ -403,12 +403,12 @@ Object.defineProperty(viewModel, 'ccNumber',
 
 	get: () =>
 	{
-		return this.__ccNumber;
+		return viewModel.__ccNumber;
 	},
 
 	set: (value) =>
 	{
-		this.__ccNumber = value;
+		viewModel.__ccNumber = value;
 
 		// Test whether the value contains any non-numeric character
 		var isInvalid = !(formValidator.isNumeric(value));
@@ -444,12 +444,12 @@ Object.defineProperty(viewModel, 'ccSecurityCode',
 
 	get: () =>
 	{
-		return this.__ccSecurityCode;
+		return viewModel.__ccSecurityCode;
 	},
 
 	set: (value) =>
 	{
-		this.__ccSecurityCode = value;
+		viewModel.__ccSecurityCode = value;
 
 		// Test whether the value qualifies as a valid security code
 		var isInvalid = (value.length && (value.length < 3 || value.length > 4)) ||
@@ -469,12 +469,12 @@ Object.defineProperty(viewModel, 'ccExpMonth',
 
 	get: () =>
 	{
-		return this.__ccExpMonth;
+		return viewModel.__ccExpMonth;
 	},
 
 	set: (value) =>
 	{
-		this.__ccExpMonth = value;
+		viewModel.__ccExpMonth = value;
 
 		rQueryClient.setField(_expirationMonthField, value, _validationSet);
 		_validate();
@@ -489,12 +489,12 @@ Object.defineProperty(viewModel, 'ccExpYear',
 
 	get: () =>
 	{
-		return this.__ccExpYear;
+		return viewModel.__ccExpYear;
 	},
 
 	set: (value) =>
 	{
-		this.__ccExpYear = value;
+		viewModel.__ccExpYear = value;
 
 		rQueryClient.setField(_expirationYearField, value, _validationSet);
 		_validate();
@@ -509,12 +509,12 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 
 	get: () =>
 	{
-		return this.__isFormSubmissible;
+		return viewModel.__isFormSubmissible;
 	},
 
 	set: (value) =>
 	{
-		this.__isFormSubmissible = value;
+		viewModel.__isFormSubmissible = value;
 
 
 		if (!(value))

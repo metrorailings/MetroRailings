@@ -4,14 +4,15 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-	_Handlebars = require('Handlebars'),
+var _Handlebars = require('Handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
-	cookieManager = global.OwlStakes.require('utility/cookies');
+	cookieManager = global.OwlStakes.require('utility/cookies'),
+
+	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
@@ -19,6 +20,7 @@ var CONTROLLER_FOLDER = 'designRailings',
 	UTILITY_FOLDER = 'utility',
 
 	COOKIE_ORDER_INFO = 'basicOrderInfo',
+	COOKIE_DESIGN_INFO = 'designInfo',
 
 	CREATE_ORDER_URL = '/createOrder',
 
@@ -75,7 +77,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (params, cookie)
+	init: async function (params, cookie)
 	{
 		var populatedPageTemplate,
 			cookieData = cookieManager.parseCookie(cookie || ''),
@@ -89,21 +91,42 @@ module.exports =
 		{
 			console.log('Redirecting the user to the create order page...');
 
-			return yield controllerHelper.renderRedirectView(CREATE_ORDER_URL);
+			return await controllerHelper.renderRedirectView(CREATE_ORDER_URL);
 		}
 
 		// Load the options carousel template that will be used to render multiple carousels on the page
-		pageData.optionsCarouselTemplate = yield fileManager.fetchTemplate(UTILITY_FOLDER, PARTIALS.OPTIONS_CAROUSEL);
+		pageData.optionsCarouselTemplate = await fileManager.fetchTemplate(UTILITY_FOLDER, PARTIALS.OPTIONS_CAROUSEL);
 
 		// Load the design template
-		pageData.designTemplate = yield fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.DESIGN_TEMPLATE);
+		pageData.designTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.DESIGN_TEMPLATE);
 
 		// Parse the order data as long as the cookie carrying the data exists
 		orderData = (orderData ? JSON.parse(orderData) : {});
 
 		// Now render the page template
-		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
-	})
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
+	},
+
+	/**
+	 * Action method designed to load specific design details into a cookie before proceeding to the next step of the
+	 * order process
+	 *
+	 * @param {Object} params - the parameters
+	 *
+	 * @returns {Object}
+	 *
+	 * @author kinsho
+	 */
+	continueWithOrder: function (params)
+	{
+		console.log('Wrapped the order into a cookie before proceeding to the payment phase of the order process...');
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {},
+			cookie: cookieManager.formCookie(COOKIE_DESIGN_INFO, params)
+		};
+	}
 };

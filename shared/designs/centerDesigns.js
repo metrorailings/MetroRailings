@@ -3,6 +3,11 @@
  *
  * @module centerDesigns
  */
+
+// ----------------- EXTERNAL MODULES --------------------------
+
+import pricing from 'shared/pricing/pricingData';
+
 // ----------------- MODULE DEFINITION --------------------------
 
 var centerDesigns =
@@ -10,116 +15,86 @@ var centerDesigns =
 	options:
 	[
 		{
-			id: 'NONE',
+			id: 'CD-NONE',
 			label: 'No, I do not want center designs',
 		},
 		{
-			id: 'SC',
+			id: 'CD-SC',
 			label: 'S/C Scrolls',
-			previewImage: "client/images/designs/post/custom-railings-1.jpg"
+			previewImage: 'client/images/designs/center/scScrolls-1.jpg'
 		},
 		{
-			id: 'HRT',
-			label: 'Heart',
-			previewImage: "client/images/designs/post/collars-railings-1.jpg"
-		},
-		{
-			id: 'RHRT',
-			label: 'Reverse Heart',
-			previewImage: "client/images/designs/post/bar-railings-1.jpg"
-		},
-		{
-			id: 'DIA',
-			label: 'Diamonds',
-			previewImage: "client/images/designs/post/collars-railings-1.jpg"
-		},
-		{
-			id: 'TLP',
-			label: 'Tulip',
-			previewImage: "client/images/designs/post/bar-railings-1.jpg"
-		},
-		{
-			id: 'GALE',
+			id: 'CD-GALE',
 			label: 'Gale',
-			previewImage: "client/images/designs/post/custom-railings-1.jpg"
+			previewImage: 'client/images/designs/center/gale-1.jpg'
+		},
+		{
+			id: 'CD-DHRT',
+			label: 'Double Heart',
+			previewImage: 'client/images/designs/center/doubleHeart-1.jpg'
+		},
+		{
+			id: 'CD-SNC',
+			label: 'Scroll & Collar',
+			previewImage: 'client/images/designs/center/scrollAndCollar-1.jpg'
 		}
 	],
 	designMetadata:
 	[
 		{
-			id: 'NONE',
-			designDescription: 'If you have no need for designs along the middle of your railings, feel free to select this option in order to continue'
+			id: 'CD-NONE',
+			price: pricing.DESIGNS['CD-NONE'].price,
+			designDescription: 'If you have no need for designs along the middle of your railings, feel free to select this option in order to continue.'
 		},
 		{
-			id: 'SC',
+			id: 'CD-SC',
 			label: 'S/C Scrolls',
-			price: 0,
-			designDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+			price: pricing.DESIGNS['CD-SC'].price,
+			designDescription: 'S-shaped scrolls studded with C-shaped scrolls will certainly endow your railings with ' +
+				'even more artistic flair.',
 			designImages:
 			[
-				"client/images/designs/postEnd/bar-railings-1.jpg",
-				"client/images/designs/postEnd/bar-railings-2.jpg",
-				"client/images/designs/postEnd/bar-railings-3.jpg"
+				'client/images/designs/center/scScrolls-2.jpg',
+				'client/images/designs/center/scScrolls-3.jpg'
 			]
 		},
 		{
-			id: 'HRT',
-			label: 'Heart',
-			price: 0,
-			designDescription: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?',
-			designImages:
-			[
-				"client/images/designs/postEnd/collars-railings-1.jpg",
-				"client/images/designs/postEnd/collars-railings-2.jpg",
-				"client/images/designs/postEnd/collars-railings-3.jpg"
-			]
-		},
-		{
-			id: 'RHRT',
-			label: 'Reverse Heart',
-			price: 0,
-			designDescription: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
-			designImages:
-			[
-				"client/images/designs/postEnd/custom-railings-1.jpg",
-				"client/images/designs/postEnd/custom-railings-2.jpg",
-				"client/images/designs/postEnd/custom-railings-3.jpg"
-			]
-		},
-		{
-			id: 'DIA',
-			label: 'Diamonds',
-			price: 0,
-			designDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-			designImages:
-			[
-				"client/images/designs/postEnd/bar-railings-1.jpg",
-				"client/images/designs/postEnd/bar-railings-2.jpg",
-				"client/images/designs/postEnd/bar-railings-3.jpg"
-			]
-		},
-		{
-			id: 'TLP',
-			label: 'Tulip',
-			price: 0,
-			designDescription: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?',
-			designImages:
-			[
-				"client/images/designs/postEnd/collars-railings-1.jpg",
-				"client/images/designs/postEnd/collars-railings-2.jpg",
-				"client/images/designs/postEnd/collars-railings-3.jpg"
-			]
-		},
-		{
-			id: 'GALE',
+			id: 'CD-GALE',
 			label: 'Gale',
-			price: 0,
-			designDescription: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
+			price: pricing.DESIGNS['CD-GALE'].price,
+			designDescription: 'Pairs of wind-shaped scrolls will blend into the middle of your railings, giving your ' +
+				'railings some fanciful gusto.',
 			designImages:
 			[
-				"client/images/designs/postEnd/custom-railings-1.jpg",
-				"client/images/designs/postEnd/custom-railings-2.jpg",
-				"client/images/designs/postEnd/custom-railings-3.jpg"
+				'client/images/designs/center/gale-2.jpg',
+				'client/images/designs/center/gale-3.jpg',
+				'client/images/designs/center/gale-4.jpg'
+			]
+		},
+		{
+			id: 'CD-DHRT',
+			label: 'Double Heart',
+			price: pricing.DESIGNS['CD-DHRT'].price,
+			designDescription: 'Pairs of hearts united by their tips will gracefully rest along the center of your ' +
+				'railings.',
+			designImages:
+			[
+				'client/images/designs/center/doubleHeart-2.jpg',
+				'client/images/designs/center/doubleHeart-3.jpg',
+				'client/images/designs/center/doubleHeart-4.jpg'
+			]
+		},
+		{
+			id: 'CD-SNC',
+			label: 'Scroll & Collar',
+			price: pricing.DESIGNS['CD-SNC'].price,
+			designDescription: 'C-shaped scrolls conjoined by ball-shaped collars will lend a royal tone to your ' +
+				'railings.',
+			designImages:
+			[
+				'client/images/designs/center/scrollAndCollar-2.jpg',
+				'client/images/designs/center/scrollAndCollar-3.jpg',
+				'client/images/designs/center/scrollAndCollar-4.jpg'
 			]
 		}
 	]
