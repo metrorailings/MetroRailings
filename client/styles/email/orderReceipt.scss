@@ -29,17 +29,17 @@
 
 		&:first-child
 		{
-			width: 60%;
+			width: 50%;
 		}
 
 		&:last-child
 		{
-			width: 40%;
+			width: 50%;
 		}
 	}
 }
 
-#orderDetails
+#orderDetails, #designDetails
 {
 	width: 100%;
 
@@ -68,49 +68,24 @@
 
 #totalPriceRow
 {
-	background-color: map-get($COLORS, lightGrayTheme);
-
 	& > td
 	{
+		@include tabularBorder();
+
 		padding:
 		{
 			top: 20px;
 			bottom: 20px;
 		}
 
-		@include tabularBorder();
+		background-color: map-get($COLORS, lightGrayTheme);
 	}
 }
 
-#installationAddress
+#colorRow
 {
-	width: 100%;
-
-	td
+	& > td
 	{
-		font:
-		{
-			size: 15px;
-			weight: 400;
-		}
-
-		padding:
-		{
-			top: 10px;
-			bottom: 10px;
-		}
-
-		width: 100%;
-		text-align: center;
+		@include tabularBorder($top: false, $right: false, $left: false);
 	}
-}
-
-#addressCell, #aptSuiteNumberCell
-{
-	@include tabularBorder($top: false, $bottom: false);
-}
-
-#cityStateCell
-{
-	@include tabularBorder($top: false);
 }

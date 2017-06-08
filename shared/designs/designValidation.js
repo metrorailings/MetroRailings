@@ -13,15 +13,14 @@ module.exports =
 {
 	POST_OPTION_CODES:
 	{
-		BP: 'Standard Big Post',
-		BPC: 'Colonial Big Post',
-		SP: 'Standard Small Post'
+		BPC: 'Colonial Post',
+		SP: 'Standard Post'
 	},
 
 	TOP_END_CODES:
 	{
 		VOL: 'Volute',
-		LT: "Lamb's Tongue",
+		LT: 'Lamb\'s Tongue',
 		SCRL: 'Scroll'
 	},
 
@@ -29,7 +28,7 @@ module.exports =
 	{
 		BALL: 'Ball',
 		SQ: 'Square',
-		MIX: 'Mixed'
+		CROWN: 'Crown'
 	},
 
 	CENTER_DESIGN_CODES:
@@ -38,8 +37,6 @@ module.exports =
 		SC: 'S/C Scrolls',
 		HRT: 'Hearts',
 		RHRT: 'Reverse Hearts',
-		DIA: 'Diamonds',
-		TLP: 'Tulip',
 		GALE: 'Gale'
 	},
 
@@ -57,4 +54,4 @@ module.exports =
 	{
 		return (value ? codes[value] : '');
 	}
-}
+};

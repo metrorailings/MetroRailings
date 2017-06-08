@@ -4,8 +4,8 @@
     </tr>
     <tr>
         <td>
-            We will be calling you shortly at&nbsp;<a href='#' class='telLink'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</a>&nbsp;in
-            order to schedule an appointment so that we can visit the address where you want to install railings and
+            We will be calling you shortly at&nbsp;<a href='#' class='telLink'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</a>
+            &nbsp;in order to schedule an appointment so that we can visit the address where you want to install railings and
             confirm the measurements you have given us. Once again, thank you for ordering railings with us!
         </td>
     </tr>
@@ -16,7 +16,7 @@
         <td>
             <table id='orderDetails'>
                 <tr>
-					<th class='tableHeader' colspan=2>Order Details</th>
+					<th class='tableHeader' colspan='2'>Order Details</th>
                 </tr>
 				<tr>
 					<td class='plainLabel'>Order ID</td>
@@ -31,35 +31,51 @@
 					<td class='infoCell'>{{length}} feet</td>
 				</tr>
 				<tr>
-					<td class='plainLabel'>Style</td>
-					<td class='infoCell'>{{#capitalize style}}{{/capitalize}}</td>
-				</tr>
-				<tr>
-					<td class='plainLabel'>Color</td>
-					<td class='infoCell'>{{#capitalize color}}{{/capitalize}}</td>
+					<td class='plainLabel'>Installation Address</td>
+					<td class='infoCell'>
+						{{customer.address}}<br />
+						{{#if customer.aptSuiteNumber}}
+							{{customer.aptSuiteNumber}}<br />
+						{{/if}}
+						{{customer.city}}, {{customer.state}} {{customer.zipCode}}
+					</td>
 				</tr>
 				<tr id='totalPriceRow'>
-					<td class='specialLabel'>Order Total</td>
-					<td class='significantInfoCell'>${{orderTotal}}</td>
+					<td class='specialLabel'>Total Price</td>
+					<td class='plainLabel'>${{orderTotal}}</td>
 				</tr>
+
             </table>
         </td>
 
 		<td>
-			<table id='installationAddress'>
+			<table id='designDetails'>
 				<tr>
-					<th class='tableHeader'>Installation Address</th>
+					<th class='tableHeader' colspan='2'>Design Selections</th>
 				</tr>
 				<tr>
-					<td id='addressCell'>{{customer.address}}</td>
+					<td class='plainLabel'>Post</td>
+					<td class='infoCell'>{{#map_design_code_to_full_name design.post}}{{/map_design_code_to_full_name}}</td>
 				</tr>
-                {{#if customer.aptSuiteNumber }}
+                {{#if design.postEnd }}
 					<tr>
-						<td id='aptSuiteNumberCell'>{{customer.aptSuiteNumber}}</td>
+						<td class='plainLabel'>Post End</td>
+						<td class='infoCell'>{{#map_design_code_to_full_name design.postEnd}}{{/map_design_code_to_full_name}}</td>
 					</tr>
                 {{/if}}
+				{{#if design.postCap }}
+					<tr>
+						<td class='plainLabel'>Post Cap</td>
+						<td class='infoCell'>{{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</td>
+					</tr>
+				{{/if}}
 				<tr>
-					<td id='cityStateCell'>{{customer.city}}, {{customer.state}} {{customer.zipCode}}</td>
+					<td class='plainLabel'>Center</td>
+					<td class='infoCell'>{{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</td>
+				</tr>
+				<tr id='colorRow'>
+					<td class='plainLabel'>Color</td>
+					<td class='infoCell'>{{#map_design_code_to_full_name design.color}}{{/map_design_code_to_full_name}}</td>
 				</tr>
 			</table>
 		</td>

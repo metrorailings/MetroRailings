@@ -11,6 +11,8 @@ System.paths.payInvoice = '/client/scripts/payInvoice/main.js';
 System.paths.orderConfirmation = '/client/scripts/orderConfirmation/main.js';
 System.paths.checkOrder = '/client/scripts/checkOrder/main.js';
 System.paths.contactUs = '/client/scripts/contactUs/main.js';
+System.paths.faqs = '/client/scripts/faqs/main.js';
+System.paths.gallery = '/client/scripts/gallery/main.js';
 
 System.paths.adminLogIn = '/client/scripts/adminLogIn/main.js';
 System.paths.orders = '/client/scripts/orders/main.js';

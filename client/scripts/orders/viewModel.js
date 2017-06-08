@@ -11,6 +11,7 @@ import rQueryClient from 'client/scripts/utility/rQueryClient';
 import notifier from 'client/scripts/utility/notifications';
 
 import statuses from 'shared/orderStatus';
+import designTranslator from 'shared/designs/translator';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -68,6 +69,16 @@ Handlebars.registerHelper('can_status_be_updated', function(str, block)
 	{
 		return block.fn(this);
 	}
+});
+
+/**
+ * Handlebars helper function designed to map a design's code name to a full name
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
+{
+	return designTranslator.findDesignName(designCode);
 });
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------

@@ -52,8 +52,8 @@
 		{
 			margin:
 			{
-				left: 40px;
-				right: 40px;
+				left: 20px;
+				right: 20px;
 			}
 		}
 
@@ -61,8 +61,8 @@
 		{
 			margin:
 			{
-				top: 30px;
-				bottom: 30px;
+				top: 20px;
+				bottom: 20px;
 			}
 		}
 	}
@@ -96,14 +96,8 @@
 
 	@include desktopOnly()
 	{
-		margin:
-		{
-			top: 10px;
-			bottom: 10px;
-		}
-
-		height: 175px;
-		width: 175px;
+		height: 130px;
+		width: 130px;
 	}
 
 	@include tabletOnly()
@@ -114,8 +108,8 @@
 			right: 10px;
 		}
 
-		height: 125px;
-		width: 125px;
+		height: 100px;
+		width: 100px;
 	}
 
 	@include phoneOnly()
@@ -144,14 +138,14 @@
 
 	@include desktopOnly()
 	{
-		height: 400px;
-		width: 400px;
+		height: 300px;
+		width: 300px;
 	}
 
 	@include tabletOnly()
 	{
-		height: 350px;
-		width: 350px;
+		height: 250px;
+		width: 250px;
 	}
 
 	@include phoneOnly()
@@ -161,6 +155,8 @@
 	}
 
 	opacity: 1.0;
+
+	cursor: pointer;
 
 	&.fade
 	{

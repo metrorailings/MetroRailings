@@ -1,3 +1,8 @@
+// ----------------- EXTERNAL MODULES --------------------------
+
+import rQueryClient from 'client/scripts/utility/rQueryClient';
+import tooltipManager from 'client/scripts/utility/tooltip';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var OPTIONS_CAROUSEL_TEMPLATE = 'optionsCarouselTemplate',
@@ -8,9 +13,8 @@ var OPTIONS_CAROUSEL_TEMPLATE = 'optionsCarouselTemplate',
 	CAROUSEL_SHIFT_TRIGGER = 'shiftTrigger',
 	SELECTED_ICON_CLASS = 'selectedIcon',
 	OPTION_VIEWER_CLASS = 'optionViewer',
-	CAROUSEL_CONTROL_CLASS = 'carouselControl',
-	HIDE_CLASS = 'hide',
 	SHOW_CLASS = 'show',
+	RESTRICTED_CLASS = 'restricted',
 	SELECTED_CLASS = 'selected',
 
 	SHIFT_CLASSES =
@@ -28,6 +32,52 @@ var OPTIONS_CAROUSEL_TEMPLATE = 'optionsCarouselTemplate',
  */
 var optionsCarouselTemplate = Handlebars.compile(document.getElementById(OPTIONS_CAROUSEL_TEMPLATE).innerHTML);
 
+// ----------------- PRIVATE FUNCTION -----------------------------
+
+/**
+ * Function meant to test whether a particular order meets the conditions necessary for a specific design choice
+ * to be rendered eligible to the customer
+ *
+ * @param {Object} restrictions - the conditions that serve to restrict eligibility
+ * @param {Object} viewModel - the model representing the order
+ *
+ * @returns {Boolean} - a flag indicating whether the order satisfies eligibility conditions
+ *
+ * @author kinsho
+ */
+function _testRestrictions(restrictions, viewModel)
+{
+	var keys = Object.keys(restrictions),
+		restrictionVal, modelVal,
+		i;
+
+	for (i = keys.length - 1; i >= 0; i--)
+	{
+		restrictionVal = restrictions[keys[i]];
+		modelVal = viewModel[keys[i]];
+
+		// If the values being compared are objects, recursively run this function on those specific
+		// property values
+		if (rQueryClient.isObject(restrictionVal))
+		{
+			if (rQueryClient.isObject(modelVal))
+			{
+				_testRestrictions(restrictionVal, modelVal);
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		else if (restrictionVal !== modelVal)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 // ----------------- CLASS DEFINITION -----------------------------
 
 class optionsCarousel
@@ -41,11 +91,13 @@ class optionsCarousel
 	 * 		select dropdown
 	 * @param {String} viewerTemplate - the script tag that features the Handlebars template that will be used to load
 	 * 		HTML into the option viewer once a selection is made from the carousel dropdown
+	 * @param {Object} [viewModel] - the view model containing the details necessary to determine the eligibility
+	 * 		status of certain options
 	 * @param {Function} [postLoadCallback] - logic to run when panels are switched out within the carousel
 	 *
 	 * @author kinsho
 	 */
-	constructor(carouselContainerID, options, selectionListener, viewerTemplate, postLoadCallback)
+	constructor(carouselContainerID, options, selectionListener, viewerTemplate, viewModel, postLoadCallback)
 	{
 		let carouselContainer = document.getElementById(carouselContainerID);
 
@@ -66,30 +118,37 @@ class optionsCarousel
 		this.optionViewer = carouselContainer.getElementsByClassName(OPTION_VIEWER_CLASS)[0];
 		this.carouselPreviewPics = carouselContainer.getElementsByClassName(CAROUSEL_SHIFT_TRIGGER);
 		this.carouselSelectedIcons = carouselContainer.getElementsByClassName(SELECTED_ICON_CLASS);
-		this.carouselControls = carouselContainer.getElementsByClassName(CAROUSEL_CONTROL_CLASS);
 
-		// Set up a listener on each carousel preview picture so that the user can navigate around any part of the
-		// carousel at will
+		// Test whether each carousel preview picture corresponds to an eligible option. If so, set up a listener on
+		// each carousel preview picture so that the user can navigate around any part of the carousel at will
 		for (var i = this.carouselPreviewPics.length - 1; i >= 0; i--)
 		{
-			this.carouselPreviewPics[i].addEventListener('click', (event) =>
+			if (options[i].restrictions)
 			{
-				this.changeToAnotherOption(event);
-			});
+				if (_testRestrictions(options[i].restrictions, viewModel))
+				{
+					this.carouselPreviewPics[i].addEventListener('click', (event) =>
+					{
+						this.changeToAnotherOption(event);
+					});
+				}
+
+				else
+				{
+					this.carouselPreviewPics[i].parentNode.classList.add(RESTRICTED_CLASS);
+
+					// Set up a tooltip indicating why the option cannot be selected
+					tooltipManager.setTooltip(this.carouselPreviewPics[i], options[i].restrictedMessage, false, tooltipManager.TOOLTIP_OPEN_ON.HOVER);
+				}
+			}
+			else
+			{
+				this.carouselPreviewPics[i].addEventListener('click', (event) =>
+				{
+					this.changeToAnotherOption(event);
+				});
+			}
 		}
-
-		this.carouselControls[0].addEventListener('click', (event) =>
-		{
-			this.changeToAnotherOption(event);
-		});
-		this.carouselControls[1].addEventListener('click', (event) =>
-		{
-			this.changeToAnotherOption(event);
-		});
-
-		// Hide the controls for the time being
-		this.carouselControls[0].classList.add(HIDE_CLASS);
-		this.carouselControls[1].classList.add(HIDE_CLASS);
 
 		// Load the initial panel into the carousel
 		this.optionViewer.innerHTML = this.compiledViewerTemplate(this.selectionListener(this.currentIndex));
@@ -100,6 +159,7 @@ class optionsCarousel
 			this.reset();
 		});
 
+		// Set up a listener to indicate which icon has its details currently loaded inside the panel
 		carouselContainer.addEventListener(SET_SELECTED_ICON_LISTENER, (event) =>
 		{
 			this.setSelectedIcon(event.detail);
@@ -126,41 +186,6 @@ class optionsCarousel
 		{
 			this.carouselPreviewPics[i].classList.remove(SELECTED_CLASS);
 			this.carouselSelectedIcons[i].classList.remove(SHOW_CLASS);
-		}
-	}
-
-	/**
-	 * Function responsible for hiding and showing the controls depending on where in the carousel the user is at
-	 *
-	 * @author kinsho
-	 */
-	updateControlAccessibility()
-	{
-		// If no more options precede the one currently in context, hide the leftward navigator and
-		// prevent it from further activation
-		if ( (this.currentIndex === 0) || !(this.currentIndex) )
-		{
-			this.carouselControls[0].classList.add(HIDE_CLASS);
-			this.carouselControls[0].dataset.index = '';
-		}
-		else
-		{
-			this.carouselControls[0].classList.remove(HIDE_CLASS);
-			this.carouselControls[0].dataset.index = this.currentIndex - 1;
-		}
-
-		// If no more options come after the one currently in context, hide the rightward navigator and prevent it
-		// from further activation
-		if ((this.currentIndex === this.options.length - 1) ||
-			( !(this.currentIndex) && this.currentIndex !== 0 ))
-		{
-			this.carouselControls[1].classList.add(HIDE_CLASS);
-			this.carouselControls[1].dataset.index = '';
-		}
-		else
-		{
-			this.carouselControls[1].classList.remove(HIDE_CLASS);
-			this.carouselControls[1].dataset.index = this.currentIndex + 1;
 		}
 	}
 
@@ -200,12 +225,6 @@ class optionsCarousel
 		var element = event.currentTarget,
 			nextIndex = element.dataset.index,
 			i;
-
-		// If the user clicked on an inactive control, simply ignore processing the rest of this logic
-		if ( !(nextIndex) )
-		{
-			return false;
-		}
 
 		// Change the look of the picture corresponding to the option currently in context
 		for (i = this.carouselPreviewPics.length - 1; i >= 0; i--)
@@ -287,9 +306,6 @@ class optionsCarousel
 		this.optionViewer.classList.remove(SHIFT_CLASSES.IN_RIGHT);
 		this.optionViewer.classList.remove(SHIFT_CLASSES.OUT_LEFT);
 		this.optionViewer.classList.remove(SHIFT_CLASSES.OUT_RIGHT);
-
-		// Don't forget to update the look of the controls and allow images to be opened up in the gallery
-		this.updateControlAccessibility();
 
 		// If logic has been specifically set to be executed after a new panel is shown, execute that logic
 		if (this.postLoadCallback)

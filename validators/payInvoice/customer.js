@@ -26,10 +26,6 @@ var VALID_STATES =
 	CUSTOMER_STATE = 'state',
 	CUSTOMER_ZIP_CODE = 'zipCode';
 
-// ----------------- PRIVATE VARIABLES -----------------------------
-
-// ----------------- PRIVATE FUNCTIONS -----------------------------
-
 // ----------------- VALIDATION MODEL DEFINITION -----------------------------
 
 /**

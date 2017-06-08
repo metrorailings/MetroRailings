@@ -118,11 +118,11 @@ module.exports =
 
 				// Now refund money from the transaction currently in context
 				await _refundMoney(
-					{
-						charge: transaction.id,
-						amount: amountToRefund * 100,
-						metadata: { 'Order ID' : orderID },
-					});
+				{
+					charge: transaction.id,
+					amount: amountToRefund * 100,
+					metadata: { 'Order ID' : orderID },
+				});
 
 				// Update the variable we use to track the money left to give back to the customer
 				refundAmount -= amountToRefund;

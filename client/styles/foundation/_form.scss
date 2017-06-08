@@ -229,6 +229,7 @@ input[type=tel], input[type=text], input[type=email], input[type=password], text
 
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
 	height: 1.3em;
+	padding-left: 3px;
 
 	&.error
 	{

@@ -27,6 +27,7 @@
     },
     "globals": {
         "Handlebars" : false,
-        "console" : false
+        "console" : false,
+        "Tooltip" : false
     }
 }

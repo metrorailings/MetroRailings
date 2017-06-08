@@ -1,7 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-	_Handlebars = require('Handlebars'),
+var _Handlebars = require('Handlebars'),
 
 	config = global.OwlStakes.require('config/config'),
 
@@ -18,7 +17,8 @@ var _Q = require('q'),
 	customerModel = global.OwlStakes.require('validators/payInvoice/customer'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
 
-	pricingStructure = global.OwlStakes.require('shared/pricingStructure'),
+	pricingStructure = global.OwlStakes.require('shared/pricing/pricingData'),
+	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -29,10 +29,13 @@ var CONTROLLER_FOLDER = 'payInvoice',
 	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
-	COOKIE_ORDER_NAME = 'order',
+	COOKIE_ORDER_INFO = 'basicOrderInfo',
+	COOKIE_DESIGN_INFO = 'designInfo',
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
 
-	CUSTOM_STYLE_KEYWORD = 'custom',
+	PER_FOOT_PHRASE = ' per foot of railing',
+	PER_FEET_PHRASE = ' per ::rate feet of railing',
+	RATE_PLACEHOLDER = '::rate',
 
 	PARTIALS =
 	{
@@ -43,10 +46,6 @@ var CONTROLLER_FOLDER = 'payInvoice',
 		CC_SECTION: 'ccSection',
 		SUBMISSION_SECTION: 'submissionSection'
 	};
-
-// ----------------- PRIVATE VARIABLES --------------------------
-
-// ----------------- PRIVATE FUNCTIONS --------------------------
 
 // ----------------- PARTIAL TEMPLATES --------------------------
 
@@ -80,6 +79,46 @@ _Handlebars.registerPartial('ccSection', fileManager.fetchTemplateSync(CONTROLLE
  */
 _Handlebars.registerPartial('submissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
 
+// ----------------- SPECIALIZED HELPERS --------------------------
+
+/**
+ * Handlebars helper function designed to fetch prices for individual design options
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('fetchDesignPrice', function(designCode)
+{
+	var designPricing = pricingStructure.DESIGNS[designCode];
+
+	if (designPricing.rate)
+	{
+		if (designPricing.rate === 1)
+		{
+			return designPricing.price + PER_FOOT_PHRASE;
+		}
+		else
+		{
+			return designPricing.price + PER_FEET_PHRASE.replace(RATE_PLACEHOLDER, designPricing.rate);
+		}
+	}
+	else if (designPricing.price)
+	{
+		return designPricing.price;
+	}
+
+	return '';
+});
+
+/**
+ * Handlebars helper function designed to fetch subtotals for each design selection
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('calculateDesignSubtotal', function(designCode, orderLength)
+{
+	return (pricingCalculator.calculateDesignCost(orderLength, designCode) || '');
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -92,11 +131,12 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: _Q.async(function* (params, cookie)
+	init: async function(params, cookie)
 	{
 		var populatedPageTemplate,
 			cookieData = cookieManager.parseCookie(cookie || ''),
-			orderData = cookieData[COOKIE_ORDER_NAME],
+			orderData = cookieData[COOKIE_ORDER_INFO],
+			designData = cookieData[COOKIE_DESIGN_INFO],
 			currentYear = new Date().getFullYear(),
 			pageData = {},
 			expirationYears = [],
@@ -106,12 +146,10 @@ module.exports =
 
 		// Parse the order data as long as the cookie carrying the data exists
 		orderData = (orderData ? JSON.parse(orderData) : {});
-
-		// Set the flag marking the order as a personalized order
-		orderData.isCustomOrder = (orderData.style === CUSTOM_STYLE_KEYWORD);
+		orderData.design = (designData ? JSON.parse(designData) : {});
 
 		// Calculate the total price of the order
-		orderData.totalPrice = pricingStructure.calculateOrderTotal(orderData.length);
+		orderData.totalPrice = pricingCalculator.calculateOrderTotal(orderData);
 
 		// Find some years that can be placed into the expiration year dropdown as selectable options
 		for (i = currentYear; i <= currentYear + 10; i++)
@@ -123,16 +161,18 @@ module.exports =
 		pageData =
 		{
 			order: orderData,
-			expirationYears: expirationYears
+			expirationYears: expirationYears,
+			pricePerFootOfRailing: pricingStructure.COST_PER_FOOT_OF_RAILING,
+			minimumOrderAmount: pricingStructure.MINIMUM_TOTAL
 		};
 
 		// Now render the page template
-		populatedPageTemplate = yield templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return yield controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
-	}),
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
+	},
 
-	saveConfirmedOrder: _Q.async(function* (params)
+	saveConfirmedOrder: async function (params)
 	{
 		console.log('Saving a newly minted order into the system...');
 
@@ -153,7 +193,7 @@ module.exports =
 			try
 			{
 				// Save the order into the database
-				processedOrder = yield DAO.saveNewOrder(params);
+				processedOrder = await DAO.saveNewOrder(params);
 			}
 			catch(error)
 			{
@@ -163,8 +203,8 @@ module.exports =
 			}
 
 			// Send out an e-mail to the customer
-			mailHTML = yield mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
-			yield mailer.sendMail(mailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id));
+			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
+			await mailer.sendMail(mailHTML, '', params.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
 
 			// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
 			return {
@@ -174,11 +214,11 @@ module.exports =
 				// Set up this cookie so that we can render some needed data on the order confirmation page
 				cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
 				{
-					areaCode: customerValidationModel.areaCode,
-					phoneOne: customerValidationModel.phoneOne,
-					phoneTwo: customerValidationModel.phoneTwo,
-					email: customerValidationModel.customerEmail,
-					orderNumber: orderValidationModel._id
+					areaCode: processedOrder.customer.areaCode,
+					phoneOne: processedOrder.customer.phoneOne,
+					phoneTwo: processedOrder.customer.phoneTwo,
+					email: processedOrder.customer.email,
+					orderNumber: processedOrder._id
 				})
 			};
 		}
@@ -186,5 +226,5 @@ module.exports =
 		return {
 			statusCode: responseCodes.BAD_REQUEST
 		};
-	})
-}
+	}
+};

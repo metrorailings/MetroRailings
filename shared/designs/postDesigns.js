@@ -3,6 +3,10 @@
  *
  * @module postDesigns
  */
+// ----------------- EXTERNAL MODULES --------------------------
+
+import pricing from 'shared/pricing/pricingData';
+
 // ----------------- MODULE DEFINITION --------------------------
 
 var postDesigns =
@@ -10,54 +14,46 @@ var postDesigns =
 	options:
 	[
 		{
-			id: 'BP',
-			label: 'Standard Big Post',
-			previewImage: "client/images/designs/post/bar-railings-1.jpg"
+			id: 'P-BPC',
+			label: 'Colonial Post',
+			previewImage: 'client/images/designs/post/colonialPost-1.jpg',
 		},
 		{
-			id: 'BPC',
-			label: 'Colonial Big Post',
-			previewImage: "client/images/designs/post/custom-railings-1.jpg",
-		},
-		{
-			id: 'SP',
-			label: 'Standard Small Post',
-			previewImage: "client/images/designs/post/collars-railings-1.jpg"
+			id: 'P-SP',
+			label: 'Standard Post',
+			previewImage: 'client/images/designs/post/standardPost-1.jpg',
+			restrictions: { orderType: 'stairs' },
+			restrictedMessage: 'This design option only applies to railings intended for stairways.'
 		}
 	],
 	designMetadata:
 	[
 		{
-			id: 'BP',
-			label: 'Standard Big Post',
-			designDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+			id: 'P-BPC',
+			label: 'Colonial Post',
+			price: pricing.DESIGNS['P-BPC'].price,
+			designDescription: 'Colonial posts are a fairly modern addition to the world of railings. Bigger in size and ' +
+				'grander in appearance compared to our standard posts, the colonial posts are perfect for those that want ' +
+				'their railings to exhibit a regal charm. It\'s worth noting that the bigger size of these posts lend themselves better ' +
+				'to stabilizing the overall railing. For that reason alone, we recommend these posts be selected for all balconies.',
 			designImages:
 			[
-				"client/images/designs/post/bar-railings-1.jpg",
-				"client/images/designs/post/bar-railings-2.jpg",
-				"client/images/designs/post/bar-railings-3.jpg"
+				'client/images/designs/post/colonialPost-2.jpg',
+				'client/images/designs/post/colonialPost-3.jpg',
+				'client/images/designs/post/colonialPost-4.jpg'
 			]
 		},
 		{
-			id: 'BPC',
-			label: 'Colonial Big Post',
-			designDescription: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
+			id: 'P-SP',
+			label: 'Standard Post',
+			price: pricing.DESIGNS['P-SP'].price,
+			designDescription: 'Time-tested and beloved everywhere, nothing is better at conveying rustic vibes than the standard post. ' +
+				'We take special pride in our standard posts, crafting them as a sleek, yet classic alternative to our colonial posts.',
 			designImages:
 			[
-				"client/images/designs/postCap/custom-railings-1.jpg",
-				"client/images/designs/postCap/custom-railings-2.jpg",
-				"client/images/designs/postCap/custom-railings-3.jpg"
-			]
-		},
-		{
-			id: 'SP',
-			label: 'Standard Small Post',
-			designDescription: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?',
-			designImages:
-			[
-				"client/images/designs/post/collars-railings-1.jpg",
-				"client/images/designs/post/collars-railings-2.jpg",
-				"client/images/designs/post/collars-railings-3.jpg"
+				'client/images/designs/post/standardPost-2.jpg',
+				'client/images/designs/post/standardPost-3.jpg',
+				'client/images/designs/post/standardPost-4.jpg'
 			]
 		}
 	]

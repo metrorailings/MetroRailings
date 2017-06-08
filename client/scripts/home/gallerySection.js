@@ -22,8 +22,6 @@ var _imagesLoaded = [], // The collection of images that are already visible on 
 	_expandGalleryRow = document.getElementById(EXPAND_GALLERY_ROW),
 	_expandGalleryLink = document.getElementById(EXPAND_GALLERY_LINK);
 
-// ----------------- PRIVATE FUNCTIONS ---------------------------
-
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
@@ -138,5 +136,3 @@ for (var i = 0; i < _defaultGalleryPics.length; i++)
 	// Don't forget to create a record noting that all the default pictures have been made available to the user
 	_imagesLoaded.push(_defaultGalleryPics[i].src);
 }
-
-// ----------------- PAGE INITIALIZATION -----------------------------

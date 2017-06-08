@@ -36,7 +36,7 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 		LENGTH_INVALID: 'Please enter a non-zero length here.'
 	},
 
-	SUBMISSION_INSTRUCTIONS = 'Please scroll above and put a proper length in the section where we ask you how many feet of railing you need.';
+	SUBMISSION_INSTRUCTIONS = 'Please put a proper length in the section where we ask you how many feet of railing you need.';
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
@@ -170,12 +170,12 @@ Object.defineProperty(viewModel, 'orderType',
 
 	get: () =>
 	{
-		return this.__orderType;
+		return viewModel.__orderType;
 	},
 
 	set: (value) =>
 	{
-		this.__orderType = value;
+		viewModel.__orderType = value;
 
 		// Adjust the type checkboxes on the page accordingly
 		if (value === STAIRS_TYPE)
@@ -221,12 +221,12 @@ Object.defineProperty(viewModel, 'curvesNecessary',
 
 	get: () =>
 	{
-		return this.__curvesNecessary;
+		return viewModel.__curvesNecessary;
 	},
 
 	set: (value) =>
 	{
-		this.__curvesNecessary = value;
+		viewModel.__curvesNecessary = value;
 
 		if (value === 'y')
 		{
@@ -266,12 +266,12 @@ Object.defineProperty(viewModel, 'orderLength',
 
 	get: () =>
 	{
-		return this.__orderLength;
+		return viewModel.__orderLength;
 	},
 
 	set: (value) =>
 	{
-		this.__orderLength = value;
+		viewModel.__orderLength = value;
 
 		// Make sure a valid length is put into the field
 		var isInvalid = ( !(formValidator.isNumeric(value)) ||
@@ -281,7 +281,7 @@ Object.defineProperty(viewModel, 'orderLength',
 		rQueryClient.setField(_lengthField, value);
 		_validate();
 
-		if (this.__userProgress <= 3)
+		if (viewModel.__userProgress <= 3)
 		{
 			// For a better user experience, unveil the next section after a bit of a delay, provided that the value in
 			// the length field is still valid
@@ -304,12 +304,12 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 
 	get: () =>
 	{
-		return this.__isFormSubmissible;
+		return viewModel.__isFormSubmissible;
 	},
 
 	set: (value) =>
 	{
-		this.__isFormSubmissible = value;
+		viewModel.__isFormSubmissible = value;
 
 		if (!(value))
 		{
@@ -331,15 +331,15 @@ Object.defineProperty(viewModel, 'userProgress',
 
 	get: () =>
 	{
-		return this.__userProgress;
+		return viewModel.__userProgress;
 	},
 
 	set: (value) =>
 	{
 		// A three-digit progress value signifies that the user is currently in the midst of selecting rail designs
-		if ((this.__userProgress < value) || (value === 1) || (value >= 100))
+		if ((viewModel.__userProgress < value) || (value === 1) || (value >= 100))
 		{
-			this.__userProgress = value;
+			viewModel.__userProgress = value;
 
 			// Unveil the next section of the order form
 			_toggleSections(value);

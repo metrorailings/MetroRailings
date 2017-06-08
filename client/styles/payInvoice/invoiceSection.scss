@@ -17,11 +17,16 @@
 
 	& > span
 	{
+		padding:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
-		padding: 5px;
 		height: 100%;
 
 		&:nth-of-type(1)
@@ -135,27 +140,28 @@
 	{
 		@include invoiceSpacing();
 
-		@include tabletUp()
+		border:
 		{
-			height: 110px;
+			width: 1px;
+			style: solid;
+			color: map-get($COLORS, darkGrayTheme);
+
+			left: none;
+			right: none;
 		}
 
-		@include phoneOnly()
+		&:nth-child(even)
 		{
-			height: 75px;
+			background-color: map-get($COLORS, lightBlueTheme);
 		}
 
-		&.even
+		&:first-of-type, &:last-of-type
 		{
 			border:
 			{
-				width: 1px;
-				style: solid;
-				color: map-get($COLORS, darkGrayTheme);
-
-				left: none;
-				right: none;
-			}
+				top: none;
+				bottom: none;
+			};
 		}
 	}
 }

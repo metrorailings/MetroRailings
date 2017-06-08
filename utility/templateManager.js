@@ -8,7 +8,9 @@ var _Handlebars = require('Handlebars'),
 	_htmlMinifier = require('html-minifier').minify,
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	rQuery = global.OwlStakes.require('utility/rQuery');
+	rQuery = global.OwlStakes.require('utility/rQuery'),
+
+	designTranslator = global.OwlStakes.require('shared/designs/translator');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -21,7 +23,8 @@ var UTILITY_FOLDER = 'utility',
 		SCROLL_DOWN: 'scrollDownLabel',
 		OPTIONS_CAROUSEL: 'optionsCarousel',
 		NOTIFICATION_BAR: 'notificationBar',
-		SUCCESS_BAR: 'successBar'
+		SUCCESS_BAR: 'successBar',
+		TOP_MENU: 'topMenu'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -67,10 +70,15 @@ _Handlebars.registerPartial('notificationBar', fileManager.fetchTemplateSync(UTI
  */
 _Handlebars.registerPartial('successBar', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.SUCCESS_BAR));
 
+/**
+ * The template for the top menu
+ */
+_Handlebars.registerPartial('topMenu', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.TOP_MENU));
+
 // ----------------- GENERIC HELPERS --------------------------
 
 /**
- * Handlebars helper function that allowsHelper designed to help us to generate blocks of HTML over a range of numbers
+ * Handlebars helper function designed to help us to generate blocks of HTML over a range of numbers
  *
  * @author kinsho
  */
@@ -122,10 +130,10 @@ _Handlebars.registerHelper('iterate_keys', function(obj, block)
 	for (i = 0; i < keys.length; i++)
 	{
 		output += block.fn(
-			{
-				key: keys[i],
-				value: obj[keys[i]]
-			});
+		{
+			key: keys[i],
+			value: obj[keys[i]]
+		});
 	}
 
 	return output;
@@ -155,6 +163,26 @@ _Handlebars.registerHelper('capitalize', function(str)
 	return rQuery.capitalize(str);
 });
 
+/**
+ * Helper designed to multiply two numbers and return the product
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('multiply', function(a, b)
+{
+	return a * b;
+});
+
+/**
+ * Handlebars helper function designed to map a design's code name to a full name
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
+{
+	return designTranslator.findDesignName(designCode);
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -176,17 +204,25 @@ module.exports =
 	{
 		var template;
 
-		// Check to see if the template has already been precompiled and cached. If not, fetch the template,
-		// compile it, and cache it.
-		template = _compiledTemplates[templateDirectory + '-' + templateName];
-		if ( !(template) )
+		try
 		{
-			template = await fileManager.fetchTemplate(templateDirectory, templateName);
-			template = _Handlebars.compile(template);
-			_compiledTemplates[templateDirectory + '-' + templateName] = template;
-		}
+			// Check to see if the template has already been precompiled and cached. If not, fetch the template,
+			// compile it, and cache it.
+			template = _compiledTemplates[templateDirectory + '-' + templateName];
+			if ( !(template) )
+			{
+				template = await fileManager.fetchTemplate(templateDirectory, templateName);
+				template = _Handlebars.compile(template);
+				_compiledTemplates[templateDirectory + '-' + templateName] = template;
+			}
 
-		// Feed the data into the template and return the resulting HTML after it has been minified
-		return _htmlMinifier(template(data), _htmlMinifierConfig);
+			// Feed the data into the template and return the resulting HTML after it has been minified
+			return _htmlMinifier(template(data), _htmlMinifierConfig);
+		}
+		catch (ex)
+		{
+			console.log('Had trouble compiling the ' + templateName + ' template...');
+			console.log(ex);
+		}
 	}
 };

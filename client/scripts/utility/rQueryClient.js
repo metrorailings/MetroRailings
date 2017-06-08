@@ -176,8 +176,14 @@ var rQueryClient =
 
 			for (var i in viewModel)
 			{
+				// If the property is an internal copy of a field, simply ignore testing the value that particular property
+				if (i.indexOf('__') > -1)
+				{
+					continue;
+				}
+
 				// Check whether the property in context has a falsy value that is not explicitly a boolean value
-				if ( !(viewModel[i]) && viewModel !== false )
+				if ( !(viewModel[i]) && viewModel[i] !== false )
 				{
 					return false;
 				}
@@ -219,6 +225,20 @@ var rQueryClient =
 		beginsWith: function (str, phrase)
 		{
 			return(str.indexOf(phrase) === 0);
+		},
+
+		/**
+		 * Function that checks whether a particular value qualifies as an object
+		 *
+		 * @param {*} val - the value to inspect
+		 *
+		 * @returns {boolean} - a value indicating whether the passed value is indeed an object
+		 *
+		 * @author kinsho
+		 */
+		isObject: function(val)
+		{
+			return (val === Object(val));
 		}
 	};
 

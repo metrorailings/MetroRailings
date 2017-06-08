@@ -1,3 +1,7 @@
+<div id='orderSummary'>
+
+</div>
+
 <div id='invoice'>
 
 	<div id='invoiceHeader'>
@@ -9,50 +13,62 @@
 	<div id='invoiceBody'>
 
 		<div>
-			<span>{{length}} feet of railing</span>
-		    <span>
-                {{#if_greater_cond length 10}}
-					$60.00 per foot
-                {{ else }}
-					$600 minimum for all orders below 10 feet
-                {{/if_greater_cond}}
+			<span>{{order.length}} feet of railing</span>
+			<span>
+				{{#if_greater_cond order.length 10}}
+					${{pricePerFootOfRailing}} per foot
+				{{ else }}
+					${{minimumOrderAmount}} minimum for all orders below 10 feet
+				{{/if_greater_cond}}
 			</span>
-			<span>${{totalPrice}}</span>
-		</div>
-
-		<div class='even'>
-			<span>Style: {{#capitalize style}}{{/capitalize}}</span>
-            <span>
-                {{#unless isCustomOrder}}
-                    $0 per foot
-                {{ else }}
-					N/A
-                {{/unless}}
-			</span>
-            <span>
-                {{#unless isCustomOrder}}
-					$0
-                {{ else }}
-                    <span id='stylePriceCell' data-tooltip-position='top right' data-tooltip='<div class="tooltipMedium">The costs here will be
-                        determined after we meet and determine the scope of the customizations involved.</div>'>
-                        <span>TBD</span>
-                        <i class='fa fa-question-circle'></i>
-                    </span>
-                {{/unless}}
-			</span>
+			<span>${{#multiply order.length pricePerFootOfRailing}}{{/multiply}}</span>
 		</div>
 
 		<div>
-			<span>Color: {{#capitalize color}}{{/capitalize}}</span>
-            <span>$0 per foot</span>
-			<span>$0</span>
+			<span>Railings Type: {{#capitalize order.type}}{{/capitalize}}</span>
+			<span></span>
+			<span></span>
+		</div>
+
+		<div>
+			<span>Post Design: {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}</span>
+			<span>{{#fetchDesignPrice order.design.post}}{{/fetchDesignPrice}}</span>
+			<span>{{#calculateDesignSubtotal order.design.post order.length}}{{/calculateDesignSubtotal}}</span>
+		</div>
+
+		{{#if order.design.postEnd}}
+			<div>
+				<span>Post End: {{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}</span>
+				<span>{{#fetchDesignPrice order.design.postEnd}}{{/fetchDesignPrice}}</span>
+				<span>{{#calculateDesignSubtotal order.design.postEnd order.length}}{{/calculateDesignSubtotal}}</span>
+			</div>
+		{{/if}}
+
+		{{#if order.design.postCap}}
+			<div>
+				<span>Post Cap: {{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}</span>
+				<span>{{#fetchDesignPrice order.design.postCap}}{{/fetchDesignPrice}}</span>
+				<span>{{#calculateDesignSubtotal order.design.postCap order.length}}{{/calculateDesignSubtotal}}</span>
+			</div>
+		{{/if}}
+
+		<div>
+			<span>Center Design: {{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}</span>
+			<span>{{#fetchDesignPrice order.design.center}}{{/fetchDesignPrice}}</span>
+			<span>{{#calculateDesignSubtotal order.design.center order.length}}{{/calculateDesignSubtotal}}</span>
+		</div>
+
+		<div>
+			<span>Color: {{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}</span>
+			<span>{{#fetchDesignPrice order.design.color}}{{/fetchDesignPrice}}</span>
+			<span>{{#calculateDesignSubtotal order.design.color order.length}}{{/calculateDesignSubtotal}}</span>
 		</div>
 
 	</div>
 
 	<div id='invoiceFooter'>
 		<span class='keyCell'>Order Total: </span>
-		<span>${{totalPrice}}</span>
+		<span>${{order.totalPrice}}</span>
 	</div>
 
 </div>

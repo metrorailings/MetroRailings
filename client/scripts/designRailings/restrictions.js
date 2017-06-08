@@ -1,5 +1,5 @@
 /**
- * A module listing restriction information
+ * A module listing restriction information for each design section
  *
  * @module restrictions
  */
@@ -10,51 +10,35 @@ var restrictions =
 	sections:
 	{
 		// Post Design
-		postSection:
-		{
-			options:
-			{
-				SP:
-				{
-					railingType:
-					{
-						stairs: true,
-						deck: false
-					}
-				}
-			}
-		},
+		postSection: {},
 
 		// Top Railing End Design
 		postEndSection:
 		{
-			restrictions:
+			postDesign:
 			{
-				postDesign:
-				{
-					BP: false,
-					BPC: false,
-					SP: true
-				}
+				'P-BP' : false,
+				'P-BPC' : false,
+				'P-SP' : true
 			}
 		},
 
 		// Post Cap Design
 		postCapSection:
 		{
-			restrictions:
+			postDesign:
 			{
-				postDesign:
-				{
-					BP: true,
-					BPC: true,
-					SP: false
-				}
+				'P-BP' : true,
+				'P-BPC' : true,
+				'P-SP' : false
 			}
 		},
 
 		// Center Design
-		centerDesignSection: {}
+		centerDesignSection: {},
+
+		// Color
+		colorSection: {}
 	}
 };
 

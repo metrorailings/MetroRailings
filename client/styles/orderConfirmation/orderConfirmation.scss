@@ -34,7 +34,7 @@
 	justify-content: center;
 	align-items: center;
 
-	background-color: map-get($COLORS, lighterGrayTheme);
+	background-color: map-get($COLORS, smokeWhiteTheme);
 
 	width: 50%;
 
@@ -54,15 +54,38 @@
 		}
 
 		width: 100%;
+		text-align: left;
 
 		&:last-of-type
 		{
 			border-bottom: none;
 		}
+
+		& > span
+		{
+			margin-left: 25px;
+		}
 	}
 }
 
-.bolded
+#homeLink
 {
-	margin-right: 8px;
+	@extend %regularLinkText;
+
+	cursor: pointer;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+
+	& > a
+	{
+		text-decoration: none;
+
+		& > i
+		{
+			margin-right: 8px;
+		}
+	}
 }
