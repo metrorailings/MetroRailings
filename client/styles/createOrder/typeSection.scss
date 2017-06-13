@@ -53,9 +53,14 @@
 
 		& > span:first-of-type
 		{
-			@include phoneOnly()
+			@include tabletUp()
 			{
 				margin-top: 25px;
+			}
+
+			@include phoneOnly()
+			{
+				margin-right: 25px;
 			}
 		}
 

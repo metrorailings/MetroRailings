@@ -2,7 +2,7 @@
 
 import vm from 'client/scripts/createOrder/viewModel';
 import typeSection from 'client/scripts/createOrder/typeSection';
-import curvesSection from 'client/scripts/createOrder/curvesSection';
+import customOrderRequiredSection from 'client/scripts/createOrder/customOrderRequiredSection';
 import lengthSection from 'client/scripts/createOrder/lengthSection';
 import submissionSection from 'client/scripts/createOrder/submissionSection';
 

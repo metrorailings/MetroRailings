@@ -6,7 +6,7 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#curveInputContainer
+#curveInputContainer, #bigOrderInputContainer
 {
 	@extend %significantText;
 
@@ -30,7 +30,7 @@
 	}
 }
 
-#curvesYesMessage
+#curvesYesMessage, #bigOrderYesMessage
 {
 	@include transitionSettings($property: all, $duration: 0.75s);
 

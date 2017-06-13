@@ -5,9 +5,9 @@
 <div id='invoice'>
 
 	<div id='invoiceHeader'>
-		<span>Product / Options</span>
-		<span>Unit Price</span>
-		<span class='keyCell'>Price</span>
+		<span>PRODUCT / OPTIONS</span>
+		<span>UNIT PRICE</span>
+		<span class='keyCell'>TOTAL PRICE</span>
 	</div>
 
 	<div id='invoiceBody'>
@@ -21,7 +21,7 @@
 					${{minimumOrderAmount}} minimum for all orders below 10 feet
 				{{/if_greater_cond}}
 			</span>
-			<span>${{#multiply order.length pricePerFootOfRailing}}{{/multiply}}</span>
+			<span>${{#calculate_length_subtotal order.length pricePerFootOfRailing}}{{/calculate_length_subtotal}}</span>
 		</div>
 
 		<div>
@@ -32,36 +32,36 @@
 
 		<div>
 			<span>Post Design: {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}</span>
-			<span>{{#fetchDesignPrice order.design.post}}{{/fetchDesignPrice}}</span>
-			<span>{{#calculateDesignSubtotal order.design.post order.length}}{{/calculateDesignSubtotal}}</span>
+			<span>{{#fetch_design_price order.design.post}}{{/fetch_design_price}}</span>
+			<span>{{#calculate_design_subtotal order.design.post order.length}}{{/calculate_design_subtotal}}</span>
 		</div>
 
 		{{#if order.design.postEnd}}
 			<div>
 				<span>Post End: {{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}</span>
-				<span>{{#fetchDesignPrice order.design.postEnd}}{{/fetchDesignPrice}}</span>
-				<span>{{#calculateDesignSubtotal order.design.postEnd order.length}}{{/calculateDesignSubtotal}}</span>
+				<span>{{#fetch_design_price order.design.postEnd}}{{/fetch_design_price}}</span>
+				<span>{{#calculate_design_subtotal order.design.postEnd order.length}}{{/calculate_design_subtotal}}</span>
 			</div>
 		{{/if}}
 
 		{{#if order.design.postCap}}
 			<div>
 				<span>Post Cap: {{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}</span>
-				<span>{{#fetchDesignPrice order.design.postCap}}{{/fetchDesignPrice}}</span>
-				<span>{{#calculateDesignSubtotal order.design.postCap order.length}}{{/calculateDesignSubtotal}}</span>
+				<span>{{#fetch_design_price order.design.postCap}}{{/fetch_design_price}}</span>
+				<span>{{#calculate_design_subtotal order.design.postCap order.length}}{{/calculate_design_subtotal}}</span>
 			</div>
 		{{/if}}
 
 		<div>
 			<span>Center Design: {{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}</span>
-			<span>{{#fetchDesignPrice order.design.center}}{{/fetchDesignPrice}}</span>
-			<span>{{#calculateDesignSubtotal order.design.center order.length}}{{/calculateDesignSubtotal}}</span>
+			<span>{{#fetch_design_price order.design.center}}{{/fetch_design_price}}</span>
+			<span>{{#calculate_design_subtotal order.design.center order.length}}{{/calculate_design_subtotal}}</span>
 		</div>
 
 		<div>
 			<span>Color: {{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}</span>
-			<span>{{#fetchDesignPrice order.design.color}}{{/fetchDesignPrice}}</span>
-			<span>{{#calculateDesignSubtotal order.design.color order.length}}{{/calculateDesignSubtotal}}</span>
+			<span>{{#fetch_design_price order.design.color}}{{/fetch_design_price}}</span>
+			<span>{{#calculate_design_subtotal order.design.color order.length}}{{/calculate_design_subtotal}}</span>
 		</div>
 
 	</div>

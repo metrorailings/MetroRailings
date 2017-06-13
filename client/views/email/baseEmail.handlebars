@@ -17,10 +17,12 @@
         </tr>
     </table>
 
-    <table id='footer'>
-        <tr>
-			<td>© {{currentYear}} Metro Railings</td>
-            <td>Any questions or concerns? Contact us at&nbsp;<a class='linkOff'>{{supportNumber}}</a>&nbsp;or reply back to this e-mail.</td>
-        </tr>
-    </table>
+	{{#unless isAdminEmail}}
+		<table id='footer'>
+			<tr>
+				<td>© {{currentYear}} Metro Railings</td>
+				<td>Any questions or concerns? Contact us at&nbsp;<a class='linkOff'>{{supportNumber}}</a>&nbsp;or reply back to this e-mail.</td>
+			</tr>
+		</table>
+	{{/unless}}
 </body>

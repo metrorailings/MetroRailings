@@ -106,5 +106,3 @@ _phoneOneField.addEventListener('blur', setPhoneOne);
 _phoneTwoField.addEventListener('blur', setPhoneTwo);
 _emailField.addEventListener('blur', setEmail);
 _commentsField.addEventListener('keyup', setComments);
-
-// ----------------- DATA INITIALIZATION -----------------------------

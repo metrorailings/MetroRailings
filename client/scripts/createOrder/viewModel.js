@@ -15,13 +15,16 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 	DECK_CHECKBOX = 'deckCheckbox',
 	CURVES_YES_RADIO = 'curvesYes',
 	CURVES_NO_RADIO = 'curvesNo',
+	BIG_ORDER_YES_RADIO = 'bigOrderYes',
+	BIG_ORDER_NO_RADIO = 'bigOrderNo',
 	CURVES_YES_MESSAGE = 'curvesYesMessage',
+	BIG_ORDER_YES_MESSAGE = 'bigOrderYesMessage',
 	ENCLOSURE_HELP_MESSAGE = 'enclosureHelp',
 	STAIRS_HELP_MESSAGE = 'stairsHelp',
 	RAILINGS_LENGTH_TEXTFIELD = 'railingsLength',
 	SUBMIT_BUTTON = 'submissionButton',
 
-	CURVES_SECTION = 'curvesSection',
+	CUSTOM_SECTION = 'customOrderRequiredSection',
 	LENGTH_SECTION = 'lengthSection',
 	SUBMISSION_SECTION = 'submissionSection',
 
@@ -43,14 +46,17 @@ var STAIRS_CHECKBOX = 'stairsCheckbox',
 var _validationSet = new Set(),
 
 	// Elements
-	_curvesSection = document.getElementById(CURVES_SECTION),
+	_customSection = document.getElementById(CUSTOM_SECTION),
 	_lengthSection = document.getElementById(LENGTH_SECTION),
 	_submissionSection = document.getElementById(SUBMISSION_SECTION),
 
 	_typeCheckboxes = [document.getElementById(STAIRS_CHECKBOX), document.getElementById(DECK_CHECKBOX)],
 	_curvesYesRadio = document.getElementById(CURVES_YES_RADIO),
 	_curvesNoRadio = document.getElementById(CURVES_NO_RADIO),
+	_bigOrderYesRadio = document.getElementById(BIG_ORDER_YES_RADIO),
+	_bigOrderNoRadio = document.getElementById(BIG_ORDER_NO_RADIO),
 	_curvesYesMessage = document.getElementById(CURVES_YES_MESSAGE),
+	_bigOrderYesMessage = document.getElementById(BIG_ORDER_YES_MESSAGE),
 	_enclosureHelpSection = document.getElementById(ENCLOSURE_HELP_MESSAGE),
 	_stairsHelpSection = document.getElementById(STAIRS_HELP_MESSAGE),
 	_lengthField = document.getElementById(RAILINGS_LENGTH_TEXTFIELD),
@@ -69,11 +75,11 @@ function _toggleSections(progress)
 {
 	if (progress >= 2)
 	{
-		_curvesSection.classList.add(ROLL_DOWN_SECTION_CLASS);
+		_customSection.classList.add(ROLL_DOWN_SECTION_CLASS);
 	}
 	else
 	{
-		_curvesSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
+		_customSection.classList.remove(ROLL_DOWN_SECTION_CLASS);
 	}
 
 	if (progress >= 3)
@@ -230,16 +236,24 @@ Object.defineProperty(viewModel, 'curvesNecessary',
 
 		if (value === 'y')
 		{
-			_toggleSections(2);
-			_curvesSection.classList.add(REVEAL_CLASS);
 			_curvesYesMessage.classList.add(REVEAL_CLASS);
+
+			_toggleSections(2);
 			_hideScrollAlert();
 		}
 		else if (value === 'n')
 		{
-			_curvesSection.classList.remove(REVEAL_CLASS);
 			_curvesYesMessage.classList.remove(REVEAL_CLASS);
+		}
+		else
+		{
+			_curvesYesRadio.checked = false;
+			_curvesNoRadio.checked = false;
+		}
 
+		// As long as all the questions have been answered no, show the next question then
+		if (value === 'n' && viewModel.__bigOrder === 'n')
+		{
 			if (viewModel.userProgress === 2)
 			{
 				viewModel.userProgress = 3;
@@ -250,10 +264,53 @@ Object.defineProperty(viewModel, 'curvesNecessary',
 				_revealScrollAlert();
 			}
 		}
+	}
+});
+
+// Big Order Flag
+Object.defineProperty(viewModel, 'bigOrder',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__bigOrder;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__bigOrder = value;
+
+		if (value === 'y')
+		{
+			_bigOrderYesMessage.classList.add(REVEAL_CLASS);
+
+			_toggleSections(2);
+			_hideScrollAlert();
+		}
+		else if (value === 'n')
+		{
+			_bigOrderYesMessage.classList.remove(REVEAL_CLASS);
+		}
 		else
 		{
-			_curvesYesRadio.checked = false;
-			_curvesNoRadio.checked = false;
+			_bigOrderYesRadio.checked = false;
+			_bigOrderNoRadio.checked = false;
+		}
+
+		// As long as all the questions have been answered no, show the next question then
+		if (value === 'n' && viewModel.__curvesNecessary === 'n')
+		{
+			if (viewModel.userProgress === 2)
+			{
+				viewModel.userProgress = 3;
+			}
+			else
+			{
+				_toggleSections(viewModel.userProgress);
+				_revealScrollAlert();
+			}
 		}
 	}
 });

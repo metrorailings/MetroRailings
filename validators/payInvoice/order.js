@@ -90,7 +90,7 @@ function createNewModel()
 			// Cycle through each design option to ensure that the design selections are all valid selections
 			for (i = keys.length - 1; i >= 0; i--)
 			{
-				if (pricingCalculator.findDesignPricing(value[keys[i]]))
+				if ( pricingCalculator.findDesignPricing(value[keys[i]]) || !(value[keys[i]]) )
 				{
 					continue;
 				}

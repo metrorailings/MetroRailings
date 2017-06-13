@@ -142,7 +142,10 @@ var rQueryClient =
 		 */
 		setField: function (element, value, validationSet)
 		{
-			element.value = (value ? value : '');
+			if (element.value !== value)
+			{
+				element.value = (value ? value : '');
+			}
 
 			// If a value is not present and the validation object is provided, remove the element's ID from that object
 			// to note that it is no longer in an erroneous state

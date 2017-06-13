@@ -77,14 +77,6 @@
 		z-index: 9999;
 	}
 
-	&.pageLoad
-	{
-		opacity: 1.0;
-		background-color: map-get($COLORS, whiteTheme);
-
-		z-index: 9999;
-	}
-
 	& > div
 	{
 		margin:

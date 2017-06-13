@@ -9,7 +9,7 @@ import notifier from 'client/scripts/utility/notifications';
 var SUBMIT_BUTTON = 'contactUsSubmissionButton',
 
 	SUCCESS_MESSAGE = 'Your request has been successfully sent! Expect us to reach out back to you shortly. Now we ' +
-		'will be redirecting you back to the main home page in a few seconds.',
+		'will be redirecting you back to the main home page in several seconds.',
 
 	SEND_REQUEST_URL = 'contactUs/sendRequest',
 	HOME_URL = '/';
@@ -59,6 +59,7 @@ function submit()
 			{
 				window.location.href = HOME_URL;
 			}, 7500);
+
 		}, () =>
 		{
 			notifier.showGenericServerError();

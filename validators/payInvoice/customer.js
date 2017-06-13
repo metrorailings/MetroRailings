@@ -12,7 +12,8 @@ var formValidator = global.OwlStakes.require('utility/formValidator'),
 var VALID_STATES =
 	{
 		NJ: true,
-		NY: true
+		NY: true,
+		PA: true
 	},
 
 	CUSTOMER_NAME = 'name',
@@ -52,7 +53,7 @@ function createNewModel()
 
 		set: (value) =>
 		{
-			validatorUtility.validateProperty(formValidator.isAlphabetical(value, " '-"), validationModel, CUSTOMER_NAME, value);
+			validatorUtility.validateProperty(formValidator.isAlphabetical(value, ' \'-'), validationModel, CUSTOMER_NAME, value);
 		}
 	});
 

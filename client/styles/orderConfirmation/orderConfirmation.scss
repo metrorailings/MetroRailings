@@ -36,7 +36,15 @@
 
 	background-color: map-get($COLORS, smokeWhiteTheme);
 
-	width: 50%;
+	@include tabletUp()
+	{
+		width: 50%;
+	}
+
+	@include phoneOnly()
+	{
+		width: 75%;
+	}
 
 	& > span
 	{
@@ -53,8 +61,12 @@
 			color: map-get($COLORS, blackTheme);
 		}
 
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
 		width: 100%;
-		text-align: left;
 
 		&:last-of-type
 		{
@@ -63,7 +75,11 @@
 
 		& > span
 		{
-			margin-left: 25px;
+			margin:
+			{
+				top: 5px;
+				bottom: 5px;
+			}
 		}
 	}
 }
