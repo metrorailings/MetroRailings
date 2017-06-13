@@ -1,8 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
-
-	mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver');
+var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -22,12 +20,12 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	insertNewContactRequest: _Q.async(function* (data)
+	insertNewContactRequest: async function (data)
 	{
 		try
 		{
 			// Insert a new contact request into the database
-			yield mongo.bulkWrite(CONTACT_US_COLLECTION, true, mongo.formInsertSingleQuery(data));
+			await mongo.bulkWrite(CONTACT_US_COLLECTION, true, mongo.formInsertSingleQuery(data));
 
 			return true;
 		}
@@ -38,5 +36,5 @@ module.exports =
 
 			return false;
 		}
-	})
+	}
 };

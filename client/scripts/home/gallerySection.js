@@ -36,7 +36,7 @@ var galleriaTemplate = Handlebars.compile(document.getElementById(GALLERIA_TEMPL
  *
  * @author kinsho
  */
-function _loadNewImages()
+function loadNewImages()
 {
 	var completeGallery = window.MetroRailings.galleryImages,
 		startingIndex = _imagesLoaded.length,
@@ -78,7 +78,7 @@ function _loadNewImages()
 	newImgElements = newGalleria.getElementsByTagName('img');
 	for (i = 0; i < newImgElements.length; i++)
 	{
-		newImgElements[i].addEventListener('click', _openGallery);
+		newImgElements[i].addEventListener('click', openGallery);
 	}
 
 	// Update the collection we use to track visible pictures
@@ -106,7 +106,7 @@ function _loadNewImages()
  * @param {Event} event - the event associated with the firing of this listener
  *
  */
-function _openGallery(event)
+function openGallery(event)
 {
 	var element = event.currentTarget,
 		imageURL = element.src,
@@ -127,11 +127,11 @@ function _openGallery(event)
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-_expandGalleryLink.addEventListener('click', _loadNewImages);
+_expandGalleryLink.addEventListener('click', loadNewImages);
 
 for (var i = 0; i < _defaultGalleryPics.length; i++)
 {
-	_defaultGalleryPics[i].addEventListener('click', _openGallery);
+	_defaultGalleryPics[i].addEventListener('click', openGallery);
 
 	// Don't forget to create a record noting that all the default pictures have been made available to the user
 	_imagesLoaded.push(_defaultGalleryPics[i].src);

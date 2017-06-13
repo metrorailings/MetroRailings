@@ -20,7 +20,7 @@ var CONTROLLER_FOLDER = 'createOrder',
 	PARTIALS =
 	{
 		TYPE_SECTION: 'typeSection',
-		CURVES_SECTION: 'curvesSection',
+		CUSTOM_ORDER_REQUIRED_SECTION: 'customOrderRequiredSection',
 		LENGTH_SECTION: 'lengthSection',
 		POST_SECTION: 'postSection',
 		POST_END_SECTION: 'postEndSection',
@@ -45,7 +45,7 @@ _Handlebars.registerPartial('createOrderTypeSection', fileManager.fetchTemplateS
 /**
  * The template for the step in which the user specifies whether the railings need to be curved
  */
-_Handlebars.registerPartial('createOrderCurvesSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CURVES_SECTION));
+_Handlebars.registerPartial('createOrderCustomOrderRequiredSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOM_ORDER_REQUIRED_SECTION));
 
 /**
  * The template for the step in which the user specifies the length of railing needed for the project

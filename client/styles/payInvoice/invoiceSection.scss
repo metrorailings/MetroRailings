@@ -96,7 +96,7 @@
 
 #invoiceHeader
 {
-	@extend %tabularHeaderText;
+	@extend %tabularSlimHeaderText;
 	@include invoiceSpacing();
 
 	height: 75px;

@@ -27,10 +27,16 @@ var pricingModule =
 			designKeys = Object.keys(orderData.design),
 			i;
 
+		// For all orders below a certain number of feet, a minimum has to be charged
+		rawTotal = Math.max(pricing.MINIMUM_TOTAL, rawTotal);
+
 		// For each design, determine if it is a premium design. If so, add in its price to the raw total
 		for (i = designKeys.length - 1; i >= 0; i--)
 		{
-			rawTotal += pricingModule.calculateDesignCost(orderData.length, orderData.design[designKeys[i]]);
+			if (orderData.design[designKeys[i]])
+			{
+				rawTotal += pricingModule.calculateDesignCost(orderData.length, orderData.design[designKeys[i]]);
+			}
 		}
 
 		// If the raw total falls below that of the minimum amount required for us to service an order, then we must

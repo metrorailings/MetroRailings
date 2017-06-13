@@ -62,8 +62,8 @@ var centerDesigns =
 			id: 'CD-GALE',
 			label: 'Gale',
 			price: pricing.DESIGNS['CD-GALE'].price,
-			designDescription: 'Pairs of wind-shaped scrolls will blend into the middle of your railings, giving your ' +
-				'railings some fanciful gusto.',
+			designDescription: 'Pairs of wind-shaped scrolls will blend into the middle of your railings, giving them ' +
+				'some fanciful gusto.',
 			designImages:
 			[
 				'client/images/designs/center/gale-2.jpg',
@@ -88,7 +88,7 @@ var centerDesigns =
 			id: 'CD-SNC',
 			label: 'Scroll & Collar',
 			price: pricing.DESIGNS['CD-SNC'].price,
-			designDescription: 'C-shaped scrolls conjoined by ball-shaped collars will lend a royal tone to your ' +
+			designDescription: 'C-shaped scrolls conjoined by squared collars will lend a royal tone to your ' +
 				'railings.',
 			designImages:
 			[

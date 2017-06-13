@@ -6,6 +6,12 @@
         <!-- Forcing IE to adhere to standards here -->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 
+		<!-- The site description tag -->
+		<meta name="description" content="We build railings for stairways, porches, decks, balconies, and any other setting you want. Proudly serving the NJ & NYC areas.">
+
+		<!-- The title of the page -->
+		<title>Metro Railings - NJ & NY</title>
+
         <!-- Mobile device scaling -->
         {{#unless ignoreScaling}}
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +21,7 @@
         <link rel="icon" href="favicon.ico">
 
         <!-- Load all third-party stylesheets here --->
+		<line rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"></line>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
@@ -55,7 +62,7 @@
         </div>
 
         <!-- Loading veil -->
-        <div id='baseLoaderOverlay' class='{{#if waitForPageLoad}}pageLoad{{/if}}'>
+        <div id='baseLoaderOverlay'>
             <div>
                 <span id='loadingText'>Loading</span>
             </div>
@@ -104,6 +111,7 @@
             <script src="client/scripts/plugins/facebook.js" ></script>
             <script src="client/scripts/plugins/twitter.js" ></script>
             <script src="client/scripts/plugins/socialLinks.js" ></script>
+			<script src="client/scripts/plugins/googleAnalytics.js" ></script>
 
             <script>System.import("{{launchScript}}");</script>
         {{/if}}

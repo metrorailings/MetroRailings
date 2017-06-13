@@ -34,7 +34,7 @@ var postDesigns =
 			price: pricing.DESIGNS['P-BPC'].price,
 			designDescription: 'Colonial posts are a fairly modern addition to the world of railings. Bigger in size and ' +
 				'grander in appearance compared to our standard posts, the colonial posts are perfect for those that want ' +
-				'their railings to exhibit a regal charm. It\'s worth noting that the bigger size of these posts lend themselves better ' +
+				'their railings to exhibit a regal vibe. It\'s worth noting that the bigger size of these posts lend themselves better ' +
 				'to stabilizing the overall railing. For that reason alone, we recommend these posts be selected for all balconies.',
 			designImages:
 			[

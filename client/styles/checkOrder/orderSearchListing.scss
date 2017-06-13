@@ -207,6 +207,8 @@
 	width: 100%;
 	flex: 1;
 
+	white-space: nowrap;
+
 	&.tabletUp
 	{
 		@include phoneOnly()
@@ -239,6 +241,11 @@
 	}
 
 	border-bottom: none;
+
+	& > .orderInfoSection > .orderCell
+	{
+		white-space: normal;
+	}
 }
 
 .orderDataSection

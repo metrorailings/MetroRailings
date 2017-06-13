@@ -98,11 +98,9 @@ Object.defineProperty(viewModel, 'phoneTwo',
 
 	set: (value) =>
 	{
+		viewModel.__phoneTwo = value;
+
 		rQueryClient.setField(_phoneTwoField, value);
-
-		// Only set the value into the view model if we have a four-digit value
-		viewModel.__phoneTwo = (value.length === 4 ? value : '');
-
 		_checkWhetherFormIsSubmissible();
 	}
 });

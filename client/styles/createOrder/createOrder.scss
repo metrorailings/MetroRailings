@@ -12,7 +12,7 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#typeSection, #lengthSection, #curvesSection, #submissionSection
+#typeSection, #lengthSection, #customOrderRequiredSection, #submissionSection
 {
 	border-top:
 	{
@@ -22,7 +22,7 @@
 	}
 }
 
-#lengthSection, #curvesSection, #submissionSection
+#lengthSection, #customOrderRequiredSection, #submissionSection
 {
 	@include transitionSettings($property: all, $duration: 0.75s);
 

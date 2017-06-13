@@ -1,6 +1,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import gallerySection from 'client/scripts/home/gallerySection';
+import orderSection from 'client/scripts/home/orderSection';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
@@ -31,20 +32,6 @@ var _bannerImages = [],
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
 // ----------------- LISTENERS ---------------------------
-
-/**
- * Listener responsible for displaying the page and fading the name of the company into view
- * once the banner images have been loaded
- *
- * @author kinsho
- */
-function _pageLoaded()
-{
-	_loadingVeil.classList.remove(PAGE_LOADER_CLASS);
-
-	// Set up an interval function that will periodically change out the background photo of the banner
-	window.setInterval(_revolveBannerImages, 5000);
-}
 
 /**
  * Listener responsible for de-surfacing the page overlay and fading in the company name
@@ -92,7 +79,8 @@ function _revolveBannerImages()
 
 _loadingVeil.addEventListener('transitionend', _finishIntro);
 
-window.addEventListener('load', _pageLoaded);
+// Set up an interval function that will periodically change out the background photo of the banner
+window.setInterval(_revolveBannerImages, 5000);
 
 // ----------------- PAGE INITIALIZATION -----------------------------
 

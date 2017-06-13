@@ -6,9 +6,6 @@ import submissionSection from 'client/scripts/contactUs/submissionSection';
 
 // ----------------- ENUMS/CONSTANTS ----------------------
 
-var CURVES_COMMENT = 'I want to place an order for railings, but my railings need some curves. Please contact me so ' +
-	'that we can schedule an appointment for you to come over and take some precise measurements.';
-
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
@@ -25,6 +22,6 @@ vm.email = window.MetroRailings.contactUs.email || '';
 vm.areaCode = window.MetroRailings.contactUs.areaCode || '';
 vm.phoneOne = window.MetroRailings.contactUs.phoneOne || '';
 vm.phoneTwo = window.MetroRailings.contactUs.phoneTwo || '';
-vm.comments = window.MetroRailings.contactUs.curves ?  CURVES_COMMENT : '';
+vm.comments = '';
 
 // ----------------- PAGE INITIALIZATION -----------------------------

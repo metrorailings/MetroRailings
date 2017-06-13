@@ -12,7 +12,7 @@ var SUBMIT_BUTTON = 'orderSubmissionButton',
 	SAVE_ORDER_URL = 'payInvoice/saveConfirmedOrder',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation',
 
-	CREDIT_CARD_INVALID_MESSAGE = 'Your credit card failed our authentication process. Please fix your credit card ' +
+	CREDIT_CARD_INVALID_MESSAGE = 'Your credit card failed our authentication process. Please check your credit card ' +
 			'information and try again.';
 
 // ----------------- PRIVATE VARIABLES ---------------------------

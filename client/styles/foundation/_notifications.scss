@@ -19,6 +19,11 @@
 		style: solid;
 	}
 
+	padding:
+	{
+		bottom: 15px;
+	}
+
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -27,18 +32,36 @@
 	opacity: 0.0;
 
 	width: 100%;
-	height: 140px;
 
 	@include desktopOnly()
 	{
 		top: 100%;
 		left: 0%;
+
+		height: 140px;
 	}
 
 	@include mobileOnly()
 	{
-		top: calc(100% - 135px);
+		border-bottom:
+		{
+			width: 2px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+
+		top: 60%;
 		left: 100%;
+	}
+
+	@include tabletOnly()
+	{
+		height: 20%;
+	}
+
+	@include phoneOnly()
+	{
+		height: 30%;
 	}
 
 	& > i:first-of-type
@@ -88,7 +111,7 @@
 	}
 }
 
-#userNotificationBarExitContainer
+#userNotificationBarExitContainer, #userSuccessBarExitContainer
 {
 	height: 100%;
 	min-width: 15%;

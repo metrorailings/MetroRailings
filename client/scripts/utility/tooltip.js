@@ -119,7 +119,17 @@ var tooltipModule =
 				position: position || tooltipModule.TOOLTIP_POSITIONS.NORTH,
 				content: _wrapMessage(targetElement.id, message),
 				openOn: openOn || tooltipModule.TOOLTIP_OPEN_ON.CLICK,
-				constrainToWindow: false
+				constrainToWindow: true,
+				tetherOptions:
+				{
+					attachment: tooltipModule.TOOLTIP_POSITIONS.SOUTH,
+					targetAttachment: tooltipModule.TOOLTIP_POSITIONS.NORTH,
+					constraints:
+					[{
+						to: 'scrollParent',
+						pin: true
+					}]
+				}
 			});
 
 			// Store the tooltip text inside the generated tooltip

@@ -86,7 +86,7 @@ _Handlebars.registerPartial('submissionSection', fileManager.fetchTemplateSync(C
  *
  * @author kinsho
  */
-_Handlebars.registerHelper('fetchDesignPrice', function(designCode)
+_Handlebars.registerHelper('fetch_design_price', function(designCode)
 {
 	var designPricing = pricingStructure.DESIGNS[designCode];
 
@@ -114,9 +114,19 @@ _Handlebars.registerHelper('fetchDesignPrice', function(designCode)
  *
  * @author kinsho
  */
-_Handlebars.registerHelper('calculateDesignSubtotal', function(designCode, orderLength)
+_Handlebars.registerHelper('calculate_design_subtotal', function(designCode, orderLength)
 {
 	return (pricingCalculator.calculateDesignCost(orderLength, designCode) || '');
+});
+
+/**
+ * Handlebars helper function designed to calculate the total price of railings based on length alone
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('calculate_length_subtotal', function (length)
+{
+	return Math.max(pricingStructure.MINIMUM_TOTAL, length * pricingStructure.COST_PER_FOOT_OF_RAILING);
 });
 
 // ----------------- MODULE DEFINITION --------------------------

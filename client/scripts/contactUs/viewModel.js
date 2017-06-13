@@ -31,9 +31,9 @@ var NAME_TEXTFIELD = 'customerName',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
-		EMPTY_FIELDS: "At least one of the required fields above is empty. At minimum, please give us your name, leave some comments, and " +
-			"put down an e-mail address or phone number so that we can reach you if need be. Then you can submit this form.",
-		INVALID_FIELDS: 'At least one of the fields above has an improper value. Please fix all erroneous values in order to submit this form.'
+		EMPTY_FIELDS: 'At least one of the required fields above is empty. At minimum, please give us your name, leave some comments, and ' +
+			'put down an e-mail address or phone number so that we can reach you if need be. Then you can submit this form.',
+		INVALID_FIELDS: 'At least one of the fields above has an improper value. Please fix all erroneous values before submitting this form.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -119,7 +119,7 @@ Object.defineProperty(viewModel, 'name',
 		value = (value.trim() ? value : '');
 		viewModel.__name = value;
 
-		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, " '-")), _nameField, ERROR.NAME_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, ' \'-')), _nameField, ERROR.NAME_INVALID, _validationSet);
 		rQueryClient.setField(_nameField, value, _validationSet);
 		viewModel.isFormSubmissible = _validate();
 	}

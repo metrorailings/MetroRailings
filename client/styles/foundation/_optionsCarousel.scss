@@ -82,18 +82,20 @@
 
 .optionsSelector
 {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: row;
-	flex-wrap: wrap;
-
 	margin:
 	{
 		left: 45px;
 		right: 45px;
 		bottom: 30px;
 	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	width: 100%;
 }
 
 .carouselPreviewOption
