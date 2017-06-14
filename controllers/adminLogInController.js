@@ -6,7 +6,7 @@
 
 var _Q = require('q'),
 
-	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),

@@ -6,7 +6,7 @@
 
 var config = global.OwlStakes.require('config/config'),
 
-	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies');

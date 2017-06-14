@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');

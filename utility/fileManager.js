@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('Q'),
+var _Q = require('q'),
 	_fs = require('fs'),
 
 	router;  // For some queer reason, we have to import application modules dynamically......fucking Node.....

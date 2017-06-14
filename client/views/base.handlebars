@@ -96,25 +96,20 @@
             window.MetroRailings = {{{initialData}}};
         </script>
 
-        <!-- Load all the necessary third-party script files below -->
+		<script src="client/scripts/jspm_packages/system.js" ></script>
+		<script src="client/scripts/jspm_config.js" ></script>
+		<script src="client/scripts/systemPaths.js" ></script>
+		<script src="client/scripts/plugins/facebook.js" ></script>
+		<script src="client/scripts/plugins/twitter.js" ></script>
+		<script src="client/scripts/plugins/socialLinks.js" ></script>
+		<script src="client/scripts/plugins/googleAnalytics.js" ></script>
 
-        <!-- In production, only one script needs to be loaded -->
-        {{#if isProd}}
-            <script src="prod/app.js"></script>
-        {{else}}
-            <!-- In development environments, multiple scripts should be loaded in order to facilitate any needed debugging
-            Load the bootloading scripts along with the base script that is responsible for instantiating all other
-            scripts relevant to the page -->
-            <script src="client/scripts/jspm_packages/system.src.js" ></script>
-            <script src="client/scripts/jspm_config.js" ></script>
-            <script src="client/scripts/systemPaths.js" ></script>
-            <script src="client/scripts/plugins/facebook.js" ></script>
-            <script src="client/scripts/plugins/twitter.js" ></script>
-            <script src="client/scripts/plugins/socialLinks.js" ></script>
-			<script src="client/scripts/plugins/googleAnalytics.js" ></script>
+		<!-- In production, one file will house all page-specific code -->
+		{{#if isProd}}
+			<script src="prod/app.js"></script>
+		{{/if}}
 
-            <script>System.import("{{launchScript}}");</script>
-        {{/if}}
+		<script>System.import("{{launchScript}}");</script>
 
     </body>
 

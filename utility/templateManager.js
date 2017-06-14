@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('Handlebars'),
+var _Handlebars = require('handlebars'),
 	_htmlMinifier = require('html-minifier').minify,
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),

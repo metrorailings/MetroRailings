@@ -55,6 +55,8 @@
 	text-decoration: none;
 	color: map-get($COLORS, darkGreyTheme) !important;
 
+	cursor: pointer;
+
 	&:hover
 	{
 		text-decoration: underline;

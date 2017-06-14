@@ -15,14 +15,12 @@ var	_fs = require('fs'),
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var	SCRIPTS_DIRECTORY = 'client/scripts/',
-	PLUG_IN_DIRECTORY = 'plugins/',
 
 	JSPM_PACKAGES_DIRECTORY_KEYWORD = '/jspm_packages/',
-	JSPM_BUNDLE_KEYWORD = 'jspm bundle-sfx ',
+	JSPM_BUNDLE_KEYWORD = 'jspm bundle ',
 	BUNDLE_APPEND_KEYWORD = ' + ',
 
 	MAIN_SCRIPT = '/main.js',
-	SYSTEM_PATHS_FILE = 'systemPaths.js',
 	BUILD_OUTPUT_FILE = 'prod/build.src.js',
 	BUILD_SHELL_FILE = 'prod/buildScript.sh';
 
@@ -35,7 +33,6 @@ var fsWriteFile = _Q.denodeify(_fs.writeFile);
 (async function()
 {
 	var scriptFiles = await fileManager.fetchAllFilePaths(SCRIPTS_DIRECTORY),
-		pluginFiles = await fileManager.fetchAllFilePaths(SCRIPTS_DIRECTORY + PLUG_IN_DIRECTORY),
 		scriptFile, buildString,
 		filesToBuild = [],
 		i;
@@ -51,12 +48,6 @@ var fsWriteFile = _Q.denodeify(_fs.writeFile);
 		}
 	}
 
-	// Fetch the paths to all plugin files
-	for (i = 0; i < pluginFiles.length; i++)
-	{
-		filesToBuild.push(pluginFiles[i].path);
-	}
-
 	// Build out the shell file that will need to be executed to create a production build
 	buildString = JSPM_BUNDLE_KEYWORD;
 	for (i = 0; i < filesToBuild.length; i++)
@@ -68,9 +59,6 @@ var fsWriteFile = _Q.denodeify(_fs.writeFile);
 
 		buildString += filesToBuild[i];
 	}
-
-	// Don't forget to include the system paths file
-	buildString += (BUNDLE_APPEND_KEYWORD + SCRIPTS_DIRECTORY + SYSTEM_PATHS_FILE);
 
 	// Specify where the build file should end up in the file system
 	buildString += ' ' + BUILD_OUTPUT_FILE;
