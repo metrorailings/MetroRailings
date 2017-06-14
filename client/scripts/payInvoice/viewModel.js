@@ -5,8 +5,8 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import ccAllowed from 'shared/ccAllowed';
+import formValidator from 'shared/formValidator';
 
-import formValidator from 'utility/formValidator';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import scrollDown from 'client/scripts/utility/scrollDown';
 import tooltipManager from 'client/scripts/utility/tooltip';
