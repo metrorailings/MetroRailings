@@ -88,17 +88,24 @@ module.exports =
 	 *
 	 * @param {String} redirectURL - the URL to reroute the user towards
 	 *
-	 * @param {String} - a fully populated string of HTML
+	 * @param {Object} - an object containing a fully populated string of HTML as well as a flag denoting this as a
+	 * 		redirect request
 	 *
 	 * @author kinsho
 	 */
 	renderRedirectView: async function (redirectURL)
 	{
-		var data = {};
+		var data = {},
+			redirectTemplate;
 
 		// Populate the redirect URL into the script that will immediately be executed when the page loads
 		data[HBARS_REDIRECT_URL] = redirectURL;
 
-		return await templateManager.populateTemplate(data, '', REDIRECT_TEMPLATE_FILE);
+		redirectTemplate = await templateManager.populateTemplate(data, '', REDIRECT_TEMPLATE_FILE);
+
+		return {
+			template: redirectTemplate,
+			redirect: true
+		};
 	}
 };

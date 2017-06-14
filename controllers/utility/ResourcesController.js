@@ -9,6 +9,7 @@ var _Q = require('q'),
 	_zlib = require('zlib'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
+
 	router = global.OwlStakes.require('config/router');
 
 // ----------------- ENUM/CONSTANTS --------------------------

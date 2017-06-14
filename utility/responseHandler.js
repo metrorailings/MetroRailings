@@ -10,7 +10,7 @@ var router = global.OwlStakes.require('config/router');
 
 var INTERNAL_SERVER_ERROR_MESSAGE = 'Something\'s up with our server here. We apologize for any inconvenience here,' +
 	'but rest assured, the administrator has been notified and somebody will address this issue soon. Until ' +
-	'then, please come back to this site later. Once again, we apologize for having to do this.',
+	'then, please go back to the home page. Once again, we apologize for having to do this.',
 
 	JSON_CONTENT_TYPE = 'application/json';
 
@@ -29,15 +29,17 @@ module.exports =
 	 */
 	sendResponse: function(response, responseData, url)
 	{
+		var contentEncoding = router.isResourceWanted(url) && !(router.isImage(url)) ? 'gzip' : '';
+
 		try
 		{
 			// Write out the important headers before launching the response back to the client
 			response.writeHead(200,
-				{
-					'Content-Type' : router.deduceContentType(url),
-					'Content-Encoding' : ( ( router.isResourceWanted(url) && !(router.isImage(url)) ) ? 'gzip' : ''),
-					'Access-Control-Allow-Origin' : '*'
-				});
+			{
+				'Content-Type' : router.deduceContentType(responseData.redirect ? '' : url),
+				'Content-Encoding' : contentEncoding,
+				'Access-Control-Allow-Origin' : '*'
+			});
 
 			console.log('Response ready to be returned from URL: /' + url);
 
@@ -45,6 +47,11 @@ module.exports =
 			if (router.isImage(url))
 			{
 				response.end(responseData, 'binary');
+			}
+			// The HTML for redirects need to be pulled specifically from the responseData object
+			else if (responseData.redirect)
+			{
+				response.end(responseData.template);
 			}
 			else
 			{
@@ -119,10 +126,7 @@ module.exports =
 		// @TODO write logic to send e-mails
 
 		// Send a response back and close out this service call once and for all
-		response.end(JSON.stringify(
-			{
-				error: INTERNAL_SERVER_ERROR_MESSAGE
-			}));
+		response.end(INTERNAL_SERVER_ERROR_MESSAGE);
 	},
 
 	/**
@@ -140,12 +144,12 @@ module.exports =
 	{
 		switch(request.method)
 		{
-		case 'POST':
-			responseData = this.sendPostResponse(response, responseData.data, responseData.statusCode, url, responseData.cookie);
-			break;
-		default:
-			responseData = this.sendResponse(response, responseData, url);
-			break;
+			case 'POST':
+				responseData = this.sendPostResponse(response, responseData.data, responseData.statusCode, url, responseData.cookie);
+				break;
+			default:
+				responseData = this.sendResponse(response, responseData, url);
+				break;
 		}
 	}
 };
