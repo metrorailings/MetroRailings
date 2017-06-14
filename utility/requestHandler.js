@@ -106,9 +106,20 @@ async function _handleStandardRequest(request)
 		// fetched dynamically.
 		ctrl = global.OwlStakes.require(controller);
 
+		// Figure out if the controller in context can satisfy the action requested. If not, default to whatever
+		// initialization method has been defined within the controller in context
+		if (!(ctrl[router.findAction(action)]))
+		{
+			action = '';
+		}
+
+		// Note the controller and action being invoked here
+		console.log('CONTROLLER: ' + controller);
+		console.log('ACTION: ' + router.findAction(action));
+
 		// Find the correct action method indicated within the URL, then invoke that action method with
 		// all the relevant parameters and any cookies needed to properly service the request
-		responseData = await ctrl[ router.findAction(action) ](params, cookie, request);
+		responseData = await ctrl[router.findAction(action)](params, cookie, request);
 
 		// Send the data back
 		return responseData;
