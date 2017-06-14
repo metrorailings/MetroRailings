@@ -10,7 +10,7 @@ var _Q = require('q'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	templateManager = global.OwlStakes.require('utility/templateManager'),
-	formValidator = global.OwlStakes.require('utility/formValidator'),
+	formValidator = global.OwlStakes.require('shared/formValidator'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 

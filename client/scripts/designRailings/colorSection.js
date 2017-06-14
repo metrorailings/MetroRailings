@@ -2,7 +2,7 @@
 
 import vm from 'client/scripts/designRailings/viewModel';
 
-import rQuery from 'utility/rQuery';
+import rQuery from 'client/scripts/utility/rQueryClient';
 import gallery from 'client/scripts/utility/gallery';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------

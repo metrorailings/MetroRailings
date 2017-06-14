@@ -5,8 +5,9 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
-import formValidator from 'utility/formValidator';
 import tooltipManager from 'client/scripts/utility/tooltip';
+
+import formValidator from 'shared/formValidator';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 

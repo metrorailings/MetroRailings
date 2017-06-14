@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var formValidator = global.OwlStakes.require('utility/formValidator'),
+var formValidator = global.OwlStakes.require('shared/formValidator'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility');
 
 // ----------------- ENUM/CONSTANTS -----------------------------
