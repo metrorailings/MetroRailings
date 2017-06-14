@@ -1,0 +1,16 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/general';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#lostText
+{
+	@extend %tabularHeaderText;
+
+	text-align: center;
+
+	margin-top: 50px;
+}
