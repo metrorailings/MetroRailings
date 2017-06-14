@@ -5,9 +5,9 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _Q = require('q'),
-	_Handlebars = require('Handlebars'),
+	_Handlebars = require('handlebars'),
 
-	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	formValidator = global.OwlStakes.require('utility/formValidator'),

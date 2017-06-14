@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('Handlebars'),
+var _Handlebars = require('handlebars'),
 	_crypto = require('crypto'),
 
 	config = global.OwlStakes.require('config/config'),
@@ -15,7 +15,7 @@ var _Handlebars = require('Handlebars'),
 	requestModel = global.OwlStakes.require('validators/contactUs/request'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
 
-	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),

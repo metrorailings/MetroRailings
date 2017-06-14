@@ -4,9 +4,9 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('Handlebars'),
+var _Handlebars = require('handlebars'),
 
-	controllerHelper = global.OwlStakes.require('controllers/utility/ControllerHelper'),
+	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),

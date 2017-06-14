@@ -2,7 +2,7 @@
 
 prod/buildScript.sh
 prod/build.src.js
-prod/build.min.js
+prod/app.js
 **/*.map
 client/scripts/jspm_packages
 node_modules
