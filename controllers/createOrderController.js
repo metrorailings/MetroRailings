@@ -98,4 +98,4 @@ module.exports =
 			cookie: cookieManager.formCookie(COOKIE_ORDER_NAME, params)
 		};
 	}
-}
+};

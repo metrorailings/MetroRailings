@@ -5,20 +5,9 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#orderSection
+#salesPitchSection
 {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-
-	background-color: map-get($COLORS, paleVioletRedTheme);
-	color: map-get($COLORS, smokeWhiteTheme);
-
-	& > p
-	{
-		width: 90%;
-	}
+	background-color: map-get($COLORS, smokeTheme);
 }
 
 #orderCreationButton

@@ -75,18 +75,18 @@
 
         <!-- Footer -->
         <footer>
-            <span>
-                <i class='fa fa-copyright'></i> {{currentYear}}
-            </span>
             <span id='socialMediaSection'>
-                <span>Share on</span>
                 <span>
                     <i id='facebookShareLink' class='fa fa-facebook-official'></i>
                     <i id='twitterShareLink' class='fa fa-twitter-square'></i>
                     <i id='redditShareLink' class='fa fa-reddit-square'></i>
                 </span>
             </span>
+			<span id='copyrightSection'>
+                <i class='fa fa-copyright'></i> {{currentYear}}
+            </span>
         </footer>
+		<div id='footerSpace'></div>
 
         {{> notificationBar }}
         {{> successBar }}
@@ -102,10 +102,11 @@
 		<script src="client/scripts/plugins/facebook.js" ></script>
 		<script src="client/scripts/plugins/twitter.js" ></script>
 		<script src="client/scripts/plugins/socialLinks.js" ></script>
-		<script src="client/scripts/plugins/googleAnalytics.js" ></script>
 
-		<!-- In production, one file will house all page-specific code -->
 		{{#if isProd}}
+			<!-- Only load Google Analytics in production -->
+			<script src="client/scripts/plugins/googleAnalytics.js" ></script>
+			<!-- In production, one file will house all page-specific code -->
 			<script src="prod/app.js"></script>
 		{{/if}}
 

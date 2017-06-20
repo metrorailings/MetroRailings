@@ -12,6 +12,9 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+
+	background-color: map-get($COLORS, paleVioletRedTheme);
+	color: map-get($COLORS, whiteTheme);
 }
 
 #aboutUsText

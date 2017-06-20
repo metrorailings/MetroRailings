@@ -197,21 +197,7 @@ Object.defineProperty(viewModel, 'orderType',
 			rQueryClient.setCheckboxSets(_typeCheckboxes, DECK_CHECKBOX);
 			_toggleRailingTypeSpots();
 
-			// If the user is already in the midst of selecting designs, reset the designs they have selected so far
-			// and display text alerting the users to select designs again
-			if (viewModel.userProgress > 100)
-			{
-				viewModel.postDesign = '';
-				viewModel.postEndDesign = '';
-				viewModel.postCapDesign = '';
-				viewModel.centerDesign = '';
-
-				_toggleSections(4);
-			}
-			else
-			{
-				viewModel.userProgress = 2;
-			}
+			viewModel.userProgress = 2;
 		}
 		else
 		{

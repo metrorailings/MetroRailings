@@ -9,15 +9,17 @@
  * Muli
  * Playfair Display
  * Raleway
+ * Lato
  *
  */
-@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display);
+@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Lato);
 
 /* ----------------------- LOCAL CONSTANTS ----------------------------- */
 
 $FONTS:
 (
 	tinyFontSize: 12px,
+	noteFontSize: 14px,
 	smallFontSize: 16px,
 	regularFontSize: 18px,
 	regularPlusFontSize: 20px,
@@ -28,6 +30,7 @@ $FONTS:
 	enormousFontSize: 72px,
 
 	mobile-tinyFontSize: 10px,
+	mobile-noteFontSize: 12px,
 	mobile-smallFontSize: 12px,
 	mobile-regularFontSize: 16px,
 	mobile-regularPlusFontSize: 18px,
@@ -141,6 +144,13 @@ $FONTS:
 	@include basicFontSettings($size: regularPlusFontSize, $family: Raleway, $weight: 300);
 
 	letter-spacing: 0.75px;
+}
+
+%salesText
+{
+	@include basicFontSettings($size: regularPlusFontSize, $family: Lato, $weight: 400, $color: whiteTheme);
+
+	text-shadow: 0.5px 0.5px map-get($COLORS, blackTheme);
 }
 
 %topMenuText
@@ -287,6 +297,12 @@ $FONTS:
 }
 
 /* --- Miscellany stylings --- */
+
+%tinySignificantText
+{
+	@include basicFontSettings($weight: 400, $size: tinyFontSize, $family: Muli);
+}
+
 %smallSignificantText
 {
 	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Muli);

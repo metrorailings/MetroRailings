@@ -12,12 +12,12 @@
 #homeContainer
 {
 	width: 100vw;
-	height: 65vh;
+	height: 95vh;
 
 	position: relative;
 }
 
-#aboutUsSection, #orderSection, #gallerySection, #thankYouSection
+#aboutUsSection, #salesPitchSection, #gallerySection, #thankYouSection
 {
 	@extend %decorativeText;
 

@@ -18,24 +18,17 @@
 
 	display: flex;
 	align-items: center;
-	justify-content: center;
 
-	background-color: map-get($COLORS, smokeWhiteTheme);
-
+	position: fixed;
 	width: 100%;
 
-	@include phoneOnly()
+	background-color: map-get($COLORS, smokeWhiteTheme);
+	opacity: 0.95;
+	z-index: 500;
+
+	@include mobileOnly()
 	{
 		flex-wrap: wrap;
-	}
-
-	// Hide all the links intended to be shown only on tablet and desktop environments
-	& > .topMenuLink
-	{
-		@include phoneOnly()
-		{
-			display: none;
-		}
 	}
 }
 
@@ -45,17 +38,23 @@
 
 	margin:
 	{
+		top: 10px;
+		bottom: 10px;
 		left: 20px;
 		right: 20px;
 	}
 
-	flex: 1;
 	text-align: center;
 
 	text-decoration: none;
 	color: map-get($COLORS, darkGreyTheme) !important;
 
 	cursor: pointer;
+
+	@include desktopOnly()
+	{
+		flex: 1;
+	}
 
 	&:hover
 	{
@@ -65,19 +64,14 @@
 
 #topMenuLogoContainer
 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	flex: 1;
+
 	margin-left: 10px;
-
-	@include tabletUp()
-	{
-		text-align: center;
-	}
-
-	@include phoneOnly()
-	{
-		flex: 1;
-
-		text-align: left;
-	}
 }
 
 #topMenuLogo
@@ -86,7 +80,7 @@
 
 	@include desktopOnly()
 	{
-		height: 100px;
+		height: 90px;
 	}
 
 	@include mobileOnly()
@@ -97,14 +91,14 @@
 
 #topMenuExpander
 {
-	@include tabletUp()
+	@include desktopOnly()
 	{
 		display: none;
 	}
 
-	@include phoneOnly()
+	@include mobileOnly()
 	{
-		flex: 1;
+		flex: 10;
 		margin-right: 40px;
 		text-align: right;
 
@@ -117,18 +111,37 @@
 	}
 }
 
-#mobileTopMenuLinks
+#desktopMenuLinks
 {
-	@include tabletUp()
+	@include mobileOnly()
 	{
 		display: none;
 	}
 
-	@include phoneOnly()
+	@include desktopOnly()
+	{
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+
+		flex: 10;
+	}
+}
+
+#mobileTopMenuLinks
+{
+	@include desktopOnly()
+	{
+		display: none;
+	}
+
+	@include mobileOnly()
 	{
 		@include transitionSettings($property: all, $duration: 0.5s);
 
 		max-height: 0px;
+		width: 100%;
 		overflow: hidden;
 
 		display: flex;
@@ -150,4 +163,11 @@
 			flex: none;
 		}
 	}
+}
+
+#topMenuSpace
+{
+	height: 100px;
+
+	display: block;
 }

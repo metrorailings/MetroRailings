@@ -18,3 +18,5 @@ System.paths.lost = '/client/scripts/lost/main.js';
 System.paths.adminLogIn = '/client/scripts/adminLogIn/main.js';
 System.paths.orders = '/client/scripts/orders/main.js';
 System.paths.orderDetails = '/client/scripts/orderDetails/main.js';
+
+System.paths.powderCoating = '/client/scripts/powderCoating/main.js';

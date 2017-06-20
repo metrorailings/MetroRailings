@@ -1,7 +1,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import gallerySection from 'client/scripts/home/gallerySection';
-import orderSection from 'client/scripts/home/orderSection';
+import salesPitchSection from 'client/scripts/home/salesPitchSection';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 

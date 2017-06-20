@@ -1,0 +1,117 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/loader';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/gallery';
+@import '../foundation/responsive';
+@import '../foundation/optionsCarousel';
+@import '../foundation/scrollDownLabel';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#typeSection
+{
+	border-top:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+}
+
+#otherMetalSection, #partsOnlySection, #submissionSection
+{
+	@include transitionSettings($property: all, $duration: 0.75s);
+
+	padding:
+	{
+		top: 0px;
+		bottom: 0px;
+	}
+
+	max-height: 0px;
+	overflow: hidden;
+
+	&.rollDownSection
+	{
+		padding:
+		{
+			top: 20px;
+			bottom: 20px;
+		}
+
+		max-height: 3000px;
+	}
+}
+
+.pictureButtonContainer
+{
+	@extend %significantText;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	label::before
+	{
+		margin-top: 20px;
+	}
+}
+
+.pictureButton
+{
+	@include transitionSettings($property: all, $duration: 0.6s);
+
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+		radius: 10px;
+	}
+
+	position: relative;
+	padding: 20px;
+
+	background-color: map-get($COLORS, lightBlueTheme);
+	box-shadow: 0px 10px 10px map-get($COLORS, darkGrayTheme);
+
+	cursor: pointer;
+
+	top: 0px;
+
+	&.pressDown
+	{
+		box-shadow: 0px 3px 3px map-get($COLORS, darkGrayTheme);
+		top: 5px;
+	}
+
+	& > div
+	{
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+	}
+}
+
+.headlineQuestion
+{
+	@extend %majorText;
+
+	margin:
+	{
+		bottom: 5px;
+		left: 10px;
+		right: 10px;
+	}
+}
+
+footer
+{
+	margin-top: 0px !important;
+}

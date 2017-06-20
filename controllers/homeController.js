@@ -31,6 +31,8 @@ var CONTROLLER_FOLDER = 'home',
 
 	PARTIALS =
 	{
+		SALES: 'sales',
+		SALES_PITCH: 'salesPitch',
 		ABOUT_US: 'aboutUs',
 		GALLERY_SECTION: 'gallerySection',
 		ORDER_SECTION: 'orderSection',
@@ -43,9 +45,14 @@ var CONTROLLER_FOLDER = 'home',
 // Load page-specific handlebar partials
 
 /**
- * The template for the about us section
+ * The template for the sales section
  */
-_Handlebars.registerPartial('aboutUs', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ABOUT_US));
+_Handlebars.registerPartial('homeSalesSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SALES));
+
+/**
+ * The template for the sales pitch section
+ */
+_Handlebars.registerPartial('homeSalesPitchSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SALES_PITCH));
 
 /**
  * The template for the gallery section
@@ -53,9 +60,9 @@ _Handlebars.registerPartial('aboutUs', fileManager.fetchTemplateSync(CONTROLLER_
 _Handlebars.registerPartial('homeGallerySection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.GALLERY_SECTION));
 
 /**
- * The template for the order section
+ * The template for the about us section
  */
-_Handlebars.registerPartial('homeOrderSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_SECTION));
+_Handlebars.registerPartial('aboutUs', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ABOUT_US));
 
 /**
  * The template for the thank you section
@@ -118,9 +125,8 @@ module.exports =
 			redirectHost = _findOutRedirectHost(redirectURL);
 		}
 
-		// Form the main slogan depending on whether the user was redirected to the home page via one of our other proxy sites
-		templateData.slogan = (redirectHost === METRO_KEYWORD ?
-			GENERIC_SLOGAN : CUSTOMIZED_SLOGAN.replace(LOCALITY_PLACEHOLDER, rQuery.capitalize(redirectHost)));
+		// TODO: Form the main slogan depending on whether the user was redirected to the home page via one of our other proxy sites
+		templateData.slogan = GENERIC_SLOGAN;
 
 		// Fetch all the images that we will need to display on the home page
 		templateData.homeBannerImages = await fileManager.fetchImagePaths(CONTROLLER_FOLDER);

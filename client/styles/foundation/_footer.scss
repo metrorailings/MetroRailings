@@ -3,6 +3,7 @@
 @import '../foundation/colors';
 @import '../foundation/fonts';
 @import '../foundation/animations';
+@import '../foundation/responsive';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -10,50 +11,45 @@ footer
 {
 	@extend %footerText;
 
-	margin:
-	{
-		top: 15px;
-		bottom: 5px;
-	}
-
 	padding-top: 10px;
 
-	height: 50px;
+	display: flex;
+	align-items: center;
+
 	width: 100%;
-	display: block;
+	position: fixed;
 
 	background-color: map-get($COLORS, blackTheme);
 
-	@media only screen and (max-device-width: 727px)
+	@include tabletUp()
 	{
-		height: 40px;
+		height: 50px;
+		top: calc(100% - 60px);
 	}
 
-	// Copyright text
-	& > span:first-child
+	@include phoneOnly()
 	{
-		float: left;
-		margin-left: 25px;
+		height: 40px;
+		top: calc(100% - 50px);
 	}
+}
+
+// Copyright section
+#copyrightSection
+{
+	text-align: right;
+
+	flex: 1;
+	margin-right: 25px;
 }
 
 // Social media section
 #socialMediaSection
 {
-	float: right;
-	margin-right: 25px;
+	text-align: left;
 
-	text-align: center;
-
-	& > span
-	{
-		margin-right: 10px;
-
-		@media only screen and (max-device-width: 727px)
-		{
-			margin-right: 5px;
-		}
-	}
+	flex: 1;
+	margin-left: 20px;
 }
 
 // Social media icons
@@ -67,7 +63,7 @@ footer
 
 #facebookShareLink:hover
 {
-	@media only screen and (min-device-width: 1025px)
+	@include desktopOnly()
 	{
 		color: map-get($COLORS, darkBlueTheme);
 	}
@@ -75,7 +71,7 @@ footer
 
 #twitterShareLink:hover
 {
-	@media only screen and (min-device-width: 1025px)
+	@include desktopOnly()
 	{
 		color: map-get($COLORS, darkBlueTheme);
 	}
@@ -83,8 +79,23 @@ footer
 
 #redditShareLink:hover
 {
-	@media only screen and (min-device-width: 1025px)
+	@include desktopOnly()
 	{
 		color: map-get($COLORS, redTheme);
+	}
+}
+
+#footerSpace
+{
+	display: block;
+
+	@include tabletUp()
+	{
+		height: 50px;
+	}
+
+	@include phoneOnly()
+	{
+		height: 40px;
 	}
 }

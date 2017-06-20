@@ -24,6 +24,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
 
 	@include phoneOnly()
 	{
@@ -37,8 +38,10 @@
 		{
 			flex-direction: column-reverse;
 
-			height: 400px;
+			min-height: 400px;
 			width: 50%;
+
+			margin-bottom: 15px;
 		}
 
 		@include phoneOnly()
@@ -74,12 +77,15 @@
 
 		img
 		{
-			width: 250px;
-			height: 250px;
+			@include tabletUp()
+			{
+				max-width: 250px;
+				height: 250px;
+			}
 
 			@include phoneOnly()
 			{
-				width: 175px;
+				max-width: 175px;
 				height: 175px;
 			}
 		}
