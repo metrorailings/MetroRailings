@@ -26,6 +26,7 @@ var BASE_TEMPLATE_FILE = 'base',
 	HBARS_BOOTSTRAPPED_DATA = 'initialData',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
 	HBARS_IS_PROD_FLAG = 'isProd',
+	HBARS_IS_ADMIN_PAGE = 'isAdmin',
 	HBARS_CURRENT_YEAR = 'currentYear';
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -49,7 +50,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	renderInitialView: async function (content, directory, bootData, ignoreScaling, displayAfterPageLoad)
+	renderInitialView: async function (content, directory, bootData, ignoreScaling, isAdmin)
 	{
 		var data = {};
 
@@ -74,8 +75,8 @@ module.exports =
 		// Set a flag should we need to explicitly avoid any mobile scaling
 		data[HBARS_IGNORE_SCALING] = ignoreScaling;
 
-		// Set a flag indicating whether we need to show the loader as the page loads all its content
-		data[HBARS_WAIT_PAGE_LOAD] = displayAfterPageLoad;
+		// Set a flag indicating whether we are rendering an admin page
+		data[HBARS_IS_ADMIN_PAGE] = isAdmin;
 
 		// Set a flag indicating whether we are operating in a production environment
 		data[HBARS_IS_PROD_FLAG] = config.IS_PROD;

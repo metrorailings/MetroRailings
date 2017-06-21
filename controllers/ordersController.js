@@ -79,7 +79,7 @@ module.exports =
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, bootData, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, bootData, true, true);
 	},
 
 	/**
