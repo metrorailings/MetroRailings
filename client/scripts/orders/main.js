@@ -6,9 +6,12 @@ import vm from 'client/scripts/orders/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
+var ORDER_CREATION_BUTTON = 'orderCreationButton',
+	CREATE_CUSTOM_ORDER_URL = '/createCustomOrder';
+
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-// ----------------- PRIVATE FUNCTIONS ---------------------------
+var _customOrderButton = document.getElementById(ORDER_CREATION_BUTTON);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -22,7 +25,19 @@ function triggerPing()
 	vm.pingTheServer = true;
 }
 
+/**
+ * Listener responsible for taking us to the custom order page
+ *
+ * @author kinsho
+ */
+function createNewCustomOrder()
+{
+	window.location.href = CREATE_CUSTOM_ORDER_URL;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
+
+_customOrderButton.addEventListener('click', createNewCustomOrder);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 

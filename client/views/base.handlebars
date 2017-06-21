@@ -53,8 +53,10 @@
 
     <body>
 
-		<!-- The navigation menu at the top of the page -->
-		{{> topMenu }}
+		{{#unless isAdmin}}
+			<!-- The navigation menu at the top of the page -->
+			{{> topMenu }}
+		{{/unless}}
 
         <!-- All page-specific HTML goes here -->
         <div class='content'>

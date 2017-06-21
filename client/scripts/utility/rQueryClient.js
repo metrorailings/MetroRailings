@@ -99,7 +99,7 @@ var rQueryClient =
 		 */
 		updateValidationOnField: function (showError, formField, errorMessage, validationSet, hintElement)
 		{
-			var tooltipExists = false;
+			var tooltipExists;
 
 			// If a hint element is not provided, just assume the form field itself is the element to attach a tooltip toward
 			hintElement = hintElement || formField;

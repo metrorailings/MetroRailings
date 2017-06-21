@@ -17,3 +17,16 @@
 		bottom: 25px;
 	}
 }
+
+#orderCreationButton
+{
+	@include button($bgColor: indianRedTheme);
+
+	width: 250px;
+	margin-bottom: 25px;
+
+	& > i
+	{
+		margin-left: 10px;
+	}
+}
