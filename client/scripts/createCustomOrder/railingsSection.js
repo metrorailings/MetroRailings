@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import vm from 'client/scripts/orderDetails/viewModel';
+import vm from 'client/scripts/createCustomOrder/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
@@ -13,7 +13,21 @@ var ORDER_TYPE_SELECT = 'orderType',
 	ORDER_LENGTH_TEXTFIELD = 'orderLength',
 	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 	CUSTOM_FEATURES_TEXTAREA = 'customFeatures',
-	CUSTOM_PRICE_TEXTFIELD = 'customPrice';
+	CUSTOM_PRICE_TEXTFIELD = 'customPrice',
+
+	ORDER_TYPES =
+	{
+		STAIRS: 'stairs',
+		DECK: 'deck'
+	},
+
+	POST_DESIGNS =
+	{
+		COLONIAL_BIG_POST: 'P-BPC',
+		STANDARD_SMALL_POST: 'P-SP'
+	},
+
+	HIDE_CLASS = 'hide';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -28,6 +42,46 @@ var _orderTypeField = document.getElementById(ORDER_TYPE_SELECT),
 	_customFeaturesField = document.getElementById(CUSTOM_FEATURES_TEXTAREA),
 	_customPriceField = document.getElementById(CUSTOM_PRICE_TEXTFIELD);
 
+// ----------------- PRIVATE METHODS ---------------------------
+
+/**
+ * Function meant to reset and/or disable certain design dropdowns depending on the selections
+ * made in other design-related dropdowns
+ *
+ * @author kinsho
+ */
+function _resetDesignDropdowns()
+{
+	// Disable the post design box should we be building deck railings
+	if (vm.type === ORDER_TYPES.DECK)
+	{
+		_orderPostDesignField.value = POST_DESIGNS.COLONIAL_BIG_POST;
+		_orderPostDesignField.disabled = true;
+
+		vm.design.post = POST_DESIGNS.COLONIAL_BIG_POST;
+	}
+	else
+	{
+		_orderPostDesignField.disabled = false;
+	}
+
+	// Figure out whether to show post ends or post caps depending on the post design currently selected
+	if (vm.design.post === POST_DESIGNS.COLONIAL_BIG_POST)
+	{
+		_orderPostEndField.parentNode.classList.add(HIDE_CLASS);
+		_orderPostCapField.parentNode.classList.remove(HIDE_CLASS);
+
+		_orderPostEndField.value = '';
+	}
+	else if (vm.design.post === POST_DESIGNS.STANDARD_SMALL_POST)
+	{
+		_orderPostEndField.parentNode.classList.remove(HIDE_CLASS);
+		_orderPostCapField.parentNode.classList.add(HIDE_CLASS);
+
+		_orderPostCapField.value = '';
+	}
+}
+
 // ----------------- LISTENERS ---------------------------
 
 /**
@@ -38,6 +92,8 @@ var _orderTypeField = document.getElementById(ORDER_TYPE_SELECT),
 function setType()
 {
 	vm.type = _orderTypeField.value;
+
+	_resetDesignDropdowns();
 }
 
 /**
@@ -47,7 +103,19 @@ function setType()
  */
 function setPostDesign()
 {
-	vm.postDesign = _orderPostDesignField.value;
+	vm.design.post = _orderPostDesignField.value;
+
+	_resetDesignDropdowns();
+
+	// Clear away certain design selections that may have been made prior to this field changing value
+	if (vm.design.post === POST_DESIGNS.COLONIAL_BIG_POST)
+	{
+		vm.design.postEnd = '';
+	}
+	else if (vm.design.post === POST_DESIGNS.STANDARD_SMALL_POST)
+	{
+		vm.design.postCap = '';
+	}
 }
 
 /**
@@ -100,6 +168,11 @@ function setLength()
 	vm.length = _orderLengthField.value;
 }
 
+/**
+ * Listener responsible for setting the text for custom features into the view model
+ *
+ * @author kinsho
+ */
 function setCustomFeatures()
 {
 	vm.customFeatures = _customFeaturesField.value;
@@ -137,3 +210,18 @@ _orderLengthField.addEventListener('change', setLength);
 _pricePerFootField.addEventListener('change', setPricePerFoot);
 _customFeaturesField.addEventListener('change', setCustomFeatures);
 _customPriceField.addEventListener('change', setCustomPrice);
+
+// ----------------- DATA INITIALIZATION -----------------------------
+
+vm.design = {};
+
+setType();
+setPostDesign();
+setPostEnd();
+setPostCap();
+setCenterDesign();
+setColor();
+setLength();
+setPricePerFoot();
+setCustomFeatures();
+setCustomPrice();
