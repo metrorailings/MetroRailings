@@ -14,7 +14,8 @@ var ORDERS_COLLECTION = 'orders',
 	COUNTERS_COLLECTION = 'counters',
 
 	SYSTEM_USER_NAME = 'system',
-	OPEN_STATUS = 'open';
+	OPEN_STATUS = 'open',
+	PENDING_STATUS = 'pending';
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -34,10 +35,10 @@ function _applyModificationUpdates(order, username)
 	order.lastModifiedDate = modificationDate;
 	order.modHistory = order.modHistory || [];
 	order.modHistory.push(
-		{
-			user: username,
-			date: modificationDate
-		});
+	{
+		user: username,
+		date: modificationDate
+	});
 }
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -201,6 +202,56 @@ var ordersModule =
 		// inside the order itself
 		transactionID = await creditCardProcessor.chargeTotal(order.orderTotal, order.stripe.customer, order._id);
 		order.stripe.charges.push(transactionID);
+
+		// Figure out how we'll be referencing the customer
+		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
+
+		// Now save the order
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, mongo.formInsertSingleQuery(order));
+
+			return order;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error saving a new order!');
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for saving a custom order into the database
+	 *
+	 * @param {Object} order - a new customer order to save into our system
+	 * @param {Object} username - the admin creating this order
+	 *
+	 * @returns {Object} - the order, completely processed now that it has been stored in the database
+	 *
+	 * @author kinsho
+	 */
+	saveCustomOrder: async function (order, username)
+	{
+		var counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION,
+			{
+				$inc: { seq: 1 }
+			},
+			{
+				_id: ORDERS_COLLECTION
+			});
+
+		// Before saving the order into the database, set some system-default values into the order
+		order.notes = [];
+		order.status = PENDING_STATUS;
+		order.createDate = new Date();
+
+		// Apply and initialize properties to indicate when this order was last modified
+		_applyModificationUpdates(order, username);
+
+		// Attach a new ID to the order
+		order._id = counterRecord.seq;
 
 		// Figure out how we'll be referencing the customer
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);

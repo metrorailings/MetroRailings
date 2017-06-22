@@ -29,7 +29,9 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	CUSTOM_FEATURES_TEXTAREA = 'customFeatures',
 	CUSTOM_PRICE_TEXTFIELD = 'customPrice',
 
-	SAVE_CHANGES_BUTTON = 'saveChangesButton',
+	AGREEMENT_TEXTAREA = 'agreement',
+
+	SAVE_BUTTON = 'saveCustomOrder',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
@@ -75,7 +77,9 @@ var _validationSet = new Set(),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_customPriceField = document.getElementById(CUSTOM_PRICE_TEXTFIELD),
 
-	_saveButton = document.getElementById(SAVE_CHANGES_BUTTON);
+	_agreementField = document.getElementById(AGREEMENT_TEXTAREA),
+
+	_saveButton = document.getElementById(SAVE_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -123,9 +127,9 @@ Object.defineProperty(viewModel, 'name',
 
 	set: (value) =>
 	{
-		viewModel.__email = value;
+		viewModel.__name = value;
 
-		// Test whether the value qualifies as an e-mail address
+		// Test whether the value qualifies as a valid name
 		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, ' \'-')) );
 
 		rQueryClient.updateValidationOnField(isInvalid, _nameField, ERROR.NAME_INVALID, _validationSet);
@@ -440,7 +444,7 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 Object.defineProperty(viewModel, 'customFeatures',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -461,7 +465,7 @@ Object.defineProperty(viewModel, 'customFeatures',
 Object.defineProperty(viewModel, 'customPrice',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -480,6 +484,26 @@ Object.defineProperty(viewModel, 'customPrice',
 		rQueryClient.updateValidationOnField(isInvalid, _customPriceField, ERROR.TOTAL_INVALID, _validationSet);
 		rQueryClient.setField(_customPriceField, value);
 
+		_validate();
+	}
+});
+
+// Agreement Text
+Object.defineProperty(viewModel, 'agreement',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__agreement;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__agreement = value;
+
+		rQueryClient.setField(_agreementField, value);
 		_validate();
 	}
 });
@@ -510,11 +534,6 @@ Object.defineProperty(viewModel, 'isFormValid',
 		}
 	}
 });
-
-// ----------------- DATA INITIALIZATION -----------------------------
-
-// Load a copy of the original order into the view model
-viewModel.originalOrder = window.MetroRailings.order;
 
 // ----------------- EXPORT -----------------------------
 
