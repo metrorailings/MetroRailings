@@ -65,5 +65,51 @@ module.exports =
 	capitalize: function (str)
 	{
 		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+
+	/**
+	 * Function that checks whether a particular value qualifies as an object
+	 *
+	 * @param {*} val - the value to inspect
+	 *
+	 * @returns {boolean} - a value indicating whether the passed value is indeed an object
+	 *
+	 * @author kinsho
+	 */
+	isObject: function(val)
+	{
+		return (val === Object(val));
+	},
+
+	/**
+	 * Function that merges a source object into a destination object
+	 *
+	 * @param {Object} srcObj - the source object
+	 * @param {Object} destObj - the destination object
+	 *
+	 * @returns {Object} - the merged object
+	 *
+	 * @author kinsho
+	 */
+	mergeObjects: function(srcObj, destObj)
+	{
+		var srcKeys = Object.keys(srcObj),
+			i;
+
+		for (i = srcKeys.length - 1; i >= 0; i--)
+		{
+			// If the property being copied over refers to an object, recursively call this method again on that
+			// particular property
+			if (this.isObject( destObj[srcKeys[i]] ))
+			{
+				this.mergeObjects(srcObj[srcKeys[i]], destObj[srcKeys[i]]);
+			}
+			else
+			{
+				destObj[srcKeys[i]] = srcObj[srcKeys[i]];
+			}
+		}
+
+		return destObj;
 	}
 };

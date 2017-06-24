@@ -8,6 +8,7 @@
 
 var ACTIVE_STATUSES =
 	[
+		'pending',
 		'open',
 		'consult',
 		'production',
@@ -17,6 +18,8 @@ var ACTIVE_STATUSES =
 
 	STATUS_DESCRIPTIONS =
 	{
+		pending: 'Your order is <b>pending</b> your approval! Please check your e-mail and see if you received an' +
+			' e-mail from us that should inform you as to how to approve your order.',
 		open: 'Your order is now <b>open</b> and awaiting review from one of our salespeople.',
 		consult: 'Your order is now in <b>consultation</b> status, meaning one of our associates will be visiting your ' +
 			'house soon to confirm the measurements you provided us and discuss finer details about the order with you.',

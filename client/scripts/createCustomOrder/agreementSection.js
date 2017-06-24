@@ -19,7 +19,7 @@ var _agreementField = document.getElementById(AGREEMENT_FIELD);
  */
 function setAgreementText()
 {
-	vm.agreement = _agreementField.value;
+	vm.agreement = _agreementField.value.split('\n\n');
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------

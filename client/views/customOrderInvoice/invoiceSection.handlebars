@@ -11,13 +11,11 @@
 		<div>
 			<span>{{order.length}} feet of railing</span>
 			<span>
-				{{#if_greater_cond order.length 10}}
-					${{pricePerFootOfRailing}} per foot
-				{{ else }}
-					${{minimumOrderAmount}} minimum for all orders below 10 feet
-				{{/if_greater_cond}}
+				${{order.customMetadata.pricePerFoot}} per foot
 			</span>
-			<span>${{#calculate_length_subtotal order.length pricePerFootOfRailing}}{{/calculate_length_subtotal}}</span>
+			<span>
+				${{#calculate_length_subtotal order.length order.customMetadata.pricePerFoot}}{{/calculate_length_subtotal}}
+			</span>
 		</div>
 
 		<div>
@@ -59,6 +57,21 @@
 			<span>{{#fetch_design_price order.design.color}}{{/fetch_design_price}}</span>
 			<span>{{#calculate_design_subtotal order.design.color order.length}}{{/calculate_design_subtotal}}</span>
 		</div>
+
+		{{#if order.customMetadata.customFeatures}}
+			<div>
+				<span id='additionalFeaturesCell'>
+					<div class='bolded'>Additional Features</div>
+					<div>{{ order.customMetadata.customFeatures }}</div>
+				</span>
+				<span></span>
+				<span>
+					{{#if order.customMetadata.customPrice}}
+						${{ order.customMetadata.customPrice }}
+					{{/if}}
+				</span>
+			</div>
+		{{/if}}
 
 	</div>
 

@@ -8,6 +8,9 @@ import notifier from 'client/scripts/utility/notifications';
 
 var SUBMIT_BUTTON = 'saveCustomOrder',
 
+	SUCCESS_MESSAGE = 'Success! A new order has been created and the client has been e-mailed the link to approve' +
+		' the order. The system will automatically take you back to the orders listings in a few moments.',
+
 	ORDERS_PAGE_URL = '/orders',
 	SAVE_ORDER_URL = 'createCustomOrder/saveNewOrder';
 
@@ -33,8 +36,14 @@ function submit()
 		data =
 		{
 			type: vm.type,
-			length: vm.length,
-			orderTotal: vm.orderTotal,
+			length: window.parseInt(vm.length, 10),
+			customMetadata:
+			{
+				pricePerFoot: window.parseFloat(vm.pricePerFoot),
+				customFeatures: vm.customFeatures,
+				customPrice: window.parseFloat(vm.customPrice),
+				agreement: vm.agreement
+			},
 			customer:
 			{
 				name: vm.name,
@@ -58,12 +67,21 @@ function submit()
 			}
 		};
 
+		// Disable the button to ensure the order is not accidentally sent multiple times
+		_submitButton.disabled = true;
+
 		axios.post(SAVE_ORDER_URL, data, true).then(() =>
 		{
-			window.location.href = ORDERS_PAGE_URL;
+			notifier.showSuccessMessage(SUCCESS_MESSAGE);
+
+			window.setTimeout(function()
+			{
+				window.location.href = ORDERS_PAGE_URL;
+			}, 6000);
 		}, () =>
 		{
 			notifier.showGenericServerError();
+			_submitButton.disabled = false;
 		});
 	}
 }

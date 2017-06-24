@@ -14,8 +14,10 @@ var ORDERS_COLLECTION = 'orders',
 	COUNTERS_COLLECTION = 'counters',
 
 	SYSTEM_USER_NAME = 'system',
+
 	OPEN_STATUS = 'open',
-	PENDING_STATUS = 'pending';
+	PENDING_STATUS = 'pending',
+	PRODUCTION_STATUS = 'production';
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -188,7 +190,7 @@ var ordersModule =
 		// Attach a new ID to the order
 		order._id = counterRecord.seq;
 
-		// Calculate the amount to chargey the customer
+		// Calculate the amount to charge the customer
 		order.orderTotal = pricingCalculator.calculateOrderTotal(order);
 
 		// Generate a payment record for the order
@@ -266,6 +268,89 @@ var ordersModule =
 		catch(error)
 		{
 			console.log('Ran into an error saving a new order!');
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for indicating that an order has been approved and for saving any changes the customer
+	 * may have made to the order while approving.
+	 *
+	 * @param {Object} approvedOrder - the approved custom order to save into our system
+	 *
+	 * @returns {Object} - the order, completely processed now that it has been approved
+	 *
+	 * @author kinsho
+	 */
+	approveCustomOrder: async function (approvedOrder)
+	{
+		var orderID = parseInt(approvedOrder._id, 10),
+			order = await ordersModule.searchOrderById(orderID),
+			transactionID,
+			updateRecord;
+
+		order = rQuery.mergeObjects(approvedOrder, order);
+
+		// Calculate the amount to charge the customer
+		order.orderTotal = pricingCalculator.calculateCustomOrderTotal(order);
+
+		// Record that this order is being modified
+		_applyModificationUpdates(order, SYSTEM_USER_NAME);
+
+		// Update the status to indicate that the order is now in production
+		order.status = PRODUCTION_STATUS;
+
+		// Run over this nickname logic again just in case the customer changed his name
+		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
+
+		// Generate a payment record for the order if the user provided a credit card number
+		// And don't forget to charge the customer either
+		if (order.ccToken)
+		{
+			try
+			{
+				order.stripe =
+				{
+					customer: await creditCardProcessor.generateCustomerRecord(order.ccToken, order.customer.name, order.customer.email),
+					charges: []
+				};
+
+				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
+				// inside the order itself
+				transactionID = await creditCardProcessor.chargeTotal(order.orderTotal, order.stripe.customer, order._id);
+				order.stripe.charges.push(transactionID);
+			}
+			catch(error)
+			{
+				console.log('Ran into an error trying to transact some money...');
+				console.log(error);
+
+				throw error;
+			}
+		}
+		// Else record that the order is being paid via check
+		else
+		{
+			order.paidByCheck = true;
+		}
+
+		// Now generate a record of data we will be using to update the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: orderID
+		}, order, false);
+
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return order;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error approving order ' + order._id);
 			console.log(error);
 
 			throw error;
@@ -369,30 +454,30 @@ var ordersModule =
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
-			{
-				_id: order._id
-			},
-			{
-				status: orderModifications.status,
-				notes: orderModifications.notes,
-				type: orderModifications.type,
-				style: orderModifications.style,
-				color: orderModifications.color,
-				length: orderModifications.length,
-				orderTotal: parseFloat(orderModifications.orderTotal),
-				stripe: order.stripe,
-				lastModifiedDate: order.lastModifiedDate,
-				modHistory: order.modHistory,
-				'customer.areaCode': orderModifications.customer.areaCode,
-				'customer.phoneOne': orderModifications.customer.phoneOne,
-				'customer.phoneTwo': orderModifications.customer.phoneTwo,
-				'customer.email': orderModifications.customer.email,
-				'customer.address': orderModifications.customer.address,
-				'customer.aptSuiteNo': orderModifications.customer.aptSuiteNo,
-				'customer.city': orderModifications.customer.city,
-				'customer.state': orderModifications.customer.state,
-				'customer.zipCode': orderModifications.customer.zipCode
-			},
+		{
+			_id: order._id
+		},
+		{
+			status: orderModifications.status,
+			notes: orderModifications.notes,
+			type: orderModifications.type,
+			style: orderModifications.style,
+			color: orderModifications.color,
+			length: orderModifications.length,
+			orderTotal: parseFloat(orderModifications.orderTotal),
+			stripe: order.stripe,
+			lastModifiedDate: order.lastModifiedDate,
+			modHistory: order.modHistory,
+			'customer.areaCode': orderModifications.customer.areaCode,
+			'customer.phoneOne': orderModifications.customer.phoneOne,
+			'customer.phoneTwo': orderModifications.customer.phoneTwo,
+			'customer.email': orderModifications.customer.email,
+			'customer.address': orderModifications.customer.address,
+			'customer.aptSuiteNo': orderModifications.customer.aptSuiteNo,
+			'customer.city': orderModifications.customer.city,
+			'customer.state': orderModifications.customer.state,
+			'customer.zipCode': orderModifications.customer.zipCode
+		},
 		false);
 
 		try

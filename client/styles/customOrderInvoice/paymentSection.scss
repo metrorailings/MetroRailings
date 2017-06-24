@@ -1,0 +1,152 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+@import '../foundation/fonts';
+@import '../foundation/colors';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#paymentOptionSection
+{
+	@extend %significantText;
+
+	margin:
+	{
+		top: 20px;
+	}
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	& > span
+	{
+		width: 50%;
+
+		& > input
+		{
+			cursor: pointer;
+		}
+	}
+}
+
+#creditCardSection, #checkMessage
+{
+	@include transitionSettings($property: all, $duration: 0.3s);
+
+	margin-bottom: 0px;
+	max-height: 0px;
+	overflow: hidden;
+
+	&.reveal
+	{
+		max-height: 1000px;
+		margin-bottom: 25px;
+	}
+}
+
+#paymentMethodSeparator
+{
+	margin-bottom: 20px;
+}
+
+#creditCardNumberContainer
+{
+	@include desktopOnly()
+	{
+		// Must flex this input container in order to properly align the credit card input field
+		// with the credit card icons that are placed right next to it
+		display: flex;
+		align-items: center;
+
+		& > .controlGrouping
+		{
+			width: 40%;
+		}
+	}
+}
+
+#ccMerchantsAccepted
+{
+	display: flex;
+	justify-content: flex-start;
+
+	& > i
+	{
+		@include transitionSettings($property: opacity, $duration: 0.75s);
+
+		font-size: 48px;
+
+		margin:
+		{
+			left: 5px;
+			right: 5px;
+		}
+
+		opacity: 1.0;
+
+		&.shade
+		{
+			opacity: 0.2;
+		}
+	}
+}
+
+#creditCardSecurityInfo > .controlGrouping
+{
+	&:first-of-type
+	{
+		@include desktopOnly()
+		{
+			width: 60%;
+		}
+	}
+}
+
+// The hint icon for the credit card security code
+#creditCardSecurityCodeHelp
+{
+	margin-left: 10px;
+
+	cursor: default;
+
+	& > i
+	{
+		font-size: 32px;
+		color: map-get($COLORS, darkBlueTheme);
+	}
+}
+
+// Input lengths
+// Keep in mind that these lengths are relative to the lengths of the container group that house these inputs
+#creditCardNumber
+{
+	@include desktopOnly()
+	{
+		width: 50%;
+	}
+
+	@include mobileOnly()
+	{
+		width: 280px;
+	}
+}
+
+#expirationDateYear
+{
+	margin-left: 10px;
+}
+
+#securityCode
+{
+	@include desktopOnly()
+	{
+		width: 100px;
+	}
+
+	@include mobileOnly()
+	{
+		width: 80px;
+	}
+}

@@ -503,7 +503,6 @@ Object.defineProperty(viewModel, 'agreement',
 	{
 		viewModel.__agreement = value;
 
-		rQueryClient.setField(_agreementField, value);
 		_validate();
 	}
 });

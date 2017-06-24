@@ -1,3 +1,7 @@
+/**
+ * @module customOrderInvoiceController
+ */
+
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _Handlebars = require('handlebars'),
@@ -12,28 +16,28 @@ var _Handlebars = require('handlebars'),
 	paymentHelpers = global.OwlStakes.require('utility/paymentHelpers'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 
+	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+
 	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 
-	orderModel = global.OwlStakes.require('validators/payInvoice/order'),
 	customerModel = global.OwlStakes.require('validators/payInvoice/customer'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
 
-	pricingStructure = global.OwlStakes.require('shared/pricing/pricingData'),
-	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
-	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
+	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator');
 
-// ----------------- ENUMS/CONSTANTS --------------------------
+// ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'payInvoice',
+var CONTROLLER_FOLDER = 'customOrderInvoice',
 
 	ORDER_RECEIPT_EMAIL = 'orderReceipt',
 	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
-	COOKIE_ORDER_INFO = 'basicOrderInfo',
-	COOKIE_DESIGN_INFO = 'designInfo',
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
 
+	PENDING_STATUS = 'pending',
+
+	HOME_URL = '/',
 
 	PARTIALS =
 	{
@@ -41,7 +45,7 @@ var CONTROLLER_FOLDER = 'payInvoice',
 		AGREEMENT_SECTION: 'agreement',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
 		ADDRESS_SECTION: 'addressSection',
-		CC_SECTION: 'ccSection',
+		CC_SECTION: 'paymentSection',
 		SUBMISSION_SECTION: 'submissionSection'
 	};
 
@@ -50,109 +54,105 @@ var CONTROLLER_FOLDER = 'payInvoice',
 /**
  * The template for the invoice that lists out all the aspects of the order for which the user will be charged
  */
-_Handlebars.registerPartial('railingsInvoice', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INVOICE_SECTION));
+_Handlebars.registerPartial('customOrderRailingsInvoice', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INVOICE_SECTION));
 
 /**
  * The template for the terms of agreement
  */
-_Handlebars.registerPartial('termsOfAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT_SECTION));
+_Handlebars.registerPartial('customOrderTermsOfAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT_SECTION));
 
 /**
- * The template gathers information about the customer that we will be using to contact him or her
+ * The template lists information about the customer that we will be using to contact him or her
  */
-_Handlebars.registerPartial('personalInfoSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PERSONAL_INFO_SECTION));
+_Handlebars.registerPartial('customOrderPersonalInfoSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PERSONAL_INFO_SECTION));
 
 /**
- * The template gathers information about where the railings need to be installed
+ * The template lists information about where the railings need to be installed
  */
-_Handlebars.registerPartial('addressSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADDRESS_SECTION));
+_Handlebars.registerPartial('customOrderAddressSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADDRESS_SECTION));
 
 /**
  * The template gathers credit card data from the user
  */
-_Handlebars.registerPartial('ccSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CC_SECTION));
+_Handlebars.registerPartial('customOrderPaymentSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CC_SECTION));
 
 /**
  * The template contains the submission button that the user will press to formally submit the order
  */
-_Handlebars.registerPartial('submissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
-
+_Handlebars.registerPartial('customOrderSubmissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
 
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
 {
 	/**
-	 * Initializer function
-	 *
-	 * @param {Object} params - nothing will be passed here
-	 * @param {String} cookie - all cookies sent along with the request
+	 * Initializer function responsible for serving the page
 	 *
 	 * @author kinsho
 	 */
-	init: async function(params, cookie)
+	init: async function (params)
 	{
 		var populatedPageTemplate,
-			cookieData = cookieManager.parseCookie(cookie || ''),
-			orderData = cookieData[COOKIE_ORDER_INFO],
-			designData = cookieData[COOKIE_DESIGN_INFO],
-			currentYear = new Date().getFullYear(),
 			pageData = {},
+			orderNumber = params ? parseInt(params.id, 10) : undefined,
+			currentYear = new Date().getFullYear(),
 			expirationYears = [],
 			i;
 
-		console.log('Loading the pay invoice page...');
+		console.log('Loading the custom order invoice page...');
 
-		// Parse the order data as long as the cookie carrying the data exists
-		orderData = (orderData ? JSON.parse(orderData) : {});
-		orderData.design = (designData ? JSON.parse(designData) : {});
+		// Fetch the data that will be needed to properly render the page
+		pageData.order = await DAO.searchOrderById(orderNumber);
+
+		if (pageData.order.status !== PENDING_STATUS)
+		{
+			console.log('Redirecting the user back to the home page as the order has already been approved');
+
+			return await controllerHelper.renderRedirectView(HOME_URL);
+		}
 
 		// Calculate the total price of the order
-		orderData.totalPrice = pricingCalculator.calculateOrderTotal(orderData);
+		pageData.order.totalPrice = pricingCalculator.calculateCustomOrderTotal(pageData.order);
 
 		// Find some years that can be placed into the expiration year dropdown as selectable options
 		for (i = currentYear; i <= currentYear + 10; i++)
 		{
 			expirationYears.push(i);
 		}
-
-		// Now organize the data that will be needed to properly render the page
-		pageData =
-		{
-			order: orderData,
-			expirationYears: expirationYears,
-			pricePerFootOfRailing: pricingStructure.COST_PER_FOOT_OF_RAILING,
-			minimumOrderAmount: pricingStructure.MINIMUM_TOTAL
-		};
+		pageData.expirationYears = expirationYears;
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true);
 	},
 
-	saveConfirmedOrder: async function (params)
+	/**
+	 * Function meant to save all updates that may have been made to a particular order and charge the user if he
+	 * elected to pay for the order by credit card
+	 *
+	 * @params {Object} params - all the details of the order whose changes will be saved
+	 *
+	 * @author kinsho
+	 */
+	approveOrder: async function (params)
 	{
-		console.log('Saving a newly minted order into the system...');
+		var customerValidationModel = customerModel(),
+			mailHTML,
+			processedOrder;
 
-		var orderValidationModel = orderModel(),
-			customerValidationModel = customerModel(),
-			processedOrder,
-			mailHTML;
+		console.log('Approving an order...');
 
 		// Populate the customer validation model
 		objectHelper.cloneObject(params.customer, customerValidationModel);
 
-		// Populate the order validation model
-		objectHelper.cloneObject(params, orderValidationModel);
-
 		// Verify that both models are valid before proceeding
-		if (validatorUtility.checkModel(customerValidationModel) && validatorUtility.checkModel(orderValidationModel))
+		if (validatorUtility.checkModel(customerValidationModel))
 		{
 			try
 			{
-				// Save the order into the database
-				processedOrder = await DAO.saveNewOrder(params);
+				// Save the now-approved order into the database
+				processedOrder = await DAO.approveCustomOrder(params);
 			}
 			catch(error)
 			{
@@ -170,7 +170,6 @@ module.exports =
 				statusCode: responseCodes.OK,
 				data: {},
 
-				// Set up this cookie so that we can render some needed data on the order confirmation page
 				cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
 				{
 					areaCode: processedOrder.customer.areaCode,
