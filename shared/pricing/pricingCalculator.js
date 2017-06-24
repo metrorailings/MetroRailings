@@ -13,7 +13,7 @@ var pricing = global.OwlStakes.require('shared/pricing/pricingData');
 var pricingModule =
 {
 	/**
-	 * Function calculates the total price for any order
+	 * Function calculates the total price for all online orders
 	 *
 	 * @param {Object} orderData - the basic information that generally sums up the order
 	 *
@@ -42,6 +42,38 @@ var pricingModule =
 		// If the raw total falls below that of the minimum amount required for us to service an order, then we must
 		// set the order total to the minimum amount instead
 		return (Math.max(rawTotal, pricing.MINIMUM_TOTAL));
+	},
+
+	/**
+	 * Function calculates the total price for any custom order
+	 *
+	 * @param {Object} orderData - the basic information that generally sums up the order
+	 *
+	 * @returns {Number} - the total price for the order
+	 *
+	 * @author kinsho
+	 */
+	calculateCustomOrderTotal: function(orderData)
+	{
+		var rawTotal = orderData.length * orderData.customMetadata.pricePerFoot,
+			designKeys = Object.keys(orderData.design),
+			i;
+
+		// For each design, determine if it is a premium design. If so, add in its price to the raw total
+		for (i = designKeys.length - 1; i >= 0; i--)
+		{
+			if (orderData.design[designKeys[i]])
+			{
+				rawTotal += pricingModule.calculateDesignCost(orderData.length, orderData.design[designKeys[i]]);
+			}
+		}
+
+		// Add in any custom pricing
+		rawTotal += orderData.customMetadata.customPrice;
+
+		// If the raw total falls below that of the minimum amount required for us to service an order, then we must
+		// set the order total to the minimum amount instead
+		return Math.round(rawTotal);
 	},
 
 	/**

@@ -24,10 +24,11 @@ var _Handlebars = require('handlebars'),
 var CONTROLLER_FOLDER = 'createCustomOrder',
 
 	CUSTOM_ORDER_EMAIL = 'customOrder',
-	CUSTOM_ORDER_SUBJECT_HEADER = 'Order Pending Approval (Order ID #::orderId)',
+	CUSTOM_ORDER_SUBJECT_HEADER = 'Your Railings Order (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	ADMIN_LOG_IN_URL = '/admin',
+	INVOICE_URL = 'customOrderInvoice?id=::orderId',
 
 	VIEWS_DIRECTORY = '/client/views/',
 	DEFAULT_AGREEMENT_TEXT = 'customOrderAgreement.txt',
@@ -104,6 +105,7 @@ module.exports =
 	saveNewOrder: async function (params, cookie)
 	{
 		var processedOrder,
+			invoiceLink,
 			mailHTML,
 			username;
 
@@ -125,8 +127,11 @@ module.exports =
 				};
 			}
 
+			// Generate the link that will be sent to the customer so that he can approve and pay for the order
+			invoiceLink = config.BASE_URL + INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, processedOrder._id);
+
 			// Send out an e-mail to the customer
-			mailHTML = await mailer.generateFullEmail(CUSTOM_ORDER_EMAIL, processedOrder, CUSTOM_ORDER_EMAIL);
+			mailHTML = await mailer.generateFullEmail(CUSTOM_ORDER_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_ORDER_EMAIL);
 			await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
 		}
 

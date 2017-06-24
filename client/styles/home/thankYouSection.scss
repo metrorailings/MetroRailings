@@ -11,58 +11,31 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+
+	background-color: map-get($COLORS, smokeTheme);
 }
 
 #techLogos
 {
-	margin:
-	{
-		bottom: 15px;
-	}
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex-direction: row;
 	flex-wrap: wrap;
 
-	& > span
+	& > img
 	{
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		margin: 10px;
 
-		@include desktopOnly()
+		@include tabletUp()
 		{
-			width: 25%;
-			height: 200px;
-		}
-
-		@include tabletOnly()
-		{
-			width: 33%;
-			height: 200px;
+			max-width: 70px;
+			max-height: 70px;
 		}
 
 		@include phoneOnly()
 		{
-			width: 50%;
-			height: 125px;
-		}
-
-		& > img
-		{
-			@include tabletUp()
-			{
-				max-width: 200px;
-				max-height: 200px;
-			}
-
-			@include phoneOnly()
-			{
-				max-width: 125px;
-				max-height: 125px;
-			}
+			max-width: 25px;
+			max-height: 25px;
 		}
 	}
 }
