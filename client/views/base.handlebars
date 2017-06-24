@@ -56,6 +56,8 @@
 		{{#unless isAdmin}}
 			<!-- The navigation menu at the top of the page -->
 			{{> topMenu }}
+
+			<div id='topMenuSpace'></div>
 		{{/unless}}
 
         <!-- All page-specific HTML goes here -->
@@ -104,11 +106,11 @@
 		<script src="client/scripts/plugins/facebook.js" ></script>
 		<script src="client/scripts/plugins/twitter.js" ></script>
 		<script src="client/scripts/plugins/socialLinks.js" ></script>
-		<script src="client/scripts/plugins/googleAnalytics.js" ></script>
 
 		<!-- In production, one file will house all page-specific code -->
 		{{#if isProd}}
 			<script src="prod/app.js"></script>
+			<script src="client/scripts/plugins/googleAnalytics.js" ></script>
 		{{/if}}
 
 		<script>System.import("{{launchScript}}");</script>
