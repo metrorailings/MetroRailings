@@ -13,10 +13,6 @@ var USERNAME = 'username',
 	PASSWORD = 'password',
 	REMEMBER_ME = 'rememberMe';
 
-// ----------------- PRIVATE VARIABLES -----------------------------
-
-// ----------------- PRIVATE FUNCTIONS -----------------------------
-
 // ----------------- VALIDATION MODEL DEFINITION -----------------------------
 
 /**

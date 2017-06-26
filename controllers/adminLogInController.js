@@ -11,7 +11,7 @@ var _Q = require('q'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 
-	logInModel = global.OwlStakes.require('validators/adminLogIn/login'),
+	logInModel = global.OwlStakes.require('validators/adminLogIn/logIn'),
 	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
