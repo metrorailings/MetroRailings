@@ -1,0 +1,40 @@
+<div id='locationSection'>
+
+	<div class='headlineQuestion'>What's the address where you want railings?</div>
+
+	<div id='addressRow' class='formRow'>
+        <span class='controlGrouping'>
+            <label for='streetAddress' class='required'>Street Address</label>
+            <input type='text' id='streetAddress' />
+        </span>
+		<span class='controlGrouping'>
+            <label for='aptSuiteNumber'>Apt. / Suite</label>
+            <input type='text' id='aptSuiteNumber' />
+        </span>
+	</div>
+
+	<div id='cityStateRow' class='formRow'>
+        <span class='controlGrouping'>
+            <label for='city' class='required'>City / Town</label>
+            <input type='text' id='city' />
+        </span>
+		<span class='controlGrouping'>
+            <label for='state' class='required'>State</label>
+            <select id='state' >
+                <option value='' selected='selected' disabled>Select a state...</option>
+                <option value='NJ'>New Jersey</option>
+                <option value='NY'>New York</option>
+                <option value='PA'>Pennsylvania</option>
+			</select>
+        </span>
+		<span class='controlGrouping'>
+            <label for='addressZipCode' class='required'>Zip Code</label>
+            <input type='tel' id='addressZipCode' maxlength='5' placeholder='#####' />
+        </span>
+	</div>
+
+	<div class='requiredWarning'>
+		* indicates that the field is required to be filled out
+	</div>
+
+</div>
