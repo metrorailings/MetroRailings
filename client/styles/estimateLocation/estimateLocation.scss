@@ -1,0 +1,38 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/loader';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#locationSection, #submissionSection
+{
+	border-top:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	padding:
+	{
+		top: 30px;
+		bottom: 30px;
+	}
+}
+
+.headlineQuestion
+{
+	@extend %majorText;
+
+	margin:
+	{
+		bottom: 5px;
+		left: 10px;
+		right: 10px;
+	}
+}

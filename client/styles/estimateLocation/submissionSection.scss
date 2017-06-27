@@ -1,0 +1,26 @@
+/* ----------------------- STYLES ----------------------------- */
+
+#submissionSection
+{
+	padding:
+	{
+		top: 50px;
+		bottom: 30px;
+	}
+}
+
+#estimateSubmissionButton
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 320px;
+
+	& > i
+	{
+		margin-left: 10px;
+	}
+}
