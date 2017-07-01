@@ -20,3 +20,4 @@ System.paths.adminLogIn = '/client/scripts/adminLogIn/main.js';
 System.paths.orders = '/client/scripts/orders/main.js';
 System.paths.orderDetails = '/client/scripts/orderDetails/main.js';
 System.paths.createCustomOrder = '/client/scripts/createCustomOrder/main.js';
+System.paths.paperOrder = '/client/scripts/paperOrder/main.js';

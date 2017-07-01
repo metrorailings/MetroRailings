@@ -105,7 +105,6 @@ function _validate()
 function _isProperDesign()
 {
 	return (viewModel.design.post &&
-			(viewModel.design.postEnd || viewModel.design.postCap) &&
 			viewModel.design.center &&
 			viewModel.design.color);
 }
