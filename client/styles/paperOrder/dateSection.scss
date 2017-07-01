@@ -1,0 +1,44 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#dateSection
+{
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border-bottom:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	& > .fieldSet
+	{
+		width: 40%;
+		margin-top: 5px;
+
+		& > .textBox
+		{
+			width: 400px;
+		}
+	}
+
+	& > p
+	{
+		font-size: 8px;
+		line-height: 12px;
+	}
+}

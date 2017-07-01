@@ -1,0 +1,88 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/loader';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#companyLogo
+{
+	margin-top: 15px;
+
+	max-width: 250px;
+	max-height: 125px;
+}
+
+#agreementSection, #invoice, #signatureSection
+{
+	page-break-after: auto;
+}
+
+#companyInfo, #invoice, #signatureSection
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+}
+
+#companyInfo
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.infoBlock
+{
+	@extend %regularText;
+
+	font-size: 10px;
+	line-height: 14px;
+
+	flex: 1;
+}
+
+.fieldSet
+{
+	margin:
+	{
+		bottom: 5px;
+	}
+
+	display: flex;
+	flex-direction: row;
+}
+
+.fieldLabel
+{
+	@extend %majorText;
+
+	font-size: 8px;
+	white-space: nowrap;
+}
+
+.textBox
+{
+	border-bottom:
+	{
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+		width: 1px;
+	}
+
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	min-width: 150px;
+	height: 12px;
+}
