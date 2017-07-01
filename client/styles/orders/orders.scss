@@ -18,12 +18,18 @@
 	}
 }
 
-#orderCreationButton
+#orderCreationButton, #printPaperOrder
 {
 	@include button($bgColor: indianRedTheme);
 
+	margin:
+	{
+		bottom: 25px;
+		left: 15px;
+		right: 15px;
+	}
+
 	width: 250px;
-	margin-bottom: 25px;
 
 	& > i
 	{

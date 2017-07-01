@@ -22,7 +22,6 @@ var BASE_TEMPLATE_FILE = 'base',
 	HBARS_REDIRECT_URL = 'redirectURL',
 
 	HBARS_IGNORE_SCALING = 'ignoreScaling',
-	HBARS_WAIT_PAGE_LOAD = 'waitForPageLoad',
 	HBARS_BOOTSTRAPPED_DATA = 'initialData',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
 	HBARS_IS_PROD_FLAG = 'isProd',

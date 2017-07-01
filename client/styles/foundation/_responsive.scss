@@ -135,5 +135,17 @@ $DEVICE_WIDTHS:
 	{
 		@content;
 	}
+}
 
+/*
+ * Mix-in is responsible for enforcing CSS stylings only in printing mode
+ *
+ * @author kinsho
+ */
+@mixin printOnly()
+{
+	@media print
+	{
+		@content;
+	}
 }

@@ -1,0 +1,75 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#signatureSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
+}
+
+.signatureRow
+{
+	margin:
+	{
+		top: 8px;
+		bottom: 8px;
+	}
+
+	width: 100%;
+
+	display: flex;
+
+	& > span
+	{
+		margin:
+		{
+			left: 15px;
+			right: 15px;
+		}
+
+		display: flex;
+		align-items: flex-end;
+
+		height: 10px;
+
+		text-align: left;
+
+		&.label
+		{
+			@extend %formLabelText;
+
+			font-size: 8px;
+		}
+
+		&.signatureBox
+		{
+			border-bottom:
+			{
+				width: 0.75px;
+				color: map-get($COLORS, blackTheme);
+				style: solid;
+			}
+		}
+
+		&:nth-child(1)
+		{
+			width: 30%;
+		}
+
+		&:nth-child(2)
+		{
+			width: 30%;
+		}
+
+		&:nth-child(3)
+		{
+			width: 30%;
+		}
+	}
+}

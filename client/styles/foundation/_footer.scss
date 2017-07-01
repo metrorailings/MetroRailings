@@ -3,6 +3,7 @@
 @import '../foundation/colors';
 @import '../foundation/fonts';
 @import '../foundation/animations';
+@import '../foundation/responsive';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -18,13 +19,22 @@ footer
 
 	padding-top: 10px;
 
-	height: 50px;
 	width: 100%;
 	display: block;
 
 	background-color: map-get($COLORS, blackTheme);
 
-	@media only screen and (max-device-width: 727px)
+	@include printOnly()
+	{
+		display: none;
+	}
+
+	@include tabletUp()
+	{
+		height: 50px;
+	}
+
+	@include phoneOnly()
 	{
 		height: 40px;
 	}
@@ -47,9 +57,11 @@ footer
 
 	& > span
 	{
-		margin-right: 10px;
-
-		@media only screen and (max-device-width: 727px)
+		@include tabletUp()
+		{
+			margin-right: 10px;
+		}
+		@include phoneOnly()
 		{
 			margin-right: 5px;
 		}
@@ -67,7 +79,7 @@ footer
 
 #facebookShareLink:hover
 {
-	@media only screen and (min-device-width: 1025px)
+	@include desktopOnly()
 	{
 		color: map-get($COLORS, darkBlueTheme);
 	}
@@ -75,7 +87,7 @@ footer
 
 #twitterShareLink:hover
 {
-	@media only screen and (min-device-width: 1025px)
+	@include desktopOnly()
 	{
 		color: map-get($COLORS, darkBlueTheme);
 	}
@@ -83,7 +95,7 @@ footer
 
 #redditShareLink:hover
 {
-	@media only screen and (min-device-width: 1025px)
+	@include desktopOnly()
 	{
 		color: map-get($COLORS, redTheme);
 	}

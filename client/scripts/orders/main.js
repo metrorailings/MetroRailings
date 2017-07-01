@@ -7,11 +7,15 @@ import vm from 'client/scripts/orders/viewModel';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var ORDER_CREATION_BUTTON = 'orderCreationButton',
-	CREATE_CUSTOM_ORDER_URL = '/createCustomOrder';
+	PAPER_ORDER_BUTTON = 'printPaperOrder',
+
+	CREATE_CUSTOM_ORDER_URL = '/createCustomOrder',
+	PAPER_ORDER_URL = '/paperOrder';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _customOrderButton = document.getElementById(ORDER_CREATION_BUTTON);
+var _customOrderButton = document.getElementById(ORDER_CREATION_BUTTON),
+	_paperOrderButton = document.getElementById(PAPER_ORDER_BUTTON);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -35,9 +39,20 @@ function createNewCustomOrder()
 	window.location.href = CREATE_CUSTOM_ORDER_URL;
 }
 
+/**
+ * Listener responsible for taking us to the paper order page
+ *
+ * @author kinsho
+ */
+function navigateToPaperOrder()
+{
+	window.location.href = PAPER_ORDER_URL;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _customOrderButton.addEventListener('click', createNewCustomOrder);
+_paperOrderButton.addEventListener('click', navigateToPaperOrder);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
