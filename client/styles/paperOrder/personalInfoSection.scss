@@ -1,0 +1,64 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#personalInfoSection
+{
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border-bottom:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+
+	& > div
+	{
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+			left: 20px;
+		}
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row;
+
+		width: 100%;
+
+		& > .fieldSet
+		{
+			flex: 1;
+		}
+	}
+}
+
+#nameField
+{
+	width: 400px;
+}
+
+#phoneField, #emailField
+{
+	width: 200px;
+}
+
+#installationAddressField
+{
+	width: 450px;
+}
