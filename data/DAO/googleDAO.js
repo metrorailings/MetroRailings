@@ -1,6 +1,9 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var config = global.OwlStakes.require('config/config');
+var _request = require('request'),
+	_Q = require('q'),
+
+	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -8,8 +11,6 @@ var GOOGLE_DISTANCE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/j
 	SRC_ADDRESS_PLACEHOLDER = '::srcAddress',
 	DEST_ADDRESS_PLACEHOLDER = '::destAddress',
 	API_KEY_PLACEHOLDER = '::apiKey';
-
-var GOOGLE_DISTANCE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=766+Ramsey+Ave+Hillside+NJ&destinations=22B+Chen+St+North+Plainfield+NJ&key=AIzaSyAArzYxSRCOgMtFBpAtJji4KOZ2Ms1uRy4';
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -25,10 +26,11 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	insertNewContactRequest: async function (destAddress)
+	calculateDistance: async function (destAddress)
 	{
 		var shopAddress = config.SHOP_ADDRESS,
 			googleURL = GOOGLE_DISTANCE_URL,
+			deferred = _Q.defer(),
 			destination = '';
 
 		// Format the source address so that we can place it inside the URL
@@ -45,8 +47,32 @@ module.exports =
 		googleURL = googleURL.replace(DEST_ADDRESS_PLACEHOLDER, destination);
 		googleURL = googleURL.replace(API_KEY_PLACEHOLDER, config.GOOGLE_API_KEY);
 
+		console.log('Going to initiate a call to ' + googleURL);
+
 		try
 		{
+			// Make the request to Google to fetch the distance data
+			_request(googleURL, (error, response, body) =>
+			{
+				if (error)
+				{
+					deferred.reject(error);
+				}
+
+				// Parse the information from the body
+				body = JSON.parse(body);
+
+				// If the destination address is present in the response body, we have a legit address here
+				if (body.destination_addresses.length)
+				{
+					// Return the distance (in kilometers) back to the invoker
+					deferred.resolve(body.rows[0].elements[0].distance.value);
+				}
+				else
+				{
+					deferred.resolve(-1);
+				}
+			});
 		}
 		catch(error)
 		{
@@ -55,5 +81,7 @@ module.exports =
 
 			return false;
 		}
+
+		return deferred.promise;
 	}
 };

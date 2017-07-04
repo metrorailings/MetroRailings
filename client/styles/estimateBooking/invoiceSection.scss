@@ -1,0 +1,109 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#invoiceSection
+{
+	padding:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
+}
+
+#totalPrice
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	flex: 1;
+}
+
+#priceLabel
+{
+	@extend %majorText;
+
+	border:
+	{
+		width: 2px;
+		color: map-get($COLORS, darkGrayTheme);
+		style: solid;
+
+		top-left-radius: 20px;
+		top-right-radius: 20px;
+
+		bottom: none;
+	}
+
+	border-bottom:
+	{
+		width: 3px;
+		color: map-get($COLORS, darkGrayTheme);
+		style: solid;
+	}
+
+	padding: 15px;
+
+	width: 350px;
+
+	background-color: map-get($COLORS, moccasinTheme);
+}
+
+#totalPriceCell
+{
+	@extend %significantText;
+
+	border:
+	{
+		width: 2px;
+		color: map-get($COLORS, darkGrayTheme);
+		style: solid;
+
+		bottom-left-radius: 20px;
+		bottom-right-radius: 20px;
+
+		top: none;
+	}
+
+	padding: 15px;
+
+	width: 350px;
+}
+
+#pricingNote
+{
+	@extend %italicizedFormDescriptiveText;
+
+	font-style: italic;
+
+	margin-top: 20px;
+	width: 350px;
+}
+
+#estimatesCostMoney
+{
+	@extend %regularPlusText;
+
+	margin:
+	{
+		left: 75px;
+		right: 75px;
+	}
+
+	flex: 1;
+}

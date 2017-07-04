@@ -4,6 +4,11 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+.formRow
+{
+	margin-left: 15px;
+}
+
 #addressRow > .controlGrouping
 {
 	@include desktopOnly()

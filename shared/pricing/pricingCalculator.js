@@ -77,6 +77,21 @@ var pricingModule =
 	},
 
 	/**
+	 * Function calculates the total price for any estimate
+	 *
+	 * @param {Number} distance - the distance we would need to travel to visit the customer at the location where
+	 * they need railings
+	 *
+	 * @returns {Number} - the total price for the order
+	 *
+	 * @author kinsho
+	 */
+	calculateEstimateTotal: function(distance)
+	{
+		return (pricing.MINIMUM_COST_PER_ESTIMATE + (distance * pricing.COST_PER_MILE_TRAVELED));
+	},
+
+	/**
 	 * Function that returns pricing metadata for a particular design
 	 *
 	 * @param {String} designCode - the design code associated with the design that we're looking for

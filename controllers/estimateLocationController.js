@@ -6,18 +6,24 @@
 
 var _Handlebars = require('handlebars'),
 
+	googleDAO = global.OwlStakes.require('data/DAO/googleDAO'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
+	cookieManager = global.OwlStakes.require('utility/cookies'),
 
-	locationValidationModel = global.OwlStakes.require('validators/estimateLocation/location'),
-	validatorUtility = global.OwlStakes.require('validators/validatorUtility');
+	locationModel = global.OwlStakes.require('validators/estimateLocation/location'),
+	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
+
+	responseCodes = global.OwlStakes.require('shared/responseStatusCodes');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'estimateLocation',
+
+	COOKIE_ESTIMATE_DISTANCE_INFO = 'estimateDistance',
 
 	PARTIALS =
 	{
@@ -61,8 +67,11 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	calculateDistance: async function(params)
+	checkLocationValidity: async function(params)
 	{
+		var locationValidationModel = locationModel(),
+			distance;
+
 		console.log('Figuring out the distance between our shop and the address the user just gave us right now...');
 
 		// Populate the location validation model
@@ -71,6 +80,33 @@ module.exports =
 		// Verify that the location details are valid before proceeding
 		if (validatorUtility.checkModel(locationValidationModel))
 		{
+			// Fetch the distance to the location, if it exists
+			distance = await googleDAO.calculateDistance(params);
+
+			// If the location does not exist, expect a negative value being returned from the distance function
+			if (distance === -1)
+			{
+				return {
+					statusCode: responseCodes.BAD_REQUEST
+				};
+			}
+
+			// Return a 200 response along with a cookie that we will use to book an estimate
+			return {
+				statusCode: responseCodes.OK,
+				data: {},
+
+				// Set up this cookie so that we can properly charge the user on the estimate booking page
+				cookie: cookieManager.formCookie(COOKIE_ESTIMATE_DISTANCE_INFO,
+				{
+					distance: parseFloat((distance / 1000 * 0.62).toFixed(2)),
+					address: params.address,
+					aptSuiteNumber: params.aptSuiteNumber,
+					city: params.city,
+					state: params.state,
+					zipCode: params.zipCode
+				})
+			};
 
 		}
 	}
