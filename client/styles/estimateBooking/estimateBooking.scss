@@ -5,25 +5,18 @@
 @import '../foundation/loader';
 @import '../foundation/general';
 @import '../foundation/form';
-@import '../foundation/gallery';
-@import '../foundation/responsive';
-@import '../foundation/optionsCarousel';
+@import '../foundation/animations';
 @import '../foundation/scrollDownLabel';
 
 /* ----------------------- STYLES ----------------------------- */
 
-#onlineBenefits
-{
-	@extend %regularPlusText;
-}
-
-#preliminaryQuestions, #submissionSection
+#personalInfoSection, #agreementSection, #ccSection, #submissionSection
 {
 	border-top:
 	{
-		color: map-get($COLORS, blackTheme);
-		style: solid;
 		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
 	}
 
 	padding:
@@ -33,14 +26,13 @@
 	}
 }
 
-.headlineQuestion
+.sectionHeadline
 {
 	@extend %majorText;
 
 	margin:
 	{
-		bottom: 5px;
-		left: 10px;
-		right: 10px;
+		top: 20px;
+		bottom: 20px;
 	}
 }

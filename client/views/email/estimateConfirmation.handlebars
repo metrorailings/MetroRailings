@@ -1,0 +1,38 @@
+<table id='header'>
+	<tr>
+		<th>We will be scheduling your estimate soon, {{customer.nickname}}!</th>
+	</tr>
+	<tr>
+		<td>
+			We will be calling you shortly at&nbsp;<a href='#' class='telLink'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</a>
+			&nbsp;in order to schedule an appointment so that we can visit the address where you want to install railings.
+		</td>
+	</tr>
+</table>
+
+<table id='estimateConfirmation'>
+	<tr>
+
+		<td>
+			<table id='estimateDetails'>
+				<tr>
+					<th class='tableHeader' colspan='2'>Your Location</th>
+				</tr>
+				<tr>
+					<td class='infoCell' colspan='2'>
+						{{customer.address}}<br />
+						{{#if customer.aptSuiteNumber}}
+							{{customer.aptSuiteNumber}}<br />
+						{{/if}}
+						{{customer.city}}, {{customer.state}} {{customer.zipCode}}
+					</td>
+				</tr>
+				<tr id='totalPriceRow'>
+					<td class='specialLabel'>Cost for Estimate</td>
+					<td class='plainLabel'>${{totalPrice}}</td>
+				</tr>
+			</table>
+		</td>
+
+	</tr>
+</table>

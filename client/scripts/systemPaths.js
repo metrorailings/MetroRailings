@@ -10,7 +10,11 @@ System.paths.designRailings = '/client/scripts/designRailings/main.js';
 System.paths.payInvoice = '/client/scripts/payInvoice/main.js';
 System.paths.customOrderInvoice = '/client/scripts/customOrderInvoice/main.js';
 System.paths.orderConfirmation = '/client/scripts/orderConfirmation/main.js';
+
 System.paths.estimateLocation = '/client/scripts/estimateLocation/main.js';
+System.paths.estimateBooking = '/client/scripts/estimateBooking/main.js';
+System.paths.estimateConfirmation = '/client/scripts/estimateConfirmation/main.js';
+
 System.paths.checkOrder = '/client/scripts/checkOrder/main.js';
 System.paths.contactUs = '/client/scripts/contactUs/main.js';
 System.paths.faqs = '/client/scripts/faqs/main.js';

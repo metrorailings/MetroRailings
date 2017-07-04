@@ -1,0 +1,83 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../email/email';
+
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#estimateConfirmation
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 100%;
+
+	& > tr > td
+	{
+		padding:
+		{
+			left: 20px;
+			right: 20px;
+		}
+
+		vertical-align: top;
+	}
+}
+
+#estimateDetails
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 40%;
+
+	.plainLabel, .infoCell
+	{
+		padding:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		width: 50%;
+		text-align: center;
+	}
+
+	.plainLabel
+	{
+		@include tabularBorder($top: false, $right: false, $bottom: false);
+
+		font-size: 16px;
+	}
+
+	.infoCell
+	{
+		@include tabularBorder($top: false, $bottom: false);
+
+		font-size: 16px;
+	}
+}
+
+#totalPriceRow
+{
+	& > td
+	{
+		@include tabularBorder();
+
+		padding:
+		{
+			top: 20px;
+			bottom: 20px;
+		}
+
+		background-color: map-get($COLORS, lightGrayTheme);
+	}
+}

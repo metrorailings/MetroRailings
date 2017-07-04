@@ -1,0 +1,107 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+@import '../foundation/modal';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#estimateInfo
+{
+	@extend %smallSignificantText;
+
+	margin:
+	{
+		top: 30px;
+		bottom: 30px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, darkGrayTheme);
+		width: 1.5px;
+		style: solid;
+		radius: 10px;
+	}
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	background-color: map-get($COLORS, smokeWhiteTheme);
+
+	@include tabletUp()
+	{
+		width: 50%;
+	}
+
+	@include phoneOnly()
+	{
+		width: 75%;
+	}
+
+	& > span
+	{
+		padding:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
+		border-bottom:
+		{
+			width: 0.75px;
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		width: 100%;
+
+		&:last-of-type
+		{
+			border-bottom: none;
+		}
+
+		& > span
+		{
+			margin:
+			{
+				top: 5px;
+				bottom: 5px;
+			}
+		}
+	}
+}
+
+#homeLink
+{
+	@extend %regularLinkText;
+
+	cursor: pointer;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+
+	& > a
+	{
+		text-decoration: none;
+
+		& > i
+		{
+			margin-right: 8px;
+		}
+	}
+}

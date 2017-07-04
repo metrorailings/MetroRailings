@@ -34,7 +34,6 @@ var CONTROLLER_FOLDER = 'payInvoice',
 	COOKIE_DESIGN_INFO = 'designInfo',
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
 
-
 	PARTIALS =
 	{
 		INVOICE_SECTION: 'invoiceSection',

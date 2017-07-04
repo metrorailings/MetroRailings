@@ -20,16 +20,8 @@ var CONTROLLER_FOLDER = 'createOrder',
 	PARTIALS =
 	{
 		TYPE_SECTION: 'typeSection',
-		CUSTOM_ORDER_REQUIRED_SECTION: 'customOrderRequiredSection',
-		LENGTH_SECTION: 'lengthSection',
-		POST_SECTION: 'postSection',
-		POST_END_SECTION: 'postEndSection',
-		POST_CAP_SECTION: 'postCapSection',
-		CENTER_DESIGN_SECTION: 'centerDesignSection',
-		COLORS_SECTION: 'colorsSection',
-		SUBMISSION_SECTION: 'submissionSection',
-		DESIGN_TEMPLATE: 'designTemplate',
-		OPTIONS_CAROUSEL: 'optionsCarousel'
+		QUESTIONS_SECTION: 'preliminaryQuestions',
+		SUBMISSION_SECTION: 'submissionSection'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -43,14 +35,9 @@ var CONTROLLER_FOLDER = 'createOrder',
 _Handlebars.registerPartial('createOrderTypeSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TYPE_SECTION));
 
 /**
- * The template for the step in which the user specifies whether the railings need to be curved
+ * The template for the step in which the user answers questions about the railings prior to picking out design choices
  */
-_Handlebars.registerPartial('createOrderCustomOrderRequiredSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOM_ORDER_REQUIRED_SECTION));
-
-/**
- * The template for the step in which the user specifies the length of railing needed for the project
- */
-_Handlebars.registerPartial('createOrderLengthSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LENGTH_SECTION));
+_Handlebars.registerPartial('createOrderQuestionsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.QUESTIONS_SECTION));
 
 /**
  * The template for the submission button
