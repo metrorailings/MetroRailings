@@ -17,7 +17,6 @@ var restrictions =
 		{
 			postDesign:
 			{
-				'P-BP' : false,
 				'P-BPC' : false,
 				'P-SP' : true
 			}
@@ -28,7 +27,6 @@ var restrictions =
 		{
 			postDesign:
 			{
-				'P-BP' : true,
 				'P-BPC' : true,
 				'P-SP' : false
 			}

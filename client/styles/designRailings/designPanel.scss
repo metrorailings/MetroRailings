@@ -214,6 +214,11 @@
 	text-align: left;
 }
 
+.designPrice
+{
+	@extend %decorativeText;
+}
+
 .designChosenButton
 {
 	@include button($bgColor: whiteTheme);

@@ -19,7 +19,6 @@ var CONTROLLER_FOLDER = 'createOrder',
 
 	PARTIALS =
 	{
-		TYPE_SECTION: 'typeSection',
 		QUESTIONS_SECTION: 'preliminaryQuestions',
 		SUBMISSION_SECTION: 'submissionSection'
 	};
@@ -27,12 +26,6 @@ var CONTROLLER_FOLDER = 'createOrder',
 // ----------------- PARTIAL TEMPLATES --------------------------
 
 // Load page-specific handlebar partials
-
-/**
- * The template for the step in which the user specifies whether he or she wants new railings for
- * either a set of stairs or a patio of some sort
- */
-_Handlebars.registerPartial('createOrderTypeSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TYPE_SECTION));
 
 /**
  * The template for the step in which the user answers questions about the railings prior to picking out design choices

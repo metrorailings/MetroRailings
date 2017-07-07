@@ -209,3 +209,74 @@ li
 
 	background-color: map-get($COLORS, lightGrayTheme);
 }
+
+// Section designed to grab the user's attention in order to offer up some useful information
+.specialMessageSection
+{
+	border:
+	{
+		width: 1.5px;
+		radius: 20px;
+		style: solid;
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 80%;
+	overflow: hidden;
+
+	background-color: map-get($COLORS, lightBlueTheme);
+
+	& > p
+	{
+		@include desktopOnly()
+		{
+			width: 85%;
+		}
+
+		@include mobileOnly()
+		{
+			margin:
+			{
+				left: 0px;
+				right: 10px;
+			}
+
+			width: 75%;
+		}
+	}
+
+	& > span
+	{
+		@include desktopOnly()
+		{
+			width: 10%;
+		}
+
+		@include mobileOnly()
+		{
+			width: 25%;
+		}
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+
+		i
+		{
+			@extend %significantIcons;
+
+			color: map-get($COLORS, darkBlueTheme);
+		}
+	}
+}

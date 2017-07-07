@@ -12,6 +12,20 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#freeOptionsNotice
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+}
+
+#freeIcons > i
+{
+	color: map-get($COLORS, moneyGreenTheme);
+}
+
 #postEndSection, #postCapSection, #centerDesignSection, #colorSection, #submissionSection
 {
 	@include transitionSettings($property: all, $duration: 0.3s);

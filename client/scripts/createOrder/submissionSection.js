@@ -32,8 +32,9 @@ function submit()
 		// Organize the data that will need to be sent over the wire
 		data =
 		{
-			type: vm.orderType,
-			length: vm.orderLength,
+			curvesNecessary: vm.curvesNecessary,
+			balconyOrder: vm.balconyOrder,
+			designMethodology: vm.designMethodology
 		};
 
 		// Submit the user's inputs so far
