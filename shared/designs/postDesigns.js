@@ -22,8 +22,8 @@ var postDesigns =
 			id: 'P-SP',
 			label: 'Standard Post',
 			previewImage: 'client/images/designs/post/standardPost-1.jpg',
-			restrictions: { orderType: 'stairs' },
-			restrictedMessage: 'This design option only applies to railings intended for stairways.'
+			restrictions: { balconyOrder: 'yes' },
+			restrictedMessage: 'For safety\'s sake, we do not offer this design option for balconies.'
 		}
 	],
 	designMetadata:

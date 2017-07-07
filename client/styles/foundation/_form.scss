@@ -357,13 +357,16 @@ input[type=checkbox]
 
 	& + label
 	{
+		@extend %decorativeText;
+
 		cursor: pointer;
+
+		line-height: 26px;
 
 		&::before
 		{
 			@include transitionSettings($property: background, $duration: 0.25s);
 			@include shiftTransition($y: 25%);
-			@extend %significantText;
 
 			content: '';
 
@@ -378,8 +381,6 @@ input[type=checkbox]
 
 			margin-right: 10px;
 
-			width: 24px;
-			height: 24px;
 			display: inline-block;
 
 			position: relative;
@@ -387,6 +388,18 @@ input[type=checkbox]
 			background-color: map-get($COLORS, lightWhiteTheme);
 
 			cursor: pointer;
+
+			@include desktopOnly()
+			{
+				width: 24px;
+				height: 24px;
+			}
+
+			@include mobileOnly()
+			{
+				width: 20px;
+				height: 20px;
+			}
 		}
 	}
 

@@ -17,6 +17,36 @@
 	max-height: 125px;
 }
 
+#idBox
+{
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	position: absolute;
+
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+
+	top: 10px;
+	left: 80%;
+
+	width: 75px;
+	height: 55px;
+
+	& > span
+	{
+		@extend %majorText;
+
+		font-size: 8px;
+		padding-top: 10px;
+	}
+}
+
 #agreementSection, #invoice, #signatureSection
 {
 	page-break-after: auto;

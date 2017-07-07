@@ -8,8 +8,6 @@
 
 #curveInputContainer, #balconyInputContainer
 {
-	@extend %significantText;
-
 	margin:
 	{
 		top: 20px;
@@ -19,9 +17,11 @@
 	justify-content: center;
 	align-items: center;
 
+	line-height: 26px;
+
 	& > span
 	{
-		width: 50%;
+		flex: 1;
 
 		& > input
 		{
@@ -32,8 +32,6 @@
 
 #designMethodologyInputContainer
 {
-	@extend %significantText;
-
 	margin:
 	{
 		top: 20px;
@@ -44,8 +42,20 @@
 	align-items: center;
 	flex-direction: column;
 
-	& > span > input
+	& > span
 	{
-		cursor: pointer;
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		width: 90%;
+		text-align: left;
+
+		& > input
+		{
+			cursor: pointer;
+		}
 	}
 }

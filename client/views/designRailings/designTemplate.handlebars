@@ -23,9 +23,13 @@
     {{#if designDescription}}
 		<div class='designDescription'>{{designDescription}}</div>
 
-        {{#if price}}
-			<div class='designPrice'>{{price}} per {{unit}}</div>
-        {{/if}}
+		<div class='designPrice'>Price:
+			{{#if price}}
+				<span class='priceText'>${{price}} per {{unit}}</span>
+			{{else}}
+				<span class='priceText'>$0.00 (Free)</span>
+			{{/if}}
+		</div>
 
         <button class='designChosenButton {{#if isSelected}}selected{{else}}unselected{{/if}}' data-vm-prop={{vmProp}} data-design-code={{id}}>
             <span class='unselected {{#if isSelected}}hide{{/if}}'>

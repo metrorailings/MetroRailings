@@ -21,14 +21,11 @@
 
 	@include phoneOnly()
 	{
-		width: 250px;
+		width: 300px;
 	}
 
 	& > i
 	{
-		margin:
-		{
-			left: 15px;
-		}
+		margin-left: 15px;
 	}
 }

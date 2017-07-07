@@ -103,6 +103,9 @@ module.exports =
 		// Parse the order data as long as the cookie carrying the data exists
 		orderData = (orderData ? JSON.parse(orderData) : {});
 
+		// Load the data from the last page into the page here
+		pageData.orderData = orderData;
+
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
@@ -121,7 +124,8 @@ module.exports =
 	 */
 	continueWithOrder: function (params)
 	{
-		console.log('Wrapped the order into a cookie before proceeding to the payment phase of the order process...');
+		console.log('Wrapped the order into a cookie before proceeding to the length part of the order' +
+			' process...');
 
 		return {
 			statusCode: responseCodes.OK,
