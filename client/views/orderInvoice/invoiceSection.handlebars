@@ -1,0 +1,62 @@
+<div id='invoiceSection'>
+
+	<div id='invoiceHeader'>
+		<span>- Order Details -</span>
+	</div>
+
+	<div id='invoiceBody'>
+
+		<div>
+			<span class='invoiceSectionHeader'>Amount of Railing Needed</span>
+			<span>{{order.length}} linear feet of railing</span>
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>Post Design</span>
+			<span>Post Type: {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}</span>
+			{{#if order.design.postEnd}}
+				<span>Post End: {{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}</span>
+			{{/if}}
+			{{#if order.design.postCap}}
+				<span>Post Cap: {{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}</span>
+			{{/if}}
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>Other Design Information</span>
+			{{#if order.design.center}}
+				<span>Center Design: {{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}</span>
+			{{/if}}
+			<div>
+				<span>Color: {{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}</span>
+			</div>
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>Additional Features</span>
+			<span>
+				{{#if order.additionalFeatures}}
+					{{additionalFeatures}}
+				{{else}}
+					None needed
+				{{/if}}
+			</span>
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>Notes</span>
+			<span>
+				{{#if order.orderNotes}}
+					{{order.orderNotes}}
+				{{/if}}
+			</span>
+		</div>
+
+	</div>
+
+	<div id='invoiceFooter'>
+		<span class='keyCell'>Order Total: </span>
+		<span>${{order.totalPrice}}</span>
+	</div>
+
+</div>

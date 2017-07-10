@@ -9,14 +9,18 @@
 		top: 50px;
 		bottom: 30px;
 	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-#saveCustomOrder
+#saveAndContinue, #saveAndExit
 {
 	margin:
 	{
-		left: auto;
-		right: auto;
+		left: 20px;
+		right: 20px;
 	}
 
 	width: 300px;

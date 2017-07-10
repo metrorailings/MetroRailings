@@ -1,5 +1,5 @@
 /**
- * @module customOrderInvoiceController
+ * @module orderInvoiceController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -27,7 +27,7 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'customOrderInvoice',
+var CONTROLLER_FOLDER = 'orderInvoice',
 
 	ORDER_RECEIPT_EMAIL = 'orderReceipt',
 	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
@@ -54,32 +54,32 @@ var CONTROLLER_FOLDER = 'customOrderInvoice',
 /**
  * The template for the invoice that lists out all the aspects of the order for which the user will be charged
  */
-_Handlebars.registerPartial('customOrderRailingsInvoice', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INVOICE_SECTION));
+_Handlebars.registerPartial('orderInvoiceRailingsInvoice', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INVOICE_SECTION));
 
 /**
  * The template for the terms of agreement
  */
-_Handlebars.registerPartial('customOrderTermsOfAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT_SECTION));
+_Handlebars.registerPartial('orderInvoiceTermsOfAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT_SECTION));
 
 /**
  * The template lists information about the customer that we will be using to contact him or her
  */
-_Handlebars.registerPartial('customOrderPersonalInfoSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PERSONAL_INFO_SECTION));
+_Handlebars.registerPartial('orderInvoicePersonalInfoSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PERSONAL_INFO_SECTION));
 
 /**
  * The template lists information about where the railings need to be installed
  */
-_Handlebars.registerPartial('customOrderAddressSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADDRESS_SECTION));
+_Handlebars.registerPartial('orderInvoiceAddressSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADDRESS_SECTION));
 
 /**
  * The template gathers credit card data from the user
  */
-_Handlebars.registerPartial('customOrderPaymentSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CC_SECTION));
+_Handlebars.registerPartial('orderInvoicePaymentSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CC_SECTION));
 
 /**
  * The template contains the submission button that the user will press to formally submit the order
  */
-_Handlebars.registerPartial('customOrderSubmissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
+_Handlebars.registerPartial('orderInvoiceSubmissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -152,7 +152,7 @@ module.exports =
 			try
 			{
 				// Save the now-approved order into the database
-				processedOrder = await DAO.approveCustomOrder(params);
+				processedOrder = await DAO.finalizeNewOrder(params);
 			}
 			catch(error)
 			{

@@ -2,32 +2,16 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
-		    Order Type
-		</span>
-		<select id='orderType'>
-			<option value='' disabled>Select a type...</option>
-			<option value='stairs'>Stairs</option>
-			<option value='deck'>Deck</option>
-		</select>
-	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-		    Order Length
-		</span>
-		<input type='tel' id='orderLength' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
-	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
 		    Post Design
 		</span>
 		<select id='orderPost'>
 			<option value='' disabled>Select...</option>
 			<option value='P-BPC'>Colonial Big Post</option>
 			<option value='P-SP'>Standard Small Post</option>
+			<option value='OTHER'>- Other -</option>
 		</select>
+
+		<input id='otherPost' type='text' class='otherTextfield' />
 	</div>
 
 	<div class='dataGrouping'>
@@ -39,7 +23,10 @@
 			<option value='PE-VOL'>Volute</option>
 			<option value='PE-LT'>Lamb's Tongue</option>
 			<option value='PE-SCRL'>Scroll</option>
+			<option value='OTHER'>- Other -</option>
 		</select>
+
+		<input id='otherPostEnd' type='text' class='otherTextfield'/>
 	</div>
 
 	<div class='dataGrouping'>
@@ -50,7 +37,10 @@
 			<option value=''>None</option>
 			<option value='PC-BALL'>Ball</option>
 			<option value='PC-SQ'>Square</option>
+			<option value='OTHER'>- Other -</option>
 		</select>
+
+		<input id='otherPostCap' type='text' class='otherTextfield' />
 	</div>
 
 	<div class='dataGrouping'>
@@ -63,7 +53,10 @@
 			<option value='CD-DHRT'>Hearts</option>
 			<option value='CD-GALE'>Gale</option>
 			<option value='CD-SNC'>Scroll & Collar</option>
+			<option value='OTHER'>- Other -</option>
 		</select>
+
+		<input id='otherCenterDesign' type='text' class='otherTextfield' />
 	</div>
 
 	<div class='dataGrouping'>
@@ -76,14 +69,18 @@
 			<option value='black'>Black</option>
 			<option value='silver'>Silver</option>
 			<option value='mahogany'>Mahogany</option>
+			<option value='OTHER'>- Other -</option>
 		</select>
+
+		<input id='otherColor' type='text' class='otherTextfield' />
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
-		    Custom Features
+		    Order Length
 		</span>
-		<textarea id='customFeatures' class='optionalField'></textarea>
+		<input type='tel' id='orderLength' />
+		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
 	<div class='dataGrouping'>
@@ -96,9 +93,24 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
-			Total Price for Custom Features
+		    Additional Features
 		</span>
-		$<input type='tel' id='customPrice' class='optionalField' />
+		<textarea id='additionalFeatures' class='optionalField'></textarea>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Total Price for Additional Features
+		</span>
+		$<input type='tel' id='additionalPrice' class='optionalField' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Notes about this Order
+		</span>
+		<textarea id='notes' class='optionalField'></textarea>
+	</div>
+
 </div>

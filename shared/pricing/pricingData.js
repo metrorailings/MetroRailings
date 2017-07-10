@@ -6,10 +6,6 @@
 
 module.exports =
 {
-	MINIMUM_TOTAL: 600.00,
-
-	COST_PER_FOOT_OF_RAILING: 60.00,
-
 	DESIGNS:
 	{
 		'P-BPC' :
