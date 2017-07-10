@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import vm from 'client/scripts/customOrderInvoice/viewModel';
+import vm from 'client/scripts/orderInvoice/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 

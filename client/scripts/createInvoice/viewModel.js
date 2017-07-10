@@ -23,15 +23,13 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	STATE_SELECT = 'state',
 	ZIP_CODE_TEXTFIELD = 'zipCode',
 
-	ORDER_TYPE_SELECT = 'orderType',
 	ORDER_LENGTH_TEXTFIELD = 'orderLength',
 	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
-	CUSTOM_FEATURES_TEXTAREA = 'customFeatures',
-	CUSTOM_PRICE_TEXTFIELD = 'customPrice',
+	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
+	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
 
-	AGREEMENT_TEXTAREA = 'agreement',
-
-	SAVE_BUTTON = 'saveCustomOrder',
+	SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
+	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
@@ -71,15 +69,13 @@ var _validationSet = new Set(),
 	_stateField = document.getElementById(STATE_SELECT),
 	_zipCodeField = document.getElementById(ZIP_CODE_TEXTFIELD),
 
-	_orderTypeField = document.getElementById(ORDER_TYPE_SELECT),
 	_orderLengthField = document.getElementById(ORDER_LENGTH_TEXTFIELD),
-	_customFeaturesField = document.getElementById(CUSTOM_FEATURES_TEXTAREA),
+	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
-	_customPriceField = document.getElementById(CUSTOM_PRICE_TEXTFIELD),
+	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
 
-	_agreementField = document.getElementById(AGREEMENT_TEXTAREA),
-
-	_saveButton = document.getElementById(SAVE_BUTTON);
+	_saveAndContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
+	_saveAndExitButton = document.getElementById(SAVE_AND_EXIT_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -105,7 +101,6 @@ function _validate()
 function _isProperDesign()
 {
 	return (viewModel.design.post &&
-			viewModel.design.center &&
 			viewModel.design.color);
 }
 
@@ -350,22 +345,20 @@ Object.defineProperty(viewModel, 'zipCode',
 	}
 });
 
-// Order Type
-Object.defineProperty(viewModel, 'type',
+// Railings Design
+Object.defineProperty(viewModel, 'design',
 {
 	configurable: false,
 	enumerable: true,
 
 	get: () =>
 	{
-		return viewModel.__type;
+		return viewModel.__design;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__type = value;
-
-		rQueryClient.setField(_orderTypeField, value);
+		viewModel.__design = value;
 	}
 });
 
@@ -392,23 +385,6 @@ Object.defineProperty(viewModel, 'length',
 		rQueryClient.setField(_orderLengthField, value);
 
 		_validate();
-	}
-});
-
-// Railings Design
-Object.defineProperty(viewModel, 'design',
-{
-	configurable: false,
-	enumerable: true,
-
-	get: () =>
-	{
-		return viewModel.__design;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__design = value;
 	}
 });
 
@@ -440,50 +416,67 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 });
 
 // Custom Features
-Object.defineProperty(viewModel, 'customFeatures',
+Object.defineProperty(viewModel, 'additionalFeatures',
 {
 	configurable: false,
 	enumerable: false,
 
 	get: () =>
 	{
-		return viewModel.__customFeatures;
+		return viewModel.__additionalFeatures;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__customFeatures = value;
+		viewModel.__additionalFeatures = value;
 
-		rQueryClient.setField(_customFeaturesField, value);
+		rQueryClient.setField(_additionalFeaturesField, value);
 
 		_validate();
 	}
 });
 
 // Price for Custom Features
-Object.defineProperty(viewModel, 'customPrice',
+Object.defineProperty(viewModel, 'additionalPrice',
 {
 	configurable: false,
 	enumerable: false,
 
 	get: () =>
 	{
-		return viewModel.__customPrice;
+		return viewModel.__additionalPrice;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__customPrice = value;
+		viewModel.__additionalPrice = value;
 
 		// Make sure a valid total price is being set here
 		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
 			(value.length && !(window.parseFloat(value, 10)) ) ||
 			(value.length && value.split('.').length > 2);
 
-		rQueryClient.updateValidationOnField(isInvalid, _customPriceField, ERROR.TOTAL_INVALID, _validationSet);
-		rQueryClient.setField(_customPriceField, value);
+		rQueryClient.updateValidationOnField(isInvalid, _additionalPriceField, ERROR.TOTAL_INVALID, _validationSet);
+		rQueryClient.setField(_additionalPriceField, value);
 
 		_validate();
+	}
+});
+
+// Order-specific notes
+Object.defineProperty(viewModel, 'notes',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__notes;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__notes = value;
 	}
 });
 
@@ -523,15 +516,20 @@ Object.defineProperty(viewModel, 'isFormValid',
 
 		if (!(value))
 		{
-			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_saveButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+			// Set up a tooltip indicating why the buttons are disabled
+			tooltipManager.setTooltip(_saveAndContinueButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+			tooltipManager.setTooltip(_saveAndExitButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
 		}
 		else
 		{
-			tooltipManager.closeTooltip(_saveButton, true);
+			tooltipManager.closeTooltip(_saveAndContinueButton, true);
+			tooltipManager.closeTooltip(_saveAndExitButton, true);
 		}
 	}
 });
+
+// Publicly expose the validate method
+viewModel.validate = _validate;
 
 // ----------------- EXPORT -----------------------------
 

@@ -160,72 +160,7 @@ var ordersModule =
 	},
 
 	/**
-	 * Function responsible for saving a new order into the database
-	 *
-	 * @param {Object} order - a new customer order to save into our system
-	 *
-	 * @returns {Object} - the order, completely processed now that it has been stored in the database
-	 *
-	 * @author kinsho
-	 */
-	saveNewOrder: async function (order)
-	{
-		var transactionID,
-			counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION,
-			{
-				$inc: { seq: 1 }
-			},
-			{
-				_id: ORDERS_COLLECTION
-			});
-
-		// Before saving the order into the database, set some system-default values into the order
-		order.notes = [];
-		order.status = OPEN_STATUS;
-		order.createDate = new Date();
-
-		// Apply and initialize properties to indicate when this order was last modified
-		_applyModificationUpdates(order, SYSTEM_USER_NAME);
-
-		// Attach a new ID to the order
-		order._id = counterRecord.seq;
-
-		// Calculate the amount to charge the customer
-		order.orderTotal = pricingCalculator.calculateOrderTotal(order);
-
-		// Generate a payment record for the order
-		order.stripe =
-		{
-			customer: await creditCardProcessor.generateCustomerRecord(order.ccToken, order.customer.name, order.customer.email),
-			charges: []
-		};
-
-		// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
-		// inside the order itself
-		transactionID = await creditCardProcessor.chargeTotal(order.orderTotal, order.stripe.customer, order._id);
-		order.stripe.charges.push(transactionID);
-
-		// Figure out how we'll be referencing the customer
-		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
-
-		// Now save the order
-		try
-		{
-			await mongo.bulkWrite(ORDERS_COLLECTION, true, mongo.formInsertSingleQuery(order));
-
-			return order;
-		}
-		catch(error)
-		{
-			console.log('Ran into an error saving a new order!');
-			console.log(error);
-
-			throw error;
-		}
-	},
-
-	/**
-	 * Function responsible for saving a custom order into the database
+	 * Function responsible for registering a new order into the database
 	 *
 	 * @param {Object} order - a new customer order to save into our system
 	 * @param {Object} username - the admin creating this order
@@ -234,7 +169,7 @@ var ordersModule =
 	 *
 	 * @author kinsho
 	 */
-	saveCustomOrder: async function (order, username)
+	setUpNewOrder: async function (order, username)
 	{
 		var counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION,
 			{
@@ -275,16 +210,16 @@ var ordersModule =
 	},
 
 	/**
-	 * Function responsible for indicating that an order has been approved and for saving any changes the customer
+	 * Function responsible for indicating that an order has been finalized and for saving any changes the customer
 	 * may have made to the order while approving.
 	 *
-	 * @param {Object} approvedOrder - the approved custom order to save into our system
+	 * @param {Object} approvedOrder - the approved order to save into our system
 	 *
-	 * @returns {Object} - the order, completely processed now that it has been approved
+	 * @returns {Object} - the order, completely processed now that it has been finalized
 	 *
 	 * @author kinsho
 	 */
-	approveCustomOrder: async function (approvedOrder)
+	finalizeNewOrder: async function (approvedOrder)
 	{
 		var orderID = parseInt(approvedOrder._id, 10),
 			order = await ordersModule.searchOrderById(orderID),
@@ -294,7 +229,7 @@ var ordersModule =
 		order = rQuery.mergeObjects(approvedOrder, order);
 
 		// Calculate the amount to charge the customer
-		order.orderTotal = pricingCalculator.calculateCustomOrderTotal(order);
+		order.orderTotal = pricingCalculator.calculateOrderTotal(order);
 
 		// Record that this order is being modified
 		_applyModificationUpdates(order, SYSTEM_USER_NAME);

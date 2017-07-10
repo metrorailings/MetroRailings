@@ -21,17 +21,17 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'createCustomOrder',
+var CONTROLLER_FOLDER = 'createInvoice',
 
-	CUSTOM_ORDER_EMAIL = 'customOrder',
+	CUSTOM_ORDER_EMAIL = 'customerInvoice',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Your Railings Order (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	ADMIN_LOG_IN_URL = '/admin',
-	INVOICE_URL = 'customOrderInvoice?id=::orderId',
+	INVOICE_URL = 'orderInvoice?id=::orderId',
 
 	VIEWS_DIRECTORY = '/client/views/',
-	DEFAULT_AGREEMENT_TEXT = 'customOrderAgreement.txt',
+	DEFAULT_AGREEMENT_TEXT = 'defaultAgreement.txt',
 
 	PARTIALS =
 	{
@@ -47,27 +47,27 @@ var CONTROLLER_FOLDER = 'createCustomOrder',
 /**
  * The template for the customer section
  */
-_Handlebars.registerPartial('customOrderCustomerSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOMER));
+_Handlebars.registerPartial('createInvoiceCustomerSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOMER));
 
 /**
  * The template for the location section
  */
-_Handlebars.registerPartial('customOrderLocationSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION));
+_Handlebars.registerPartial('createInvoiceLocationSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION));
 
 /**
  * The template for the railings section
  */
-_Handlebars.registerPartial('customOrderRailingsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.RAILINGS));
+_Handlebars.registerPartial('createInvoiceRailingsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.RAILINGS));
 
 /**
  * The template for the agreement section
  */
-_Handlebars.registerPartial('customOrderAgreementSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
+_Handlebars.registerPartial('createInvoiceAgreementSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
 
 /**
  * The template for the submission button
  */
-_Handlebars.registerPartial('saveCustomOrderButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_BUTTON));
+_Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_BUTTON));
 
 // ----------------- MODULE DEFINITION --------------------------
 module.exports =
@@ -89,7 +89,7 @@ module.exports =
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
-		console.log('Loading the custom order page...');
+		console.log('Loading the create invoice page...');
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate({}, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
@@ -118,7 +118,7 @@ module.exports =
 			try
 			{
 				// Save the order into the database
-				processedOrder = await ordersDAO.saveCustomOrder(params, username);
+				processedOrder = await ordersDAO.setUpNewOrder(params, username);
 			}
 			catch (error)
 			{
@@ -137,7 +137,7 @@ module.exports =
 
 		return {
 			statusCode: responseCodes.OK,
-			data: {}
+			data: { id: processedOrder._id }
 		};
 	}
 };
