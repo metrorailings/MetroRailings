@@ -11,7 +11,7 @@ var SUBMIT_BUTTON = 'orderSubmissionButton',
 
 	CREDIT_CARD_PAYMENT_METHOD = 'cc',
 
-	SAVE_ORDER_URL = 'customOrderInvoice/approveOrder',
+	SAVE_ORDER_URL = 'orderInvoice/approveOrder',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation',
 
 	ID_URL_PARAM = 'id=',

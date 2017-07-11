@@ -4,33 +4,6 @@
 @import '../foundation/fonts';
 @import '../foundation/responsive';
 
-/* ----------------------- MIX-INS ----------------------------- */
-
-/*
- * Specialized function meant to dictate spacing within the invoice
- */
-@mixin invoiceSpacing()
-{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	& > span
-	{
-		padding:
-		{
-			top: 15px;
-			bottom: 15px;
-		}
-
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		height: 100%;
-	}
-}
-
 /* ----------------------- STYLES ----------------------------- */
 
 #invoice
@@ -57,82 +30,98 @@
 
 #invoiceHeader
 {
-	@extend %tabularSlimHeaderText;
-	@include invoiceSpacing();
+	@extend %tabularSpecialHeaderText;
 
-	height: 75px;
-
-	& > span
+	border-bottom:
 	{
-		border:
-		{
-			style: solid;
-			color: map-get($COLORS, blackTheme);
-			width: 1px;
-
-			top: none;
-		}
-
-		padding: 0px;
-
-		&:first-of-type
-		{
-			border:
-			{
-				left: none;
-			}
-		}
-
-		&:last-of-type
-		{
-			border:
-			{
-				right: none;
-			}
-		}
+		width: 1px;
+		color: map-get($COLORS, blackTheme);
+		style: solid;
 	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	background-color: map-get($COLORS, lightGrayTheme);
 }
 
 #invoiceBody
 {
-	@extend %tabularRegularText;
-
 	& > div
 	{
-		@include invoiceSpacing();
-
-		border:
+		border-bottom:
 		{
 			width: 1px;
 			style: solid;
 			color: map-get($COLORS, darkGrayTheme);
-
-			left: none;
-			right: none;
 		}
 
-		&:nth-child(even)
+		display: flex;
+		flex-wrap: wrap;
+
+		@include phoneOnly()
+		{
+			flex-direction: column;
+		}
+
+		&:nth-child(2n)
 		{
 			background-color: map-get($COLORS, lightBlueTheme);
-		}
-
-		&:first-of-type, &:last-of-type
-		{
-			border:
-			{
-				top: none;
-				bottom: none;
-			};
 		}
 	}
 }
 
-#additionalFeaturesCell
+.invoiceSectionHeader
 {
+	@extend %tabularSlimHeaderText;
+
+	padding:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	width: 100%;
+
+	text-align: center;
+}
+
+.invoiceLabel
+{
+	@extend %tabularLabelText;
+
+	margin-right: 5px;
+}
+
+.invoiceCell
+{
+	@extend %tabularRegularText;
+
+	padding:
+	{
+		top: 15px;
+		left: 10px;
+		right: 10px;
+		bottom: 15px;
+	}
+
+	flex: 1;
+	min-width: 200px;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
+
+	&:last-child
+	{
+		@include phoneOnly()
+		{
+			padding-bottom: 25px;
+		}
+	}
 }
 
 #invoiceFooter
@@ -164,9 +153,12 @@
 		&:first-of-type
 		{
 			border-left: none;
+
 			justify-content: flex-end;
 
 			padding-right: 20px;
+
+			background-color: map-get($COLORS, lightGrayTheme);
 
 			@include tabletUp()
 			{
@@ -182,6 +174,7 @@
 		&:last-of-type
 		{
 			border-right: none;
+
 			justify-content: center;
 
 			@include tabletUp()
@@ -196,9 +189,3 @@
 		}
 	}
 }
-
-.keyCell
-{
-	background-color: map-get($COLORS, lightGrayTheme);
-}
-

@@ -15,9 +15,8 @@ var ORDERS_COLLECTION = 'orders',
 
 	SYSTEM_USER_NAME = 'system',
 
-	OPEN_STATUS = 'open',
 	PENDING_STATUS = 'pending',
-	PRODUCTION_STATUS = 'production';
+	QUEUE_STATUS = 'queue';
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -180,7 +179,6 @@ var ordersModule =
 			});
 
 		// Before saving the order into the database, set some system-default values into the order
-		order.notes = [];
 		order.status = PENDING_STATUS;
 		order.createDate = new Date();
 
@@ -234,8 +232,8 @@ var ordersModule =
 		// Record that this order is being modified
 		_applyModificationUpdates(order, SYSTEM_USER_NAME);
 
-		// Update the status to indicate that the order is now in production
-		order.status = PRODUCTION_STATUS;
+		// Update the status to indicate that the order is now queued for production
+		order.status = QUEUE_STATUS;
 
 		// Run over this nickname logic again just in case the customer changed his name
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
@@ -254,7 +252,7 @@ var ordersModule =
 
 				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
 				// inside the order itself
-				transactionID = await creditCardProcessor.chargeTotal(order.orderTotal, order.stripe.customer, order._id);
+				transactionID = await creditCardProcessor.chargeTotal(order.orderTotal / 2, order.stripe.customer, order._id);
 				order.stripe.charges.push(transactionID);
 			}
 			catch(error)
@@ -270,6 +268,9 @@ var ordersModule =
 		{
 			order.paidByCheck = true;
 		}
+
+		// Note that the order has yet to be paid off, as only half of the total amount has been paid up until now
+		order.isPaid = false;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(

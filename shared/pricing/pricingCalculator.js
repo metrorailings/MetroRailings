@@ -23,7 +23,7 @@ var pricingModule =
 	 */
 	calculateOrderTotal: function(orderData)
 	{
-		var rawTotal = orderData.length * orderData.metadata.pricePerFoot,
+		var rawTotal = orderData.length * orderData.pricing.pricePerFoot,
 			designKeys = Object.keys(orderData.design),
 			i;
 
@@ -37,7 +37,7 @@ var pricingModule =
 		}
 
 		// Add in any custom pricing
-		rawTotal += orderData.metadata.customPrice;
+		rawTotal += orderData.pricing.additionalPrice;
 
 		return rawTotal.toFixed(2);
 	},
@@ -71,7 +71,7 @@ var pricingModule =
 		var designPricing = pricingModule.findDesignPricing(designCode),
 			subtotal;
 
-		if (designPricing.price)
+		if (designPricing && designPricing.price)
 		{
 			if (designPricing.rate)
 			{
