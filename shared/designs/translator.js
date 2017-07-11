@@ -24,16 +24,20 @@ else
 module.exports =
 {
 	/**
-	 * Function that the design name that relates to a particular code
+	 * Function that returns the design name that relates to a particular code, if such a code exists within our
+	 * dictionary
 	 *
 	 * @param {String} designCode - the design code associated with the design that we're looking for
 	 *
-	 * @returns {String} - the full name of the design
+	 * @returns {String} - the full name of the design or the design code should there not be a name within our
+	 * 		dictionary
 	 *
 	 * @author kinsho
 	 */
 	findDesignName: function(designCode)
 	{
-		return pricing.DESIGNS[designCode].name;
+		var pricingData = pricing.DESIGNS[designCode];
+
+		return (pricingData ? pricingData.name : designCode);
 	}
 };

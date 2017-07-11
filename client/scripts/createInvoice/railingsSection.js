@@ -178,7 +178,7 @@ function setPostCap(event)
 	var element = event.currentTarget,
 		isOtherSelected = (element.value === OTHER_SELECTION);
 
-	vm.design.postEnd = (isOtherSelected ? '' : element.value);
+	vm.design.postCap = (isOtherSelected ? '' : element.value);
 	vm.validate();
 
 	// Only consider toggling the visibility of the companion 'Other' textfield if we are dealing with the select

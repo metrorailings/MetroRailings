@@ -94,21 +94,21 @@ module.exports =
 
 		'white' :
 		{
-			name: 'White',
+			name: 'Sky White',
 			price: 0,
 			rate: 0
 		},
 
 		'black' :
 		{
-			name: 'Black',
+			name: 'Midnight Black',
 			price: 0,
 			rate: 0
 		},
 
 		'silver' :
 		{
-			name: 'Silver',
+			name: 'Metallic Silver',
 			price: 0,
 			rate: 0
 		},

@@ -9,7 +9,6 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
-	paymentHelpers = global.OwlStakes.require('utility/paymentHelpers'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 
 	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),

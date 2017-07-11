@@ -13,7 +13,6 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
-	paymentHelpers = global.OwlStakes.require('utility/paymentHelpers'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
@@ -112,7 +111,7 @@ module.exports =
 		}
 
 		// Calculate the total price of the order
-		pageData.order.totalPrice = pricingCalculator.calculateCustomOrderTotal(pageData.order);
+		pageData.order.totalPrice = pricingCalculator.calculateOrderTotal(pageData.order);
 
 		// Find some years that can be placed into the expiration year dropdown as selectable options
 		for (i = currentYear; i <= currentYear + 10; i++)
@@ -124,7 +123,7 @@ module.exports =
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData);
 	},
 
 	/**

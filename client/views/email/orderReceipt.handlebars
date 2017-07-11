@@ -3,10 +3,11 @@
         <th>Thank you for your business, {{customer.nickname}}</th>
     </tr>
     <tr>
-        <td>
-            We will be calling you shortly at&nbsp;<a href='#' class='telLink'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</a>
-            &nbsp;in order to schedule an appointment so that we can visit the address where you want to install railings and
-            confirm the measurements you have given us. Once again, thank you for ordering railings with us!
+		<!-- @TODO: Include a link to allow the user to check the status of his or her order -->
+		<td>
+            When we are ready to install your railings, we will be calling you at&nbsp;<a href='#' class='telLink'>
+			({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</a>&nbsp; in order to schedule an
+			appointment.
         </td>
     </tr>
 </table>
@@ -23,12 +24,8 @@
 					<td class='infoCell'>{{_id}}</td>
 				</tr>
 				<tr>
-					<td class='plainLabel'>Type</td>
-					<td class='infoCell'>{{#capitalize type}}{{/capitalize}}</td>
-				</tr>
-				<tr>
 					<td class='plainLabel'>Length</td>
-					<td class='infoCell'>{{length}} feet</td>
+					<td class='infoCell'>{{length}} linear feet</td>
 				</tr>
 				<tr>
 					<td class='plainLabel'>Installation Address</td>
@@ -69,15 +66,19 @@
 						<td class='infoCell'>{{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</td>
 					</tr>
 				{{/if}}
-				<tr>
-					<td class='plainLabel'>Center</td>
-					<td class='infoCell'>{{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</td>
-				</tr>
+				{{#if design.center }}
+					<tr>
+						<td class='plainLabel'>Center</td>
+						<td class='infoCell'>{{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</td>
+					</tr>
+				{{/if}}
 				<tr id='colorRow'>
 					<td class='plainLabel'>Color</td>
 					<td class='infoCell'>{{#map_design_code_to_full_name design.color}}{{/map_design_code_to_full_name}}</td>
 				</tr>
 			</table>
 		</td>
+
+		<!-- @TODO: Include a table to list any other special designs that were part of this order -->
     </tr>
 </table>
