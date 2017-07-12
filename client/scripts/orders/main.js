@@ -9,7 +9,7 @@ import vm from 'client/scripts/orders/viewModel';
 var ORDER_CREATION_BUTTON = 'orderCreationButton',
 	PAPER_ORDER_BUTTON = 'printPaperOrder',
 
-	CREATE_CUSTOM_ORDER_URL = '/createCustomOrder',
+	CREATE_INVOICE_URL = '/createInvoice',
 	PAPER_ORDER_URL = '/paperOrder';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -36,7 +36,7 @@ function triggerPing()
  */
 function createNewCustomOrder()
 {
-	window.location.href = CREATE_CUSTOM_ORDER_URL;
+	window.location.href = CREATE_INVOICE_URL;
 }
 
 /**

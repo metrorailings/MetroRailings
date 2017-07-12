@@ -6,10 +6,6 @@
 
 module.exports =
 {
-	MINIMUM_TOTAL: 600.00,
-
-	COST_PER_FOOT_OF_RAILING: 60.00,
-
 	MINIMUM_COST_PER_ESTIMATE: 35.00,
 	COST_PER_MILE_TRAVELED: 1.00,
 
@@ -101,21 +97,21 @@ module.exports =
 
 		'white' :
 		{
-			name: 'White',
+			name: 'Sky White',
 			price: 0,
 			rate: 0
 		},
 
 		'black' :
 		{
-			name: 'Black',
+			name: 'Midnight Black',
 			price: 0,
 			rate: 0
 		},
 
 		'silver' :
 		{
-			name: 'Silver',
+			name: 'Metallic Silver',
 			price: 0,
 			rate: 0
 		},
