@@ -1,0 +1,20 @@
+/* ----------------------- STYLES ----------------------------- */
+
+#pricePerFoot, #additionalPrice
+{
+	margin-left: 10px;
+
+	width: 150px;
+}
+
+.otherTextfield
+{
+	margin-left: 15px;
+
+	display: none;
+
+	&.show
+	{
+		display: inline-block;
+	}
+}

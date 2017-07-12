@@ -263,7 +263,7 @@ $FONTS:
 
 %tabularSlimHeaderText
 {
-	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Raleway);
+	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Raleway, $style: italic);
 }
 
 %tabularSmallHeaderText
@@ -284,6 +284,13 @@ $FONTS:
 %tabularSpecialText
 {
 	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display, $color: darkBlueTheme);
+}
+
+%tabularSpecialHeaderText
+{
+	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Raleway);
+
+	letter-spacing: 1px;
 }
 
 /* --- Miscellany stylings --- */

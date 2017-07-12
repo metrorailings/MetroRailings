@@ -8,7 +8,7 @@ System.paths.home = '/client/scripts/home/main.js';
 System.paths.createOrder = '/client/scripts/createOrder/main.js';
 System.paths.designRailings = '/client/scripts/designRailings/main.js';
 System.paths.payInvoice = '/client/scripts/payInvoice/main.js';
-System.paths.customOrderInvoice = '/client/scripts/customOrderInvoice/main.js';
+System.paths.orderInvoice = '/client/scripts/orderInvoice/main.js';
 System.paths.orderConfirmation = '/client/scripts/orderConfirmation/main.js';
 
 System.paths.estimateLocation = '/client/scripts/estimateLocation/main.js';
@@ -24,5 +24,5 @@ System.paths.lost = '/client/scripts/lost/main.js';
 System.paths.adminLogIn = '/client/scripts/adminLogIn/main.js';
 System.paths.orders = '/client/scripts/orders/main.js';
 System.paths.orderDetails = '/client/scripts/orderDetails/main.js';
-System.paths.createCustomOrder = '/client/scripts/createCustomOrder/main.js';
+System.paths.createInvoice = '/client/scripts/createInvoice/main.js';
 System.paths.paperOrder = '/client/scripts/paperOrder/main.js';

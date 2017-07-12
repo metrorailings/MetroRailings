@@ -1,0 +1,76 @@
+<div id='invoice'>
+
+	<div id='invoiceHeader'>
+		<span>Order Details</span>
+	</div>
+
+	<div id='invoiceBody'>
+
+		<div>
+			<span class='invoiceSectionHeader'>- Amount of Railing Needed -</span>
+			<span class='invoiceCell'>{{order.length}} linear feet of railing</span>
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>- Post Design -</span>
+			<span class='invoiceCell'>
+				<span class='invoiceLabel'>Post Type:</span>
+				{{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}
+			</span>
+			{{#if order.design.postEnd}}
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Post End:</span>
+					{{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}
+				</span>
+			{{/if}}
+			{{#if order.design.postCap}}
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Post Cap:</span>
+					{{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}
+				</span>
+			{{/if}}
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>- Other Design Information -</span>
+			{{#if order.design.center}}
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Center Design:</span>
+					{{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}
+				</span>
+			{{/if}}
+			<span class='invoiceCell'>
+				<span class='invoiceLabel'>Color:</span>
+				{{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}
+			</span>
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>- Additional Features -</span>
+			<span class='invoiceCell descriptionField'>
+				{{#if order.additionalFeatures}}
+					{{{order.additionalFeatures}}}
+				{{else}}
+					N/A
+				{{/if}}
+			</span>
+		</div>
+
+		<div>
+			<span class='invoiceSectionHeader'>- Notes -</span>
+			<span class='invoiceCell descriptionField'>
+				{{#if order.notes.order}}
+					{{{order.notes.order}}}
+				{{else}}
+					N/A
+				{{/if}}
+			</span>
+		</div>
+	</div>
+
+	<div id='invoiceFooter'>
+		<span>Order Total: </span>
+		<span>${{order.totalPrice}}</span>
+	</div>
+
+</div>

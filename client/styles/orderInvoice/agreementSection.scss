@@ -1,0 +1,33 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#agreementSection
+{
+	& > ul
+	{
+		@extend %regularText;
+
+		text-align: left;
+
+		& > li
+		{
+			margin:
+			{
+				top: 20px;
+				bottom: 20px;
+				left: 40px;
+				right: 40px;
+			}
+		}
+	}
+
+	& > .regularRadioInput
+	{
+		text-align: left;
+	}
+}

@@ -1,0 +1,14 @@
+<div id='agreementSection'>
+
+	<p>
+		By confirming this order, you agree to the statements outlined below. Please take a few minutes to read the
+		statements below.
+	</p>
+
+	<ul>
+		{{#each order.agreement }}
+			<li>{{ this }}</li>
+		{{/each}}
+	</ul>
+
+</div>

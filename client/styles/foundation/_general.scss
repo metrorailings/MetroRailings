@@ -238,11 +238,6 @@ li
 
 	& > p
 	{
-		@include desktopOnly()
-		{
-			width: 85%;
-		}
-
 		@include mobileOnly()
 		{
 			margin:
@@ -250,27 +245,28 @@ li
 				left: 0px;
 				right: 10px;
 			}
-
-			width: 75%;
 		}
 	}
 
 	& > span
 	{
-		@include desktopOnly()
+		margin:
 		{
-			width: 10%;
-		}
-
-		@include mobileOnly()
-		{
-			width: 25%;
+			left: 20px;
+			right: 20px;
 		}
 
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
+
+		width: 30px;
+
+		@include desktopOnly()
+		{
+			margin-right: 0px;
+		}
 
 		i
 		{
