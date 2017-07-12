@@ -8,15 +8,11 @@ import ccAllowed from 'shared/ccAllowed';
 import formValidator from 'shared/formValidator';
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
-import scrollDown from 'client/scripts/utility/scrollDown';
 import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var ORDER_FORM = 'orderForm',
-	AGREED_RADIO = 'agreedToTerms',
-
-	CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
+var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 	CUSTOMER_PHONE_NUMBER_ONE_FIELD = 'customerPhoneNumber1',
 	CUSTOMER_PHONE_NUMBER_TWO_FIELD = 'customerPhoneNumber2',
 	CUSTOMER_EMAIL_FIELD = 'customerEmail',
@@ -50,7 +46,7 @@ var ORDER_FORM = 'orderForm',
 	{
 		ERROR: 'At least one of the fields above has an erroneous value. Please fix these errors prior to submitting this order.',
 		BLANK_FIELD: 'In order to submit this order, please make sure you filled out all the required fields ' +
-		'above and please fill in your credit card information as well.'
+			'above and please fill in your credit card information as well.'
 	},
 
 	ERROR =
@@ -76,9 +72,6 @@ var ORDER_FORM = 'orderForm',
 var _validationSet = new Set(),
 
 	// Elements
-	_orderForm = document.getElementById(ORDER_FORM),
-	_agreedRadio = document.getElementById(AGREED_RADIO),
-
 	_nameField = document.getElementById(CUSTOMER_NAME_FIELD),
 	_areaCodeField = document.getElementById(CUSTOMER_AREA_CODE_FIELD),
 	_phoneOneField = document.getElementById(CUSTOMER_PHONE_NUMBER_ONE_FIELD),
@@ -158,36 +151,6 @@ var viewModel = {};
 
 // Remember that for form elements that have validation logic, the tooltip to relay errors to the user is attached
 // to the span element that follows these input elements
-
-// Agreed to agreement flag
-Object.defineProperty(viewModel, 'agreedToTerms',
-{
-	configurable: false,
-	enumerable: true,
-
-	get: () =>
-	{
-		return viewModel.__agreedToTerms;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__agreedToTerms = value;
-
-		_agreedRadio.checked = value;
-
-		// Once the user has agreed to the terms, show the rest of the order form
-		if (value)
-		{
-			_orderForm.classList.add(REVEAL_CLASS);
-
-			window.setTimeout(() =>
-			{
-				scrollDown.showAlert(_areaCodeField);
-			}, 250);
-		}
-	}
-});
 
 // Customer's name
 Object.defineProperty(viewModel, 'customerName',
