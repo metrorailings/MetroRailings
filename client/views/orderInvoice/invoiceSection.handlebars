@@ -47,9 +47,9 @@
 
 		<div>
 			<span class='invoiceSectionHeader'>- Additional Features -</span>
-			<span class='invoiceCell'>
+			<span class='invoiceCell descriptionField'>
 				{{#if order.additionalFeatures}}
-					{{order.additionalFeatures}}
+					{{{order.additionalFeatures}}}
 				{{else}}
 					N/A
 				{{/if}}
@@ -58,15 +58,14 @@
 
 		<div>
 			<span class='invoiceSectionHeader'>- Notes -</span>
-			<span class='invoiceCell'>
+			<span class='invoiceCell descriptionField'>
 				{{#if order.notes.order}}
-					{{order.notes.order}}
+					{{{order.notes.order}}}
 				{{else}}
 					N/A
 				{{/if}}
 			</span>
 		</div>
-
 	</div>
 
 	<div id='invoiceFooter'>

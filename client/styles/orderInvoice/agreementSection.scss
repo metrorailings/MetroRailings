@@ -31,14 +31,3 @@
 		text-align: left;
 	}
 }
-
-#agreedText
-{
-	@extend %regularText;
-
-	margin:
-	{
-		top: 30px;
-		bottom: 30px;
-	}
-}

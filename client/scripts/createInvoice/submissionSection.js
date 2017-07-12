@@ -43,12 +43,12 @@ function submit(event)
 		{
 			type: vm.type,
 			length: window.parseInt(vm.length, 10),
-			additionalFeatures: vm.additionalFeatures,
+			additionalFeatures: vm.additionalFeatures.split('\n\n').join('<br /><br />'),
 			agreement: vm.agreement,
 
 			notes:
 			{
-				order: vm.notes.order
+				order: vm.notes.order.split('\n\n').join('<br /><br />')
 			},
 
 			pricing:
