@@ -227,8 +227,14 @@ li
 		right: auto;
 	}
 
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 
 	width: 80%;
@@ -261,8 +267,6 @@ li
 		align-items: center;
 		flex-direction: column;
 
-		width: 30px;
-
 		@include desktopOnly()
 		{
 			margin-right: 0px;
@@ -273,6 +277,17 @@ li
 			@extend %significantIcons;
 
 			color: map-get($COLORS, darkBlueTheme);
+		}
+
+		img
+		{
+			max-width: 100px;
+			max-height: 100px;
+		}
+
+		div
+		{
+			@extend %significantText;
 		}
 	}
 }

@@ -1,0 +1,50 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#roundingSpecialMessage
+{
+	margin:
+	{
+		top: 10px;
+		bottom: 20px;
+	}
+}
+
+#lengthInputs
+{
+	margin: 15px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	letter-spacing: 0.5px;
+
+	& > input
+	{
+		width: 80px;
+	}
+
+	& > input, & > span
+	{
+		@extend %significantText;
+
+		margin:
+		{
+			left: 15px;
+			right: 15px;
+		}
+	}
+}
+
+#toKeyword
+{
+	margin:
+	{
+		left: 15px;
+		right: 15px;
+	}
+}
