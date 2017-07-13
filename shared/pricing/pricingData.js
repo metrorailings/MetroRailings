@@ -111,7 +111,7 @@ module.exports =
 
 		'silver' :
 		{
-			name: 'Metallic Silver',
+			name: 'Urban Silver',
 			price: 0,
 			rate: 0
 		},

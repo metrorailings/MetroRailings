@@ -2,11 +2,24 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#enclosureHelp, #stairsHelp
+#submissionButton
 {
 	margin:
 	{
-		top: 10px;
-		bottom: 30px;
+		top: 25px;
+		bottom: 25px;
+		left: auto;
+		right: auto;
+	}
+
+	width: 400px;
+
+	& > i
+	{
+		margin:
+		{
+			left: 15px;
+			right: 5px;
+		}
 	}
 }

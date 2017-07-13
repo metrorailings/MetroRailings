@@ -1,23 +1,25 @@
-<div id='helpSection'>
+<div id='valuesSection'>
 
 	<div id='roundingSpecialMessage' class='specialMessageSection'>
 		<span>
-			<div><i class='fa fa-exclamation-circle'></i></div>
+			<i class='fa fa-exclamation-circle'></i>
 		</span>
 		<p>
-			If you actually measured in inches, you'll need to convert to footage.
+			If you actually measured in inches, you'll need to convert to footage. Round up if you do not have a
+			whole number.
 		</p>
 	</div>
 
-	<div id='stairsHelp' class='specialMessageSection'>
-		<span>
-			<div><i class='fa fa-question-circle'></i></div>
-			<div>Stairs</div>
-		</span>
-		<p>
-			To figure out the amount of railing needed for a set of steps, count the number of steps in the staircase.
-			Roughly speaking, every step will need one foot of railing (more or less). So if you have 10 steps to rail,
-			you'll need 10 feet of railing to rail in one side of the stairway (20 if you want to rail in both sides).
-		</p>
+	<div class='headlineQuestion'>
+		How many feet of railing you need? Just give us a rough range here.
 	</div>
+
+	<div id='lengthInputs'>
+		<span>From</span>
+		<input id='fromFootage' type='tel' maxlength='4' />
+		<span id='toKeyword'>to</span>
+		<input id='toFootage' type='tel' maxlength='4' />
+		<span>feet</span>
+	</div>
+
 </div>
