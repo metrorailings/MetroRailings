@@ -54,7 +54,8 @@ function submit(event)
 			pricing:
 			{
 				pricePerFoot: window.parseFloat(vm.pricePerFoot),
-				additionalPrice: window.parseFloat(vm.additionalPrice)
+				additionalPrice: window.parseFloat(vm.additionalPrice) || 0,
+				deductions: window.parseFloat(vm.deductions) || 0
 			},
 
 			customer:

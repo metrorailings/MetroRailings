@@ -21,6 +21,7 @@ var POST_DESIGN_SELECT = 'orderPost',
 	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
 	NOTES_TEXTAREA = 'notes',
+	DEDUCTIONS_TEXTFIELD = 'deductions',
 
 	OTHER_VALUE_FIELD_CLASS = 'otherTextfield',
 	HIDE_CLASS = 'hide',
@@ -52,7 +53,8 @@ var _orderPostDesignField = document.getElementById(POST_DESIGN_SELECT),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
-	_orderNotesField = document.getElementById(NOTES_TEXTAREA);
+	_orderNotesField = document.getElementById(NOTES_TEXTAREA),
+	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD);
 
 // ----------------- PRIVATE METHODS ---------------------------
 
@@ -281,6 +283,16 @@ function setOrderNotes()
 	vm.notes.order = _orderNotesField.value;
 }
 
+/**
+ * Listener responsible for setting any discounts on this order into the view model
+ *
+ * @author kinsho
+ */
+function setDeductions()
+{
+	vm.deductions = _deductionsField.value;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _orderPostDesignField.addEventListener('change', setPostDesign);
@@ -300,6 +312,7 @@ _pricePerFootField.addEventListener('change', setPricePerFoot);
 _additionalFeaturesField.addEventListener('change', setAdditionalFeatures);
 _additionalPriceField.addEventListener('change', setAdditionalPrice);
 _orderNotesField.addEventListener('change', setOrderNotes);
+_deductionsField.addEventListener('change', setDeductions);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
@@ -317,3 +330,4 @@ setPricePerFoot();
 setAdditionalFeatures();
 setAdditionalPrice();
 setOrderNotes();
+setDeductions();
