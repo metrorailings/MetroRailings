@@ -27,6 +27,7 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
+	DEDUCTIONS_TEXTFIELD = 'deductions',
 
 	SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
 	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
@@ -73,6 +74,7 @@ var _validationSet = new Set(),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
+	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 
 	_saveAndContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
 	_saveAndExitButton = document.getElementById(SAVE_AND_EXIT_BUTTON);
@@ -477,6 +479,33 @@ Object.defineProperty(viewModel, 'notes',
 	set: (value) =>
 	{
 		viewModel.__notes = value;
+	}
+});
+
+// Deductions
+Object.defineProperty(viewModel, 'deductions',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__deductions;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__deductions = value;
+
+		// Make sure a valid total price is being set here
+		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
+			(value.length && !(window.parseFloat(value, 10)) ) ||
+			(value.length && value.split('.').length > 2);
+
+		rQueryClient.updateValidationOnField(isInvalid, _deductionsField, ERROR.TOTAL_INVALID, _validationSet);
+		rQueryClient.setField(_deductionsField, value);
+
+		_validate();
 	}
 });
 

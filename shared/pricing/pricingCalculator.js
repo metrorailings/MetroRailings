@@ -39,6 +39,9 @@ var pricingModule =
 		// Add in any custom pricing
 		rawTotal += orderData.pricing.additionalPrice;
 
+		// Deduct any discounts assigned to this order
+		rawTotal -= orderData.pricing.deductions;
+
 		return rawTotal.toFixed(2);
 	},
 
