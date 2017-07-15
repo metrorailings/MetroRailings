@@ -4,48 +4,6 @@
 @import '../foundation/fonts';
 @import '../foundation/responsive';
 
-/* ----------------------- MIX-INS ----------------------------- */
-
-/*
- * Specialized function meant to dictate spacing within the invoice
- */
-@mixin invoiceSpacing()
-{
-	display: flex;
-	align-items: center;
-
-	& > span
-	{
-		padding:
-		{
-			top: 5px;
-			bottom: 5px;
-			left: 20px;
-		}
-
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-
-		height: 100%;
-
-		&:nth-of-type(1)
-		{
-			width: 50%;
-		}
-
-		&:nth-of-type(2)
-		{
-			width: 25%;
-		}
-
-		&:nth-of-type(3)
-		{
-			width: 25%;
-		}
-	}
-}
-
 /* ----------------------- STYLES ----------------------------- */
 
 #invoice
@@ -71,51 +29,29 @@
 #invoiceHeader
 {
 	@extend %tabularSlimHeaderText;
-	@include invoiceSpacing();
 
-	font-size: 8px;
-
-	& > span
+	border-bottom:
 	{
-		border:
-		{
-			style: solid;
-			color: map-get($COLORS, blackTheme);
-			width: 1px;
-
-			top: none;
-		}
-
-		justify-content: center;
-
-		&:first-of-type
-		{
-			border:
-			{
-				left: none;
-			}
-		}
-
-		&:last-of-type
-		{
-			border:
-			{
-				right: none;
-			}
-		}
+		width: 1px;
+		color: map-get($COLORS, blackTheme);
+		style: solid;
 	}
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	font-size: 10px;
+
+	background-color: map-get($COLORS, lighterGrayTheme);
 }
 
 #invoiceBody
 {
-	@extend %formLabelText;
-
-	font-size: 8px;
-
 	& > div
 	{
-		@include invoiceSpacing();
-
 		border-bottom:
 		{
 			width: 1px;
@@ -123,37 +59,13 @@
 			color: map-get($COLORS, darkGrayTheme);
 		}
 
-		& > #lengthOfRailing
+		display: flex;
+		flex-direction: column;
+
+		&:nth-child(2n)
 		{
-			justify-content: center;
+			background-color: map-get($COLORS, lightBlueTheme);
 		}
-
-		&:nth-child(even)
-		{
-			background-color: map-get($COLORS, smokeWhiteTheme);
-		}
-
-		&:last-of-type
-		{
-			border:
-			{
-				bottom: none;
-			};
-		}
-	}
-}
-
-#designCell
-{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-
-	& > div:last-of-type
-	{
-		width: 75%;
-		height: 100px;
 	}
 }
 
@@ -196,17 +108,43 @@
 
 		&:last-of-type
 		{
-			border-right: none;
-			justify-content: center;
-
 			width: 25%;
 		}
 	}
 }
 
+.invoiceSectionHeader
+{
+	@extend %tabularSlimHeaderText;
+
+	padding:
+	{
+		top: 5px;
+		bottom: 15px;
+	}
+
+	font-size: 8px;
+
+	width: 100%;
+
+	text-align: center;
+}
+
 .keyCell
 {
-	background-color: map-get($COLORS, lightGrayTheme);
+	background-color: map-get($COLORS, lighterGrayTheme);
+}
+
+.textField
+{
+	@extend %regularText;
+
+	padding-bottom: 10px;
+	font-size: 8px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .numberBox
@@ -226,4 +164,9 @@
 
 	width: 40px;
 	height: 12px;
+}
+
+.descriptionField
+{
+	height: 25px;
 }
