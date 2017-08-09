@@ -3,26 +3,48 @@
 	<div>
 		<span class='fieldSet'>
 			<span class='fieldLabel'>Customer Name:</span>
-			<span id='nameField' class='textBox'></span>
+			<span id='nameField' class='textBox'>
+				{{#if order.customer.name}}
+					{{order.customer.name}}
+				{{/if}}
+			</span>
 		</span>
 	</div>
 
-	<div>
-		<span class='fieldSet'>
-			<span class='fieldLabel'>E-mail Address:</span>
-			<span id='emailField' class='textBox'></span>
-		</span>
+	{{#unless closing}}
+		<div>
+			<span class='fieldSet'>
+				<span class='fieldLabel'>E-mail Address:</span>
+				<span id='emailField' class='textBox'></span>
+			</span>
 
-		<span class='fieldSet'>
-			<span class='fieldLabel'>Phone Number:</span>
-			<span id='phoneField' class='textBox'></span>
-		</span>
-	</div>
+				<span class='fieldSet'>
+				<span class='fieldLabel'>Phone Number:</span>
+				<span id='phoneField' class='textBox'></span>
+			</span>
+		</div>
+	{{/unless}}
 
 	<div>
 		<span class='fieldSet'>
 			<span class='fieldLabel'>Installation Address:</span>
-			<span id='installationAddressField' class='textBox'></span>
+			<span id='installationAddressField' class='textBox'>
+				{{#if order.customer.address}}
+					{{order.customer.address}},&nbsp;
+				{{/if}}
+
+				{{#if order.customer.aptSuiteNo}}
+					{{order.customer.aptSuiteNo}},&nbsp;
+				{{/if}}
+
+				{{#if order.customer.city}}
+					{{order.customer.city}},&nbsp;
+				{{/if}}
+
+				{{#if order.customer.state}}
+					{{order.customer.state}}
+				{{/if}}
+			</span>
 		</span>
 	</div>
 

@@ -32,8 +32,6 @@ var CONTROLLER_FOLDER = 'orders',
 		PRINT: 'orderPrint'
 	};
 
-// ----------------- PRIVATE VARIABLES --------------------------
-
 // ----------------- PARTIAL TEMPLATES --------------------------
 
 /**

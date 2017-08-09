@@ -97,7 +97,8 @@ _Handlebars.registerHelper('range', (beginningNumber, endingNumber, block) =>
 });
 
 /**
- * Helper designed to help us test for the equality of two values
+ * Helper designed to help us test for the equality of two values and execute certain blocks of code depending on
+ * the results of that test
  *
  * @author kinsho
  */
@@ -174,6 +175,26 @@ _Handlebars.registerHelper('multiply', function(a, b)
 });
 
 /**
+ * Handlebars helper function designed to round any number to a fixed number of decimal digits
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
+{
+	return num.toFixed(decimalDigits);
+});
+
+/**
+ * Handlebars helper function designed to test whether two values equal one another
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('test_equality', function(val1, val2)
+{
+	return (val1 === val2);
+});
+
+/**
  * Handlebars helper function designed to map a design's code name to a full name
  *
  * @author kinsho
@@ -181,6 +202,16 @@ _Handlebars.registerHelper('multiply', function(a, b)
 _Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
 {
 	return designTranslator.findDesignName(designCode);
+});
+
+/**
+ * Handlebars helper function designed to determine whether a given design code is not standardized
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('is_custom_design', function(designCode, block)
+{
+	return (designTranslator.isCustomDesign(designCode) ? block.fn(this) : block.inverse(this));
 });
 
 // ----------------- MODULE DEFINITION --------------------------

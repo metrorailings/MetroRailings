@@ -136,6 +136,11 @@ $FONTS:
 	@include basicFontSettings($size: regularPlusFontSize);
 }
 
+%largePlusText
+{
+	@include basicFontSettings($size: largePlusFontSize);
+}
+
 %decorativeText
 {
 	@include basicFontSettings($size: regularPlusFontSize, $family: Raleway, $weight: 300);

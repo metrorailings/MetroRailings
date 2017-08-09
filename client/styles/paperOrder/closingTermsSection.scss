@@ -1,0 +1,33 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#closingAgreementSection
+{
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+
+		left: none;
+		right: none;
+	}
+
+	& > p
+	{
+		font-size: 14px;
+		line-height: 22px;
+
+		text-align: left;
+	}
+}

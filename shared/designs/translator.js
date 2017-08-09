@@ -39,5 +39,19 @@ module.exports =
 		var pricingData = pricing.DESIGNS[designCode];
 
 		return (pricingData ? pricingData.name : designCode);
+	},
+
+	/**
+	 * Function that determines whether a given design code relates to a design that's standardized within the system
+	 *
+	 * @param {String} designCode - the design code to evaluate
+	 *
+	 * @returns {Boolean} - a flag indicating whether the design has been standardized
+	 *
+	 * @author kinsho
+	 */
+	isCustomDesign: function(designCode)
+	{
+		return (designCode && !(pricing.DESIGNS[designCode]));
 	}
 };

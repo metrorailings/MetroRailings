@@ -239,6 +239,9 @@ Object.defineProperty(viewModel, 'statusFilter',
 
 		// Reorganize the orders that are shown
 		_renderOrders(true);
+
+		// Set this filter into the URL
+		window.location.href = (window.location.href.split('#')[0]) + '#' + value;
 	}
 });
 
