@@ -30,6 +30,7 @@ var CONTROLLER_FOLDER = 'orderDetails',
 		CUSTOMER_INFO: 'customerSummary',
 		LOCATION_INFO: 'locationSummary',
 		ORDER_SPECIFICS: 'orderSpecifics',
+		PRICING_SUMMARY: 'pricingSummary',
 		SAVE_BUTTON: 'submissionSection',
 		ORDER_PICTURES: 'orderPictures'
 	};
@@ -55,6 +56,11 @@ _Handlebars.registerPartial('locationSummary', fileManager.fetchTemplateSync(CON
  * The template for the order specifics section
  */
 _Handlebars.registerPartial('orderSpecifics', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_SPECIFICS));
+
+/**
+ * The template for the pricing summary section
+ */
+_Handlebars.registerPartial('pricingSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PRICING_SUMMARY));
 
 /**
  * The template for the submission button
@@ -89,6 +95,8 @@ module.exports =
 
 		// Fetch the data that will be needed to properly render the page
 		pageData.order = await ordersDAO.searchOrderById(orderNumber);
+
+		// TODO: Prevent any changes from being made should the order be closed
 
 		// Load the template that we will be using to render the images
 		pageData.picturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES);

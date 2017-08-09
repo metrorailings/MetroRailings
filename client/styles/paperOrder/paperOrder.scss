@@ -29,8 +29,9 @@
 	position: absolute;
 
 	display: flex;
-	align-items: flex-start;
-	justify-content: center;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
 
 	top: 10px;
 	left: 80%;
@@ -42,17 +43,34 @@
 	{
 		@extend %majorText;
 
-		font-size: 8px;
-		padding-top: 10px;
+		padding-top: 5px;
+		height: 25px;
+
+		&:first-of-type
+		{
+			font-size: 8px;
+		}
+
+		&:last-of-type
+		{
+			font-size: 12px;
+		}
 	}
 }
 
-#agreementSection, #invoice, #signatureSection
+#agreementSection, #closingAgreementSection, #invoice, #dateSection, #tipSection, #personalInfoSection
 {
+	border-bottom:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
 	page-break-after: auto;
 }
 
-#companyInfo, #invoice, #signatureSection
+#companyInfo, #invoice
 {
 	margin:
 	{
@@ -113,6 +131,31 @@
 		right: 10px;
 	}
 
+	padding:
+	{
+		left: 4px;
+	}
+
 	min-width: 150px;
+	text-align: left;
+	font-size: 11px;
+}
+
+.numberBox
+{
+	border:
+	{
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+		width: 1px;
+	}
+
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	width: 40px;
 	height: 12px;
 }

@@ -16,7 +16,8 @@ var ORDERS_COLLECTION = 'orders',
 	SYSTEM_USER_NAME = 'system',
 
 	PENDING_STATUS = 'pending',
-	QUEUE_STATUS = 'queue';
+	QUEUE_STATUS = 'queue',
+	CLOSED_STATUS = 'closed';
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -227,7 +228,7 @@ var ordersModule =
 		order = rQuery.mergeObjects(approvedOrder, order);
 
 		// Calculate the amount to charge the customer
-		order.orderTotal = pricingCalculator.calculateOrderTotal(order);
+		order.pricing.orderTotal = pricingCalculator.calculateOrderTotal(order);
 
 		// Record that this order is being modified
 		_applyModificationUpdates(order, SYSTEM_USER_NAME);
@@ -252,7 +253,7 @@ var ordersModule =
 
 				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
 				// inside the order itself
-				transactionID = await creditCardProcessor.chargeTotal(order.orderTotal / 2, order.stripe.customer, order._id);
+				transactionID = await creditCardProcessor.chargeTotal(order.pricing.orderTotal / 2, order.stripe.customer, order._id);
 				order.stripe.charges.push(transactionID);
 			}
 			catch(error)
@@ -266,11 +267,11 @@ var ordersModule =
 		// Else record that the order is being paid via check
 		else
 		{
-			order.paidByCheck = true;
+			order.pricing.paidByCheck = true;
 		}
 
 		// Note that the order has yet to be paid off, as only half of the total amount has been paid up until now
-		order.isPaid = false;
+		order.pricing.balanceRemaining = order.pricing.orderTotal / 2;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
@@ -315,15 +316,15 @@ var ordersModule =
 		_applyModificationUpdates(order, username);
 
 		updateRecord = mongo.formUpdateOneQuery(
-			{
-				_id: orderNumber
-			},
-			{
-				status: nextStatus,
-				lastModifiedDate: order.lastModifiedDate,
-				modHistory: order.modHistory
-			},
-			false);
+		{
+			_id: orderNumber
+		},
+		{
+			status: nextStatus,
+			lastModifiedDate: order.lastModifiedDate,
+			modHistory: order.modHistory
+		},
+		false);
 
 		try
 		{
@@ -344,7 +345,7 @@ var ordersModule =
 	},
 
 	/**
-	 * Function resposible for saving changes made to an order and also generating transactions to either charge the
+	 * Function responsible for saving changes made to an order and also generating transactions to either charge the
 	 * customer or refund money back to him/her
 	 *
 	 * @param {Object} orderModifications - the order that contains the modified data
@@ -357,27 +358,47 @@ var ordersModule =
 	saveChangesToOrder: async function (orderModifications, username)
 	{
 		var order = await ordersModule.searchOrderById(parseInt(orderModifications._id, 10)),
-			amountToTransact = order.orderTotal - parseFloat(orderModifications.orderTotal),
+			amountToBePaid,
 			transactionID,
+			dataToUpdate,
 			updateRecord;
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
 		_applyModificationUpdates(order, username);
 
+		// Convert any modified pricing into a numerical format
+		if (orderModifications.pricing.modification)
+		{
+			orderModifications.pricing.modification = parseFloat(orderModifications.pricing.modification);
+		}
+
 		try
 		{
-			// Generate transactions necessary to satisfy any changes that may have been made to the order price
-			if (amountToTransact > 0)
+			// Calculate the balance remaining to be paid
+			amountToBePaid = order.pricing.balanceRemaining + orderModifications.pricing.modification;
+
+			if (orderModifications.status === CLOSED_STATUS)
 			{
-				// Charge the customer if the order total has been increased
-				transactionID = await creditCardProcessor.chargeTotal(amountToTransact, order.stripe.customer, order._id);
-				order.stripe.charges.push(transactionID);
-			}
-			else if (amountToTransact < 0)
-			{
-				// Refund money back to the customer if the order total has been lessened
-				await creditCardProcessor.refundMoney(Math.abs(amountToTransact), order.stripe.charges, order._id);
+				// Generate credit card transactions necessary to satisfy any changes that may have been made to the order
+				// price only after the order has been closed
+				if ( !(order.pricing.paidByCheck) && !(orderModifications.pricing.restByCheck) )
+				{
+					if (amountToBePaid > 0)
+					{
+						// Charge the customer if the order total has been increased
+						transactionID = await creditCardProcessor.chargeTotal(amountToBePaid, order.stripe.customer, order._id);
+						order.stripe.charges.push(transactionID);
+					}
+					else if (amountToBePaid < 0)
+					{
+						// Refund money back to the customer if the order total has been lessened
+						await creditCardProcessor.refundMoney(Math.abs(amountToBePaid), order.stripe.charges, order._id);
+					}
+				}
+
+				// If the order is closed, we assume that any balance has been paid off.
+				order.pricing.balanceRemaining = 0;
 			}
 		}
 		catch(error)
@@ -388,22 +409,16 @@ var ordersModule =
 			throw error;
 		}
 
-		// Now generate a record of data we will be using to update the database
-		updateRecord = mongo.formUpdateOneQuery(
-		{
-			_id: order._id
-		},
+		// Gather the data that we will need to put into the database
+		dataToUpdate =
 		{
 			status: orderModifications.status,
-			notes: orderModifications.notes,
-			type: orderModifications.type,
-			style: orderModifications.style,
-			color: orderModifications.color,
-			length: orderModifications.length,
-			orderTotal: parseFloat(orderModifications.orderTotal),
 			stripe: order.stripe,
+			rushOrder: orderModifications.rushOrder,
+
 			lastModifiedDate: order.lastModifiedDate,
 			modHistory: order.modHistory,
+
 			'customer.areaCode': orderModifications.customer.areaCode,
 			'customer.phoneOne': orderModifications.customer.phoneOne,
 			'customer.phoneTwo': orderModifications.customer.phoneTwo,
@@ -412,9 +427,31 @@ var ordersModule =
 			'customer.aptSuiteNo': orderModifications.customer.aptSuiteNo,
 			'customer.city': orderModifications.customer.city,
 			'customer.state': orderModifications.customer.state,
-			'customer.zipCode': orderModifications.customer.zipCode
-		},
-		false);
+			'customer.zipCode': orderModifications.customer.zipCode,
+
+			'pricing.modification': orderModifications.pricing.modification,
+			'pricing.balanceRemaining': order.pricing.balanceRemaining,
+
+			'design.post': orderModifications.design.post,
+			'design.postEnd': orderModifications.design.postEnd,
+			'design.postCap': orderModifications.design.postCap,
+			'design.center': orderModifications.design.center,
+			'design.color': orderModifications.design.color,
+
+			'notes.internal': orderModifications.notes.internal
+		};
+
+		// Set flags and other data now according to whether the order meets certain conditions
+		if ( !(order.pricing.paidByCheck) )
+		{
+			dataToUpdate['pricing.restByCheck'] = orderModifications.pricing.restByCheck;
+		}
+
+		// Now generate a record of data we will be using to update the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: order._id
+		}, dataToUpdate, false);
 
 		try
 		{
@@ -459,13 +496,13 @@ var ordersModule =
 
 		// Generate a record to push into the database
 		updateRecord = mongo.formUpdateOneQuery(
-			{
-				_id: order._id
-			},
-			{
-				pictures: order.pictures
-			},
-			false);
+		{
+			_id: order._id
+		},
+		{
+			pictures: order.pictures
+		},
+		false);
 
 		try
 		{

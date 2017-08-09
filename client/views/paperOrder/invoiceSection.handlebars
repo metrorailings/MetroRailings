@@ -8,34 +8,81 @@
 
 		<div>
 			<span class='invoiceSectionHeader'>- Amount of Railing Needed -</span>
-			<span class='textField'><span class='numberBox'></span> linear feet of railing</span>
+			<span class='textField'>
+				<span class='numberBox'>
+					{{#if order.length}}
+						{{order.length}}
+					{{/if}}
+				</span>
+				linear feet of railing
+			</span>
 		</div>
 
 		<div>
 			<span class='invoiceSectionHeader'>- Post Design -</span>
-			<span class='descriptionField'></span>
+			<span class='invoiceCell'>
+				{{#if order.design.post}}
+					<span class='invoiceLabel'>Post Type:</span>
+					{{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}
+				{{/if}}
+			</span>
+			{{#if order.design.postEnd}}
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Post End:</span>
+					{{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}
+				</span>
+			{{/if}}
+			{{#if order.design.postCap}}
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Post Cap:</span>
+					{{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}
+				</span>
+			{{/if}}
 		</div>
 
 		<div>
 			<span class='invoiceSectionHeader'>- Other Design Information -</span>
-			<span class='descriptionField'></span>
+			<span class='invoiceCell'>
+				{{#if order.design.center}}
+					<span class='invoiceLabel'>Center Design:</span>
+					{{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}
+				{{/if}}
+			</span>
+			<span class='invoiceCell'>
+				{{#if order.design.color}}
+					<span class='invoiceLabel'>Color:</span>
+					{{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}
+				{{/if}}
+			</span>
 		</div>
 
 		<div>
 			<span class='invoiceSectionHeader'>- Additional Features -</span>
-			<span class='descriptionField'></span>
+			<span id='additionalFeaturesCell' class='invoiceCell'>
+				{{#if order.additionalFeatures}}
+					{{{order.additionalFeatures}}}
+				{{/if}}
+			</span>
 		</div>
 
 		<div>
 			<span class='invoiceSectionHeader'>- Notes -</span>
-			<span class='descriptionField'></span>
+			<span id='notesCell' class='invoiceCell'>
+				{{#if order.notes.order}}
+					{{{order.notes.order}}}
+				{{/if}}
+			</span>
 		</div>
 
 	</div>
 
 	<div id='invoiceFooter'>
-		<span class='keyCell'>Order Total: </span>
-		<span></span>
+		<span>Order Total: </span>
+		<span>
+			{{#if order.pricing.orderTotal}}
+				${{#to_fixed order.pricing.orderTotal 2}}{{/to_fixed}}
+			{{/if}}
+		</span>
 	</div>
 
 </div>

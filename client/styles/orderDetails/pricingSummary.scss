@@ -1,0 +1,22 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#balanceRemaining
+{
+	@extend %largePlusText;
+
+	text-decoration: underline;
+
+	width: auto;
+}
+
+#priceModifications
+{
+	background-color: map-get($COLORS, lightBlueTheme);
+
+	margin-left: 5px;
+}

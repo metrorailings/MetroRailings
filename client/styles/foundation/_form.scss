@@ -418,6 +418,15 @@ textarea
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
 }
 
+// Generic disabled look
+input, select, textarea
+{
+	&:disabled
+	{
+		opacity: 0.4;
+	}
+}
+
 // Styling for customized button sets
 .buttonSet
 {
@@ -461,6 +470,21 @@ textarea
 		{
 			background-color: map-get($COLORS, darkerGrayTheme);
 			color: map-get($COLORS, whiteTheme);
+		}
+
+		&.yesRadio:checked + label
+		{
+			background-color: map-get($COLORS, redTheme);
+		}
+
+		&.noRadio:checked + label
+		{
+			background-color: map-get($COLORS, darkGreenTheme);
+		}
+
+		&:disabled + label
+		{
+			cursor: default;
 		}
 	}
 }

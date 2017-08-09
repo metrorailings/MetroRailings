@@ -156,6 +156,28 @@ var rQueryClient =
 		},
 
 		/**
+		 * Function properly sets the value of a toggle switch given the truthiness of a value.
+		 *
+		 * @param {DOMElement} element - the toggle switch radio buttons that need to be set
+		 * @param {String} value - the value to set
+		 *
+		 * @author kinsho
+		 */
+		setToggleField: function(toggleSet, value)
+		{
+			if (value)
+			{
+				toggleSet[0].checked = true;
+				toggleSet[1].checked = false;
+			}
+			else
+			{
+				toggleSet[0].checked = false;
+				toggleSet[1].checked = true;
+			}
+		},
+
+		/**
 		 * Function takes a view model object and ensures that every one of its enumerable properties is populated
 		 * with some value
 		 *

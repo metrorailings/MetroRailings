@@ -8,15 +8,30 @@
     be filled out. Also, any change you make will be marked with a <i class='fa fa-tag fa-rotate-180'></i>
 </p>
 
+<!-- Display a heads-up message here indicating that the order cannot be modified now that it has been closed -->
+{{#if_cond order.status 'closed'}}
+	<div id='closedCannotModifyMessage' class='specialMessageSection'>
+		<span>
+			<i class='fa fa-exclamation-circle'></i>
+		</span>
+		<p>
+			The order can no longer be modified now that it has been closed. However, you're free to attach more
+			pictures to the order, if you want.
+		</p>
+	</div>
+{{/if_cond}}
+
 {{> orderSummary order }}
 
-{{> customerSummary order.customer }}
+{{> customerSummary order }}
 
-{{> locationSummary }}
+{{> locationSummary order }}
 
-{{> orderSpecifics }}
+{{> orderSpecifics order }}
 
-{{> saveOrderChangesButton }}
+{{> pricingSummary order }}
+
+{{> saveOrderChangesButton order }}
 
 {{> confirmationModal }}
 
