@@ -11,7 +11,7 @@
 			<span class='invoiceCell'>{{order.length}} linear feet of railing</span>
 		</div>
 
-		<div>
+		<div id='railingDesignSection'>
 			<span class='invoiceSectionHeader'>- Post Design -</span>
 			<span class='invoiceCell'>
 				<span class='invoiceLabel'>Post Type:</span>
@@ -31,18 +31,31 @@
 			{{/if}}
 		</div>
 
-		<div>
-			<span class='invoiceSectionHeader'>- Other Design Information -</span>
-			{{#if order.design.center}}
+		<div id='railingDesignSection'>
+			<span class='invoiceSectionHeader'>- Railings Design -</span>
+
 				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Center Design:</span>
-					{{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}
+					<span class='invoiceLabel'>Handrailing:</span>
+					{{#map_design_code_to_full_name order.design.handrailing}}{{/map_design_code_to_full_name}}
 				</span>
-			{{/if}}
-			<span class='invoiceCell'>
-				<span class='invoiceLabel'>Color:</span>
-				{{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}
-			</span>
+
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Picket Type:</span>
+					{{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name}}
+				</span>
+
+				{{#if order.design.center}}
+					<span class='invoiceCell'>
+						<span class='invoiceLabel'>Center Design:</span>
+						{{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}
+					</span>
+				{{/if}}
+
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Color:</span>
+					{{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}
+				</span>
+
 		</div>
 
 		<div>

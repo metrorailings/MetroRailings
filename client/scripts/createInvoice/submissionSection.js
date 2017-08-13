@@ -42,6 +42,7 @@ function submit(event)
 		data =
 		{
 			length: window.parseInt(vm.length, 10),
+			finishedHeight: window.parseInt(vm.finishedHeight, 10),
 			additionalFeatures: vm.additionalFeatures.split('\n\n').join('<br /><br />'),
 			agreement: vm.agreement,
 
@@ -49,6 +50,12 @@ function submit(event)
 			{
 				order: vm.notes.order.split('\n\n').join('<br /><br />'),
 				internal: '',
+			},
+
+			installation:
+			{
+				platformType: vm.platformType,
+				coverPlates: vm.coverPlates
 			},
 
 			pricing:
@@ -75,6 +82,8 @@ function submit(event)
 			design:
 			{
 				post: vm.design.post,
+				handrailing: vm.design.handrailing,
+				picket: vm.design.picket,
 				postEnd: vm.design.postEnd,
 				postCap: vm.design.postCap,
 				center: vm.design.center,

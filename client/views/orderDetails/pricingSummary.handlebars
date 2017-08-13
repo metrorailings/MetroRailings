@@ -2,7 +2,16 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Order Length</span>
-		<span class='staticValue'>{{ length }} linear feet</span>
+		<input id='orderLength' type='tel' value='{{length}}'
+				{{#if_cond status 'closed'}}disabled{{/if_cond}} /> linear feet
+		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Finishing Height</span>
+		<input id='orderFinishedHeight' type='tel' value='{{finishedHeight}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}} /> inches
+		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
 	<div class='dataGrouping'>
@@ -38,7 +47,11 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Balance Remaining</span>
-		<span id='balanceRemaining' class='staticValue'>${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed }}</span>
+		<span id='balanceRemaining' class='staticValue'>
+			{{#if pricing.balanceRemaining}}
+				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed }}
+			{{/if}}
+		</span>
 	</div>
 
 	<div class='dataGrouping'>

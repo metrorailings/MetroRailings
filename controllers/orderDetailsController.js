@@ -30,6 +30,7 @@ var CONTROLLER_FOLDER = 'orderDetails',
 		CUSTOMER_INFO: 'customerSummary',
 		LOCATION_INFO: 'locationSummary',
 		ORDER_SPECIFICS: 'orderSpecifics',
+		INSTALLATION_SUMMARY: 'installationSummary',
 		PRICING_SUMMARY: 'pricingSummary',
 		SAVE_BUTTON: 'submissionSection',
 		ORDER_PICTURES: 'orderPictures'
@@ -56,6 +57,11 @@ _Handlebars.registerPartial('locationSummary', fileManager.fetchTemplateSync(CON
  * The template for the order specifics section
  */
 _Handlebars.registerPartial('orderSpecifics', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_SPECIFICS));
+
+/**
+ * The template for the installation details section
+ */
+_Handlebars.registerPartial('installationSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INSTALLATION_SUMMARY));
 
 /**
  * The template for the pricing summary section
@@ -104,7 +110,7 @@ module.exports =
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true, true);
 	},
 
 	/**

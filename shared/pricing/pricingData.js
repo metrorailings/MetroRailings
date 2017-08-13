@@ -11,6 +11,7 @@ module.exports =
 		'P-BPC' :
 		{
 			name: 'Colonial Big Post',
+			industrialName: '2.5"',
 			price: 0,
 			rate: 0
 		},
@@ -18,6 +19,49 @@ module.exports =
 		'P-SP' :
 		{
 			name: 'Standard Small Post',
+			industrialName: '1.5"',
+			price: 0,
+			rate: 0
+		},
+
+		'H-COL' :
+		{
+			name: 'Colonial Handrailing',
+			price: 0,
+			rate: 0
+		},
+
+		'H-STD' :
+		{
+			name: 'Standard Handrailing',
+			price: 0,
+			rate: 0
+		},
+
+		'PCKT-1/2' :
+		{
+			name: '1/2" Square Picket',
+			price: 0,
+			rate: 0
+		},
+
+		'PCKT-5/8' :
+		{
+			name: '5/8" Square Picket',
+			price: 0,
+			rate: 0
+		},
+
+		'PCKT-3/4' :
+		{
+			name: '3/4" Square Picket',
+			price: 0,
+			rate: 0
+		},
+
+		'PCKT-1' :
+		{
+			name: '1" Square Picket',
 			price: 0,
 			rate: 0
 		},

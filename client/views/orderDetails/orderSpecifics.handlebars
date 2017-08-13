@@ -19,6 +19,35 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
+		    Handrailing
+		</span>
+		<select id='orderHandrailing' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='H-COL' {{#if_cond design.handrailing 'H-COL'}} selected {{/if_cond}}>Colonial Handrailing</option>
+			<option value='H-STD' {{#if_cond design.handrailing 'H-STD'}} selected {{/if_cond}}>Standard Handrailing</option>
+			<option value='OTHER' {{#is_custom_design design.handrailing}} selected {{/is_custom_design}}>- Other -</option>
+		</select>
+
+		<input id='otherHandrailing' type='text' class='otherTextfield {{#is_custom_design design.handrailing}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.handrailing}}{{ design.handrailing }}{{/is_custom_design}}'/>
+	</div>
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Pickets
+		</span>
+		<select id='orderPickets' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='PCKT-1/2' {{#if_cond design.picket 'PCKT-1/2'}} selected {{/if_cond}}>1/2"</option>
+			<option value='PCKT-5/8' {{#if_cond design.picket 'PCKT-5/8'}} selected {{/if_cond}}>5/8"</option>
+			<option value='PCKT-3/4' {{#if_cond design.picket 'PCKT-3/4'}} selected {{/if_cond}}>3/4"</option>
+			<option value='PCKT-1' {{#if_cond design.picket 'PCKT-1'}} selected {{/if_cond}}>1"</option>
+		</select>
+	</div>
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
 		    Post End Design
 		</span>
 		<select id='orderPostEnd' {{#if_cond status 'closed'}}disabled{{/if_cond}}>

@@ -419,6 +419,9 @@ var ordersModule =
 			lastModifiedDate: order.lastModifiedDate,
 			modHistory: order.modHistory,
 
+			length: orderModifications.length,
+			finishedHeight: orderModifications.finishedHeight,
+
 			'customer.areaCode': orderModifications.customer.areaCode,
 			'customer.phoneOne': orderModifications.customer.phoneOne,
 			'customer.phoneTwo': orderModifications.customer.phoneTwo,
@@ -433,10 +436,15 @@ var ordersModule =
 			'pricing.balanceRemaining': order.pricing.balanceRemaining,
 
 			'design.post': orderModifications.design.post,
+			'design.handrailing': orderModifications.design.handrailing,
+			'design.picket': orderModifications.design.picket,
 			'design.postEnd': orderModifications.design.postEnd,
 			'design.postCap': orderModifications.design.postCap,
 			'design.center': orderModifications.design.center,
 			'design.color': orderModifications.design.color,
+
+			'installation.coverPlates': orderModifications.installation.coverPlates,
+			'installation.platformType': orderModifications.installation.platformType,
 
 			'notes.internal': orderModifications.notes.internal
 		};

@@ -7,7 +7,6 @@
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import tooltipManager from 'client/scripts/utility/tooltip';
 
-import designTranslator from 'shared/designs/translator';
 import formValidator from 'shared/formValidator';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
@@ -15,7 +14,6 @@ import formValidator from 'shared/formValidator';
 var STATUS_RADIO_SUFFIX = 'Status',
 	ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	STATUS_BUTTON_SET_GROUPING = 'statusButtonSet',
-	RUSH_ORDER_BUTTONS = 'rushOrder',
 	RUSH_ORDER_BUTTON_SET = 'rushOrderButtonSet',
 
 	CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
@@ -31,6 +29,9 @@ var STATUS_RADIO_SUFFIX = 'Status',
 
 	ORDER_POST_DESIGN_SELECT = 'orderPost',
 	OTHER_POST_DESIGN_TEXTFIELD = 'otherPost',
+	ORDER_HANDRAILING_SELECT = 'orderHandrailing',
+	OTHER_HANDRAILING_TEXTFIELD = 'otherHandrailing',
+	ORDER_PICKET_SELECT = 'orderPickets',
 	ORDER_POST_END_SELECT = 'orderPostEnd',
 	OTHER_POST_END_TEXTFIELD = 'otherPostEnd',
 	ORDER_POST_CAP_SELECT = 'orderPostCap',
@@ -40,7 +41,11 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	ORDER_COLOR_SELECT = 'orderColor',
 	OTHER_COLOR_TEXTFIELD = 'otherColor',
 
-	REST_BY_CHECK_BUTTONS = 'restByCheck',
+	COVER_PLATES_BUTTONS = 'coverPlatesButtonSet',
+	PLATFORM_TYPE_SELECT = 'orderPlatformType',
+
+	LENGTH_TEXTFIELD = 'orderLength',
+	HEIGHT_TEXTFIELD = 'orderFinishedHeight',
 	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
 	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
 
@@ -78,7 +83,6 @@ var _validationSet = new Set(),
 	// Elements
 	_notesField = document.getElementById(ORDER_NOTES_TEXT_AREA),
 	_statusButtonSet = document.getElementById(STATUS_BUTTON_SET_GROUPING),
-	_rushOrderButtons = document.getElementsByName(RUSH_ORDER_BUTTONS),
 	_rushOrderButtonSet = document.getElementById(RUSH_ORDER_BUTTON_SET),
 
 	_emailField = document.getElementById(CUSTOMER_EMAIL_TEXTFIELD),
@@ -94,6 +98,9 @@ var _validationSet = new Set(),
 
 	_orderPostDesignField = document.getElementById(ORDER_POST_DESIGN_SELECT),
 	_otherPostDesignField = document.getElementById(OTHER_POST_DESIGN_TEXTFIELD),
+	_orderHandrailingField = document.getElementById(ORDER_HANDRAILING_SELECT),
+	_otherHandrailingField = document.getElementById(OTHER_HANDRAILING_TEXTFIELD),
+	_orderPicketsField = document.getElementById(ORDER_PICKET_SELECT),
 	_orderPostEndField = document.getElementById(ORDER_POST_END_SELECT),
 	_otherPostEndField = document.getElementById(OTHER_POST_END_TEXTFIELD),
 	_orderPostCapField = document.getElementById(ORDER_POST_CAP_SELECT),
@@ -103,7 +110,11 @@ var _validationSet = new Set(),
 	_orderColorField = document.getElementById(ORDER_COLOR_SELECT),
 	_otherColorField = document.getElementById(OTHER_COLOR_TEXTFIELD),
 
-	_restByCheckButtons = document.getElementsByName(REST_BY_CHECK_BUTTONS),
+	_coverPlatesButtonSet = document.getElementById(COVER_PLATES_BUTTONS),
+	_platformTypeField = document.getElementById(PLATFORM_TYPE_SELECT),
+
+	_lengthField = document.getElementById(LENGTH_TEXTFIELD),
+	_heightField = document.getElementById(HEIGHT_TEXTFIELD),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
 
@@ -197,11 +208,18 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__zipCode = value.customer.zipCode;
 
 		viewModel.__postDesign = value.design.post;
+		viewModel.__handrailing = value.design.handrailing;
+		viewModel.__picket = value.design.picket;
 		viewModel.__postEnd = value.design.postEnd;
 		viewModel.__postCap = value.design.postCap;
 		viewModel.__centerDesign = value.design.center;
 		viewModel.__color = value.design.color;
 
+		viewModel.__coverPlates = value.installation.coverPlates;
+		viewModel.__platformType = value.installation.platformType;
+
+		viewModel.__length = value.length;
+		viewModel.__finishedHeight = value.finishedHeight;
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 	}
@@ -263,7 +281,7 @@ Object.defineProperty(viewModel, 'rushOrder',
 	{
 		viewModel.__rushOrder = !!(value);
 
-		rQueryClient.setToggleField(_rushOrderButtons, value);
+		rQueryClient.setToggleField(_rushOrderButtonSet.getElementsByTagName('input'), value);
 		_markAsModified( (!!(value) === !!(viewModel.originalOrder.rushOrder)), _rushOrderButtonSet);
 	}
 });
@@ -537,6 +555,57 @@ Object.defineProperty(viewModel, 'postDesign',
 	}
 });
 
+// Handrailing
+Object.defineProperty(viewModel, 'handrailing',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__handrailing;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__handrailing = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderHandrailingField.value === OTHER_SELECTION)
+		{
+			_otherHandrailingField.classList.add(REVEAL_CLASS);
+			viewModel.__postDesign = _otherHandrailingField.value;
+		}
+		else
+		{
+			_otherHandrailingField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderHandrailingField, value);
+		}
+
+		_markAsModified((viewModel.__handrailing === viewModel.originalOrder.design.handrailing), _orderHandrailingField);
+	}
+});
+
+// Picket
+Object.defineProperty(viewModel, 'picket',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__picket;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__picket = value;
+
+		_markAsModified((viewModel.__picket === viewModel.originalOrder.design.picket), _orderPicketsField);
+	}
+});
+
 // Order Post End
 Object.defineProperty(viewModel, 'postEnd',
 {
@@ -665,6 +734,86 @@ Object.defineProperty(viewModel, 'color',
 	}
 });
 
+// Cover Plates
+Object.defineProperty(viewModel, 'coverPlates',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__coverPlates;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__coverPlates = !!(value);
+
+		rQueryClient.setToggleField(_coverPlatesButtonSet.getElementsByTagName('input'), value);
+		_markAsModified((viewModel.__coverPlates === !!(viewModel.originalOrder.installation.coverPlates)), _coverPlatesButtonSet);
+	}
+});
+
+// Platform Type
+Object.defineProperty(viewModel, 'platformType',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__platformType;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__platformType = value;
+
+		rQueryClient.setField(_platformTypeField, value);
+		_markAsModified( (value === viewModel.originalOrder.installation.platformType), _platformTypeField);
+	}
+});
+
+// Order Length
+Object.defineProperty(viewModel, 'length',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__length;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__length = value;
+
+		rQueryClient.setField(_lengthField, value);
+		_markAsModified( (viewModel.__length === viewModel.originalOrder.length), _lengthField);
+	}
+});
+
+// Order Finishing Height
+Object.defineProperty(viewModel, 'finishedHeight',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__finishedHeight;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__finishedHeight = value;
+
+		rQueryClient.setField(_heightField, value);
+		_markAsModified( (viewModel.__finishedHeight === viewModel.originalOrder.finishedHeight), _heightField);
+	}
+});
+
 // Mixed Payment Flag
 Object.defineProperty(viewModel, 'restByCheck',
 {
@@ -680,7 +829,7 @@ Object.defineProperty(viewModel, 'restByCheck',
 	{
 		viewModel.__restByCheck = !!(value);
 
-		rQueryClient.setToggleField(_restByCheckButtons, value);
+		rQueryClient.setToggleField(_restByCheckButtonSet.getElementsByTagName('input'), value);
 		_markAsModified(( !!(value) === !!(viewModel.originalOrder.pricing.restByCheck)), _restByCheckButtonSet);
 	}
 });

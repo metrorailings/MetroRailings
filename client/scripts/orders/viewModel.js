@@ -81,6 +81,23 @@ Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
 	return designTranslator.findDesignName(designCode);
 });
 
+/**
+ * Handlebars helper function designed to test whether two values are equal
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('if_cond', function(val1, val2, block)
+{
+	if (val1 === val2)
+	{
+		return block.fn(this);
+	}
+	else
+	{
+		return block.inverse(this);
+	}
+});
+
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
