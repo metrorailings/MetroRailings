@@ -6,12 +6,39 @@
 		</span>
 		<select id='orderPost'>
 			<option value='' disabled>Select...</option>
-			<option value='P-BPC'>Colonial Big Post</option>
-			<option value='P-SP'>Standard Small Post</option>
+			<option value='P-BPC'>2.5"</option>
+			<option value='P-SP'>1.5"</option>
 			<option value='OTHER'>- Other -</option>
 		</select>
 
 		<input id='otherPost' type='text' class='otherTextfield' />
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Handrailing
+		</span>
+		<select id='orderHandrailing'>
+			<option value='' disabled>Select...</option>
+			<option value='H-COL'>Colonial</option>
+			<option value='H-STD'>Standard</option>
+			<option value='OTHER'>- Other -</option>
+		</select>
+
+		<input id='otherHandrailing' type='text' class='otherTextfield' />
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Picket Size
+		</span>
+		<select id='orderPicketSize'>
+			<option value='' disabled>Select...</option>
+			<option value='PCKT-1/2'>1/2"</option>
+			<option value='PCKT-5/8'>5/8"</option>
+			<option value='PCKT-3/4'>3/4"</option>
+			<option value='PCKT-1'>1"</option>
+		</select>
 	</div>
 
 	<div class='dataGrouping'>
@@ -77,10 +104,43 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
+			Cover Plates?
+		</span>
+		<span id='coverPlatesButtonSet' class='buttonSet'>
+			<input type='radio' class='yesRadio' id='coverPlatesYes' name='coverPlates' value='y' />
+			<label for='coverPlatesYes'>Yes</label>
+			<input type='radio' class='noRadio' id='coverPlatesNo' name='coverPlates' value='' />
+			<label for='coverPlatesNo'>No</label>
+		</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Platform Type
+		</span>
+		<select id='orderPlatformType'>
+			<option value='' disabled>Select a platform type...</option>
+			<option value='earth'>Earth</option>
+			<option value='cement'>Cement</option>
+			<option value='tile'>Tile</option>
+			<option value='wood'>Wood</option>
+			<option value='limestone'>Limestone</option>
+		</select>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
 		    Order Length
 		</span>
 		<input type='tel' id='orderLength' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Finished Height (inches)
+		</span>
+		<input id='finishedHeight' type='tel' />
 	</div>
 
 	<div class='dataGrouping'>

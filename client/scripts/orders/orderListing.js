@@ -118,7 +118,10 @@ function _attachNavigationListeners()
 	for (i = editButtons.length - 1; i >= 0; i--)
 	{
 		editButtons[i].addEventListener('click', navigateToDetailsPage);
-		finishingFormButtons[i].addEventListener('click', navigateToPaperOrderPage);
+		if (finishingFormButtons[i])
+		{
+			finishingFormButtons[i].addEventListener('click', navigateToPaperOrderPage);
+		}
 	}
 }
 

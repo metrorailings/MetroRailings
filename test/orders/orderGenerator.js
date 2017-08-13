@@ -11,10 +11,18 @@ var COLORS = ['white', 'black', 'silver', 'mahogany'],
 	DOMAINS = ['gmail.com', 'aol.com', 'outlook.com', 'yahoo.com'],
 	STATUSES = ['estimate', 'pending', 'queue', 'production', 'finishing', 'install', 'closed', 'cancelled'],
 	POST_DESIGNS = ['P-BPC', 'P-SP'],
+	HANDRAILING_DESIGNS = ['H-COL', 'H-STD'],
+	PICKET_DESIGNS = ['PCKT-1/2', 'PCKT-5/8', 'PCKT-3/4', 'PCKT-1'],
 	POST_END_DESIGNS = ['PE-VOL', 'PE-LT', 'PE-SCRL'],
 	POST_CAP_DESIGNS = ['PC-BALL', 'PC-SQ'],
 	CENTER_DESIGNS = ['CD-NONE', 'CD-SC', 'CD-GALE', 'CD-DHRT', 'CD-SNC'],
+	PLATFORM_TYPES = ['earth', 'cement', 'tile', 'wood', 'limestone'],
 
+	OTHER_DESIGN =
+	{
+		length: 7,
+		charset: 'alphabetic'
+	},
 	ID =
 	{
 		length: 4,
@@ -79,11 +87,39 @@ var COLORS = ['white', 'black', 'silver', 'mahogany'],
  *
  * @param {Array<any>} collection - the collection from which to randomly pick an element
  *
+ * @returns {any} - a random element from the passed collection
+ *
  * @author kinsho
  */
 function _randomSelect(collection)
 {
 	return collection[Math.floor(Math.random() * collection.length)];
+}
+
+/**
+ * Function either invents a new design or randomly selects a design from a given collection
+ *
+ * @param {Array<String>} designs - the collection from which to randomly pick a design
+ *
+ * @returns {String} - the short name of a standardized design or the full name of a custom design
+ *
+ * @author kinsho
+ */
+function _randomDesign(designs)
+{
+	return (_randomBoolean() ? _randomSelect(designs) : _randomstring.generate(OTHER_DESIGN));
+}
+
+/**
+ * Function returns a random 'true' or 'false' value
+ *
+ * @returns {Boolean} - a randomly generated boolean
+ *
+ * @author kinsho
+ */
+function _randomBoolean()
+{
+	return !!(Math.round(Math.random()));
 }
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -115,6 +151,8 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 		lastModifiedDate: modificationDate,
 		status: status,
 		length: Math.floor(Math.random() * 20) + 20,
+		finishedHeight: Math.floor(Math.random() * 20) + 10,
+		rushOrder: _randomBoolean(),
 		ccToken: TEST_CC_TOKEN,
 
 		notes:
@@ -146,11 +184,19 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 
 		design:
 		{
-			post: _randomSelect(POST_DESIGNS),
-			postEnd: _randomSelect(POST_END_DESIGNS),
-			postCap: _randomSelect(POST_CAP_DESIGNS),
-			center: _randomSelect(CENTER_DESIGNS),
-			color: _randomSelect(COLORS),
+			post: _randomDesign(POST_DESIGNS),
+			handrailing: _randomDesign(HANDRAILING_DESIGNS),
+			picket: _randomSelect(PICKET_DESIGNS),
+			postEnd: _randomDesign(POST_END_DESIGNS),
+			postCap: _randomDesign(POST_CAP_DESIGNS),
+			center: _randomDesign(CENTER_DESIGNS),
+			color: _randomDesign(COLORS),
+		},
+
+		installation:
+		{
+			platformType: _randomSelect(PLATFORM_TYPES),
+			coverPlates: _randomBoolean()
 		}
 	};
 

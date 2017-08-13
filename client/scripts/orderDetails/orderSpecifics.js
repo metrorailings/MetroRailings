@@ -6,6 +6,9 @@ import vm from 'client/scripts/orderDetails/viewModel';
 
 var POST_DESIGN_SELECT = 'orderPost',
 	OTHER_POST_DESIGN_TEXTFIELD = 'otherPost',
+	HANDRAILING_SELECT = 'orderHandrailing',
+	OTHER_HANDRAILING_TEXTFIELD = 'otherHandrailing',
+	PICKET_SELECT = 'orderPickets',
 	POST_END_SELECT = 'orderPostEnd',
 	OTHER_POST_END_TEXTFIELD = 'otherPostEnd',
 	POST_CAP_SELECT = 'orderPostCap',
@@ -21,6 +24,9 @@ var POST_DESIGN_SELECT = 'orderPost',
 
 var _orderPostDesignField = document.getElementById(POST_DESIGN_SELECT),
 	_otherPostDesignField = document.getElementById(OTHER_POST_DESIGN_TEXTFIELD),
+	_orderHandrailingField = document.getElementById(HANDRAILING_SELECT),
+	_otherHandrailingField = document.getElementById(OTHER_HANDRAILING_TEXTFIELD),
+	_orderPicketsField = document.getElementById(PICKET_SELECT),
 	_orderPostEndField = document.getElementById(POST_END_SELECT),
 	_otherPostEndField = document.getElementById(OTHER_POST_END_TEXTFIELD),
 	_orderPostCapField = document.getElementById(POST_CAP_SELECT),
@@ -48,6 +54,34 @@ function setPostDesign()
 	{
 		vm.postDesign = _otherPostDesignField.value;
 	}
+}
+
+/**
+ * Listener responsible for setting the handrailing design into the view model
+ *
+ * @author kinsho
+ */
+function setHandrailing()
+{
+	// If the 'other' selection is specified, look towards the textfield that allows to write custom values
+	if (_orderHandrailingField.value !== OTHER_SELECTION)
+	{
+		vm.handrailing = _orderHandrailingField.value;
+	}
+	else
+	{
+		vm.handrailing = _otherHandrailingField.value;
+	}
+}
+
+/**
+ * Listener responsible for setting the picket size into the view model
+ *
+ * @author kinsho
+ */
+function setPickets()
+{
+	vm.picket = _orderPicketsField.value;
 }
 
 /**
@@ -125,12 +159,15 @@ function setColor()
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _orderPostDesignField.addEventListener('change', setPostDesign);
+_orderHandrailingField.addEventListener('change', setHandrailing);
+_orderPicketsField.addEventListener('change', setPickets);
 _orderPostEndField.addEventListener('change', setPostEnd);
 _orderPostCapField.addEventListener('change', setPostCap);
 _orderCenterDesignField.addEventListener('change', setCenterDesign);
 _orderColorField.addEventListener('change', setColor);
 
 _otherPostDesignField.addEventListener('change', setPostDesign);
+_otherHandrailingField.addEventListener('change', setHandrailing);
 _otherPostEndField.addEventListener('change', setPostEnd);
 _otherPostCapField.addEventListener('change', setPostCap);
 _otherCenterDesignField.addEventListener('change', setCenterDesign);

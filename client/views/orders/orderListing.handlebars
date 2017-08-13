@@ -44,7 +44,7 @@
 				<div class='orderGrouping orderNotesSection'>
 					<span class='orderInfoSection'>
 						<span class='orderInfoSectionHeader'>Notes</span>
-						<span class='orderCell'>{{ this.notes.internal }}</span>
+						<span class='orderCell'>{{{ this.notes.internal }}}</span>
 					</span>
 				</div>
 			{{/if}}
@@ -71,11 +71,13 @@
 						Edit<i class='fa fa-arrow-circle-o-right'></i>
 					</button>
 				</span>
-				<span class='orderCell'>
-					<button class='closeOrderFormButton' data-id={{ this._id }}>
-						Print Finishing Form<i class='fa fa-file-text'></i>
-					</button>
-				</span>
+				{{#if_cond this.status 'install'}}
+					<span class='orderCell'>
+						<button class='closeOrderFormButton' data-id={{ this._id }}>
+							Print Finishing Form<i class='fa fa-file-text'></i>
+						</button>
+					</span>
+				{{/if_cond}}
 			{{else}}
 				<span class='orderCell'>
 					<span class='convertOrderLink' data-id='{{ this._id }}'>

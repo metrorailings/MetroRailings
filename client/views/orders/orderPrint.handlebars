@@ -3,34 +3,7 @@
 	inside the actual HTML
 -->
 <style>
-	#orderDetails
-	{
-		display: flex;
-		flex-direction: column;
-		flex-wrap: wrap;
-
-		font-family: 'Times New Roman';
-		font-size: 18px;
-		font-weight: 400;
-
-		height: 300px;
-	}
-
-	#orderDetails > div
-	{
-		margin-top: 20px;
-		margin-bottom: 20px;
-
-		flex: 1;
-	}
-
-	.orderLabel
-	{
-		font-weight: 700;
-		margin-right: 8px;
-	}
-
-	#sectionHeader
+	#pageHeader
 	{
 		font-family: Helvetica;
 		font-weight: 700;
@@ -42,63 +15,183 @@
 		margin-bottom: 20px;
 	}
 
-	#orderPictures
+	#orderDetails
+	{
+		font-family: 'Times New Roman';
+		font-size: 18px;
+		font-weight: 400;
+	}
+
+	#generalSection, #designSection, #notesSection
+	{
+		margin-left: auto;
+		margin-right: auto;
+
+		padding-left: 10px;
+		padding-right: 10px;
+
+		border-width: 1.5px;
+		border-color: black;
+		border-style: solid;
+
+		width: 90%;
+	}
+
+	#generalSection, #notesSection
 	{
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		flex-direction: column;
 	}
-	#orderPictures img
+
+	#designSection
 	{
-		margin-top: 25px;
-		margin-bottom: 25px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	#generalSection > span, #designSection > span, #notesSection > span
+	{
+		padding-top: 7px;
+		padding-bottom: 7px;
+	}
+
+	#designSection > span
+	{
+		width: 50%;
+	}
+
+	.sectionHeader
+	{
+		padding: 10px;
+		width: 100%;
+
+		font-family: Helvetica;
+		font-weight: 700;
+		font-size: 20px;
+		font-style: italic;
+
+		text-align: center;
+
+		background-color: #DADADA;
+	}
+
+	.orderLabel
+	{
+		font-weight: 700;
+		margin-left: 8px;
+		margin-right: 8px;
+	}
+
+	.orderPicture
+	{
+		margin-top: 20px;
+		margin-bottom: 20px;
+		margin-left: auto;
+		margin-right: auto;
 
 		max-width: 500px;
 		max-height: 500px;
+
+		display: block;
+
+		page-break-inside: avoid;
+		page-break-after: auto;
+		page-break-before: auto;
 	}
 </style>
 
-<div id='sectionHeader'>Order {{id}} Details</div>
-
-<div id='orderDetails'>
-	<div>
-		<span class='orderLabel'>Type:</span> {{#capitalize order.type }}{{/capitalize }}
-	</div>
-
-	<div>
-		<span class='orderLabel'>Length:</span> {{ order.length }} feet
-	</div>
-
-	<div>
-		<span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name }}
-	</div>
-
-	{{#if order.design.postEnd}}
-	<div>
-		<span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name }}
-	</div>
-	{{/if}}
-
-	{{#if order.design.postCap}}
-	<div>
-		<span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name }}
-	</div>
-	{{/if}}
-
-	<div>
-		<span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name }}
-	</div>
-
-	<div>
-		<span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name order.design.color }}{{/map_design_code_to_full_name }}
-	</div>
+<div id='pageHeader'>
+	Order {{order._id}} - {{order.customer.name}} ({{order.customer.city}}, {{order.customer.state}})
 </div>
 
-<div id='orderPictures'>
+<div id='orderDetails'>
+
+	<!-- General details -->
+	<div id='generalSection'>
+
+		<div class='sectionHeader'>GENERAL</div>
+
+		<span>
+			<span class='orderLabel'>Total Length:</span> {{ order.length }} feet
+		</span>
+
+	</div>
+
+	<!-- Design details --->
+	<div id='designSection'>
+
+		<div class='sectionHeader'>DESIGN</div>
+
+		<span>
+			<span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name }}
+		</span>
+
+		<span>
+			<span class='orderLabel'>Handrailing:</span> {{#map_design_code_to_full_name order.design.handrailing}}{{/map_design_code_to_full_name }}
+		</span>
+
+		<span>
+			<span class='orderLabel'>Picket:</span> {{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name }}
+		</span>
+
+		<span>
+			<span class='orderLabel'>Finishing Height:</span> {{ order.finishedHeight }} inches
+		</span>
+
+		{{#if order.design.postEnd}}
+			<span>
+				<span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name }}
+			</span>
+		{{/if}}
+
+		{{#if order.design.postCap}}
+			<span>
+				<span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name }}
+			</span>
+		{{/if}}
+
+		{{#if order.design.center}}
+			<span>
+				<span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name }}
+			</span>
+		{{/if}}
+
+		<span>
+			<span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name order.design.color }}{{/map_design_code_to_full_name }}
+		</span>
+
+		<span>
+			<span class='orderLabel'>Installation Type:</span> {{#capitalize order.installation.platformType}}{{/capitalize}}
+		</span>
+
+		<span>
+			<span class='orderLabel'>Cover Plates:</span> {{#if order.installation.coverPlates}}Yes{{else}}No{{/if}}
+		</span>
+
+	</div>
+
+	<!-- Notes details --->
+	{{#if order.notes.internal}}
+		<div id='notesSection'>
+
+			<div class='sectionHeader'>NOTES</div>
+
+			<span>
+				{{{ order.notes.internal }}}
+			</span>
+		</div>
+	{{/if}}
+
 	{{#if order.pictures}}
 		{{#each order.pictures}}
-			<img src='{{fullLink}}' />
+			<img src='{{fullLink}}' class='orderPicture' />
+			<br />
 		{{/each}}
 	{{/if}}
+
 </div>

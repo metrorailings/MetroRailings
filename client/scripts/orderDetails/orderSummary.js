@@ -193,11 +193,8 @@ for (var i = 0; i < _statusRadioButtons.length; i++)
 }
 
 _orderNotesFields.addEventListener('change', setNotes);
-
-for (var j = 0; j < 2; j++)
-{
-	_rushOrderButtons[j].addEventListener('change', setRushOrder);
-}
+_rushOrderButtons[0].addEventListener('change', setRushOrder);
+_rushOrderButtons[1].addEventListener('change', setRushOrder);
 
 // ----------------- PAGE INITIALIZATION --------------------------------
 

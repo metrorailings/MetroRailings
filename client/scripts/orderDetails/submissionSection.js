@@ -55,11 +55,12 @@ function _submitChanges()
 		_id: vm._id,
 		status: vm.status,
 		length: vm.length,
+		finishedHeight: vm.finishedHeight,
 		rushOrder: vm.rushOrder,
 
 		notes:
 		{
-			internal: vm.notes
+			internal: vm.notes.split('\n\n').join('<br /><br />')
 		},
 
 		customer:
@@ -78,10 +79,18 @@ function _submitChanges()
 		design:
 		{
 			post: vm.postDesign,
+			handrailing: vm.handrailing,
+			picket: vm.picket,
 			postEnd: vm.postEnd || '',
 			postCap: vm.postCap || '',
 			center: vm.centerDesign,
 			color: vm.color
+		},
+
+		installation:
+		{
+			coverPlates: vm.coverPlates,
+			platformType: vm.platformType
 		},
 
 		pricing:
