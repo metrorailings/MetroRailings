@@ -227,9 +227,11 @@ input[type=tel], input[type=text], input[type=email], input[type=password], text
 		color: map-get($COLORS, darkGrayTheme);
 	}
 
+	padding-left: 3px;
+	margin-right: 8px;
+
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
 	height: 1.3em;
-	padding-left: 3px;
 
 	&.error
 	{

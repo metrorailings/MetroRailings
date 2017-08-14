@@ -1,14 +1,20 @@
 <div id='pricingSummary'>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Order Length</span>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Order Length
+		</span>
 		<input id='orderLength' type='tel' value='{{length}}'
 				{{#if_cond status 'closed'}}disabled{{/if_cond}} /> linear feet
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Finishing Height</span>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Finishing Height
+		</span>
 		<input id='orderFinishedHeight' type='tel' value='{{finishedHeight}}'
 			   {{#if_cond status 'closed'}}disabled{{/if_cond}} /> inches
 		<span class='hint hint--right hint--always' data-hint=''></span>
@@ -23,7 +29,7 @@
 		<span class='specializedLabel'>Additional Features</span>
 		<span class='staticValue'>
 			{{#if additionalFeatures}}
-				{{ additionalFeatures }}
+				{{{ additionalFeatures }}}
 			{{else}}
 				N/A
 			{{/if}}
@@ -42,7 +48,11 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Original Total Price</span>
-		<span class='staticValue'>${{ pricing.orderTotal }}</span>
+		<span class='staticValue'>
+			{{#if pricing.orderTotal}}
+				${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}
+			{{/if}}
+		</span>
 	</div>
 
 	<div class='dataGrouping'>

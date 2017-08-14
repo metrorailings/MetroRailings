@@ -42,7 +42,7 @@ var pricingModule =
 		// Deduct any discounts assigned to this order
 		rawTotal -= orderData.pricing.deductions;
 
-		return rawTotal.toFixed(2);
+		return rawTotal;
 	},
 
 	/**

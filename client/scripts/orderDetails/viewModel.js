@@ -787,7 +787,7 @@ Object.defineProperty(viewModel, 'length',
 
 	set: (value) =>
 	{
-		viewModel.__length = value;
+		viewModel.__length = window.parseInt(value, 10);
 
 		rQueryClient.setField(_lengthField, value);
 		_markAsModified( (viewModel.__length === viewModel.originalOrder.length), _lengthField);
@@ -807,7 +807,7 @@ Object.defineProperty(viewModel, 'finishedHeight',
 
 	set: (value) =>
 	{
-		viewModel.__finishedHeight = value;
+		viewModel.__finishedHeight = window.parseInt(value, 10);
 
 		rQueryClient.setField(_heightField, value);
 		_markAsModified( (viewModel.__finishedHeight === viewModel.originalOrder.finishedHeight), _heightField);
