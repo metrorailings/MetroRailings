@@ -317,7 +317,7 @@ Object.defineProperty(viewModel, 'pingTheServer',
 	{
 		var orders = viewModel.orders,
 			// Before looking for new orders, figure out from what date to begin our search
-			dateToSearch = (orders[0] ? orders[0].lastModifiedDate : DEFAULT_MODIFICATION_DATE),
+			dateToSearch = (orders[0] ? new Date(orders[0].lastModifiedDate) : DEFAULT_MODIFICATION_DATE),
 			changeCount;
 
 		axios.get(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
