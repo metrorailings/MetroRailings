@@ -57,7 +57,7 @@
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Order Notes
 		</span>
-		<textarea id='orderNotes' value='{{ notes.internal }}' {{#if_cond status 'closed'}}disabled{{/if_cond}}></textarea>
+		<textarea id='orderNotes' {{#if_cond status 'closed'}}disabled{{/if_cond}}>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
     </div>
 
     <div class='dataGrouping'>
