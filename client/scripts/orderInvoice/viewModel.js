@@ -88,7 +88,8 @@ var _validationSet = new Set(),
 	_checkOption = document.getElementById(CHECK_RADIO),
 	_checkMessage = document.getElementById(CHECK_MESSAGE),
 	_creditCardSection = document.getElementById(CREDIT_CARD_SECTION),
-	_creditCardIcons = document.getElementById(CREDIT_CARD_ICON_ROW).children,
+	// Defensive logic should the payment section not be exposed to the user
+	_creditCardIcons = document.getElementById(CREDIT_CARD_ICON_ROW) ? document.getElementById(CREDIT_CARD_ICON_ROW).children : null,
 	_ccNumberField = document.getElementById(CREDIT_CARD_TEXTFIELD),
 	_ccSecurityCodeField = document.getElementById(SECURITY_CODE_TEXTFIELD),
 	_expirationMonthField = document.getElementById(EXPIRATION_MONTH_DROPDOWN),
@@ -130,6 +131,12 @@ function _toggleCCIconOpacity(brand)
 function _validate()
 {
 	var validated = rQueryClient.validateModel(viewModel, _validationSet);
+
+	// Break out of this validation logic should there be no submission button present on the page
+	if ( !(_submissionButton) )
+	{
+		return null;
+	}
 
 	if (viewModel.paymentMethod === CREDIT_CARD_PAYMENT_METHOD)
 	{
@@ -539,7 +546,6 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 	set: (value) =>
 	{
 		viewModel.__isFormSubmissible = value;
-
 
 		if (!(value))
 		{

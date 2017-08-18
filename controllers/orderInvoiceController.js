@@ -29,12 +29,11 @@ var _Handlebars = require('handlebars'),
 var CONTROLLER_FOLDER = 'orderInvoice',
 
 	ORDER_RECEIPT_EMAIL = 'orderReceipt',
+	ADMIN_ORDER_CONFIRMATION_EMAIL = 'adminOrderConfirmed',
 	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
-
-	PENDING_STATUS = 'pending',
 
 	HOME_URL = '/',
 
@@ -93,7 +92,8 @@ module.exports =
 	{
 		var populatedPageTemplate,
 			pageData = {},
-			orderNumber = params ? parseInt(params.id, 10) : undefined,
+			// Use a nonsense order ID if one isn't provided, as that would eventually trigger logic to take the user back to the home page
+			orderNumber = params ? parseInt(params.id, 10) : 0,
 			currentYear = new Date().getFullYear(),
 			expirationYears = [],
 			i;
@@ -103,9 +103,10 @@ module.exports =
 		// Fetch the data that will be needed to properly render the page
 		pageData.order = await DAO.searchOrderById(orderNumber);
 
-		if (pageData.order.status !== PENDING_STATUS)
+		// If no order was found that can be used to populate the invoice, then just take the user back to the home page
+		if ( !(pageData.order) )
 		{
-			console.log('Redirecting the user back to the home page as the order has already been approved');
+			console.log('Redirecting the user back to the home page as no order has been found that matches the passed id');
 
 			return await controllerHelper.renderRedirectView(HOME_URL);
 		}
@@ -138,6 +139,7 @@ module.exports =
 	{
 		var customerValidationModel = customerModel(),
 			mailHTML,
+			adminMailHTML,
 			processedOrder;
 
 		console.log('Approving an order...');
@@ -163,6 +165,10 @@ module.exports =
 			// Send out an e-mail to the customer
 			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
 			await mailer.sendMail(mailHTML, '', params.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
+
+			// Send an e-mail to the company admins notifying that the order has been approved
+			adminMailHTML = await mailer.generateFullEmail(ADMIN_ORDER_CONFIRMATION_EMAIL, processedOrder, ADMIN_ORDER_CONFIRMATION_EMAIL);
+			await mailer.sendMail(adminMailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
 
 			// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
 			return {

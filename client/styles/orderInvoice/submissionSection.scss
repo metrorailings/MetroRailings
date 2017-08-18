@@ -1,9 +1,16 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
+@import '../foundation/responsive';
+
 /* ----------------------- STYLES ----------------------------- */
 
 #submissionSection
 {
+	@include printOnly()
+	{
+		display: none;
+	}
+
 	padding:
 	{
 		top: 50px;

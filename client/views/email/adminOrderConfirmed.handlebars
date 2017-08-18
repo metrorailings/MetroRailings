@@ -1,0 +1,59 @@
+<table id='header'>
+	<tr>
+		<th>Order {{order._id}} Confirmed</th>
+	</tr>
+</table>
+
+<table id='orderDetails'>
+	<tr>
+		<th class='tableHeader'>Name</th>
+		<td class='infoCell'>{{customer.name}}</td>
+	</tr>
+
+	{{#if customer.email}}
+		<tr>
+			<th class='tableHeader'>E-mail Address</th>
+			<td class='infoCell'>{{customer.email}}</td>
+		</tr>
+	{{/if}}
+
+	<tr>
+		<th class='tableHeader'>Phone Number</th>
+		<td class='infoCell'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</td>
+	</tr>
+
+	<tr>
+		<th class='tableHeader'>Method of Payment</th>
+		<td class='infoCell'>
+			{{#if pricing.paidByCheck}}
+				Check / Cash
+				<i class='fa fa-bank'></i>
+			{{else}}
+				Credit Card
+				<i class='fa fa-credit-card'></i>
+			{{/if}}
+		</td>
+	</tr>
+
+	<tr>
+		<th class='tableHeader'>Amount Confirmed Paid</th>
+		<td class='infoCell'>
+			{{#if pricing.paidByCheck}}
+				$0.00
+			{{else}}
+				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed}}
+			{{/if}}
+		</td>
+	</tr>
+
+	<tr>
+		<th class='tableHeader'>Balance Remaining</th>
+		<td class='infoCell'>
+			{{#if pricing.paidByCheck}}
+				${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}
+			{{else}}
+				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed}}
+			{{/if}}
+		</td>
+	</tr>
+</table>

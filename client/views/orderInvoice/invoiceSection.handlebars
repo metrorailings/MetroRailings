@@ -1,7 +1,8 @@
 <div id='invoice'>
 
 	<div id='invoiceHeader'>
-		<span>Order Details</span>
+		<span>Details for Order #{{order._id}}</span>
+		<i id='pagePrintIcon' class='fa fa-print' alt='Print this invoice'></i>
 	</div>
 
 	<div id='invoiceBody'>
@@ -39,10 +40,12 @@
 					{{#map_design_code_to_full_name order.design.handrailing}}{{/map_design_code_to_full_name}}
 				</span>
 
-				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Picket Type:</span>
-					{{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name}}
-				</span>
+				{{#if order.design.picket}}
+					<span class='invoiceCell'>
+						<span class='invoiceLabel'>Picket Type:</span>
+						{{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name}}
+					</span>
+				{{/if}}
 
 				{{#if order.design.center}}
 					<span class='invoiceCell'>
@@ -60,7 +63,7 @@
 
 		<div>
 			<span class='invoiceSectionHeader'>- Additional Features -</span>
-			<span class='invoiceCell'>
+			<span class='invoiceCell {{#if order.additionalFeatures}} descriptionField {{/if}}'>
 				{{#if order.additionalFeatures}}
 					{{{order.additionalFeatures}}}
 				{{else}}

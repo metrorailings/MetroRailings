@@ -108,6 +108,17 @@ _Handlebars.registerHelper('if_cond', function(val1, val2, block)
 });
 
 /**
+ * Helper designed to help us test for the equality of two values and execute opposite blocks of code depending on
+ * the results of that test
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('unless_cond', function(val1, val2, block)
+{
+	return (val1 === val2 ? block.inverse(this) : block.fn(this));
+});
+
+/**
  * Helper designed to help us test whether one value is greater than another
  *
  * @author kinsho

@@ -4,6 +4,14 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#addressSection
+{
+	@include printOnly
+	{
+		display: none;
+	}
+}
+
 #addressRow > .controlGrouping
 {
 	@include desktopOnly()
@@ -46,6 +54,11 @@
 	{
 		width: 280px;
 	}
+
+	&:disabled
+	{
+		opacity: 0.9;
+	}
 }
 
 #aptSuiteNumber
@@ -58,6 +71,11 @@
 	@include mobileOnly()
 	{
 		width: 150px;
+	}
+
+	&:disabled
+	{
+		opacity: 0.9;
 	}
 }
 
@@ -72,6 +90,11 @@
 	{
 		width: 280px;
 	}
+
+	&:disabled
+	{
+		opacity: 0.9;
+	}
 }
 
 #state
@@ -85,6 +108,11 @@
 	{
 		width: 200px;
 	}
+
+	&:disabled
+	{
+		opacity: 0.9;
+	}
 }
 
 #addressZipCode
@@ -97,5 +125,10 @@
 	@include mobileOnly()
 	{
 		width: 200px;
+	}
+
+	&:disabled
+	{
+		opacity: 0.9;
 	}
 }

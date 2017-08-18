@@ -78,18 +78,25 @@ function setCCSecurityCode()
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-// Bind the view model to the relevant inputs
-_creditCardRadio.addEventListener('click', setPaymentMethod);
-_checkRadio.addEventListener('click', setPaymentMethod);
-_creditCardNumberField.addEventListener('keyup', setCCNumber);
-_expirationMonthField.addEventListener('change', setCCExpMonth);
-_expirationYearField.addEventListener('change', setCCExpYear);
-_securityCodeField.addEventListener('blur', setCCSecurityCode);
+// Only allow this listener to be added should such a button exist in the first place
+if (_creditCardRadio)
+{
+	_creditCardRadio.addEventListener('click', setPaymentMethod);
+	_checkRadio.addEventListener('click', setPaymentMethod);
+	_creditCardNumberField.addEventListener('keyup', setCCNumber);
+	_expirationMonthField.addEventListener('change', setCCExpMonth);
+	_expirationYearField.addEventListener('change', setCCExpYear);
+	_securityCodeField.addEventListener('blur', setCCSecurityCode);
+}
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-vm.paymentMethod = '';
-vm.ccNumber = '';
-vm.ccSecurityCode = '';
-vm.ccExpYear = '';
-vm.ccExpMonth = '';
+// Only allow view model logic here should this section be shown to the user
+if (_creditCardRadio)
+{
+	vm.paymentMethod = '';
+	vm.ccNumber = '';
+	vm.ccSecurityCode = '';
+	vm.ccExpYear = '';
+	vm.ccExpMonth = '';
+}

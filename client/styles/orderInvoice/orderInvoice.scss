@@ -7,6 +7,7 @@
 @import '../foundation/form';
 @import '../foundation/animations';
 @import '../foundation/scrollDownLabel';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -23,6 +24,11 @@
 	{
 		top: 20px;
 		bottom: 20px;
+	}
+
+	@include printOnly()
+	{
+		border-top: none;
 	}
 }
 

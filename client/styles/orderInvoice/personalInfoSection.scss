@@ -7,6 +7,11 @@
 
 #personalInfoSection
 {
+	@include printOnly()
+	{
+		display: none;
+	}
+
 	& > .formRow >.controlGrouping
 	{
 		width: 100%;
@@ -24,6 +29,11 @@
 	@include mobileOnly()
 	{
 		width: 280px;
+	}
+
+	&:disabled
+	{
+		opacity: 0.9;
 	}
 }
 
@@ -55,6 +65,11 @@
 			// Shrink the font size so that we can safely fit all three phone input fields on the same row
 			font-size: 14px;
 		}
+
+		&:disabled
+		{
+			opacity: 0.9;
+		}
 	}
 
 	& > .formDescriptiveText
@@ -74,5 +89,10 @@
 	@include mobileOnly()
 	{
 		width: 280px;
+	}
+
+	&:disabled
+	{
+		opacity: 0.9;
 	}
 }
