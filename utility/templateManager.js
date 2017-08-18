@@ -225,6 +225,16 @@ _Handlebars.registerHelper('is_custom_design', function(designCode, block)
 	return (designTranslator.isCustomDesign(designCode) ? block.fn(this) : block.inverse(this));
 });
 
+/**
+ * Handlebars helper function designed to format strings before being placed into the textarea field
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_value_for_textarea', function(str)
+{
+	return str.split('<br /><br />').join('\n\n');
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
