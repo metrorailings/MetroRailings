@@ -7,7 +7,6 @@
 System.paths.home = '/client/scripts/home/main.js';
 System.paths.createOrder = '/client/scripts/createOrder/main.js';
 System.paths.designRailings = '/client/scripts/designRailings/main.js';
-System.paths.payInvoice = '/client/scripts/payInvoice/main.js';
 System.paths.orderInvoice = '/client/scripts/orderInvoice/main.js';
 System.paths.orderConfirmation = '/client/scripts/orderConfirmation/main.js';
 System.paths.checkOrder = '/client/scripts/checkOrder/main.js';

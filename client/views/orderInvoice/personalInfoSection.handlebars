@@ -45,7 +45,7 @@
 
 	<div class='formRow'>
         <span class='controlGrouping'>
-            <label for='customerEmail' class='required'>Your E-mail Address</label>
+            <label for='customerEmail'>Your E-mail Address</label>
             <input type='email' id='customerEmail' value='{{order.customer.email}}'
 				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
 		</span>

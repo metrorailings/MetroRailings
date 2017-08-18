@@ -60,7 +60,7 @@ function _submitChanges()
 
 		notes:
 		{
-			internal: (vm.notes ? vm.notes.split('\n\n').join('<br /><br />') : '')
+			internal: (vm.notes ? vm.notes.split('\n').join('<br />') : '')
 		},
 
 		customer:

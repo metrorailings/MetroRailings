@@ -84,7 +84,7 @@ function submit()
 				areaCode: vm.areaCode,
 				phoneOne: vm.phoneOne,
 				phoneTwo: vm.phoneTwo,
-				email: vm.customerEmail,
+				email: vm.customerEmail || '',
 				aptSuiteNumber: vm.customerAptSuiteNumber,
 				city: vm.customerCity,
 				state: vm.customerState,

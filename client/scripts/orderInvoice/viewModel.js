@@ -258,7 +258,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 Object.defineProperty(viewModel, 'customerEmail',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
