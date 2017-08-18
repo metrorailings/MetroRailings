@@ -16,8 +16,10 @@
                 <span class='orderCell'>{{ customer.name }}</span>
                 <span class='orderCell'>{{ customer.address }}</span>
                 <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
-                <span class='orderCell'>{{ customer.email }}</span>
-                <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+				{{#if customer.email }}
+					<span class='orderCell'>{{ customer.email }}</span>
+				{{/if}}
+                <span class='orderCell'>({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
             </span>
 
 			<!-- Only show this section for actual orders and not estimates -->

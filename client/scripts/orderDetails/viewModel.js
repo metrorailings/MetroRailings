@@ -307,7 +307,7 @@ Object.defineProperty(viewModel, 'pictures',
 Object.defineProperty(viewModel, 'email',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{

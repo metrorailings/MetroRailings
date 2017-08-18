@@ -48,7 +48,7 @@ function submit(event)
 
 			notes:
 			{
-				order: vm.notes.order.split('\n\n').join('<br /><br />'),
+				order: vm.notes.order.split('\n').join('<br />'),
 				internal: '',
 			},
 
@@ -68,7 +68,7 @@ function submit(event)
 			customer:
 			{
 				name: vm.name,
-				email: vm.email,
+				email: vm.email || '',
 				areaCode: vm.areaCode,
 				phoneOne: vm.phoneOne,
 				phoneTwo: vm.phoneTwo,
