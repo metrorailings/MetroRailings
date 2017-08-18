@@ -232,7 +232,7 @@ _Handlebars.registerHelper('is_custom_design', function(designCode, block)
  */
 _Handlebars.registerHelper('format_value_for_textarea', function(str)
 {
-	return str.split('<br /><br />').join('\n\n');
+	return (str ? str.split('<br /><br />').join('\n\n') : '');
 });
 
 // ----------------- MODULE DEFINITION --------------------------

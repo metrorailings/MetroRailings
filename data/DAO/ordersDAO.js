@@ -372,6 +372,10 @@ var ordersModule =
 		{
 			orderModifications.pricing.modification = parseFloat(orderModifications.pricing.modification);
 		}
+		else
+		{
+			orderModifications.pricing.modification = 0;
+		}
 
 		try
 		{
