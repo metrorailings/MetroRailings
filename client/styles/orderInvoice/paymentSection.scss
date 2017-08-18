@@ -7,6 +7,14 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#paymentSection
+{
+	@include printOnly
+	{
+		display: none;
+	}
+}
+
 #paymentOptionSection
 {
 	@extend %significantText;

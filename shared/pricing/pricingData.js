@@ -162,6 +162,13 @@ module.exports =
 			name: 'Mahogany',
 			price: 0,
 			rate: 0
+		},
+
+		'bronze' :
+		{
+			name: 'Statuesque Bronze',
+			price: 0,
+			rate: 0
 		}
 	}
 };

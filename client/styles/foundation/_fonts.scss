@@ -1,6 +1,7 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import 'colors';
+@import 'responsive';
 
 /*
  * The custom font-families that the site will use are:
@@ -34,7 +35,16 @@ $FONTS:
 	mobile-largeFontSize: 20px,
 	mobile-largePlusFontSize: 24px,
 	mobile-giganticFontSize: 28px,
-	mobile-giganticPlusFontSize: 36px
+	mobile-giganticPlusFontSize: 36px,
+
+	print-tinyFontSize: 8px,
+	print-smallFontSize: 10px,
+	print-regularFontSize: 14px,
+	print-regularPlusFontSize: 16px,
+	print-largeFontSize: 18px,
+	print-largePlusFontSize: 20px,
+	print-giganticFontSize: 24px,
+	print-giganticPlusFontSize: 30px,
 );
 
 /* ----------------------- MIX-INS ----------------------------- */
@@ -65,9 +75,14 @@ $FONTS:
 		color: map-get($COLORS, $color);
 	}
 
-	@media only screen and (max-device-width: 757px)
+	@include phoneOnly()
 	{
 		font-size: map-get($FONTS, mobile- + $size);
+	}
+
+	@include printOnly()
+	{
+		font-size: map-get($FONTS, print- + $size);
 	}
 }
 

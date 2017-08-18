@@ -1,11 +1,25 @@
 <div id='personalInfoSection'>
 
+	{{#unless_cond order.status 'pending'}}
+		<div id='closedCannotModifyMessage' class='specialMessageSection'>
+			<span>
+				<i class='fa fa-exclamation-circle'></i>
+			</span>
+			<p>
+				The order has already been finalized, so none of the details below can be modified now. Feel free to
+				review them though. If you see any mistakes or typos below, please reach out to your Metro Railings
+				representative to fix them.
+			</p>
+		</div>
+	{{/unless_cond}}
+
 	<div class='sectionHeadline'>Your Personal Details</div>
 
 	<div class='formRow'>
         <span class='controlGrouping'>
             <label for='customerName' class='required'>Your Name</label>
-            <input type='text' id='customerName' />
+            <input type='text' id='customerName' value='{{order.customer.name}}'
+				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
         </span>
 	</div>
 
@@ -13,10 +27,18 @@
         <span class='controlGrouping'>
             <label for='customerPhoneAreaCode' class='required'>Your Phone Number</label>
             <span id='customerPhoneNumberInputs' class='controlGroupingRow'>
-                (<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code' />)
-                <input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###' >-
-                <input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####' >
-                <span class='formDescriptiveText'>Please give us the best phone number that we can use to reach you during afternoon hours.</span>
+                (<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code'
+						value='{{ order.customer.areaCode }}'
+						{{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />)
+                <input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###'
+					   value='{{ order.customer.phoneOne }}'
+					   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} >-
+                <input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####'
+					   value='{{ order.customer.phoneTwo }}'
+					   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} >
+				{{#if_cond order.status 'pending'}}
+					<span class='formDescriptiveText'>Please give us the best phone number that we can use to reach you during afternoon hours.</span>
+				{{/if_cond}}
             </span>
         </span>
 	</div>
@@ -24,11 +46,14 @@
 	<div class='formRow'>
         <span class='controlGrouping'>
             <label for='customerEmail' class='required'>Your E-mail Address</label>
-            <input type='email' id='customerEmail'/>
+            <input type='email' id='customerEmail' value='{{order.customer.email}}'
+				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
 		</span>
 	</div>
 
-	<div class='requiredWarning'>
-		* indicates that the field is required to be filled out
-	</div>
+	{{#if_cond order.status 'pending'}}
+		<div class='requiredWarning'>
+			* indicates that the field is required to be filled out
+		</div>
+	{{/if_cond}}
 </div>
