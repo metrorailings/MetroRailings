@@ -3,16 +3,27 @@
 	inside the actual HTML
 -->
 <style>
-	#pageHeader
+	body
 	{
-		font-family: Helvetica;
-		font-weight: 700;
-		font-size: 24px;
+		height: 100%;
+		width: 90%;
+	}
+
+	#logoContainer
+	{
+		width: 100%;
 
 		text-align: center;
-		text-decoration: underline;
+	}
 
+	#companyLogo
+	{
+		margin-top: 15px;
 		margin-bottom: 20px;
+		margin-left: auto;
+		margin-right: auto;
+
+		max-width: 150px;
 	}
 
 	#orderDetails
@@ -103,10 +114,31 @@
 		page-break-after: auto;
 		page-break-before: auto;
 	}
+
+	.footer
+	{
+		transform: rotate(90deg);
+		-webkit-transform: rotate(90deg);
+		-moz-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-o-transform: rotate(90deg);
+
+		font-family: Helvetica;
+		font-weight: 700;
+		font-size: 16px;
+		white-space: nowrap;
+		text-decoration: underline;
+
+		position: fixed;
+		width: 400px;
+		height: 50px;
+		left: 65%;
+		top: 50%;
+	}
 </style>
 
-<div id='pageHeader'>
-	Order {{order._id}} - {{order.customer.name}} ({{order.customer.city}}, {{order.customer.state}})
+<div id='logoContainer'>
+	<img id='companyLogo' src='client/images/logo/png/dark_logo_transparent_background_small_narrow.png' />
 </div>
 
 <div id='orderDetails'>
@@ -117,8 +149,8 @@
 		<div class='sectionHeader'>GENERAL</div>
 
 		<span>
-			<span class='orderLabel'>Total Length:</span> {{ order.length }} feet
-		</span>
+		<span class='orderLabel'>Total Length:</span> {{ order.length }} feet
+	</span>
 
 	</div>
 
@@ -127,17 +159,21 @@
 
 		<div class='sectionHeader'>DESIGN</div>
 
-		<span>
-			<span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name }}
-		</span>
+		{{#if order.design.post}}
+			<span>
+				<span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name }}
+			</span>
+		{{/if}}
 
 		<span>
 			<span class='orderLabel'>Handrailing:</span> {{#map_design_code_to_full_name order.design.handrailing}}{{/map_design_code_to_full_name }}
 		</span>
 
-		<span>
-			<span class='orderLabel'>Picket:</span> {{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name }}
-		</span>
+		{{#if order.design.picket}}
+			<span>
+				<span class='orderLabel'>Picket:</span> {{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name }}
+			</span>
+		{{/if}}
 
 		<span>
 			<span class='orderLabel'>Finishing Height:</span> {{ order.finishedHeight }} inches
@@ -187,11 +223,15 @@
 		</div>
 	{{/if}}
 
-	{{#if order.pictures}}
-		{{#each order.pictures}}
-			<img src='{{fullLink}}' class='orderPicture' />
-			<br />
-		{{/each}}
-	{{/if}}
+</div>
 
+{{#if order.pictures}}
+	{{#each order.pictures}}
+		<img src='{{fullLink}}' class='orderPicture' />
+		<br />
+	{{/each}}
+{{/if}}
+
+<div class='footer'>
+	Order {{order._id}} - {{order.customer.name}} ({{order.customer.city}}, {{order.customer.state}})
 </div>

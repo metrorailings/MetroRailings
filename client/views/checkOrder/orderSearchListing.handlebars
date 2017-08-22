@@ -21,15 +21,14 @@
 
                 <span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>General Details</span>
-                    <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
                     <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
-                    <span class='orderCell tabletUp'>&nbsp;</span>
-                    <span class='orderCell tabletUp'>&nbsp;</span>
-                </span>
-
-				<span class='orderInfoSection'>
-                    <span class='orderInfoSectionHeader'>Design Selections</span>
-					<span class='orderCell'><span class='orderLabel'>Post:</span> {{#map_design_code_to_full_name design.post }}{{/map_design_code_to_full_name}}</span>
+					{{#if design.post}}
+						<span class='orderCell'><span class='orderLabel'>Post:</span> {{#map_design_code_to_full_name design.post }}{{/map_design_code_to_full_name}}</span>
+					{{/if}}
+					{{#if design.picket}}
+						<span class='orderCell'><span class='orderLabel'>Picket Size:</span> {{#map_design_code_to_full_name design.picket }}{{/map_design_code_to_full_name}}</span>
+					{{/if}}
+					<span class='orderCell'><span class='orderLabel'>Handrailing:</span> {{#map_design_code_to_full_name design.handrailing}}{{/map_design_code_to_full_name}}</span>
 					{{#if design.postEnd }}
 						<span class='orderCell'><span class='orderLabel'>Post End:</span>{{#map_design_code_to_full_name design.postEnd }}{{/map_design_code_to_full_name}}</span>
 					{{/if}}
@@ -43,9 +42,11 @@
 				<span class='orderInfoSection'>
                     <span class='orderInfoSectionHeader'>Your Contact Info</span>
                     <span class='orderCell'>{{ customer.name }}</span>
-                    <span class='orderCell'>{{ customer.email }}</span>
+					{{#if customer.email}}
+						<span class='orderCell'>{{ customer.email }}</span>
+					{{/if}}
                     <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
-                    <span class='orderCell tabletUp'>&nbsp;</span>
+					<span class='orderCell'>{{ customer.address }}<br />{{ customer.city }}, {{ customer.state }}</span>
                 </span>
 
 			</div>
