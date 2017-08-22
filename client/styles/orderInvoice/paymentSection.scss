@@ -7,6 +7,14 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#paymentSection
+{
+	@include printOnly
+	{
+		display: none;
+	}
+}
+
 #paymentOptionSection
 {
 	@extend %significantText;
@@ -49,6 +57,25 @@
 #paymentMethodSeparator
 {
 	margin-bottom: 20px;
+}
+
+#mailingAddress
+{
+	@extend %regularText;
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+		top: 25px;
+	}
+
+	font-style: italic;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 #creditCardNumberContainer

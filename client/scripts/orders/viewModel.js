@@ -81,6 +81,23 @@ Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
 	return designTranslator.findDesignName(designCode);
 });
 
+/**
+ * Handlebars helper function designed to test whether two values are equal
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('if_cond', function(val1, val2, block)
+{
+	if (val1 === val2)
+	{
+		return block.fn(this);
+	}
+	else
+	{
+		return block.inverse(this);
+	}
+});
+
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
@@ -239,6 +256,9 @@ Object.defineProperty(viewModel, 'statusFilter',
 
 		// Reorganize the orders that are shown
 		_renderOrders(true);
+
+		// Set this filter into the URL
+		window.location.href = (window.location.href.split('#')[0]) + '#' + value;
 	}
 });
 
@@ -297,7 +317,7 @@ Object.defineProperty(viewModel, 'pingTheServer',
 	{
 		var orders = viewModel.orders,
 			// Before looking for new orders, figure out from what date to begin our search
-			dateToSearch = (orders[0] ? orders[0].lastModifiedDate : DEFAULT_MODIFICATION_DATE),
+			dateToSearch = (orders[0] ? new Date(orders[0].lastModifiedDate) : DEFAULT_MODIFICATION_DATE),
 			changeCount;
 
 		axios.get(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>

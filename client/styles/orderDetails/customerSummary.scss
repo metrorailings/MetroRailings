@@ -1,4 +1,13 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+
 /* ----------------------- STYLES ----------------------------- */
+
+#customerEmail
+{
+	background-color: map-get($COLORS, lightBlueTheme);
+}
 
 #areaCode, #phoneOne, #phoneTwo
 {

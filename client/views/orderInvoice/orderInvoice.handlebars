@@ -11,6 +11,10 @@
 
 {{> orderInvoiceAddressSection }}
 
-{{> orderInvoicePaymentSection }}
+{{#if_cond order.status 'pending'}}
+	{{> orderInvoicePaymentSection }}
+{{/if_cond}}
 
-{{> orderInvoiceSubmissionSection }}
+{{#if_cond order.status 'pending'}}
+	{{> orderInvoiceSubmissionSection }}
+{{/if_cond}}

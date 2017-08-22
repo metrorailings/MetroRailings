@@ -6,19 +6,26 @@ import axios from 'client/scripts/utility/axios';
 import dropbox from 'client/scripts/utility/dropbox';
 import gallery from 'client/scripts/utility/gallery';
 
+import rQueryClient from 'client/scripts/utility/rQueryClient';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
 	UPLOAD_PICTURE_INPUT = 'uploadPictureInput',
 	PICTURES_LISTING = 'picturesListingContainer',
+	FILE_UPLOAD_BUTTON = 'uploadPictureInput',
 	ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	LOADING_VEIL = 'baseLoaderOverlay',
+
+	RUSH_ORDER_BUTTONS = 'rushOrder',
 
 	SAVE_PICTURES_URL = 'orderDetails/saveNewPicture',
 
 	VISIBILITY_CLASS = 'show',
+	DISABLED_CLASS = 'disabled',
 	STATUS_RADIO_BUTTONS = 'statusRadio',
+	DATA_GROUPING_CLASS = 'dataGrouping',
 	UPLOADED_IMAGES_CLASS = 'uploadedImageThumbnail';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -27,6 +34,7 @@ var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 var _orderNotesFields = document.getElementById(ORDER_NOTES_TEXT_AREA),
 	_statusRadioButtons = document.getElementsByClassName(STATUS_RADIO_BUTTONS),
 	_picturesContainer = document.getElementById(PICTURES_LISTING),
+	_rushOrderButtons = document.getElementsByName(RUSH_ORDER_BUTTONS),
 	_loadingVeil = document.getElementById(LOADING_VEIL);
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
@@ -69,9 +77,17 @@ async function _renderImageListing()
 	{
 		imageElements[i].addEventListener('click', openGallery);
 	}
-}
 
-// ----------------- PROCESSED GENERATOR FUNCTIONS ---------------------------
+	// Ensure that these file upload inputs are always enabled, even when the order is closed
+	// Don't forget to take away the opacity of the surrounding container
+	window.setTimeout(() =>
+	{
+		var fileUploadButton = document.getElementById(FILE_UPLOAD_BUTTON);
+
+		fileUploadButton.disabled = false;
+		rQueryClient.closestElementByClass(fileUploadButton, DATA_GROUPING_CLASS).classList.remove(DISABLED_CLASS);
+	}, 500);
+}
 
 // ----------------- LISTENERS ---------------------------
 
@@ -95,6 +111,18 @@ function setStatus(event)
 function setNotes()
 {
 	vm.notes = _orderNotesFields.value;
+}
+
+/**
+ * Listener responsible for setting the rush order flag into the view model
+ *
+ * @param {Event} event - the event associated with the firing of this event
+ *
+ * @author kinsho
+ */
+function setRushOrder(event)
+{
+	vm.rushOrder = event.currentTarget.value;
 }
 
 /**
@@ -165,6 +193,8 @@ for (var i = 0; i < _statusRadioButtons.length; i++)
 }
 
 _orderNotesFields.addEventListener('change', setNotes);
+_rushOrderButtons[0].addEventListener('change', setRushOrder);
+_rushOrderButtons[1].addEventListener('change', setRushOrder);
 
 // ----------------- PAGE INITIALIZATION --------------------------------
 

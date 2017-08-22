@@ -41,26 +41,34 @@ function submit(event)
 	{
 		data =
 		{
-			type: vm.type,
 			length: window.parseInt(vm.length, 10),
+			finishedHeight: window.parseInt(vm.finishedHeight, 10),
 			additionalFeatures: vm.additionalFeatures.split('\n\n').join('<br /><br />'),
 			agreement: vm.agreement,
 
 			notes:
 			{
-				order: vm.notes.order.split('\n\n').join('<br /><br />')
+				order: vm.notes.order.split('\n').join('<br />'),
+				internal: '',
+			},
+
+			installation:
+			{
+				platformType: vm.platformType,
+				coverPlates: vm.coverPlates
 			},
 
 			pricing:
 			{
 				pricePerFoot: window.parseFloat(vm.pricePerFoot),
-				additionalPrice: window.parseFloat(vm.additionalPrice)
+				additionalPrice: window.parseFloat(vm.additionalPrice) || 0,
+				deductions: window.parseFloat(vm.deductions) || 0
 			},
 
 			customer:
 			{
 				name: vm.name,
-				email: vm.email,
+				email: vm.email || '',
 				areaCode: vm.areaCode,
 				phoneOne: vm.phoneOne,
 				phoneTwo: vm.phoneTwo,
@@ -74,6 +82,8 @@ function submit(event)
 			design:
 			{
 				post: vm.design.post,
+				handrailing: vm.design.handrailing,
+				picket: vm.design.picket,
 				postEnd: vm.design.postEnd,
 				postCap: vm.design.postCap,
 				center: vm.design.center,

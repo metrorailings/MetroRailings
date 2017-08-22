@@ -4,9 +4,7 @@ import vm from 'client/scripts/orders/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var OPEN_STATUS = 'open',
-
-	STATUS_FILTER_CLASS = 'statusFilter',
+var STATUS_FILTER_CLASS = 'statusFilter',
 	REVEAL_CLASS = 'reveal',
 
 	SEARCH_FILTER = 'searchFilterTextfield',
@@ -18,7 +16,22 @@ var OPEN_STATUS = 'open',
 var _searchFilter = document.getElementById(SEARCH_FILTER),
 	_resetSearch = document.getElementById(RESET_SEARCH_ICON);
 
-// ----------------- PRIVATE FUNCTIONS ---------------------------
+// ----------------- PRIVATE LISTENERS ---------------------------
+
+/**
+ * Function that reads whatever status filter is preset within the URL
+ *
+ * @returns {String} - the status filter parsed from the URL
+ *
+ * @author kinsho
+ */
+function _readStatusFilterFromHash()
+{
+	var URL = window.location.href,
+		hash = URL.split('#')[1];
+
+	return (hash ? hash : '');
+}
 
 // ----------------- LISTENERS ---------------------------
 
@@ -74,6 +87,6 @@ _resetSearch.addEventListener('click', emptySearchFilter);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-// Set the filters with default values
-vm.statusFilter = OPEN_STATUS;
+// Set the filters with whatever values they were set with last time. If values were not set, use default values instead
+vm.statusFilter = _readStatusFilterFromHash() || '';
 vm.searchFilter = '';

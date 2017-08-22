@@ -1,6 +1,26 @@
 /* ----------------------- STYLES ----------------------------- */
 
+#orderSpecifics
+{
+	select
+	{
+		width: 225px;
+	}
+}
+
 #totalPrice
 {
 	margin-left: 5px;
+}
+
+.otherTextfield
+{
+	margin-left: 15px;
+
+	display: none;
+
+	&.reveal
+	{
+		display: inline-block;
+	}
 }

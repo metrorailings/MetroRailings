@@ -2,6 +2,11 @@
 
 <div id='idBox'>
 	<span>Order ID</span>
+	<span>
+		{{#if order._id}}
+			{{order._id}}
+		{{/if}}
+	</span>
 </div>
 
 <div id='companyInfo'>
@@ -14,10 +19,20 @@
 
 {{> paperOrderRailingsInvoice }}
 
-{{> paperOrderTermsOfAgreement }}
+{{#if closing}}
+	{{> paperOrderClosingTerms }}
+{{else}}
+	{{> paperOrderTermsOfAgreement }}
+{{/if}}
 
-{{> paperOrderDateOfInvoice }}
+{{#unless closing}}
+	{{> paperOrderDateOfInvoice }}
+{{/unless}}
 
 {{> paperOrderPersonalInfo }}
+
+{{#if closing}}
+	{{> paperOrderTip }}
+{{/if}}
 
 {{> paperOrderSignature }}

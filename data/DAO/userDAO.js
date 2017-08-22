@@ -38,10 +38,10 @@ module.exports =
 		try
 		{
 			dbResults = await mongo.read(ADMINS_COLLECTION,
-				{
-					username: username,
-					password: hash
-				});
+			{
+				username: username,
+				password: hash
+			});
 
 			return !!(dbResults.length);
 		}

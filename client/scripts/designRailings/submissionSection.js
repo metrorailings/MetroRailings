@@ -9,8 +9,7 @@ import notifier from 'client/scripts/utility/notifications';
 
 var SUBMIT_BUTTON = 'submissionButton',
 
-	CONTINUE_ORDER_URL = 'design/continueWithOrder',
-	PAY_INVOICE_URL = '/payInvoice';
+	CONTINUE_ORDER_URL = 'design/continueWithOrder';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -42,7 +41,8 @@ function submit()
 	axios.post(CONTINUE_ORDER_URL, data, true).then(() =>
 	{
 		// If successful, let's take the user to the design page to continue the order
-		window.location.href = PAY_INVOICE_URL;
+		// @TODO: Take the user to the next page of the estimation process
+		window.location.href = '';
 	}, () =>
 	{
 		notifier.showGenericServerError();

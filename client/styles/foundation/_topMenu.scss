@@ -30,6 +30,11 @@
 	{
 		flex-wrap: wrap;
 	}
+
+	@include printOnly()
+	{
+		display: none;
+	}
 }
 
 .topMenuLink
@@ -170,4 +175,32 @@
 	height: 100px;
 
 	display: block;
+}
+
+#topMenuPrintableLogo
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		bottom:
+		{
+			width: 1px;
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+		}
+	}
+
+	max-height: 100px;
+
+	display: none;
+
+	@include printOnly()
+	{
+		display: block;
+	}
 }

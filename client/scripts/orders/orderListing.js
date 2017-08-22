@@ -19,13 +19,17 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 
 	UPDATE_STATUS_URL = 'orders/updateStatus',
 	ORDER_DETAILS_URL = '/orderDetails?orderNumber=::orderID',
+	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
+	PAPER_ORDER_URL = '/paperOrder?id=::orderID&closing=y',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
 	STATUS_LINK_CLASS = 'nextStatusLink',
 	PRINT_LINK_CLASS = 'printLink',
 	LOAD_PICTURES_LINK_CLASS = 'loadPicturesLink',
+	CONVERT_ORDER_LINK_CLASS = 'convertOrderLink',
 	ORDER_DETAILS_BUTTON_CLASS = 'orderDetailsButton',
+	PRINT_FINISHING_FORM_BUTTON_CLASS = 'closeOrderFormButton',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
 	HIDE_CLASS = 'hide',
 
@@ -108,11 +112,33 @@ function _attachPictureLoadListeners()
 function _attachNavigationListeners()
 {
 	var editButtons = document.getElementsByClassName(ORDER_DETAILS_BUTTON_CLASS),
+		finishingFormButtons = document.getElementsByClassName(PRINT_FINISHING_FORM_BUTTON_CLASS),
 		i;
 
 	for (i = editButtons.length - 1; i >= 0; i--)
 	{
 		editButtons[i].addEventListener('click', navigateToDetailsPage);
+		if (finishingFormButtons[i])
+		{
+			finishingFormButtons[i].addEventListener('click', navigateToPaperOrderPage);
+		}
+	}
+}
+
+/**
+ * Function meant to dynamically attach listeners to all 'Convert to Order' links
+ * Needed so that we can reattach listeners every time orders are re-rendered onto screen
+ *
+ * @author kinsho
+ */
+function _attachOrderConversionListeners()
+{
+	var conversionButtons = document.getElementsByClassName(CONVERT_ORDER_LINK_CLASS),
+		i;
+
+	for (i = conversionButtons.length - 1; i >= 0; i--)
+	{
+		conversionButtons[i].addEventListener('click', navigateToCreateInvoicePage);
 	}
 }
 
@@ -286,6 +312,38 @@ function navigateToDetailsPage(event)
 	window.location.href = orderDetailsURL;
 }
 
+/**
+ * Listener meant to take the user to the invoice creation page to convert an estimate into a full order
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function navigateToCreateInvoicePage(event)
+{
+	var targetElement = event.currentTarget,
+		orderID = targetElement.dataset.id,
+		invoiceURL = CREATE_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
+
+	window.location.href = invoiceURL;
+}
+
+/**
+ * Listener meant to take the user to the finishing form for a particular order
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function navigateToPaperOrderPage(event)
+{
+	var targetElement = event.currentTarget,
+		orderID = targetElement.dataset.id,
+		paperOrderURL = PAPER_ORDER_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
+
+	window.location.href = paperOrderURL;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 document.addEventListener(LISTENER_INIT_EVENT, () =>
@@ -294,4 +352,5 @@ document.addEventListener(LISTENER_INIT_EVENT, () =>
 	_attachPrintListeners();
 	_attachPictureLoadListeners();
 	_attachNavigationListeners();
+	_attachOrderConversionListeners();
 });

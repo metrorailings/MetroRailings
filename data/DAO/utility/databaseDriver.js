@@ -265,7 +265,7 @@ module.exports =
 				}
 				if (results.modifiedCount)
 				{
-					console.log('Modified ' + results.deletedCount + ' records within the "' + collectionName + '" collection');
+					console.log('Modified ' + results.modifiedCount + ' records within the "' + collectionName + '" collection');
 				}
 
 				deferred.resolve(results);
@@ -317,12 +317,13 @@ module.exports =
 	 * @param {Object} data - the data to reset into the targeted record
 	 * @param {boolean} allowUpsert - a flag indicating whether insertions are allowed should a record not be
 	 * 		found that matches the passed filter
+	 * @param {Object} unsetData - the data to remove from the targeted record
 	 *
 	 * @return {Object} - the query that will eventually join a larger set of queries to be consumed by bulkWrite
 	 *
 	 * @author kinsho
 	 */
-	formUpdateOneQuery: function(filter, data, allowUpsert)
+	formUpdateOneQuery: function(filter, data, allowUpsert, unsetData)
 	{
 		var result = {};
 
@@ -331,10 +332,16 @@ module.exports =
 			filter: filter,
 			update:
 			{
-				$set: data
+				$set: data,
 			},
 			upsert: allowUpsert
 		};
+
+		// If data is to be removed from the records, then set up the appropriate unset query
+		if (unsetData)
+		{
+			result[UPDATE_ONE].update.$unset = unsetData;
+		}
 
 		return result;
 	},
