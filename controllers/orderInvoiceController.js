@@ -11,16 +11,12 @@ var _Handlebars = require('handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	objectHelper = global.OwlStakes.require('utility/objectHelper'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
 	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-
-	customerModel = global.OwlStakes.require('validators/payInvoice/customer'),
-	validatorUtility = global.OwlStakes.require('validators/validatorUtility'),
 
 	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator');
 
@@ -29,12 +25,11 @@ var _Handlebars = require('handlebars'),
 var CONTROLLER_FOLDER = 'orderInvoice',
 
 	ORDER_RECEIPT_EMAIL = 'orderReceipt',
+	ADMIN_ORDER_CONFIRMATION_EMAIL = 'adminOrderConfirmed',
 	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
-
-	PENDING_STATUS = 'pending',
 
 	HOME_URL = '/',
 
@@ -93,7 +88,8 @@ module.exports =
 	{
 		var populatedPageTemplate,
 			pageData = {},
-			orderNumber = params ? parseInt(params.id, 10) : undefined,
+			// Use a nonsense order ID if one isn't provided, as that would eventually trigger logic to take the user back to the home page
+			orderNumber = params ? parseInt(params.id, 10) : 0,
 			currentYear = new Date().getFullYear(),
 			expirationYears = [],
 			i;
@@ -103,9 +99,10 @@ module.exports =
 		// Fetch the data that will be needed to properly render the page
 		pageData.order = await DAO.searchOrderById(orderNumber);
 
-		if (pageData.order.status !== PENDING_STATUS)
+		// If no order was found that can be used to populate the invoice, then just take the user back to the home page
+		if ( !(pageData.order) )
 		{
-			console.log('Redirecting the user back to the home page as the order has already been approved');
+			console.log('Redirecting the user back to the home page as no order has been found that matches the passed id');
 
 			return await controllerHelper.renderRedirectView(HOME_URL);
 		}
@@ -136,52 +133,48 @@ module.exports =
 	 */
 	approveOrder: async function (params)
 	{
-		var customerValidationModel = customerModel(),
-			mailHTML,
+		var mailHTML,
+			adminMailHTML,
 			processedOrder;
 
 		console.log('Approving an order...');
 
-		// Populate the customer validation model
-		objectHelper.cloneObject(params.customer, customerValidationModel);
-
-		// Verify that both models are valid before proceeding
-		if (validatorUtility.checkModel(customerValidationModel))
+		try
 		{
-			try
-			{
-				// Save the now-approved order into the database
-				processedOrder = await DAO.finalizeNewOrder(params);
-			}
-			catch(error)
-			{
-				return {
-					statusCode: responseCodes.BAD_REQUEST
-				};
-			}
-
-			// Send out an e-mail to the customer
-			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
-			await mailer.sendMail(mailHTML, '', params.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
-
-			// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
+			// Save the now-approved order into the database
+			processedOrder = await DAO.finalizeNewOrder(params);
+		}
+		catch(error)
+		{
 			return {
-				statusCode: responseCodes.OK,
-				data: {},
-
-				cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
-				{
-					areaCode: processedOrder.customer.areaCode,
-					phoneOne: processedOrder.customer.phoneOne,
-					phoneTwo: processedOrder.customer.phoneTwo,
-					email: processedOrder.customer.email,
-					orderNumber: processedOrder._id
-				})
+				statusCode: responseCodes.BAD_REQUEST
 			};
 		}
 
+		// Send out an e-mail to the customer if the customer provided his e-mail address
+		if (params.customer.email)
+		{
+			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
+			await mailer.sendMail(mailHTML, '', params.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
+		}
+
+		// Send an e-mail to the company admins notifying that the order has been approved
+		adminMailHTML = await mailer.generateFullEmail(ADMIN_ORDER_CONFIRMATION_EMAIL, processedOrder, ADMIN_ORDER_CONFIRMATION_EMAIL);
+		await mailer.sendMail(adminMailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
+
+		// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
 		return {
-			statusCode: responseCodes.BAD_REQUEST
+			statusCode: responseCodes.OK,
+			data: {},
+
+			cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
+			{
+				areaCode: processedOrder.customer.areaCode,
+				phoneOne: processedOrder.customer.phoneOne,
+				phoneTwo: processedOrder.customer.phoneTwo,
+				email: processedOrder.customer.email,
+				orderNumber: processedOrder._id
+			})
 		};
 	}
 };

@@ -54,6 +54,21 @@ function navigateToPaperOrder()
 _customOrderButton.addEventListener('click', createNewCustomOrder);
 _paperOrderButton.addEventListener('click', navigateToPaperOrder);
 
+/**
+ * Set up a listener to check for when the hash changes
+ */
+window.addEventListener('hashchange', function()
+{
+	var hash = window.location.href.split('#')[1];
+
+	// If the hash currently set in the URL does not reflect the actual status filter in effect, then change the
+	// status filter to reflect the value in the hash
+	if (vm.statusFilter !== hash)
+	{
+		vm.statusFilter = hash || '';
+	}
+});
+
 // ----------------- DATA INITIALIZATION -----------------------------
 
 // Retrieve the orders either from the local browser cache or from the back-end

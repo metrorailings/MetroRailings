@@ -19,7 +19,7 @@ var ACCEPTABLE_CURRENCY = 'usd',
 
 	TRANSACTION_DESCRIPTION =
 	{
-		CHARGE: 'Order ::orderID - Charge'
+		CHARGE: 'Order ::orderID - System Charge'
 	};
 
 // ----------------- GENERATOR TRANSFORMATION FUNCTIONS --------------------------

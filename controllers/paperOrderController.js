@@ -10,6 +10,8 @@ var _Handlebars = require('handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
+	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
@@ -23,7 +25,9 @@ var CONTROLLER_FOLDER = 'paperOrder',
 		AGREEMENT_SECTION: 'agreementSection',
 		DATE_SECTION: 'dateSection',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
-		SIGNATURE_SECTION: 'signatureSection'
+		SIGNATURE_SECTION: 'signatureSection',
+		CLOSING_TERMS_SECTION: 'closingTermsSection',
+		TIP_SECTION: 'tipSection'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -49,6 +53,16 @@ _Handlebars.registerPartial('paperOrderDateOfInvoice', fileManager.fetchTemplate
 _Handlebars.registerPartial('paperOrderPersonalInfo', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PERSONAL_INFO_SECTION));
 
 /**
+ * The template for the closing terms
+ */
+_Handlebars.registerPartial('paperOrderClosingTerms', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CLOSING_TERMS_SECTION));
+
+/**
+ * The template for the tip section
+ */
+_Handlebars.registerPartial('paperOrderTip', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TIP_SECTION));
+
+/**
  * The template for the signature section
  */
 _Handlebars.registerPartial('paperOrderSignature', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SIGNATURE_SECTION));
@@ -62,12 +76,24 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: async function ()
+	init: async function (params)
 	{
 		var pageData = {},
 			populatedPageTemplate;
 
 		console.log('Loading the paper order page...');
+
+		// Check whether parameters are present. If so, determine if we need to pre-populate existing order data
+		// into the form. Also check if we need to generate content indicating that the order has been closed
+		if (params)
+		{
+			if (params.id)
+			{
+				pageData.order = await DAO.searchOrderById(parseInt(params.id, 10));
+			}
+
+			pageData.closing = params.closing;
+		}
 
 		// Fetch the locations of each of our shops
 		pageData.companyInfo = config.COMPANY_INFO;

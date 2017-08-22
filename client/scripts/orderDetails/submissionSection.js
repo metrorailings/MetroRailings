@@ -9,15 +9,17 @@ import confirmationModal from 'client/scripts/utility/confirmationModal';
 
 var SUBMIT_BUTTON = 'saveChangesButton',
 
+	CLOSED_STATUS = 'closed',
+
 	TAG_ICON_CLASS = 'fa-tag',
 	REVEAL_CLASS = 'reveal',
 
 	SAVE_CHANGES_CONFIRMATION = 'Are you sure you want to save the changes you made to the order?',
-	REFUND_CONFIRMATION = 'We will be <b>refunding $::charge</b> back to the customer. Are you sure you want to do this?',
-	CHARGE_CONFIRMATION = "We will be <b>charging $::charge</b> to the customer's credit card. Are you sure you want to do this?",
+	REFUND_CONFIRMATION = 'Are you sure you want to <b>deduct $::charge</b> from the customer\'s remaining balance?',
+	CHARGE_CONFIRMATION = 'Are you sure you want to <b>add $::charge</b> more on top of the remaining balance to be' +
+		' paid?',
 	CHARGE_PLACEHOLDER = '::charge',
 
-	ORDERS_PAGE_URL = '/orders',
 	SAVE_ORDER_URL = 'orderDetails/saveChanges';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -43,7 +45,7 @@ function _submitChanges()
 	// If no changes were made, take the user back to the orders page without even making a call to the server
 	if ( !(numOfChangesMade) )
 	{
-		window.location.href = ORDERS_PAGE_URL;
+		window.history.back();
 		return;
 	}
 
@@ -52,12 +54,15 @@ function _submitChanges()
 	{
 		_id: vm._id,
 		status: vm.status,
-		notes: vm.notes,
-		type: vm.type,
-		style: vm.style,
-		color: vm.color,
 		length: vm.length,
-		orderTotal: vm.orderTotal,
+		finishedHeight: vm.finishedHeight,
+		rushOrder: vm.rushOrder,
+
+		notes:
+		{
+			internal: (vm.notes ? vm.notes.split('\n').join('<br />') : '')
+		},
+
 		customer:
 		{
 			areaCode: vm.areaCode,
@@ -69,12 +74,35 @@ function _submitChanges()
 			city: vm.city,
 			state: vm.state,
 			zipCode: vm.zipCode
+		},
+
+		design:
+		{
+			post: vm.postDesign,
+			handrailing: vm.handrailing,
+			picket: vm.picket,
+			postEnd: vm.postEnd || '',
+			postCap: vm.postCap || '',
+			center: vm.centerDesign,
+			color: vm.color
+		},
+
+		installation:
+		{
+			coverPlates: vm.coverPlates,
+			platformType: vm.platformType
+		},
+
+		pricing:
+		{
+			restByCheck: vm.restByCheck,
+			modification: vm.pricingModifications
 		}
 	};
 
 	axios.post(SAVE_ORDER_URL, data, true).then(() =>
 	{
-		window.location.href = ORDERS_PAGE_URL;
+		window.history.back();
 	}, () =>
 	{
 		notifier.showGenericServerError();
@@ -91,7 +119,7 @@ function _submitChanges()
 function submit()
 {
 	var modifications = document.getElementsByClassName(TAG_ICON_CLASS + ' ' + REVEAL_CLASS),
-		chargeDifference = (window.parseFloat(vm.orderTotal) - vm.originalOrder.orderTotal).toFixed(2),
+		modifiedPricing = vm.pricingModifications || 0,
 		confirmationMessages = [];
 
 	if (vm.isFormValid)
@@ -106,17 +134,23 @@ function submit()
 			confirmationMessages.push(SAVE_CHANGES_CONFIRMATION);
 		}
 
-		// If the customer's card needs to be charged more money, show a confirmation modal in order to warn the admin
-		// that the customer's credit card will be charged
-		if (chargeDifference > 0)
+		// If the order is going to be closed, check to see whether we are changing the order total here. If we are,
+		// set up a modal indicating whether the admin is intent on changing the order total
+		if (vm.status === CLOSED_STATUS)
 		{
-			confirmationMessages.push(CHARGE_CONFIRMATION.replace(CHARGE_PLACEHOLDER, chargeDifference));
-		}
-		// If the customer needs to be refunded some money, show a confirmation modal in order to warn the admin
-		// that the customer will be refunded some money
-		else if (chargeDifference < 0)
-		{
-			confirmationMessages.push(REFUND_CONFIRMATION.replace(CHARGE_PLACEHOLDER, Math.abs(chargeDifference).toFixed(2)));
+			// If the customer ultimately needs to be charged more money, show a confirmation modal in order to warn the
+			// admin that the customer will be charged more money
+			if (modifiedPricing > 0)
+			{
+				confirmationMessages.push(CHARGE_CONFIRMATION.replace(CHARGE_PLACEHOLDER, vm.pricingModifications));
+			}
+
+			// If the customer is going to have his balance lessened, show a confirmation modal in
+			// order to warn the admin that the customer will be paying less of the balance.
+			else if (modifiedPricing < 0)
+			{
+				confirmationMessages.push(REFUND_CONFIRMATION.replace(CHARGE_PLACEHOLDER, Math.abs(vm.pricingModifications).toFixed(2)));
+			}
 		}
 
 		if (confirmationMessages.length)

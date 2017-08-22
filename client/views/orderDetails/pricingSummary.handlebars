@@ -1,0 +1,109 @@
+<div id='pricingSummary'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Order Length
+		</span>
+		<input id='orderLength' type='tel' value='{{length}}'
+				{{#if_cond status 'closed'}}disabled{{/if_cond}} /> linear feet
+		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Finishing Height
+		</span>
+		<input id='orderFinishedHeight' type='tel' value='{{finishedHeight}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}} /> inches
+		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Price Per Foot</span>
+		<span class='staticValue'>${{ pricing.pricePerFoot }}</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Additional Features</span>
+		<span class='staticValue'>
+			{{#if additionalFeatures}}
+				{{{ additionalFeatures }}}
+			{{else}}
+				N/A
+			{{/if}}
+		</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Additional Price</span>
+		<span class='staticValue'>${{ pricing.additionalPrice }}</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Deductions</span>
+		<span class='staticValue'>${{ pricing.deductions }}</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Original Total Price</span>
+		<span class='staticValue'>
+			{{#if pricing.orderTotal}}
+				${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}
+			{{/if}}
+		</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Balance Remaining</span>
+		<span id='balanceRemaining' class='staticValue'>
+			{{#if pricing.balanceRemaining}}
+				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed }}
+			{{/if}}
+		</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Payment Method</span>
+		<span class='staticValue'>
+			{{#if pricing.paidByCheck }}
+				<span>Check/Cash</span>
+				<i class='fa fa-bank'></i>
+			{{else}}
+				<span>Credit Card</span>
+				<i class='fa fa-credit-card'></i>
+			{{/if}}
+		</span>
+	</div>
+
+	{{#unless pricing.paidByCheck }}
+		<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+			<span class='specializedLabel'>
+			    <i class='fa fa-tag fa-rotate-180'></i>
+				Rest to be Paid By Check?
+			</span>
+			<span id='restByCheckButtonSet' class='buttonSet'>
+				<input type='radio' class='yesRadio' id='restByCheckYes' name='restByCheck' value='y'
+					   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+					   {{#if pricing.restByCheck}}checked{{/if}} />
+				<label for='restByCheckYes'>Yes</label>
+				<input type='radio' class='noRadio' id='restByCheckNo' name='restByCheck' value=''
+					   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+					   {{#unless pricing.restByCheck}}checked{{/unless}} />
+				<label for='restByCheckNo'>No</label>
+			</span>
+		</div>
+	{{/unless}}
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Price Modifications
+		</span>
+		$<input id='priceModifications' type='tel' value='{{pricing.modification}}'
+				{{#if_cond status 'closed'}}disabled{{/if_cond}} />
+		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+</div>

@@ -167,6 +167,7 @@ var orderManagerModule =
 			order = orders[i];
 			phoneNumber = '' + order.customer.areaCode + order.customer.phoneOne + order.customer.phoneTwo;
 
+			// @TODO: Allow to search design selections and notes as well
 			if ((order._id.toString().indexOf(searchText) >= 0) ||
 				(order.customer.name.toLowerCase().indexOf(searchText) >= 0) ||
 				(order.customer.email.toLowerCase().indexOf(searchText) >= 0) ||
@@ -174,13 +175,11 @@ var orderManagerModule =
 				(order.customer.address.toLowerCase().indexOf(searchText) >= 0) ||
 				(order.customer.city.toLowerCase().indexOf(searchText) >= 0) ||
 				(order.customer.state.toLowerCase().indexOf(searchText) >= 0) ||
-				(order.customer.zipCode.toString().indexOf(searchText) >= 0) ||
-				(order.type.indexOf(searchText) >= 0) ||
-				(order.color.indexOf(searchText) >= 0) ||
-				(order.style.indexOf(searchText) >= 0))
+				(order.customer.zipCode.toString().indexOf(searchText) >= 0))
 			{
 				filteredOrders.push(orders[i]);
 			}
+
 		}
 
 		return filteredOrders;

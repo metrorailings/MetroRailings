@@ -135,21 +135,73 @@ module.exports =
 	 * @param {String} str - the string to evaluate
 	 * @param {String} [additionalChecks] - a string of other characters that are allowed to be a part of the
 	 * 		string to evaluate
+ 	 * @param {boolean} [allowNegative] - a flag indicating whether negative numbers should be allowed
 	 *
 	 * @returns {boolean} - a boolean indicating whether the string is only comprised of numerical and allowed
 	 * 		characters
 	 *
 	 * @author kinsho
 	 */
-	isNumeric: function(str, additionalChecks)
+	isNumeric: function(str, additionalChecks, allowNegative)
 	{
 		str = str || '';
 		additionalChecks = additionalChecks || '';
 
 		for (var i = str.length - 1; i >= 0; i--)
 		{
+			// If we allow for negative numbers, check if the number qualifies as a negative number then
+			if (allowNegative && (i === 0) && (str[i] === '-'))
+			{
+				continue;
+			}
+
 			if ((NUMBERS.indexOf(str[i]) === -1) &&
 				(additionalChecks.indexOf(str[i]) === -1))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	},
+
+	/**
+	 * Function validates whether the passed string strictly consists of numerical characters, other allowed
+	 * characters, and perhaps one decimal point
+	 *
+	 * @param {String} str - the string to evaluate
+	 * @param {String} [additionalChecks] - a string of other characters that are allowed to be a part of the
+	 * 		string to evaluate
+	 * @param {boolean} [allowNegative] - a flag indicating whether negative numbers should be allowed
+	 *
+	 * @returns {boolean} - a boolean indicating whether the string qualifies as a float value
+	 *
+	 * @author kinsho
+	 */
+	isFloat: function(str, additionalChecks, allowNegative)
+	{
+		var formattedStr = (str ? str + '' : ''),
+			numbers = formattedStr.split('.');
+
+		// If more than two decimal points are present, then fail this validation check
+		if (numbers.length > 2)
+		{
+			return false;
+		}
+
+		additionalChecks = additionalChecks || '';
+		formattedStr = formattedStr.split('.').join('');
+
+		for (var i = formattedStr.length - 1; i >= 0; i--)
+		{
+			// If we allow for negative numbers, check if the number qualifies as a negative number then
+			if (allowNegative && (i === 0) && (formattedStr[i] === '-'))
+			{
+				continue;
+			}
+
+			if ((NUMBERS.indexOf(formattedStr[i]) === -1) &&
+				(additionalChecks.indexOf(formattedStr[i]) === -1))
 			{
 				return false;
 			}

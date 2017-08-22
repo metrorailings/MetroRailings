@@ -1,101 +1,120 @@
 <div id='orderSpecifics'>
 
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-            <i class='fa fa-tag fa-rotate-180'></i>
-		    Order Type
-		</span>
-		<select id='orderType'>
-			<option value='' disabled>Select a type...</option>
-			<option value='stairs'>Stairs</option>
-			<option value='deck'>Deck</option>
-		</select>
-	</div>
-
-	<div class='dataGrouping'>
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Post Design
 		</span>
-		<select id='orderPost'>
-			<option value='BP'>Standard Big Post</option>
-			<option value='BPC'>Colonial Big Post</option>
-			<option value='SP'>Standard Small Post</option>
+		<select id='orderPost' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='P-BPC' {{#if_cond design.post 'P-BPC'}} selected {{/if_cond}}>Colonial Big Post</option>
+			<option value='P-SP' {{#if_cond design.post 'P-SP'}} selected {{/if_cond}}>Standard Small Post</option>
+			<option value='OTHER' {{#is_custom_design design.post}} selected {{/is_custom_design}}>- Other -</option>
+		</select>
+
+		<input id='otherPost' type='text' class='otherTextfield {{#is_custom_design design.post}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.post}}{{ design.post }}{{/is_custom_design}}'/>
+	</div>
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Handrailing
+		</span>
+		<select id='orderHandrailing' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='H-COL' {{#if_cond design.handrailing 'H-COL'}} selected {{/if_cond}}>Colonial Handrailing</option>
+			<option value='H-STD' {{#if_cond design.handrailing 'H-STD'}} selected {{/if_cond}}>Standard Handrailing</option>
+			<option value='OTHER' {{#is_custom_design design.handrailing}} selected {{/is_custom_design}}>- Other -</option>
+		</select>
+
+		<input id='otherHandrailing' type='text' class='otherTextfield {{#is_custom_design design.handrailing}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.handrailing}}{{ design.handrailing }}{{/is_custom_design}}'/>
+	</div>
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Pickets
+		</span>
+		<select id='orderPickets' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='PCKT-1/2' {{#if_cond design.picket 'PCKT-1/2'}} selected {{/if_cond}}>1/2"</option>
+			<option value='PCKT-5/8' {{#if_cond design.picket 'PCKT-5/8'}} selected {{/if_cond}}>5/8"</option>
+			<option value='PCKT-3/4' {{#if_cond design.picket 'PCKT-3/4'}} selected {{/if_cond}}>3/4"</option>
+			<option value='PCKT-1' {{#if_cond design.picket 'PCKT-1'}} selected {{/if_cond}}>1"</option>
 		</select>
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Post End Design
 		</span>
-		<select id='orderPostEnd'>
-			<option value=''>N/A</option>
-			<option value='VOL'>Volute</option>
-			<option value='LT'>Lamb's Tongue</option>
-			<option value='SCRL'>Scroll</option>
+		<select id='orderPostEnd' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='' {{#if_cond design.postEnd '' }} selected {{/if_cond}}>None</option>
+			<option value='PE-VOL' {{#if_cond design.postEnd 'PE-VOL' }} selected {{/if_cond}}>Volute</option>
+			<option value='PE-LT' {{#if_cond design.postEnd 'PE-LT' }} selected {{/if_cond}}>Lamb's Tongue</option>
+			<option value='PE-SCRL' {{#if_cond design.postEnd 'PE-SCRL' }} selected {{/if_cond}}>Scroll</option>
+			<option value='OTHER' {{#is_custom_design design.postEnd}} selected {{/is_custom_design}}>- Other -</option>
 		</select>
+
+		<input id='otherPostEnd' type='text' class='otherTextfield {{#is_custom_design design.postEnd}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.postEnd}}{{ design.postEnd }}{{/is_custom_design}}'/>
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Post Cap Design
 		</span>
-		<select id='orderPostCap'>
-			<option value=''>N/A</option>
-			<option value='BALL'>Ball</option>
-			<option value='SQ'>Square</option>
-			<option value='MIX'>Mixed</option>
+		<select id='orderPostCap' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='' {{#if_cond design.postCap '' }} selected {{/if_cond}}>None</option>
+			<option value='PC-BALL' {{#if_cond design.postCap 'PC-BALL' }} selected {{/if_cond}}>Ball</option>
+			<option value='PC-SQ' {{#if_cond design.postCap 'PC-SQ' }} selected {{/if_cond}}>Square</option>
+			<option value='OTHER' {{#is_custom_design design.postCap}} selected {{/is_custom_design}}>- Other -</option>
 		</select>
+
+		<input id='otherPostCap' type='text' class='otherTextfield {{#is_custom_design design.postCap}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.postCap}}{{ design.postCap }}{{/is_custom_design}}'/>
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Center Design
 		</span>
-		<select id='orderCenterDesign'>
-			<option value='NONE'>None needed</option>
-			<option value='SC'>S/C Scrolls</option>
-			<option value='HRT'>Hearts</option>
-			<option value='RHRT'>Reverse Hearts</option>
-			<option value='DIA'>Diamonds</option>
-			<option value='TLP'>Tulip</option>
-			<option value='GALE'>Gale</option>
+		<select id='orderCenterDesign' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='NONE' {{#if_cond design.center '' }} selected {{/if_cond}}>None needed</option>
+			<option value='CD-SC' {{#if_cond design.center 'CD-SC' }} selected {{/if_cond}}>S/C Scrolls</option>
+			<option value='CD-DHRT' {{#if_cond design.center 'CD-DHRT' }} selected {{/if_cond}}>Double Hearts</option>
+			<option value='CD-GALE' {{#if_cond design.center 'CD-GALE' }} selected {{/if_cond}}>Gale</option>
+			<option value='CD-SNC' {{#if_cond design.center 'CD-SNC' }} selected {{/if_cond}}>Scroll & Collar</option>
+			<option value='OTHER' {{#is_custom_design design.center}} selected {{/is_custom_design}}>- Other -</option>
 		</select>
+
+		<input id='otherCenterDesign' type='text' class='otherTextfield {{#is_custom_design design.center}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.center}}{{ design.center }}{{/is_custom_design}}'/>
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Color
 		</span>
-		<select id='orderColor'>
-			<option value='' disabled>Select a color...</option>
-			<option value='white'>White</option>
-			<option value='black'>Black</option>
-			<option value='silver'>Silver</option>
-			<option value='mahogany'>Mahogany</option>
+		<select id='orderColor' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='white' {{#if_cond design.color 'white' }} selected {{/if_cond}}>Sky White</option>
+			<option value='black' {{#if_cond design.color 'black' }} selected {{/if_cond}}>Midnight Black</option>
+			<option value='silver' {{#if_cond design.color 'silver' }} selected {{/if_cond}}>Metallic Silver</option>
+			<option value='mahogany' {{#if_cond design.color 'bronze' }} selected {{/if_cond}}>Bronze</option>
+			<option value='OTHER' {{#is_custom_design design.color}} selected {{/is_custom_design}}>- Other -</option>
 		</select>
-	</div>
 
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-            <i class='fa fa-tag fa-rotate-180'></i>
-		    Order Length
-		</span>
-		<input type='tel' id='orderLength' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
-	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-            <i class='fa fa-tag fa-rotate-180'></i>
-		    Total Price
-		</span>
-		$<input type='tel' id='totalPrice' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
+		<input id='otherColor' type='text' class='otherTextfield {{#is_custom_design design.color}} reveal {{/is_custom_design}}'
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+			   value='{{#is_custom_design design.color}}{{ design.color }}{{/is_custom_design}}'/>
 	</div>
 
 </div>

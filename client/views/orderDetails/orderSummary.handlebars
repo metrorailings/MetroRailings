@@ -5,36 +5,82 @@
         <span class='staticValue'>{{ _id }}</span>
     </div>
 
-	<div class='dataGrouping'>
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
 		    <i class='fa fa-tag fa-rotate-180'></i>
 		    Status
 		</span>
 		<span id='statusButtonSet' class='buttonSet'>
-            <input type='radio' class='statusRadio' id='openStatus' name='status' value='open' /> <label for='openStatus'>Open</label>
-			<input type='radio' class='statusRadio' id='consultStatus' name='status' value='consult' /> <label for='consultStatus'>Consult</label>
-            <input type='radio' class='statusRadio' id='productionStatus' name='status' value='production' /> <label for='productionStatus'>Production</label>
-            <input type='radio' class='statusRadio' id='installStatus' name='status' value='install' /> <label for='installStatus'>Install</label>
-            <input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed' /> <label for='closedStatus'>Closed</label>
-            <input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled' /><label for='cancelledStatus'>Cancelled</label>
+            <input type='radio' class='statusRadio' id='pendingStatus' name='status' value='pending'
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if_cond status 'pending'}}checked{{/if_cond}}/>
+			<label for='pendingStatus'>Pending Payment</label>
+
+			<input type='radio' class='statusRadio' id='queueStatus' name='status' value='queue'
+	 			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if_cond status 'queue'}}checked{{/if_cond}}/>
+			<label for='queueStatus'>Queued</label>
+
+			<input type='radio' class='statusRadio' id='productionStatus' name='status' value='production'
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if_cond status 'production'}}checked{{/if_cond}}/>
+			<label for='productionStatus'>Production</label>
+
+			<input type='radio' class='statusRadio' id='finishingStatus' name='status' value='finishing'
+				    {{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if_cond status 'finishing'}}checked{{/if_cond}}/>
+			<label for='finishingStatus'>Finishing</label>
+
+			<input type='radio' class='statusRadio' id='installStatus' name='status' value='install'
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if_cond status 'install'}}checked{{/if_cond}}/>
+			<label for='installStatus'>Install</label>
+
+			<input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed'
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if_cond status 'closed'}}checked{{/if_cond}}/>
+			<label for='closedStatus'>Closed</label>
+
+			<input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled'
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if_cond status 'cancelled'}}checked{{/if_cond}}/>
+			<label for='cancelledStatus'>Cancelled</label>
+
 		</span>
 	</div>
 
     <!-- @TODO - For orders in open status, allow the admin to set a date of visitation -->
 
     <!-- @TODO - Allow multiple notes to be stored, one on top of another --->
-    <div class='dataGrouping'>
+    <div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Order Notes
 		</span>
-		<textarea id='orderNotes'></textarea>
+		<textarea id='orderNotes' {{#if_cond status 'closed'}}disabled{{/if_cond}}>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
     </div>
 
     <div class='dataGrouping'>
         <span class='specializedLabel'>Pictures</span>
         <span id='picturesListingContainer'><!-- Show pictures here --></span>
     </div>
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+		    <i class='fa fa-tag fa-rotate-180'></i>
+			Rush Order
+		</span>
+		<span id='rushOrderButtonSet' class='buttonSet'>
+            <input type='radio' class='yesRadio' id='rushOrderYes' name='rushOrder' value='y'
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#if rushOrder }}checked{{/if}}/>
+			<label for='rushOrderYes'>Yes</label>
+			<input type='radio' class='noRadio' id='rushOrderNo' name='rushOrder' value=''
+				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				   {{#unless rushOrder }}checked{{/unless}}/>
+			<label for='rushOrderNo'>No</label>
+		</span>
+	</div>
 </div>
 
 {{> gallery }}

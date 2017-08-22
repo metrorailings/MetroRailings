@@ -1,6 +1,6 @@
 /* ----------------------- STYLES ----------------------------- */
 
-#pricePerFoot, #additionalPrice
+#pricePerFoot, #additionalPrice, #deductions
 {
 	margin-left: 10px;
 
@@ -17,4 +17,9 @@
 	{
 		display: inline-block;
 	}
+}
+
+#notes
+{
+	height: 200px;
 }

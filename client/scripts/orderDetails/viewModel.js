@@ -14,6 +14,7 @@ import formValidator from 'shared/formValidator';
 var STATUS_RADIO_SUFFIX = 'Status',
 	ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	STATUS_BUTTON_SET_GROUPING = 'statusButtonSet',
+	RUSH_ORDER_BUTTON_SET = 'rushOrderButtonSet',
 
 	CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	AREA_CODE_TEXTFIELD = 'areaCode',
@@ -26,20 +27,35 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	STATE_SELECT = 'state',
 	ZIP_CODE_TEXTFIELD = 'zipCode',
 
-	ORDER_TYPE_SELECT = 'orderType',
 	ORDER_POST_DESIGN_SELECT = 'orderPost',
+	OTHER_POST_DESIGN_TEXTFIELD = 'otherPost',
+	ORDER_HANDRAILING_SELECT = 'orderHandrailing',
+	OTHER_HANDRAILING_TEXTFIELD = 'otherHandrailing',
+	ORDER_PICKET_SELECT = 'orderPickets',
 	ORDER_POST_END_SELECT = 'orderPostEnd',
+	OTHER_POST_END_TEXTFIELD = 'otherPostEnd',
 	ORDER_POST_CAP_SELECT = 'orderPostCap',
+	OTHER_POST_CAP_TEXTFIELD = 'otherPostCap',
 	ORDER_CENTER_DESIGN_SELECT = 'orderCenterDesign',
+	OTHER_CENTER_DESIGN_TEXTFIELD = 'otherCenterDesign',
 	ORDER_COLOR_SELECT = 'orderColor',
-	ORDER_LENGTH_TEXTFIELD = 'orderLength',
-	TOTAL_PRICE_TEXTFIELD = 'totalPrice',
+	OTHER_COLOR_TEXTFIELD = 'otherColor',
+
+	COVER_PLATES_BUTTONS = 'coverPlatesButtonSet',
+	PLATFORM_TYPE_SELECT = 'orderPlatformType',
+
+	LENGTH_TEXTFIELD = 'orderLength',
+	HEIGHT_TEXTFIELD = 'orderFinishedHeight',
+	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
+	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
 
 	SAVE_CHANGES_BUTTON = 'saveChangesButton',
 
 	REVEAL_CLASS = 'reveal',
 	DATA_GROUPING_CLASS = 'dataGrouping',
 	FA_TAG_CLASS = 'fa-tag',
+
+	OTHER_SELECTION = 'OTHER',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
@@ -57,7 +73,6 @@ var STATUS_RADIO_SUFFIX = 'Status',
 
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
-		LENGTH_INVALID: 'Please enter a non-zero length here.',
 		TOTAL_INVALID: 'Please enter a valid dollar amount here.'
 	};
 
@@ -68,6 +83,7 @@ var _validationSet = new Set(),
 	// Elements
 	_notesField = document.getElementById(ORDER_NOTES_TEXT_AREA),
 	_statusButtonSet = document.getElementById(STATUS_BUTTON_SET_GROUPING),
+	_rushOrderButtonSet = document.getElementById(RUSH_ORDER_BUTTON_SET),
 
 	_emailField = document.getElementById(CUSTOMER_EMAIL_TEXTFIELD),
 	_areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
@@ -80,14 +96,27 @@ var _validationSet = new Set(),
 	_stateField = document.getElementById(STATE_SELECT),
 	_zipCodeField = document.getElementById(ZIP_CODE_TEXTFIELD),
 
-	_orderTypeField = document.getElementById(ORDER_TYPE_SELECT),
 	_orderPostDesignField = document.getElementById(ORDER_POST_DESIGN_SELECT),
+	_otherPostDesignField = document.getElementById(OTHER_POST_DESIGN_TEXTFIELD),
+	_orderHandrailingField = document.getElementById(ORDER_HANDRAILING_SELECT),
+	_otherHandrailingField = document.getElementById(OTHER_HANDRAILING_TEXTFIELD),
+	_orderPicketsField = document.getElementById(ORDER_PICKET_SELECT),
 	_orderPostEndField = document.getElementById(ORDER_POST_END_SELECT),
+	_otherPostEndField = document.getElementById(OTHER_POST_END_TEXTFIELD),
 	_orderPostCapField = document.getElementById(ORDER_POST_CAP_SELECT),
+	_otherPostCapField = document.getElementById(OTHER_POST_CAP_TEXTFIELD),
 	_orderCenterDesignField = document.getElementById(ORDER_CENTER_DESIGN_SELECT),
+	_otherCenterDesignField = document.getElementById(OTHER_CENTER_DESIGN_TEXTFIELD),
 	_orderColorField = document.getElementById(ORDER_COLOR_SELECT),
-	_orderLengthField = document.getElementById(ORDER_LENGTH_TEXTFIELD),
-	_totalPriceField = document.getElementById(TOTAL_PRICE_TEXTFIELD),
+	_otherColorField = document.getElementById(OTHER_COLOR_TEXTFIELD),
+
+	_coverPlatesButtonSet = document.getElementById(COVER_PLATES_BUTTONS),
+	_platformTypeField = document.getElementById(PLATFORM_TYPE_SELECT),
+
+	_lengthField = document.getElementById(LENGTH_TEXTFIELD),
+	_heightField = document.getElementById(HEIGHT_TEXTFIELD),
+	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
+	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
 
 	_saveButton = document.getElementById(SAVE_CHANGES_BUTTON);
 
@@ -148,525 +177,716 @@ var viewModel = {};
 // Original Order
 // This property will be used in order to mark fields that have been modified
 Object.defineProperty(viewModel, 'originalOrder',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: false,
+		return viewModel.__originalOrder;
+	},
 
-		get: () =>
-		{
-			return viewModel.__originalOrder;
-		},
+	set: (value) =>
+	{
+		viewModel.__originalOrder = value;
 
-		set: (value) =>
-		{
-			viewModel.__originalOrder = value;
+		// Copy over the values from the original order into the view model
+		viewModel._id = value._id;
+		viewModel.__status = value.status;
+		viewModel.__notes = value.notes.internal;
+		viewModel.__rushOrder = value.rushOrder;
+		viewModel.__pictures = value.pictures || [];
 
-			// Copy over the values from the original order into the view model
-			viewModel._id = value._id;
-			viewModel.status = value.status;
-			viewModel.notes = value.notes;
-			viewModel.pictures = value.pictures || [];
+		viewModel.__email = value.customer.email;
+		viewModel.__areaCode = value.customer.areaCode;
+		viewModel.__phoneOne = value.customer.phoneOne;
+		viewModel.__phoneTwo = value.customer.phoneTwo;
+		viewModel.__address = value.customer.address;
+		viewModel.__aptSuiteNo = value.customer.aptSuiteNo;
+		viewModel.__city = value.customer.city;
+		viewModel.__state = value.customer.state;
+		viewModel.__zipCode = value.customer.zipCode;
 
-			viewModel.email = value.customer.email;
-			viewModel.areaCode = value.customer.areaCode;
-			viewModel.phoneOne = value.customer.phoneOne;
-			viewModel.phoneTwo = value.customer.phoneTwo;
-			viewModel.address = value.customer.address;
-			viewModel.aptSuiteNo = value.customer.aptSuiteNo;
-			viewModel.city = value.customer.city;
-			viewModel.state = value.customer.state;
-			viewModel.zipCode = value.customer.zipCode;
+		viewModel.__postDesign = value.design.post;
+		viewModel.__handrailing = value.design.handrailing;
+		viewModel.__picket = value.design.picket;
+		viewModel.__postEnd = value.design.postEnd;
+		viewModel.__postCap = value.design.postCap;
+		viewModel.__centerDesign = value.design.center;
+		viewModel.__color = value.design.color;
 
-			viewModel.postDesign = value.design.postDesign;
-			viewModel.postEnd = value.design.postEndDesign;
-			viewModel.postCap = value.design.postCapDesign;
-			viewModel.centerDesign = value.design.centerDesign;
-			viewModel.color = value.design.color;
+		viewModel.__coverPlates = value.installation.coverPlates;
+		viewModel.__platformType = value.installation.platformType;
 
-			viewModel.type = value.type;
-			viewModel.length = value.length;
-			viewModel.orderTotal = value.orderTotal;
-		}
-	});
+		viewModel.__length = value.length;
+		viewModel.__finishedHeight = value.finishedHeight;
+		viewModel.__restByCheck = !!(value.pricing.restByCheck);
+		viewModel.__pricingModifications = value.pricing.modification;
+	}
+});
 
 // Order State
 Object.defineProperty(viewModel, 'status',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__status;
+	},
 
-		get: () =>
-		{
-			return viewModel.__status;
-		},
+	set: (value) =>
+	{
+		viewModel.__status = value;
 
-		set: (value) =>
-		{
-			viewModel.__status = value;
+		document.getElementById(value + STATUS_RADIO_SUFFIX).checked = true;
 
-			document.getElementById(value + STATUS_RADIO_SUFFIX).checked = true;
-			_markAsModified((value === viewModel.originalOrder.status), _statusButtonSet);
-		}
-	});
+		_markAsModified((value === viewModel.originalOrder.status), _statusButtonSet);
+	}
+});
 
 // Order Notes
 Object.defineProperty(viewModel, 'notes',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: false,
+		return viewModel.__notes;
+	},
 
-		get: () =>
-		{
-			return viewModel.__notes;
-		},
+	set: (value) =>
+	{
+		viewModel.__notes = value;
 
-		set: (value) =>
-		{
-			viewModel.__notes = value;
+		rQueryClient.setField(_notesField, value);
+		_markAsModified((value === viewModel.originalOrder.notes.internal), _notesField);
+	}
+});
 
-			rQueryClient.setField(_notesField, value);
-			_markAsModified((value === viewModel.originalOrder.notes), _notesField);
-		}
-	});
+// Rush Order
+Object.defineProperty(viewModel, 'rushOrder',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__rushOrder;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__rushOrder = !!(value);
+
+		rQueryClient.setToggleField(_rushOrderButtonSet.getElementsByTagName('input'), value);
+		_markAsModified( (!!(value) === !!(viewModel.originalOrder.rushOrder)), _rushOrderButtonSet);
+	}
+});
 
 // Order Pictures
 Object.defineProperty(viewModel, 'pictures',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: false,
+		return viewModel.__pictures;
+	},
 
-		get: () =>
-		{
-			return viewModel.__pictures;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__pictures = value;
-		}
-	});
+	set: (value) =>
+	{
+		viewModel.__pictures = value;
+	}
+});
 
 // Customer Email
 Object.defineProperty(viewModel, 'email',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__email;
+	},
 
-		get: () =>
-		{
-			return viewModel.__email;
-		},
+	set: (value) =>
+	{
+		viewModel.__email = value;
 
-		set: (value) =>
-		{
-			viewModel.__email = value;
+		// Test whether the value qualifies as an e-mail address
+		var isInvalid = (value.length && !(formValidator.isEmail(value)) );
 
-			// Test whether the value qualifies as an e-mail address
-			var isInvalid = (value.length && !(formValidator.isEmail(value)) );
+		rQueryClient.updateValidationOnField(isInvalid, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+		rQueryClient.setField(_emailField, value, _validationSet);
+		_markAsModified((value === viewModel.originalOrder.customer.email), _emailField);
 
-			rQueryClient.updateValidationOnField(isInvalid, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
-			rQueryClient.setField(_emailField, value, _validationSet);
-			_markAsModified((value === viewModel.originalOrder.customer.email), _emailField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // Customer's area code
 Object.defineProperty(viewModel, 'areaCode',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__areaCode;
+	},
 
-		get: () =>
-		{
-			return viewModel.__areaCode;
-		},
+	set: (value) =>
+	{
+		viewModel.__areaCode = value;
 
-		set: (value) =>
-		{
-			viewModel.__areaCode = value;
+		// Test whether we have a valid area code here
+		var isInvalid = ((value.length && value.length !== 3)) ||
+				!(formValidator.isNumeric(value));
 
-			// Test whether we have a valid area code here
-			var isInvalid = ((value.length && value.length !== 3)) ||
-							!(formValidator.isNumeric(value));
+		rQueryClient.updateValidationOnField(isInvalid, _areaCodeField, ERROR.AREA_CODE_INVALID, _validationSet);
+		rQueryClient.setField(_areaCodeField, value, _validationSet);
+		_markAsModified(_wasPhoneNumberNotModified(), _areaCodeField);
 
-			rQueryClient.updateValidationOnField(isInvalid, _areaCodeField, ERROR.AREA_CODE_INVALID, _validationSet);
-			rQueryClient.setField(_areaCodeField, value, _validationSet);
-			_markAsModified(_wasPhoneNumberNotModified(), _areaCodeField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // Customer's phone number (first three digits)
 Object.defineProperty(viewModel, 'phoneOne',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__phoneOne;
+	},
 
-		get: () =>
-		{
-			return viewModel.__phoneOne;
-		},
+	set: (value) =>
+	{
+		viewModel.__phoneOne = value;
 
-		set: (value) =>
-		{
-			viewModel.__phoneOne = value;
+		// Test whether we have a valid area code here
+		var isInvalid = ((value.length && value.length !== 3)) ||
+				!(formValidator.isNumeric(value));
 
-			// Test whether we have a valid area code here
-			var isInvalid = ((value.length && value.length !== 3)) ||
-							!(formValidator.isNumeric(value));
+		rQueryClient.updateValidationOnField(isInvalid, _phoneOneField, ERROR.PHONE_ONE_INVALID, _validationSet);
+		rQueryClient.setField(_phoneOneField, value, _validationSet);
+		_markAsModified(_wasPhoneNumberNotModified(), _phoneOneField);
 
-			rQueryClient.updateValidationOnField(isInvalid, _phoneOneField, ERROR.PHONE_ONE_INVALID, _validationSet);
-			rQueryClient.setField(_phoneOneField, value, _validationSet);
-			_markAsModified(_wasPhoneNumberNotModified(), _phoneOneField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // Customer's phone number (last four digits)
 Object.defineProperty(viewModel, 'phoneTwo',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__phoneTwo;
+	},
 
-		get: () =>
-		{
-			return viewModel.__phoneTwo;
-		},
+	set: (value) =>
+	{
+		viewModel.__phoneTwo = value;
 
-		set: (value) =>
-		{
-			viewModel.__phoneTwo = value;
+		// Test whether we have a valid area code here
+		var isInvalid = ((value.length && value.length !== 4)) ||
+				!(formValidator.isNumeric(value));
 
-			// Test whether we have a valid area code here
-			var isInvalid = ((value.length && value.length !== 4)) ||
-							!(formValidator.isNumeric(value));
+		rQueryClient.updateValidationOnField(isInvalid, _phoneTwoField, ERROR.PHONE_TWO_INVALID, _validationSet);
+		rQueryClient.setField(_phoneTwoField, value, _validationSet);
+		_markAsModified(_wasPhoneNumberNotModified(), _phoneTwoField);
 
-			rQueryClient.updateValidationOnField(isInvalid, _phoneTwoField, ERROR.PHONE_TWO_INVALID, _validationSet);
-			rQueryClient.setField(_phoneTwoField, value, _validationSet);
-			_markAsModified(_wasPhoneNumberNotModified(), _phoneTwoField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // Address
 Object.defineProperty(viewModel, 'address',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__address;
+	},
 
-		get: () =>
-		{
-			return viewModel.__address;
-		},
+	set: (value) =>
+	{
+		viewModel.__address = value;
 
-		set: (value) =>
-		{
-			viewModel.__address = value;
+		rQueryClient.setField(_addressField, value);
+		_markAsModified((value === viewModel.originalOrder.customer.address), _addressField);
 
-			rQueryClient.setField(_addressField, value);
-			_markAsModified((value === viewModel.originalOrder.customer.address), _addressField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // Apartment Number / Suite Number
 Object.defineProperty(viewModel, 'aptSuiteNo',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: false,
+		return viewModel.__aptSuiteNo;
+	},
 
-		get: () =>
-		{
-			return viewModel.__aptSuiteNo;
-		},
+	set: (value) =>
+	{
+		viewModel.__aptSuiteNo = value;
 
-		set: (value) =>
-		{
-			viewModel.__aptSuiteNo = value;
+		rQueryClient.setField(_aptSuiteNoField, value);
+		_markAsModified((value === viewModel.originalOrder.customer.aptSuiteNo), _aptSuiteNoField);
 
-			rQueryClient.setField(_aptSuiteNoField, value);
-			_markAsModified((value === viewModel.originalOrder.customer.aptSuiteNo), _aptSuiteNoField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // City
 Object.defineProperty(viewModel, 'city',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__city;
+	},
 
-		get: () =>
-		{
-			return viewModel.__city;
-		},
+	set: (value) =>
+	{
+		viewModel.__city = value;
 
-		set: (value) =>
-		{
-			viewModel.__city = value;
+		rQueryClient.setField(_cityField, value);
+		_markAsModified((value === viewModel.originalOrder.customer.city), _cityField);
 
-			rQueryClient.setField(_cityField, value);
-			_markAsModified((value === viewModel.originalOrder.customer.city), _cityField);
-
-			_validate();
-		}
-	});
+		_validate();
+	}
+});
 
 // State
 Object.defineProperty(viewModel, 'state',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__state;
+	},
 
-		get: () =>
-		{
-			return viewModel.__state;
-		},
+	set: (value) =>
+	{
+		viewModel.__state = value;
 
-		set: (value) =>
-		{
-			viewModel.__state = value;
-
-			rQueryClient.setField(_stateField, value);
-			_markAsModified((value === viewModel.originalOrder.customer.state), _stateField);
-		}
-	});
+		rQueryClient.setField(_stateField, value);
+		_markAsModified((value === viewModel.originalOrder.customer.state), _stateField);
+	}
+});
 
 // Zip Code
 Object.defineProperty(viewModel, 'zipCode',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__zipCode;
+	},
 
-		get: () =>
-		{
-			return viewModel.__zipCode;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__zipCode = value;
-
-			// Test whether the value qualifies as a valid zip code
-			var isInvalid = ((value.length && value.length !== 5)) ||
-							!(formValidator.isNumeric(value));
-
-			rQueryClient.updateValidationOnField(isInvalid, _zipCodeField, ERROR.ZIP_CODE_INVALID, _validationSet);
-			rQueryClient.setField(_zipCodeField, value, _validationSet);
-			_markAsModified((value === viewModel.originalOrder.customer.zipCode), _zipCodeField);
-
-			_validate();
-		}
-	});
-
-// Order Type
-Object.defineProperty(viewModel, 'type',
+	set: (value) =>
 	{
-		configurable: false,
-		enumerable: true,
+		viewModel.__zipCode = value;
 
-		get: () =>
-		{
-			return viewModel.__type;
-		},
+		// Test whether the value qualifies as a valid zip code
+		var isInvalid = ((value.length && value.length !== 5)) ||
+				!(formValidator.isNumeric(value));
 
-		set: (value) =>
-		{
-			viewModel.__type = value;
+		rQueryClient.updateValidationOnField(isInvalid, _zipCodeField, ERROR.ZIP_CODE_INVALID, _validationSet);
+		rQueryClient.setField(_zipCodeField, value, _validationSet);
+		_markAsModified((value === viewModel.originalOrder.customer.zipCode), _zipCodeField);
 
-			rQueryClient.setField(_orderTypeField, value);
-			_markAsModified((value === viewModel.originalOrder.type), _orderTypeField);
-		}
-	});
+		_validate();
+	}
+});
 
 // Order Post Design
 Object.defineProperty(viewModel, 'postDesign',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__postDesign;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__postDesign = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderPostDesignField.value === OTHER_SELECTION)
 		{
-			return viewModel.__postDesign;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__postDesign = value;
-
-			rQueryClient.setField(_orderPostDesignField, value);
-			_markAsModified((value === viewModel.originalOrder.design.postDesign), _orderPostDesignField);
+			_otherPostDesignField.classList.add(REVEAL_CLASS);
+			viewModel.__postDesign = _otherPostDesignField.value;
 		}
-	});
+		else
+		{
+			_otherPostDesignField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderPostDesignField, value);
+		}
+
+		_markAsModified((viewModel.__postDesign === viewModel.originalOrder.design.post), _orderPostDesignField);
+	}
+});
+
+// Handrailing
+Object.defineProperty(viewModel, 'handrailing',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__handrailing;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__handrailing = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderHandrailingField.value === OTHER_SELECTION)
+		{
+			_otherHandrailingField.classList.add(REVEAL_CLASS);
+			viewModel.__postDesign = _otherHandrailingField.value;
+		}
+		else
+		{
+			_otherHandrailingField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderHandrailingField, value);
+		}
+
+		_markAsModified((viewModel.__handrailing === viewModel.originalOrder.design.handrailing), _orderHandrailingField);
+	}
+});
+
+// Picket
+Object.defineProperty(viewModel, 'picket',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__picket;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__picket = value;
+
+		_markAsModified((viewModel.__picket === viewModel.originalOrder.design.picket), _orderPicketsField);
+	}
+});
 
 // Order Post End
 Object.defineProperty(viewModel, 'postEnd',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__postEnd;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__postEnd = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderPostEndField.value === OTHER_SELECTION)
 		{
-			return viewModel.__postEnd;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__postEnd = value;
-
-			rQueryClient.setField(_orderPostEndField, value);
-			_markAsModified((value === viewModel.originalOrder.design.postEndDesign), _orderPostEndField);
+			_otherPostEndField.classList.add(REVEAL_CLASS);
+			viewModel.__postEnd = _otherPostEndField.value;
 		}
-	});
+		else
+		{
+			_otherPostEndField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderPostEndField, value);
+		}
+
+		_markAsModified((viewModel.__postEnd === viewModel.originalOrder.design.postEnd), _orderPostEndField);
+	}
+});
 
 // Order Post Cap
 Object.defineProperty(viewModel, 'postCap',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__postCap;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__postCap = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderPostCapField.value === OTHER_SELECTION)
 		{
-			return viewModel.__postCap;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__postCap = value;
-
-			rQueryClient.setField(_orderPostCapField, value);
-			_markAsModified((value === viewModel.originalOrder.design.postCapDesign), _orderPostCapField);
+			_otherPostCapField.classList.add(REVEAL_CLASS);
+			viewModel.__postCap = _otherPostCapField.value;
 		}
-	});
+		else
+		{
+			_otherPostCapField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderPostCapField, value);
+		}
+
+		_markAsModified((viewModel.__postCap === viewModel.originalOrder.design.postCap), _orderPostCapField);
+	}
+});
 
 // Order Center Design
 Object.defineProperty(viewModel, 'centerDesign',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__centerDesign;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__centerDesign = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderCenterDesignField.value === OTHER_SELECTION)
 		{
-			return viewModel.__centerDesign;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__centerDesign = value;
-
-			rQueryClient.setField(_orderCenterDesignField, value);
-			_markAsModified((value === viewModel.originalOrder.design.centerDesign), _orderCenterDesignField);
+			_otherCenterDesignField.classList.add(REVEAL_CLASS);
+			viewModel.__centerDesign = _otherCenterDesignField.value;
 		}
-	});
+		else
+		{
+			_otherCenterDesignField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderCenterDesignField, value);
+		}
+
+		_markAsModified((viewModel.__centerDesign === viewModel.originalOrder.design.center), _orderCenterDesignField);
+	}
+});
 
 // Order Color
 Object.defineProperty(viewModel, 'color',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__color;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__color = value;
+
+		// If the selection is specified as a custom design, let's do some work here to allow the entry of custom
+		// design selections
+		if (_orderColorField.value === OTHER_SELECTION)
 		{
-			return viewModel.__color;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__color = value;
-
-			rQueryClient.setField(_orderColorField, value);
-			_markAsModified((value === viewModel.originalOrder.design.color), _orderColorField);
+			_otherColorField.classList.add(REVEAL_CLASS);
+			viewModel.__color = _otherColorField.value;
 		}
-	});
+		else
+		{
+			_otherColorField.classList.remove(REVEAL_CLASS);
+			rQueryClient.setField(_orderColorField, value);
+		}
+
+		_markAsModified((viewModel.__color === viewModel.originalOrder.design.color), _orderColorField);
+	}
+});
+
+// Cover Plates
+Object.defineProperty(viewModel, 'coverPlates',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__coverPlates;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__coverPlates = !!(value);
+
+		rQueryClient.setToggleField(_coverPlatesButtonSet.getElementsByTagName('input'), value);
+		_markAsModified((viewModel.__coverPlates === !!(viewModel.originalOrder.installation.coverPlates)), _coverPlatesButtonSet);
+	}
+});
+
+// Platform Type
+Object.defineProperty(viewModel, 'platformType',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__platformType;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__platformType = value;
+
+		rQueryClient.setField(_platformTypeField, value);
+		_markAsModified( (value === viewModel.originalOrder.installation.platformType), _platformTypeField);
+	}
+});
 
 // Order Length
 Object.defineProperty(viewModel, 'length',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__length;
+	},
 
-		get: () =>
-		{
-			return viewModel.__length;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__length = value;
-
-			// Make sure a valid length is being set here
-			var isInvalid = !(formValidator.isNumeric(value)) ||
-							(value.length && !(window.parseInt(value, 10)));
-
-			rQueryClient.updateValidationOnField(isInvalid, _orderLengthField, ERROR.LENGTH_INVALID, _validationSet);
-			rQueryClient.setField(_orderLengthField, value);
-			_markAsModified((value === viewModel.originalOrder.length), _orderLengthField);
-
-			_validate();
-		}
-	});
-
-// Total Price
-Object.defineProperty(viewModel, 'orderTotal',
+	set: (value) =>
 	{
-		configurable: false,
-		enumerable: true,
+		viewModel.__length = window.parseInt(value, 10);
 
-		get: () =>
-		{
-			return viewModel.__orderTotal;
-		},
+		rQueryClient.setField(_lengthField, value);
+		_markAsModified( (viewModel.__length === viewModel.originalOrder.length), _lengthField);
+	}
+});
 
-		set: (value) =>
-		{
-			viewModel.__orderTotal = value;
+// Order Finishing Height
+Object.defineProperty(viewModel, 'finishedHeight',
+{
+	configurable: false,
+	enumerable: true,
 
-			// Make sure a valid total price is being set here
-			var isInvalid = !(formValidator.isNumeric(value, '.')) ||
-							(value.length && !(window.parseFloat(value, 10)) ) ||
-							(value.length && value.split('.').length > 2);
+	get: () =>
+	{
+		return viewModel.__finishedHeight;
+	},
 
-			rQueryClient.updateValidationOnField(isInvalid, _totalPriceField, ERROR.TOTAL_INVALID, _validationSet);
-			rQueryClient.setField(_totalPriceField, value);
-			_markAsModified((window.parseFloat(value) === viewModel.originalOrder.orderTotal), _totalPriceField);
+	set: (value) =>
+	{
+		viewModel.__finishedHeight = window.parseInt(value, 10);
 
-			_validate();
-		}
-	});
+		rQueryClient.setField(_heightField, value);
+		_markAsModified( (viewModel.__finishedHeight === viewModel.originalOrder.finishedHeight), _heightField);
+	}
+});
+
+// Mixed Payment Flag
+Object.defineProperty(viewModel, 'restByCheck',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__restByCheck;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__restByCheck = !!(value);
+
+		rQueryClient.setToggleField(_restByCheckButtonSet.getElementsByTagName('input'), value);
+		_markAsModified(( !!(value) === !!(viewModel.originalOrder.pricing.restByCheck)), _restByCheckButtonSet);
+	}
+});
+
+// Total Price Modification
+Object.defineProperty(viewModel, 'pricingModifications',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__pricingModifications;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__pricingModifications = value;
+
+		// Test whether the value qualifies as a valid price amount
+		var isInvalid = (value && !(formValidator.isFloat(value, '', true)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _pricingModificationsField, ERROR.TOTAL_INVALID, _validationSet);
+
+		rQueryClient.setField(_pricingModificationsField, (value && value.toFixed ? value.toFixed(2) : value));
+		_markAsModified((value === viewModel.originalOrder.pricing.modification), _pricingModificationsField);
+
+		_validate();
+	}
+});
 
 // Form Validation Flag
 Object.defineProperty(viewModel, 'isFormValid',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: false,
+		return viewModel.__isFormValid;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__isFormValid = value;
+
+		if (!(value))
 		{
-			return viewModel.__isFormValid;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__isFormValid = value;
-
-			if (!(value))
-			{
-				// Set up a tooltip indicating why the button is disabled
-				tooltipManager.setTooltip(_saveButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
-			}
-			else
-			{
-				tooltipManager.closeTooltip(_saveButton, true);
-			}
+			// Set up a tooltip indicating why the button is disabled
+			tooltipManager.setTooltip(_saveButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
 		}
-	});
+		else
+		{
+			tooltipManager.closeTooltip(_saveButton, true);
+		}
+	}
+});
 
 // ----------------- DATA INITIALIZATION -----------------------------
 

@@ -84,7 +84,7 @@ function submit()
 				areaCode: vm.areaCode,
 				phoneOne: vm.phoneOne,
 				phoneTwo: vm.phoneTwo,
-				email: vm.customerEmail,
+				email: vm.customerEmail || '',
 				aptSuiteNumber: vm.customerAptSuiteNumber,
 				city: vm.customerCity,
 				state: vm.customerState,
@@ -128,8 +128,16 @@ function submit()
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-_submitButton.addEventListener('click', submit);
+// Only allow this listener to be added should such a button exist in the first place
+if (_submitButton)
+{
+	_submitButton.addEventListener('click', submit);
+}
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-vm.isFormSubmissible = false;
+// Only allow view model logic here should this section be shown to the user
+if (_submitButton)
+{
+	vm.isFormSubmissible = false;
+}

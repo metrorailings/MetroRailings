@@ -23,10 +23,14 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	STATE_SELECT = 'state',
 	ZIP_CODE_TEXTFIELD = 'zipCode',
 
+	COVER_PLATES_BUTTONS = 'coverPlates',
+
 	ORDER_LENGTH_TEXTFIELD = 'orderLength',
+	FINISHED_HEIGHT_TEXTFIELD = 'finishedHeight',
 	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
+	DEDUCTIONS_TEXTFIELD = 'deductions',
 
 	SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
 	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
@@ -69,10 +73,14 @@ var _validationSet = new Set(),
 	_stateField = document.getElementById(STATE_SELECT),
 	_zipCodeField = document.getElementById(ZIP_CODE_TEXTFIELD),
 
+	_coverPlateButtons = document.getElementsByName(COVER_PLATES_BUTTONS),
+
 	_orderLengthField = document.getElementById(ORDER_LENGTH_TEXTFIELD),
+	_finishedHeightField = document.getElementById(FINISHED_HEIGHT_TEXTFIELD),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
+	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 
 	_saveAndContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
 	_saveAndExitButton = document.getElementById(SAVE_AND_EXIT_BUTTON);
@@ -101,6 +109,8 @@ function _validate()
 function _isProperDesign()
 {
 	return (viewModel.design.post &&
+			viewModel.design.handrailing &&
+			viewModel.design.picket &&
 			viewModel.design.color);
 }
 
@@ -138,7 +148,7 @@ Object.defineProperty(viewModel, 'name',
 Object.defineProperty(viewModel, 'email',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -362,6 +372,49 @@ Object.defineProperty(viewModel, 'design',
 	}
 });
 
+// Flag indicating whether cover plates are needed
+Object.defineProperty(viewModel, 'coverPlates',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__coverPlates;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__coverPlates = !!(value);
+
+		if (value)
+		{
+			_coverPlateButtons[0].checked = true;
+		}
+		else
+		{
+			_coverPlateButtons[1].checked = true;
+		}
+	}
+});
+
+// Platform Type
+Object.defineProperty(viewModel, 'platformType',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__platformType;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__platformType = value;
+	}
+});
+
 // Order Length
 Object.defineProperty(viewModel, 'length',
 {
@@ -383,6 +436,32 @@ Object.defineProperty(viewModel, 'length',
 
 		rQueryClient.updateValidationOnField(isInvalid, _orderLengthField, ERROR.LENGTH_INVALID, _validationSet);
 		rQueryClient.setField(_orderLengthField, value);
+
+		_validate();
+	}
+});
+
+// The height of the railings
+Object.defineProperty(viewModel, 'finishedHeight',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__finishedHeight;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__finishedHeight = value;
+
+		// Make sure a valid length is being set here
+		var isInvalid = !(formValidator.isNumeric(value)) ||
+			(value.length && !(window.parseInt(value, 10)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _finishedHeightField, ERROR.LENGTH_INVALID, _validationSet);
+		rQueryClient.setField(_finishedHeightField, value);
 
 		_validate();
 	}
@@ -477,6 +556,33 @@ Object.defineProperty(viewModel, 'notes',
 	set: (value) =>
 	{
 		viewModel.__notes = value;
+	}
+});
+
+// Deductions
+Object.defineProperty(viewModel, 'deductions',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__deductions;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__deductions = value;
+
+		// Make sure a valid total price is being set here
+		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
+			(value.length && !(window.parseFloat(value, 10)) ) ||
+			(value.length && value.split('.').length > 2);
+
+		rQueryClient.updateValidationOnField(isInvalid, _deductionsField, ERROR.TOTAL_INVALID, _validationSet);
+		rQueryClient.setField(_deductionsField, value);
+
+		_validate();
 	}
 });
 

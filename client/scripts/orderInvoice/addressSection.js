@@ -81,8 +81,8 @@ _zipCodeField.addEventListener('blur', setZipCode);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-vm.customerAddress = window.MetroRailings.order.customer.address;
-vm.customerAptSuiteNumber = window.MetroRailings.order.customer.aptSuiteNo;
-vm.customerCity = window.MetroRailings.order.customer.city;
-vm.customerState = window.MetroRailings.order.customer.state;
-vm.customerZipCode = window.MetroRailings.order.customer.zipCode;
+vm.customerAddress = _streetAddressField.value;
+vm.customerAptSuiteNumber = _aptSuiteNumberField.value;
+vm.customerCity = _cityField.value;
+vm.customerState = _stateField.value;
+vm.customerZipCode = _zipCodeField.value;

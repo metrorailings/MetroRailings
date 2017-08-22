@@ -81,8 +81,8 @@ _nameField.addEventListener('keyup', setName);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-vm.areaCode = window.MetroRailings.order.customer.areaCode;
-vm.phoneOne = window.MetroRailings.order.customer.phoneOne;
-vm.phoneTwo = window.MetroRailings.order.customer.phoneTwo;
-vm.customerEmail = window.MetroRailings.order.customer.email;
-vm.customerName = window.MetroRailings.order.customer.name;
+vm.areaCode = _areaCodeField.value;
+vm.phoneOne = _phoneOneField.value;
+vm.phoneTwo = _phoneTwoField.value;
+vm.customerEmail = _emailField.value;
+vm.customerName = _nameField.value;

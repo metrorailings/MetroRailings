@@ -16,33 +16,40 @@
                 <span class='orderCell'>{{ customer.name }}</span>
                 <span class='orderCell'>{{ customer.address }}</span>
                 <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
-                <span class='orderCell'>{{ customer.email }}</span>
-                <span class='orderCell'>({{ customer.areaCode }}){{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+				{{#if customer.email }}
+					<span class='orderCell'>{{ customer.email }}</span>
+				{{/if}}
+                <span class='orderCell'>({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
             </span>
 
-            <span class='orderInfoSection'>
-                <span class='orderInfoSectionHeader'>Order Details</span>
-                <span class='orderCell'><span class='orderLabel'>Type:</span> {{#capitalize type }}{{/capitalize }}</span>
-                <span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
-				<span class='orderCell'><span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name design.post}}{{/map_design_code_to_full_name}}</span>
-                {{#if design.postEnd }}
-					<span class='orderCell'><span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name design.postEnd}}{{/map_design_code_to_full_name}}</span>
-                {{/if}}
-                {{#if design.postCap }}
-					<span class='orderCell'><span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</span>
-                {{/if}}
-				<span class='orderCell'><span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</span>
-                <span class='orderCell'><span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name design.color }}{{/map_design_code_to_full_name }}</span>
-            </span>
+			<!-- Only show this section for actual orders and not estimates -->
+			{{#if this.design }}
+				<span class='orderInfoSection'>
+					<span class='orderInfoSectionHeader'>Order Details</span>
+					<span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
+					<span class='orderCell'><span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name design.post}}{{/map_design_code_to_full_name}}</span>
+					{{#if design.postEnd }}
+						<span class='orderCell'><span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name design.postEnd}}{{/map_design_code_to_full_name}}</span>
+					{{/if}}
+					{{#if design.postCap }}
+						<span class='orderCell'><span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</span>
+					{{/if}}
+					<span class='orderCell'><span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</span>
+					<span class='orderCell'><span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name design.color }}{{/map_design_code_to_full_name }}</span>
+				</span>
+			{{/if}}
+
 		</div>
 
         {{#if this.notes }}
-			<div class='orderGrouping orderNotesSection'>
-                <span class='orderInfoSection'>
-                    <span class='orderInfoSectionHeader'>Notes</span>
-                    <span class='orderCell'>{{ notes }}</span>
-                </span>
-			</div>
+			{{#if this.notes.internal}}
+				<div class='orderGrouping orderNotesSection'>
+					<span class='orderInfoSection'>
+						<span class='orderInfoSectionHeader'>Notes</span>
+						<span class='orderCell'>{{{ this.notes.internal }}}</span>
+					</span>
+				</div>
+			{{/if}}
         {{/if}}
 
 		<div class='orderGrouping orderNavButtons'>
@@ -53,16 +60,34 @@
                     </span>
                 </span>
             {{/can_status_be_updated}}
-			<span class='orderCell'>
-				<span class='printLink' data-id='{{ this._id }}'>
-					<i class='fa fa-print'></i>Print Order
+
+			<!-- Only show this section for actual orders and not estimates -->
+			{{#if this.design}}
+				<span class='orderCell'>
+					<span class='printLink' data-id='{{ this._id }}'>
+						<i class='fa fa-print'></i>Print Order
+					</span>
 				</span>
-			</span>
-            <span class='orderCell'>
-                <button class='orderDetailsButton' data-id={{ this._id }}>
-                    Edit<i class='fa fa-arrow-circle-o-right'></i>
-                </button>
-            </span>
+				<span class='orderCell'>
+					<button class='orderDetailsButton' data-id={{ this._id }}>
+						Edit<i class='fa fa-arrow-circle-o-right'></i>
+					</button>
+				</span>
+				{{#if_cond this.status 'install'}}
+					<span class='orderCell'>
+						<button class='closeOrderFormButton' data-id={{ this._id }}>
+							Print Finishing Form<i class='fa fa-file-text'></i>
+						</button>
+					</span>
+				{{/if_cond}}
+			{{else}}
+				<span class='orderCell'>
+					<span class='convertOrderLink' data-id='{{ this._id }}'>
+						<i class='fa fa-first-order'></i>Convert to Order
+					</span>
+				</span>
+			{{/if}}
+
 		</div>
 
         {{#if this.pictures }}
