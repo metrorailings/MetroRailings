@@ -38,7 +38,8 @@ module.exports =
 			{
 				'Content-Type' : router.deduceContentType(responseData.redirect ? '' : url),
 				'Content-Encoding' : contentEncoding,
-				'Access-Control-Allow-Origin' : '*'
+				'Access-Control-Allow-Origin' : '*',
+				'Cache-Control' : 'no-cache, no-store'
 			});
 
 			console.log('Response ready to be returned from URL: /' + url);
