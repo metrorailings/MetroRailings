@@ -69,7 +69,7 @@ var ordersModule =
 		}
 		catch(error)
 		{
-			console.log('Ran into an error fetching an existing order for the order details page!');
+			console.log('Ran into an error fetching an existing order using its ID...');
 			console.log(error);
 
 			return false;
@@ -191,6 +191,12 @@ var ordersModule =
 
 		// Figure out how we'll be referencing the customer
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
+
+		// Calculate the amount to charge the customer
+		order.pricing.orderTotal = pricingCalculator.calculateOrderTotal(order);
+
+		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
+		order.pricing.balanceRemaining = order.pricing.orderTotal;
 
 		// Now save the order
 		try

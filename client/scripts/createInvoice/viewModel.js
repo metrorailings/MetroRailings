@@ -1,5 +1,5 @@
 /**
- * The view model for the order details page
+ * The view model for the invoice creation page
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -110,7 +110,6 @@ function _isProperDesign()
 {
 	return (viewModel.design.post &&
 			viewModel.design.handrailing &&
-			viewModel.design.picket &&
 			viewModel.design.color);
 }
 
@@ -333,7 +332,7 @@ Object.defineProperty(viewModel, 'state',
 Object.defineProperty(viewModel, 'zipCode',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{

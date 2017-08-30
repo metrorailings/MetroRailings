@@ -1,0 +1,29 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+/* ----------------------- STYLES ----------------------------- */
+
+#submissionSection
+{
+	padding:
+	{
+		top: 50px;
+		bottom: 30px;
+	}
+}
+
+#saveChangesButton
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 200px;
+
+	&:disabled
+	{
+		opacity: 0.5;
+		cursor: default;
+	}
+}

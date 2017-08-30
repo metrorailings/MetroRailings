@@ -25,5 +25,7 @@ System.paths.lost = '/client/scripts/lost/main.js';
 System.paths.adminLogIn = '/client/scripts/adminLogIn/main.js';
 System.paths.orders = '/client/scripts/orders/main.js';
 System.paths.orderDetails = '/client/scripts/orderDetails/main.js';
+System.paths.prospectDetails = '/client/scripts/prospectDetails/main.js';
+System.paths.createProspect = '/client/scripts/createProspect/main.js';
 System.paths.createInvoice = '/client/scripts/createInvoice/main.js';
 System.paths.paperOrder = '/client/scripts/paperOrder/main.js';

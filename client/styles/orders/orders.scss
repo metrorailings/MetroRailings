@@ -18,9 +18,9 @@
 	}
 }
 
-#orderCreationButton, #printPaperOrder
+#orderCreationButton, #prospectCreationButton
 {
-	@include button($bgColor: indianRedTheme);
+	@include button($bgColor: darkGreenTheme);
 
 	margin:
 	{
@@ -29,10 +29,15 @@
 		right: 15px;
 	}
 
-	width: 250px;
+	width: 300px;
 
 	& > i
 	{
 		margin-left: 10px;
 	}
+}
+
+#prospectCreationButton
+{
+	background-color: map-get($COLORS, darkBlueTheme);
 }

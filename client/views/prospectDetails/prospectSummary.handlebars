@@ -1,0 +1,29 @@
+<div id='prospectSummary'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Prospect Number</span>
+		<span class='staticValue'>{{ _id }}</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Prospect Created By</span>
+		<span class='staticValue'>{{ conception.user }} ({{#capitalize conception.userType}}{{/capitalize}}) </span>
+	</div>
+
+	<!-- @TODO - Allow multiple notes to be stored, one on top of another --->
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Prospect Notes
+		</span>
+		<textarea id='prospectNotes' class='optionalField'>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Pictures</span>
+		<span id='picturesListingContainer'><!-- Show pictures here --></span>
+	</div>
+
+</div>
+
+{{> gallery }}

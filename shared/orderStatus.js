@@ -36,7 +36,7 @@ var ACTIVE_STATUSES =
 			'we were unable to reach out to you at the contact information you gave us.'
 	},
 
-	ESTIMATE_STATUS = 'estimate',
+	PROSPECT_STATUS = 'prospect',
 	CANCELLED_STATUS = 'cancelled';
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -95,14 +95,14 @@ module.exports =
 	},
 
 	/**
-	 * Function responsible for returning the status label indicating that an estimate request has been placed
+	 * Function responsible for returning the status label used to flag prospects within our system
 	 *
 	 * @returns {String} - the estimate status label
 	 *
 	 * @author kinsho
 	 */
-	estimateStatus: function()
+	prospectStatus: function()
 	{
-		return ESTIMATE_STATUS;
+		return PROSPECT_STATUS;
 	}
 };

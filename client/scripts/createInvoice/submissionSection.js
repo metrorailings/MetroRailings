@@ -1,6 +1,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import vm from 'client/scripts/createInvoice/viewModel';
+
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 
@@ -41,6 +42,7 @@ function submit(event)
 	{
 		data =
 		{
+			_id: window.MetroRailings.prospectId || '', // Set an ID here in case we are transforming a prospect into an order
 			length: window.parseInt(vm.length, 10),
 			finishedHeight: window.parseInt(vm.finishedHeight, 10),
 			additionalFeatures: vm.additionalFeatures.split('\n\n').join('<br /><br />'),
@@ -76,7 +78,7 @@ function submit(event)
 				aptSuiteNo: vm.aptSuiteNo,
 				city: vm.city,
 				state: vm.state,
-				zipCode: vm.zipCode
+				zipCode: vm.zipCode || ''
 			},
 
 			design:

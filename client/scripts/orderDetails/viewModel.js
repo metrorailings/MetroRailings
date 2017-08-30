@@ -46,6 +46,10 @@ var STATUS_RADIO_SUFFIX = 'Status',
 
 	LENGTH_TEXTFIELD = 'orderLength',
 	HEIGHT_TEXTFIELD = 'orderFinishedHeight',
+	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
+	ADDITIONAL_FEATURES_TEXT_AREA = 'additionalFeatures',
+	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
+	DEDUCTIONS_TEXTFIELD = 'deductions',
 	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
 	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
 
@@ -115,6 +119,10 @@ var _validationSet = new Set(),
 
 	_lengthField = document.getElementById(LENGTH_TEXTFIELD),
 	_heightField = document.getElementById(HEIGHT_TEXTFIELD),
+	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
+	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXT_AREA),
+	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
+	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
 
@@ -220,6 +228,10 @@ Object.defineProperty(viewModel, 'originalOrder',
 
 		viewModel.__length = value.length;
 		viewModel.__finishedHeight = value.finishedHeight;
+		viewModel.__pricePerFoot = value.pricing.pricePerFoot;
+		viewModel.__additionalFeatures = value.additionalFeatures;
+		viewModel.__additionalPrice = value.pricing.additionalPrice;
+		viewModel.__deductions = value.pricing.deductions;
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 	}
@@ -811,6 +823,86 @@ Object.defineProperty(viewModel, 'finishedHeight',
 
 		rQueryClient.setField(_heightField, value);
 		_markAsModified( (viewModel.__finishedHeight === viewModel.originalOrder.finishedHeight), _heightField);
+	}
+});
+
+// Price Per Foot
+Object.defineProperty(viewModel, 'pricePerFoot',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__pricePerFoot;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__pricePerFoot = value;
+
+		rQueryClient.setField(_pricePerFootField, value);
+		_markAsModified( (viewModel.__pricePerFoot === viewModel.originalOrder.pricing.pricePerFoot), _pricePerFootField);
+	}
+});
+
+// Additional Features Text
+Object.defineProperty(viewModel, 'additionalFeatures',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__additionalFeatures;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__additionalFeatures = value;
+
+		rQueryClient.setField(_additionalFeaturesField, value);
+		_markAsModified( (viewModel.__additionalFeatures === viewModel.originalOrder.additionalFeatures), _additionalFeaturesField);
+	}
+});
+
+// Additional Price
+Object.defineProperty(viewModel, 'additionalPrice',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__additionalPrice;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__additionalPrice = value;
+
+		rQueryClient.setField(_additionalPriceField, value);
+		_markAsModified( (viewModel.__additionalPrice === viewModel.originalOrder.pricing.additionalPrice), _additionalPriceField);
+	}
+});
+
+// Deductions
+Object.defineProperty(viewModel, 'deductions',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__deductions;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__deductions = value;
+
+		rQueryClient.setField(_deductionsField, value);
+		_markAsModified( (viewModel.__deductions === viewModel.originalOrder.pricing.deductions), _deductionsField);
 	}
 });
 

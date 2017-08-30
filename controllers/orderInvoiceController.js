@@ -31,6 +31,8 @@ var CONTROLLER_FOLDER = 'orderInvoice',
 
 	COOKIE_CUSTOMER_INFO = 'customerInfo',
 
+	PROSPECT_STATUS = 'prospect',
+
 	HOME_URL = '/',
 
 	PARTIALS =
@@ -100,15 +102,12 @@ module.exports =
 		pageData.order = await DAO.searchOrderById(orderNumber);
 
 		// If no order was found that can be used to populate the invoice, then just take the user back to the home page
-		if ( !(pageData.order) )
+		if ( !(pageData.order) || (pageData.order.status === PROSPECT_STATUS) )
 		{
 			console.log('Redirecting the user back to the home page as no order has been found that matches the passed id');
 
 			return await controllerHelper.renderRedirectView(HOME_URL);
 		}
-
-		// Calculate the total price of the order
-		pageData.order.totalPrice = pricingCalculator.calculateOrderTotal(pageData.order);
 
 		// Find some years that can be placed into the expiration year dropdown as selectable options
 		for (i = currentYear; i <= currentYear + 10; i++)

@@ -7,15 +7,15 @@ import vm from 'client/scripts/orders/viewModel';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var ORDER_CREATION_BUTTON = 'orderCreationButton',
-	PAPER_ORDER_BUTTON = 'printPaperOrder',
+	PROSPECT_CREATION_BUTTON = 'prospectCreationButton',
 
 	CREATE_INVOICE_URL = '/createInvoice',
-	PAPER_ORDER_URL = '/paperOrder';
+	PROSPECT_CREATION_URL = '/createProspect';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 var _customOrderButton = document.getElementById(ORDER_CREATION_BUTTON),
-	_paperOrderButton = document.getElementById(PAPER_ORDER_BUTTON);
+	_prospectCreationButton = document.getElementById(PROSPECT_CREATION_BUTTON);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -44,15 +44,15 @@ function createNewCustomOrder()
  *
  * @author kinsho
  */
-function navigateToPaperOrder()
+function navigateToProspectCreation()
 {
-	window.location.href = PAPER_ORDER_URL;
+	window.location.href = PROSPECT_CREATION_URL;
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _customOrderButton.addEventListener('click', createNewCustomOrder);
-_paperOrderButton.addEventListener('click', navigateToPaperOrder);
+_prospectCreationButton.addEventListener('click', navigateToProspectCreation);
 
 /**
  * Set up a listener to check for when the hash changes

@@ -22,28 +22,43 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Price Per Foot</span>
-		<span class='staticValue'>${{ pricing.pricePerFoot }}</span>
+		{{#if_cond status 'pending'}}
+			<input id='pricePerFoot' type='tel' value={{ pricing.pricePerFoot }} />
+		{{else}}
+			<span class='staticValue'>${{ pricing.pricePerFoot }}</span>
+		{{/if_cond}}
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Additional Features</span>
-		<span class='staticValue'>
-			{{#if additionalFeatures}}
-				{{{ additionalFeatures }}}
-			{{else}}
-				N/A
-			{{/if}}
-		</span>
+
+		{{#if_cond status 'pending'}}
+			<textarea id='additionalFeatures'>{{#format_value_for_textarea additionalFeatures}}{{/format_value_for_textarea}}</textarea>
+		{{else}}
+			<span class='staticValue'>
+				{{#if additionalFeatures}}
+					{{{ additionalFeatures }}} {{else}} N/A
+				{{/if}}
+			</span>
+		{{/if_cond}}
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Additional Price</span>
-		<span class='staticValue'>${{ pricing.additionalPrice }}</span>
+		{{#if_cond status 'pending'}}
+			<input id='additionalPrice' type='tel' value={{ pricing.additionalPrice }} />
+		{{else}}
+			<span class='staticValue'>${{ pricing.additionalPrice }}</span>
+		{{/if_cond}}
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Deductions</span>
-		<span class='staticValue'>${{ pricing.deductions }}</span>
+		{{#if_cond status 'pending'}}
+			<input id='deductions' type='tel' value={{ pricing.deductions }} />
+		{{else}}
+			<span class='staticValue'>${{ pricing.deductions }}</span>
+		{{/if_cond}}
 	</div>
 
 	<div class='dataGrouping'>
@@ -64,46 +79,52 @@
 		</span>
 	</div>
 
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>Payment Method</span>
-		<span class='staticValue'>
-			{{#if pricing.paidByCheck }}
-				<span>Check/Cash</span>
+	{{#unless_cond status 'pending'}}
+		<div class='dataGrouping'>
+			<span class='specializedLabel'>Payment Method</span>
+			<span class='staticValue'>
+				{{#if pricing.paidByCheck }}
+					<span>Check/Cash</span>
 				<i class='fa fa-bank'></i>
-			{{else}}
-				<span>Credit Card</span>
+				{{else}}
+					<span>Credit Card</span>
 				<i class='fa fa-credit-card'></i>
-			{{/if}}
-		</span>
-	</div>
+				{{/if}}
+			</span>
+		</div>
+	{{/unless_cond}}
 
-	{{#unless pricing.paidByCheck }}
-		<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+	{{#unless_cond status 'pending'}}
+		{{#unless pricing.paidByCheck }}
+			<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 			<span class='specializedLabel'>
 			    <i class='fa fa-tag fa-rotate-180'></i>
 				Rest to be Paid By Check?
 			</span>
-			<span id='restByCheckButtonSet' class='buttonSet'>
+				<span id='restByCheckButtonSet' class='buttonSet'>
 				<input type='radio' class='yesRadio' id='restByCheckYes' name='restByCheck' value='y'
-					   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-					   {{#if pricing.restByCheck}}checked{{/if}} />
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if pricing.restByCheck}}checked{{/if}} />
 				<label for='restByCheckYes'>Yes</label>
 				<input type='radio' class='noRadio' id='restByCheckNo' name='restByCheck' value=''
-					   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-					   {{#unless pricing.restByCheck}}checked{{/unless}} />
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#unless pricing.restByCheck}}checked{{/unless}} />
 				<label for='restByCheckNo'>No</label>
 			</span>
-		</div>
-	{{/unless}}
+			</div>
+		{{/unless}}
+	{{/unless_cond}}
 
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-            <i class='fa fa-tag fa-rotate-180'></i>
-		    Price Modifications
-		</span>
-		$<input id='priceModifications' type='tel' value='{{pricing.modification}}'
-				{{#if_cond status 'closed'}}disabled{{/if_cond}} />
-		<span class='hint hint--right hint--always' data-hint=''></span>
-	</div>
+	{{#unless_cond status 'pending'}}
+		<div class='dataGrouping'>
+			<span class='specializedLabel'>
+				<i class='fa fa-tag fa-rotate-180'></i>
+				Price Modifications
+			</span>
+			$<input id='priceModifications' type='tel' value='{{pricing.modification}}'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}} />
+			<span class='hint hint--right hint--always' data-hint=''></span>
+		</div>
+	{{/unless_cond}}
 
 </div>

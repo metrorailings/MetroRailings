@@ -1,0 +1,44 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#customerEmail
+{
+	background-color: map-get($COLORS, lightBlueTheme);
+
+	width: 300px;
+}
+
+#areaCode, #phoneOne, #phoneTwo
+{
+	width: 100px;
+}
+
+#areaCode
+{
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	width: 100px;
+}
+
+#phoneOne
+{
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	width: 100px;
+}
+
+#phoneTwo
+{
+	width: 100px;
+}
