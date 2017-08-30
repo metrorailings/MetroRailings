@@ -1,6 +1,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import vm from 'client/scripts/orderDetails/viewModel';
+
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 import confirmationModal from 'client/scripts/utility/confirmationModal';

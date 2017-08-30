@@ -14,8 +14,15 @@
             <span class='orderInfoSection'>
                 <span class='orderInfoSectionHeader'>Customer Info</span>
                 <span class='orderCell'>{{ customer.name }}</span>
-                <span class='orderCell'>{{ customer.address }}</span>
-                <span class='orderCell'>{{ customer.city }}, {{ customer.state }}, {{ customer.zipCode }}</span>
+                <span class='orderCell'>
+					{{ customer.address }}
+					{{#if customer.aptSuiteNo}}
+						<br />
+						{{ customer.aptSuiteNo }}
+					{{/if}}
+					<br />
+					{{ customer.city }}, {{ customer.state }}{{#if customer.zipCode}}, {{ customer.zipCode }}{{/if}}
+				</span>
 				{{#if customer.email }}
 					<span class='orderCell'>{{ customer.email }}</span>
 				{{/if}}
@@ -62,14 +69,14 @@
             {{/can_status_be_updated}}
 
 			<!-- Only show this section for actual orders and not estimates -->
-			{{#if this.design}}
+			{{#unless_cond this.status 'prospect'}}
 				<span class='orderCell'>
 					<span class='printLink' data-id='{{ this._id }}'>
 						<i class='fa fa-print'></i>Print Order
 					</span>
 				</span>
 				<span class='orderCell'>
-					<button class='orderDetailsButton' data-id={{ this._id }}>
+					<button class='detailsButton orderDetailsButton' data-id={{ this._id }}>
 						Edit<i class='fa fa-arrow-circle-o-right'></i>
 					</button>
 				</span>
@@ -86,8 +93,12 @@
 						<i class='fa fa-first-order'></i>Convert to Order
 					</span>
 				</span>
-			{{/if}}
-
+				<span class='orderCell'>
+					<button class='detailsButton prospectDetailsButton' data-id={{ this._id }}>
+						Edit<i class='fa fa-arrow-circle-o-right'></i>
+					</button>
+				</span>
+			{{/unless_cond}}
 		</div>
 
         {{#if this.pictures }}

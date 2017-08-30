@@ -28,6 +28,4 @@ _agreementField.addEventListener('change', setAgreementText);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-_agreementField.value = window.MetroRailings.agreement;
-
 setAgreementText();

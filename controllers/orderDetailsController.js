@@ -102,8 +102,6 @@ module.exports =
 		// Fetch the data that will be needed to properly render the page
 		pageData.order = await ordersDAO.searchOrderById(orderNumber);
 
-		// TODO: Prevent any changes from being made should the order be closed
-
 		// Load the template that we will be using to render the images
 		pageData.picturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES);
 

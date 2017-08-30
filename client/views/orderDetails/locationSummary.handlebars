@@ -43,7 +43,7 @@
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Zip Code
 		</span>
-		<input type='text' id='zipCode' maxlength='5' value='{{ customer.zipCode }}' {{#if_cond status 'closed'}} disabled {{/if_cond}} />
+		<input type='text' id='zipCode' maxlength='5' class='optionalField' value='{{ customer.zipCode }}' {{#if_cond status 'closed'}} disabled {{/if_cond}} />
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 

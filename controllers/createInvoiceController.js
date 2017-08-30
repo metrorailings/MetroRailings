@@ -1,5 +1,5 @@
 /**
- * @module createCustomOrderController
+ * @module createInvoiceController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -14,6 +14,7 @@ var _Handlebars = require('handlebars'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
+	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
 
@@ -80,7 +81,8 @@ module.exports =
 	init: async function (params, cookie)
 	{
 		var populatedPageTemplate,
-			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT);
+			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
+			prospect = {};
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie)) )
 		{
@@ -91,12 +93,15 @@ module.exports =
 
 		console.log('Loading the create invoice page...');
 
-		// @TODO: Pull details on existing estimates should an ID be specified in the parameters
+		if (params.id)
+		{
+			prospect = await prospectsDAO.searchProspectById(parseInt(params.id, 10));
+		}
 
 		// Now render the page template
-		populatedPageTemplate = await templateManager.populateTemplate({}, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate( { prospect: prospect, agreement: agreementText }, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { agreement: agreementText }, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { prospectId: prospect._id }, true, true);
 	},
 
 	/**
@@ -119,8 +124,16 @@ module.exports =
 
 			try
 			{
-				// Save the order into the database
-				processedOrder = await ordersDAO.setUpNewOrder(params, username);
+				if (params._id)
+				{
+					// Convert an existing prospect into an order
+					processedOrder = await prospectsDAO.convertToOrder(params._id, params, username);
+				}
+				else
+				{
+					// Save a new order into the database
+					processedOrder = await ordersDAO.setUpNewOrder(params, username);
+				}
 			}
 			catch (error)
 			{
@@ -129,12 +142,12 @@ module.exports =
 				};
 			}
 
-			// Generate the link that will be sent to the customer so that he can approve and pay for the order
-			invoiceLink = config.BASE_URL + INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, processedOrder._id);
-
 			// Send out an e-mail to the customer if an e-mail address was provided
 			if (params.customer.email)
 			{
+				// Generate the link that will be sent to the customer so that he can approve and pay for the order
+				invoiceLink = config.BASE_URL + INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, processedOrder._id);
+
 				mailHTML = await mailer.generateFullEmail(CUSTOM_ORDER_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_ORDER_EMAIL);
 				await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
 			}

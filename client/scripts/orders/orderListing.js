@@ -17,23 +17,25 @@ import gallery from 'client/scripts/utility/gallery';
 var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	ORDER_PRINT_TEMPLATE = 'orderPrintTemplate',
 
-	UPDATE_STATUS_URL = 'orders/updateStatus',
-	ORDER_DETAILS_URL = '/orderDetails?orderNumber=::orderID',
-	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
-	PAPER_ORDER_URL = '/paperOrder?id=::orderID&closing=y',
-
 	LISTENER_INIT_EVENT = 'listenerInit',
 
 	STATUS_LINK_CLASS = 'nextStatusLink',
 	PRINT_LINK_CLASS = 'printLink',
 	LOAD_PICTURES_LINK_CLASS = 'loadPicturesLink',
 	CONVERT_ORDER_LINK_CLASS = 'convertOrderLink',
+	DETAILS_BUTTON_CLASS = 'detailsButton',
 	ORDER_DETAILS_BUTTON_CLASS = 'orderDetailsButton',
 	PRINT_FINISHING_FORM_BUTTON_CLASS = 'closeOrderFormButton',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
 	HIDE_CLASS = 'hide',
 
 	NEXT_STATUS_MESSAGE = 'Are you sure you want to update order <b>::orderID</b> to <b>::nextStatus</b>?',
+
+	UPDATE_STATUS_URL = 'orders/updateStatus',
+	ORDER_DETAILS_URL = '/orderDetails?orderNumber=::orderID',
+	PROSPECT_DETAILS_URL = '/prospectDetails?orderNumber=::orderID',
+	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
+	PAPER_ORDER_URL = '/paperOrder?id=::orderID&closing=y',
 
 	ORDER_ID_PLACEHOLDER = '::orderID',
 	NEXT_STATUS_PLACEHOLDER = '::nextStatus';
@@ -111,7 +113,7 @@ function _attachPictureLoadListeners()
  */
 function _attachNavigationListeners()
 {
-	var editButtons = document.getElementsByClassName(ORDER_DETAILS_BUTTON_CLASS),
+	var editButtons = document.getElementsByClassName(DETAILS_BUTTON_CLASS),
 		finishingFormButtons = document.getElementsByClassName(PRINT_FINISHING_FORM_BUTTON_CLASS),
 		i;
 
@@ -297,7 +299,7 @@ function updateStatus(event)
 }
 
 /**
- * Listener meant to take the user to the order details page for a particular order
+ * Listener meant to take the user to the details page for a particular prospect/order
  *
  * @param {Event} event - the event associated with the firing of this listener
  *
@@ -307,9 +309,10 @@ function navigateToDetailsPage(event)
 {
 	var targetElement = event.currentTarget,
 		orderID = targetElement.dataset.id,
-		orderDetailsURL = ORDER_DETAILS_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
+		navigatingToOrderDetails = targetElement.classList.contains(ORDER_DETAILS_BUTTON_CLASS),
+		navigateToURL = (navigatingToOrderDetails ? ORDER_DETAILS_URL.replace(ORDER_ID_PLACEHOLDER, orderID) : PROSPECT_DETAILS_URL.replace(ORDER_ID_PLACEHOLDER, orderID));
 
-	window.location.href = orderDetailsURL;
+	window.location.href = navigateToURL;
 }
 
 /**

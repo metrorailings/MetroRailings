@@ -31,7 +31,7 @@
             </select>
         </span>
 		<span class='controlGrouping'>
-            <label for='addressZipCode' class='required'>Zip Code</label>
+            <label for='addressZipCode'>Zip Code</label>
             <input type='tel' id='addressZipCode' maxlength='5' placeholder='#####' value='{{ order.customer.zipCode}}'
 				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
         </span>

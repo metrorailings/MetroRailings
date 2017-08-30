@@ -366,7 +366,7 @@ Object.defineProperty(viewModel, 'customerState',
 Object.defineProperty(viewModel, 'customerZipCode',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{

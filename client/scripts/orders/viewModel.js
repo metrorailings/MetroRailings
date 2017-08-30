@@ -88,15 +88,20 @@ Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
  */
 Handlebars.registerHelper('if_cond', function(val1, val2, block)
 {
-	if (val1 === val2)
-	{
-		return block.fn(this);
-	}
-	else
-	{
-		return block.inverse(this);
-	}
+	return (val1 === val2 ? block.fn(this) : block.inverse(this));
 });
+
+/**
+ * Helper designed to help us test for the equality of two values and execute opposite blocks of code depending on
+ * the results of that test
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('unless_cond', function(val1, val2, block)
+{
+	return (val1 === val2 ? block.inverse(this) : block.fn(this));
+});
+
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 

@@ -1,0 +1,12 @@
+<div id='picturesListing'>
+	{{#pictures}}
+		<span>
+            <img src='{{fullLink}}' class='uploadedImageThumbnail' data-index="{{@index}}"/>
+        </span>
+	{{/pictures}}
+</div>
+
+<div id="uploadPictureButtonContainer">
+	<span id='uploadPictureButton'>Upload a New Picture</span>
+	<input type='file' id='uploadPictureInput' />
+</div>

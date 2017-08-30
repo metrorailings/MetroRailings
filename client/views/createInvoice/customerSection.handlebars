@@ -2,14 +2,14 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Customer Name</span>
-		<input id='customerName' type='text' />
+		<input id='customerName' type='text' value='{{ prospect.customer.name }}'/>
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
 		    E-mail Address
 		</span>
-		<input id='customerEmail' type='email' class='optionalField' />
+		<input id='customerEmail' type='email' class='optionalField' value='{{ prospect.customer.email }}' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
@@ -17,11 +17,11 @@
 		<span class='specializedLabel'>
 		    Phone Number
 		</span>
-		(<input id='areaCode' type='tel' maxlength='3' placeholder='Area Code' />)
+		(<input id='areaCode' type='tel' maxlength='3' placeholder='Area Code' value='{{ prospect.customer.areaCode }}'/>)
+		<span class='hint hint--right hint--always' data-hint='' ></span>
+		<input id='phoneOne' type='tel' maxlength='3' placeholder='###' value='{{ prospect.customer.phoneOne }}' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
-		<input id='phoneOne' type='tel' maxlength='3' placeholder='###' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
-		<input id='phoneTwo' type='tel' maxlength='4' placeholder='####' />
+		<input id='phoneTwo' type='tel' maxlength='4' placeholder='####' value='{{ prospect.customer.phoneTwo }}' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 

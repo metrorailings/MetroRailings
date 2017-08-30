@@ -1,0 +1,49 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#picturesListing
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.uploadedImageThumbnail
+{
+	margin:
+	{
+		left: 20px;
+		right: 20px;
+		top: 15px;
+		bottom: 15px;
+	}
+
+    max-width: 150px;
+    max-height: 150px;
+
+	cursor: pointer;
+}
+
+#uploadPictureButtonContainer
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+		left: 10px;
+	}
+
+	text-align: left;
+}
+
+#uploadPictureButton
+{
+	@include squareButton($bgColor: indianRedTheme);
+
+	width: 250px;
+	text-align: left;
+}
