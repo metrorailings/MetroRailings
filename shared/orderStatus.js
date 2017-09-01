@@ -16,6 +16,13 @@ var ACTIVE_STATUSES =
 		'closed'
 	],
 
+	SHOP_STATUSES =
+	[
+		'queue',
+		'production',
+		'finishing'
+	],
+
 	STATUS_DESCRIPTIONS =
 	{
 		pending: 'Your order is <b>pending</b> your approval! Please check your e-mail and see if you received an' +
@@ -66,6 +73,28 @@ module.exports =
 		}
 
 		return '';
+	},
+
+	/**
+	 * Function responsible for determining whether the status indicates that the order is being fabricated
+	 *
+	 * @param {String} status - the status to test
+	 *
+	 * @returns {boolean} - a flag indicating whether the order is currently in the midst of fabrication
+	 *
+	 * @author kinsho
+	 */
+	isShopStatus: function(status)
+	{
+		for (var i = 0; i < SHOP_STATUSES.length; i++)
+		{
+			if (SHOP_STATUSES[i] === status)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	},
 
 	/**

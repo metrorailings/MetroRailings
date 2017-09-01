@@ -23,6 +23,7 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	PRINT_LINK_CLASS = 'printLink',
 	LOAD_PICTURES_LINK_CLASS = 'loadPicturesLink',
 	CONVERT_ORDER_LINK_CLASS = 'convertOrderLink',
+	INVOICE_LINK_CLASS = 'invoiceLink',
 	DETAILS_BUTTON_CLASS = 'detailsButton',
 	ORDER_DETAILS_BUTTON_CLASS = 'orderDetailsButton',
 	PRINT_FINISHING_FORM_BUTTON_CLASS = 'closeOrderFormButton',
@@ -35,6 +36,7 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	ORDER_DETAILS_URL = '/orderDetails?orderNumber=::orderID',
 	PROSPECT_DETAILS_URL = '/prospectDetails?orderNumber=::orderID',
 	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
+	ORDER_INVOICE_URL = '/orderInvoice?id=::orderID',
 	PAPER_ORDER_URL = '/paperOrder?id=::orderID&closing=y',
 
 	ORDER_ID_PLACEHOLDER = '::orderID',
@@ -141,6 +143,23 @@ function _attachOrderConversionListeners()
 	for (i = conversionButtons.length - 1; i >= 0; i--)
 	{
 		conversionButtons[i].addEventListener('click', navigateToCreateInvoicePage);
+	}
+}
+
+/**
+ * Function meant to dynamically attach listeners to all 'View Invoice' links
+ * Needed so that we can reattach listeners every time orders are re-rendered onto screen
+ *
+ * @author kinsho
+ */
+function _attachInvoiceLinkListeners()
+{
+	var invoiceLinks = document.getElementsByClassName(INVOICE_LINK_CLASS),
+		i;
+
+	for (i = invoiceLinks.length - 1; i >= 0; i--)
+	{
+		invoiceLinks[i].addEventListener('click', navigateToInvoicePage);
 	}
 }
 
@@ -347,6 +366,22 @@ function navigateToPaperOrderPage(event)
 	window.location.href = paperOrderURL;
 }
 
+/**
+ * Listener meant to take the user to the customer-facing invoice for a particular order
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function navigateToInvoicePage(event)
+{
+	var targetElement = event.currentTarget,
+		orderID = targetElement.dataset.id,
+		invoiceURL = ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
+
+	window.location.href = invoiceURL;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 document.addEventListener(LISTENER_INIT_EVENT, () =>
@@ -356,4 +391,5 @@ document.addEventListener(LISTENER_INIT_EVENT, () =>
 	_attachPictureLoadListeners();
 	_attachNavigationListeners();
 	_attachOrderConversionListeners();
+	_attachInvoiceLinkListeners();
 });

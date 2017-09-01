@@ -14,9 +14,12 @@
 	width: auto;
 }
 
-#priceModifications
+#priceModifications, #additionalPrice, #deductions, #pricePerFoot
 {
-	background-color: map-get($COLORS, lightBlueTheme);
-
 	margin-left: 5px;
+}
+
+#additionalFeatures
+{
+	height: 140px;
 }

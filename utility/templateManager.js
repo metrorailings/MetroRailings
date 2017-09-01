@@ -119,6 +119,27 @@ _Handlebars.registerHelper('unless_cond', function(val1, val2, block)
 });
 
 /**
+ * Helper designed to help us test whether a value already exists within a set of given values. We execute opposite
+ * blocks of code depending on the results of that test
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('unless_cond_group', function(val, [groupVals], block)
+{
+	for (var i = groupVals.length - 1; i >= 0; i--)
+	{
+		if (groupVals[i] === val)
+		{
+			block.inverse(this);
+		}
+		else
+		{
+			block.fn(this);
+		}
+	}
+});
+
+/**
  * Helper designed to help us test whether one value is greater than another
  *
  * @author kinsho

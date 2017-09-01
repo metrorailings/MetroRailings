@@ -53,6 +53,9 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
 	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
 
+	DESCRIPTION_TEXT_AREA = 'orderDescription',
+	AGREEMENT_TEXT_AREA = 'agreement',
+
 	SAVE_CHANGES_BUTTON = 'saveChangesButton',
 
 	REVEAL_CLASS = 'reveal',
@@ -77,6 +80,7 @@ var STATUS_RADIO_SUFFIX = 'Status',
 
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
+		WHOLE_NUMBER_INVALID: 'Please enter only whole numbers here.',
 		TOTAL_INVALID: 'Please enter a valid dollar amount here.'
 	};
 
@@ -125,6 +129,9 @@ var _validationSet = new Set(),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
+
+	_descriptionField = document.getElementById(DESCRIPTION_TEXT_AREA),
+	_agreementField = document.getElementById(AGREEMENT_TEXT_AREA),
 
 	_saveButton = document.getElementById(SAVE_CHANGES_BUTTON);
 
@@ -234,6 +241,9 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__deductions = value.pricing.deductions;
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
+
+		viewModel.__orderDescription = value.notes.order;
+		viewModel.__agreement = value.agreement;
 	}
 });
 
@@ -512,7 +522,7 @@ Object.defineProperty(viewModel, 'state',
 Object.defineProperty(viewModel, 'zipCode',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -603,7 +613,7 @@ Object.defineProperty(viewModel, 'handrailing',
 Object.defineProperty(viewModel, 'picket',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
@@ -801,8 +811,15 @@ Object.defineProperty(viewModel, 'length',
 	{
 		viewModel.__length = window.parseInt(value, 10);
 
-		rQueryClient.setField(_lengthField, value);
+		// Test whether the value qualifies as a valid price amount
+		var isInvalid = (value && !(formValidator.isNumeric(value)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _lengthField, ERROR.WHOLE_NUMBER_INVALID, _validationSet);
+
+		rQueryClient.setField(_lengthField, value, _validationSet);
 		_markAsModified( (viewModel.__length === viewModel.originalOrder.length), _lengthField);
+
+		_validate();
 	}
 });
 
@@ -821,8 +838,15 @@ Object.defineProperty(viewModel, 'finishedHeight',
 	{
 		viewModel.__finishedHeight = window.parseInt(value, 10);
 
-		rQueryClient.setField(_heightField, value);
+		// Test whether the value qualifies as a valid price amount
+		var isInvalid = (value && !(formValidator.isNumeric(value)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _heightField, ERROR.WHOLE_NUMBER_INVALID, _validationSet);
+
+		rQueryClient.setField(_heightField, value, _validationSet);
 		_markAsModified( (viewModel.__finishedHeight === viewModel.originalOrder.finishedHeight), _heightField);
+
+		_validate();
 	}
 });
 
@@ -841,8 +865,15 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 	{
 		viewModel.__pricePerFoot = value;
 
-		rQueryClient.setField(_pricePerFootField, value);
+		// Test whether the value qualifies as a valid price amount
+		var isInvalid = (value && !(formValidator.isFloat(value, '', true)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _pricePerFootField, ERROR.TOTAL_INVALID, _validationSet);
+
+		rQueryClient.setField(_pricePerFootField, value, _validationSet);
 		_markAsModified( (viewModel.__pricePerFoot === viewModel.originalOrder.pricing.pricePerFoot), _pricePerFootField);
+
+		_validate();
 	}
 });
 
@@ -881,8 +912,15 @@ Object.defineProperty(viewModel, 'additionalPrice',
 	{
 		viewModel.__additionalPrice = value;
 
-		rQueryClient.setField(_additionalPriceField, value);
+		// Test whether the value qualifies as a valid price amount
+		var isInvalid = (value && !(formValidator.isFloat(value, '', true)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _additionalPriceField, ERROR.TOTAL_INVALID, _validationSet);
+
+		rQueryClient.setField(_additionalPriceField, value, _validationSet);
 		_markAsModified( (viewModel.__additionalPrice === viewModel.originalOrder.pricing.additionalPrice), _additionalPriceField);
+
+		_validate();
 	}
 });
 
@@ -901,8 +939,15 @@ Object.defineProperty(viewModel, 'deductions',
 	{
 		viewModel.__deductions = value;
 
-		rQueryClient.setField(_deductionsField, value);
+		// Test whether the value qualifies as a valid price amount
+		var isInvalid = (value && !(formValidator.isFloat(value, '', true)));
+
+		rQueryClient.updateValidationOnField(isInvalid, _deductionsField, ERROR.TOTAL_INVALID, _validationSet);
+
+		rQueryClient.setField(_deductionsField, value, _validationSet);
 		_markAsModified( (viewModel.__deductions === viewModel.originalOrder.pricing.deductions), _deductionsField);
+
+		_validate();
 	}
 });
 
@@ -946,10 +991,50 @@ Object.defineProperty(viewModel, 'pricingModifications',
 
 		rQueryClient.updateValidationOnField(isInvalid, _pricingModificationsField, ERROR.TOTAL_INVALID, _validationSet);
 
-		rQueryClient.setField(_pricingModificationsField, (value && value.toFixed ? value.toFixed(2) : value));
+		rQueryClient.setField(_pricingModificationsField, (value && value.toFixed ? value.toFixed(2) : value), _validationSet);
 		_markAsModified((value === viewModel.originalOrder.pricing.modification), _pricingModificationsField);
 
 		_validate();
+	}
+});
+
+// Order Description
+Object.defineProperty(viewModel, 'orderDescription',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__orderDescription;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__orderDescription = value;
+
+		rQueryClient.setField(_descriptionField, value);
+		_markAsModified((value === viewModel.originalOrder.notes.order), _descriptionField);
+	}
+});
+
+// Agreement
+Object.defineProperty(viewModel, 'agreement',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__agreement;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__agreement = value;
+
+		rQueryClient.setField(_agreementField, value);
+		_markAsModified((value === viewModel.originalOrder.agreement), _agreementField);
 	}
 });
 

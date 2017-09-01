@@ -10,7 +10,7 @@
             <i class='fa fa-tag fa-rotate-180'></i>
 		    E-mail Address
 		</span>
-        <input id='customerEmail' type='email' value='{{ customer.email }}' {{#if_cond status 'closed'}} disabled {{/if_cond}}/>
+        <input id='customerEmail' type='email' class='optionalField' value='{{ customer.email }}' {{#if_cond status 'closed'}} disabled {{/if_cond}}/>
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 

@@ -17,12 +17,12 @@ var LENGTH_FIELD = 'orderLength',
 
 var _lengthField = document.getElementById(LENGTH_FIELD),
 	_heightField = document.getElementById(HEIGHT_FIELD),
-	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_FIELD) || { value: '' },
-	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA) || { value: '' },
-	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_FIELD) || { value: '' },
-	_deductionsField = document.getElementById(DEDUCTIONS_FIELD) || { value: '' },
+	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_FIELD) || { value: '', addEventListener: () => {} },
+	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA) || { value: '', addEventListener: () => {} },
+	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_FIELD) || { value: '', addEventListener: () => {} },
+	_deductionsField = document.getElementById(DEDUCTIONS_FIELD) || { value: '', addEventListener: () => {} },
 	_restByCheckButtons = document.getElementsByName(REST_BY_CHECK_BUTTONS),
-	_priceModificationsField = document.getElementById(TOTAL_PRICE_MODIFICATIONS_FIELD) || { value: '' };
+	_priceModificationsField = document.getElementById(TOTAL_PRICE_MODIFICATIONS_FIELD) || { value: '', addEventListener: () => {} };
 
 // ----------------- LISTENERS ---------------------------
 
@@ -112,34 +112,14 @@ function setModifiedPrice()
 
 _lengthField.addEventListener('change', setLength);
 _heightField.addEventListener('change', setHeight);
-
-if (_pricePerFootField)
-{
-	_pricePerFootField.addEventListener('change', setPricePerFoot);
-}
-
-if (_additionalFeaturesField)
-{
-	_additionalFeaturesField.addEventListener('change', setAdditionalFeatures);
-}
-
-if (_additionalPriceField)
-{
-	_additionalPriceField.addEventListener('change', setAdditionalPrice);
-}
-
-if (_deductionsField)
-{
-	_deductionsField.addEventListener('change', setDeductions);
-}
+_pricePerFootField.addEventListener('change', setPricePerFoot);
+_additionalFeaturesField.addEventListener('change', setAdditionalFeatures);
+_additionalPriceField.addEventListener('change', setAdditionalPrice);
+_deductionsField.addEventListener('change', setDeductions);
+_priceModificationsField.addEventListener('change', setModifiedPrice);
 
 if (_restByCheckButtons.length)
 {
 	_restByCheckButtons[0].addEventListener('change', setMixedPaymentFlag);
 	_restByCheckButtons[1].addEventListener('change', setMixedPaymentFlag);
-}
-
-if (_priceModificationsField)
-{
-	_priceModificationsField.addEventListener('change', setModifiedPrice);
 }
