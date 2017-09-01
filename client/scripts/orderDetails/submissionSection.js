@@ -59,8 +59,12 @@ function _submitChanges()
 		finishedHeight: vm.finishedHeight,
 		rushOrder: vm.rushOrder,
 
+		additionalFeatures: vm.additionalFeatures,
+		agreement: vm.agreement.split('\n\n'),
+
 		notes:
 		{
+			order: vm.orderDescription.split('\n').join('<br />'),
 			internal: (vm.notes ? vm.notes.split('\n').join('<br />') : '')
 		},
 
@@ -96,6 +100,9 @@ function _submitChanges()
 
 		pricing:
 		{
+			pricePerFoot: vm.pricePerFoot,
+			additionalPrice: vm.additionalPrice,
+			deductions: vm.deductions,
 			restByCheck: vm.restByCheck,
 			modification: vm.pricingModifications
 		}

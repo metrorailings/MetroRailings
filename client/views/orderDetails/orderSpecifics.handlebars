@@ -38,6 +38,7 @@
 		    Pickets
 		</span>
 		<select id='orderPickets' {{#if_cond status 'closed'}}disabled{{/if_cond}}>
+			<option value='' {{#if_cond design.picket ''}} selected {{/if_cond}}>None</option>
 			<option value='PCKT-1/2' {{#if_cond design.picket 'PCKT-1/2'}} selected {{/if_cond}}>1/2"</option>
 			<option value='PCKT-5/8' {{#if_cond design.picket 'PCKT-5/8'}} selected {{/if_cond}}>5/8"</option>
 			<option value='PCKT-3/4' {{#if_cond design.picket 'PCKT-3/4'}} selected {{/if_cond}}>3/4"</option>

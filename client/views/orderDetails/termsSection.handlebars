@@ -1,0 +1,35 @@
+<div id='termsSection'>
+
+	<!--
+		Display a heads-up message here indicating that the terms or description of the order cannot be modified now
+		that the customer has finalized the invoice.
+	 -->
+	{{#unless_cond status 'pending'}}
+		<div id='cannotModifyTermsMessage' class='specialMessageSection'>
+			<span>
+				<i class='fa fa-exclamation-circle'></i>
+			</span>
+			<p>
+				The description and terms of this order can no longer be modified now that the customer has agreed to
+				the invoice that was sent earlier.
+			</p>
+		</div>
+	{{/unless_cond}}
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Order Description
+		</span>
+		<textarea id='orderDescription' {{#unless_cond status 'pending'}} disabled {{/unless_cond}}>{{#format_value_for_textarea notes.order }}{{/format_value_for_textarea}}</textarea>
+	</div>
+
+	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Terms & Conditions
+		</span>
+		<textarea id='agreement' {{#unless_cond status 'pending'}} disabled {{/unless_cond}}>{{agreement}}</textarea>
+	</div>
+
+</div>

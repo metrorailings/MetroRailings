@@ -9,7 +9,7 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#orderSummary, #customerSummary, #locationSummary, #orderSpecifics, #installationSummary, #pricingSummary, #submissionSection
+#orderSummary, #customerSummary, #locationSummary, #orderSpecifics, #installationSummary, #pricingSummary, #termsSection, #submissionSection
 {
 	padding:
 	{
@@ -113,4 +113,9 @@
 			visibility: visible;
 		}
 	}
+}
+
+.optionalField
+{
+	background-color: map-get($COLORS, lightBlueTheme);
 }

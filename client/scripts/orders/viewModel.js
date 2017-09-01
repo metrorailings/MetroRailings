@@ -61,11 +61,11 @@ Handlebars.registerHelper('next_state', function(str)
 });
 
 /**
- * Helper designed to determine whether an order can have its status updated to the next level
+ * Helper designed to determine whether an order can have its status updated to the next level from the orders listing
  */
 Handlebars.registerHelper('can_status_be_updated', function(str, block)
 {
-	if (statuses.moveStatusToNextLevel(str))
+	if (statuses.moveStatusToNextLevel(str) && (statuses.isShopStatus(str)))
 	{
 		return block.fn(this);
 	}
@@ -100,6 +100,27 @@ Handlebars.registerHelper('if_cond', function(val1, val2, block)
 Handlebars.registerHelper('unless_cond', function(val1, val2, block)
 {
 	return (val1 === val2 ? block.inverse(this) : block.fn(this));
+});
+
+/**
+ * Helper designed to help us test whether a value already exists within a set of given values. We execute opposite
+ * blocks of code depending on the results of that test
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('unless_cond_group', function(val, [groupVals], block)
+{
+	for (var i = groupVals.length - 1; i >= 0; i--)
+	{
+		if (groupVals[i] === val)
+		{
+			block.inverse(this);
+		}
+		else
+		{
+			block.fn(this);
+		}
+	}
 });
 
 

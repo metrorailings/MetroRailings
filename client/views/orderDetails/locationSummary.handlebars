@@ -13,7 +13,7 @@
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Apt. Number / Suite
 		</span>
-		<input type='text' id='aptSuiteNo' value='{{#if customer.aptSuiteNo }} {{ customer.aptSuiteNo }} {{/if}}'
+		<input type='text' id='aptSuiteNo' class='optionalField' value='{{#if customer.aptSuiteNo }} {{ customer.aptSuiteNo	}} {{/if}}'
 			   {{#if_cond status 'closed'}} disabled {{/if_cond}} />
 	</div>
 

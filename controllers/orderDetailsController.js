@@ -32,6 +32,7 @@ var CONTROLLER_FOLDER = 'orderDetails',
 		ORDER_SPECIFICS: 'orderSpecifics',
 		INSTALLATION_SUMMARY: 'installationSummary',
 		PRICING_SUMMARY: 'pricingSummary',
+		TERMS_SECTION: 'termsSection',
 		SAVE_BUTTON: 'submissionSection',
 		ORDER_PICTURES: 'orderPictures'
 	};
@@ -69,6 +70,11 @@ _Handlebars.registerPartial('installationSection', fileManager.fetchTemplateSync
 _Handlebars.registerPartial('pricingSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PRICING_SUMMARY));
 
 /**
+ * The template for the terms/description section
+ */
+_Handlebars.registerPartial('termsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TERMS_SECTION));
+
+/**
  * The template for the submission button
  */
 _Handlebars.registerPartial('saveOrderChangesButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SAVE_BUTTON));
@@ -101,6 +107,9 @@ module.exports =
 
 		// Fetch the data that will be needed to properly render the page
 		pageData.order = await ordersDAO.searchOrderById(orderNumber);
+
+		// Format the agreement text so that it can be properly presented on the page
+		pageData.order.agreement = pageData.order.agreement.join('\n\n');
 
 		// Load the template that we will be using to render the images
 		pageData.picturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES);

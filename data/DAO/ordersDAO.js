@@ -43,6 +43,20 @@ function _applyModificationUpdates(order, username)
 	});
 }
 
+/**
+ * Simple utility function that's meant to parse a number from a string or return a zero otherwise if the string cannot
+ * be parsed to yield a non-zero number
+ *
+ * @param {String} num - the string to be parsed
+ *
+ * @returns {Number} - the number that the string conveys
+ *
+ * @author kinsho
+ */
+function _parseNumberOrReturnZero(num)
+{
+	return (num ? (parseFloat(num) || 0) : 0);
+}
 // ----------------- MODULE DEFINITION --------------------------
 
 var ordersModule =
@@ -374,13 +388,18 @@ var ordersModule =
 		_applyModificationUpdates(order, username);
 
 		// Convert any modified pricing into a numerical format
-		if (orderModifications.pricing.modification)
+		orderModifications.pricing.modification = _parseNumberOrReturnZero(orderModifications.pricing.modification);
+		orderModifications.pricing.pricePerFoot = _parseNumberOrReturnZero(orderModifications.pricing.pricePerFoot);
+		orderModifications.pricing.additionalPrice = _parseNumberOrReturnZero(orderModifications.pricing.additionalPrice);
+		orderModifications.pricing.deductions = _parseNumberOrReturnZero(orderModifications.pricing.deductions);
+
+		// Recalculate the total price of the order
+		orderModifications.pricing.orderTotal = pricingCalculator.calculateOrderTotal(orderModifications);
+
+		// If the order is still pending finalization, reset the balance remaining
+		if (order.status === PENDING_STATUS)
 		{
-			orderModifications.pricing.modification = parseFloat(orderModifications.pricing.modification);
-		}
-		else
-		{
-			orderModifications.pricing.modification = 0;
+			orderModifications.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
 		}
 
 		try
@@ -408,7 +427,7 @@ var ordersModule =
 				}
 
 				// If the order is closed, we assume that any balance has been paid off.
-				order.pricing.balanceRemaining = 0;
+				orderModifications.pricing.balanceRemaining = 0;
 			}
 		}
 		catch(error)
@@ -432,6 +451,9 @@ var ordersModule =
 			length: orderModifications.length,
 			finishedHeight: orderModifications.finishedHeight,
 
+			agreement: orderModifications.agreement,
+			additionalFeatures: orderModifications.additionalFeatures,
+
 			'customer.areaCode': orderModifications.customer.areaCode,
 			'customer.phoneOne': orderModifications.customer.phoneOne,
 			'customer.phoneTwo': orderModifications.customer.phoneTwo,
@@ -442,8 +464,12 @@ var ordersModule =
 			'customer.state': orderModifications.customer.state,
 			'customer.zipCode': orderModifications.customer.zipCode,
 
+			'pricing.pricePerFoot': orderModifications.pricing.pricePerFoot,
+			'pricing.additionalPrice': orderModifications.pricing.additionalPrice,
+			'pricing.deductions': orderModifications.pricing.deductions,
 			'pricing.modification': orderModifications.pricing.modification,
-			'pricing.balanceRemaining': order.pricing.balanceRemaining,
+			'pricing.orderTotal': orderModifications.pricing.orderTotal,
+			'pricing.balanceRemaining': orderModifications.pricing.balanceRemaining,
 
 			'design.post': orderModifications.design.post,
 			'design.handrailing': orderModifications.design.handrailing,
@@ -456,7 +482,8 @@ var ordersModule =
 			'installation.coverPlates': orderModifications.installation.coverPlates,
 			'installation.platformType': orderModifications.installation.platformType,
 
-			'notes.internal': orderModifications.notes.internal
+			'notes.internal': orderModifications.notes.internal,
+			'notes.order': orderModifications.notes.order
 		};
 
 		// Set flags and other data now according to whether the order meets certain conditions

@@ -72,7 +72,7 @@ var orderManagerModule =
 		{
 			for (j = existingOrders.length - 1; j >= 0; j--)
 			{
-				if (existingOrders[j].id === data[i].id)
+				if (existingOrders[j]._id === data[i]._id)
 				{
 					// Splice out the order from the existing set so that we can re-insert that order back from the
 					// top of the list

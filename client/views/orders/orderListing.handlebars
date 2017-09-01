@@ -70,9 +70,16 @@
 
 			<!-- Only show this section for actual orders and not estimates -->
 			{{#unless_cond this.status 'prospect'}}
+				{{#unless_cond this.status 'pending'}}
+					<span class='orderCell'>
+						<span class='printLink' data-id='{{ this._id }}'>
+							<i class='fa fa-print'></i>Print Order
+						</span>
+					</span>
+				{{/unless_cond}}
 				<span class='orderCell'>
-					<span class='printLink' data-id='{{ this._id }}'>
-						<i class='fa fa-print'></i>Print Order
+					<span class='invoiceLink' data-id='{{ this._id }}'>
+						<i class='fa fa-file-text'></i>View Invoice
 					</span>
 				</span>
 				<span class='orderCell'>

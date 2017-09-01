@@ -21,19 +21,24 @@
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Price Per Foot</span>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Price Per Foot
+		</span>
 		{{#if_cond status 'pending'}}
-			<input id='pricePerFoot' type='tel' value={{ pricing.pricePerFoot }} />
+			$<input id='pricePerFoot' type='tel' value={{ pricing.pricePerFoot }} />
 		{{else}}
 			<span class='staticValue'>${{ pricing.pricePerFoot }}</span>
 		{{/if_cond}}
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Additional Features</span>
-
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Additional Features
+		</span>
 		{{#if_cond status 'pending'}}
-			<textarea id='additionalFeatures'>{{#format_value_for_textarea additionalFeatures}}{{/format_value_for_textarea}}</textarea>
+			<textarea id='additionalFeatures' class='optionalField'>{{#format_value_for_textarea additionalFeatures}}{{/format_value_for_textarea}}</textarea>
 		{{else}}
 			<span class='staticValue'>
 				{{#if additionalFeatures}}
@@ -44,18 +49,24 @@
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Additional Price</span>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Additional Price
+		</span>
 		{{#if_cond status 'pending'}}
-			<input id='additionalPrice' type='tel' value={{ pricing.additionalPrice }} />
+			$<input id='additionalPrice' type='tel' class='optionalField' value={{ pricing.additionalPrice }} />
 		{{else}}
 			<span class='staticValue'>${{ pricing.additionalPrice }}</span>
 		{{/if_cond}}
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Deductions</span>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+			Deductions
+		</span>
 		{{#if_cond status 'pending'}}
-			<input id='deductions' type='tel' value={{ pricing.deductions }} />
+			$<input id='deductions' type='tel' class='optionalField' value={{ pricing.deductions }} />
 		{{else}}
 			<span class='staticValue'>${{ pricing.deductions }}</span>
 		{{/if_cond}}

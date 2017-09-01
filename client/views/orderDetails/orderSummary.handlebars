@@ -5,49 +5,49 @@
         <span class='staticValue'>{{ _id }}</span>
     </div>
 
-	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
-		<span class='specializedLabel'>
-		    <i class='fa fa-tag fa-rotate-180'></i>
-		    Status
-		</span>
-		<span id='statusButtonSet' class='buttonSet'>
-            <input type='radio' class='statusRadio' id='pendingStatus' name='status' value='pending'
-				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-				   {{#if_cond status 'pending'}}checked{{/if_cond}}/>
-			<label for='pendingStatus'>Pending Payment</label>
+	{{#unless_cond status 'pending'}}
+		<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+			<span class='specializedLabel'>
+				<i class='fa fa-tag fa-rotate-180'></i>
+				Status
+			</span>
 
-			<input type='radio' class='statusRadio' id='queueStatus' name='status' value='queue'
-	 			   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-				   {{#if_cond status 'queue'}}checked{{/if_cond}}/>
-			<label for='queueStatus'>Queued</label>
+			<span id='statusButtonSet' class='buttonSet'>
 
-			<input type='radio' class='statusRadio' id='productionStatus' name='status' value='production'
-				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-				   {{#if_cond status 'production'}}checked{{/if_cond}}/>
-			<label for='productionStatus'>Production</label>
+				<input type='radio' class='statusRadio' id='queueStatus' name='status' value='queue'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if_cond status 'queue'}}checked{{/if_cond}}/>
+				<label for='queueStatus'>Queued</label>
 
-			<input type='radio' class='statusRadio' id='finishingStatus' name='status' value='finishing'
-				    {{#if_cond status 'closed'}}disabled{{/if_cond}}
+				<input type='radio' class='statusRadio' id='productionStatus' name='status' value='production'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if_cond status 'production'}}checked{{/if_cond}}/>
+				<label for='productionStatus'>Production</label>
+
+				<input type='radio' class='statusRadio' id='finishingStatus' name='status' value='finishing'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'finishing'}}checked{{/if_cond}}/>
-			<label for='finishingStatus'>Finishing</label>
+				<label for='finishingStatus'>Finishing</label>
 
-			<input type='radio' class='statusRadio' id='installStatus' name='status' value='install'
-				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-				   {{#if_cond status 'install'}}checked{{/if_cond}}/>
-			<label for='installStatus'>Install</label>
+				<input type='radio' class='statusRadio' id='installStatus' name='status' value='install'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if_cond status 'install'}}checked{{/if_cond}}/>
+				<label for='installStatus'>Install</label>
 
-			<input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed'
-				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-				   {{#if_cond status 'closed'}}checked{{/if_cond}}/>
-			<label for='closedStatus'>Closed</label>
+				<input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if_cond status 'closed'}}checked{{/if_cond}}/>
+				<label for='closedStatus'>Closed</label>
 
-			<input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled'
-				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
-				   {{#if_cond status 'cancelled'}}checked{{/if_cond}}/>
-			<label for='cancelledStatus'>Cancelled</label>
+				<input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled'
+					{{#if_cond status 'closed'}}disabled{{/if_cond}}
+					{{#if_cond status 'cancelled'}}checked{{/if_cond}}/>
+				<label for='cancelledStatus'>Cancelled</label>
 
-		</span>
-	</div>
+			</span>
+		</div>
+
+	{{/unless_cond}}
 
     <!-- @TODO - For orders in open status, allow the admin to set a date of visitation -->
 
@@ -57,7 +57,7 @@
             <i class='fa fa-tag fa-rotate-180'></i>
 		    Order Notes
 		</span>
-		<textarea id='orderNotes' {{#if_cond status 'closed'}}disabled{{/if_cond}}>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
+		<textarea id='orderNotes' class='optionalField' {{#if_cond status 'closed'}}disabled{{/if_cond}}>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
     </div>
 
     <div class='dataGrouping'>
