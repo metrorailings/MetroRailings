@@ -9,6 +9,7 @@
 @import '../foundation/form';
 @import '../foundation/tooltip';
 @import '../foundation/topMenu';
+@import '../foundation/responsive';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -50,6 +51,15 @@ h3
 	display: block;
 
 	margin-bottom: 0px;
+
+	@include phoneOnly()
+	{
+		margin:
+		{
+			left: 3px;
+			right: 3px;
+		}
+	}
 }
 
 .sectionHeader

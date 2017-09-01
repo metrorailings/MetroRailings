@@ -1,5 +1,7 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
+@import '../foundation/fonts';
+
 /* ----------------------- STYLES ----------------------------- */
 
 #enclosureHelp, #stairsHelp
@@ -9,4 +11,9 @@
 		top: 10px;
 		bottom: 30px;
 	}
+}
+
+#enclosureTitle
+{
+	@extend %smallSignificantText;
 }

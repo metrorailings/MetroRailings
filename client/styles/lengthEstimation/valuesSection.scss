@@ -1,6 +1,7 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -34,8 +35,26 @@
 
 		margin:
 		{
-			left: 15px;
-			right: 15px;
+			top: 10px;
+			bottom: 10px;
+		}
+
+		@include tabletUp()
+		{
+			margin:
+			{
+				left: 10px;
+				right: 10px;
+			}
+		}
+
+		@include phoneOnly()
+		{
+			margin:
+			{
+				left: 5px;
+				right: 5px;
+			}
 		}
 	}
 }
