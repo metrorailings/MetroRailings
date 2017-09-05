@@ -10,6 +10,7 @@ import axios from 'client/scripts/utility/axios';
 
 var UPLOAD_FILE_URL = 'https://content.dropboxapi.com/2/files/upload',
 	FETCH_LINK_URL = 'https://api.dropboxapi.com/2/files/get_temporary_link',
+	DELETE_FILE_URL = 'https://api.dropboxapi.com/2/files/delete_v2',
 
 	DROPBOX_IMAGE_PATH = '/drawings/',
 
@@ -78,6 +79,23 @@ var dropboxModule =
 				};
 
 			return await axios.post(UPLOAD_FILE_URL, file, false, _generateRequestHeaders(OCTET_CONTENT_TYPE_HEADER, serviceParams));
+		},
+
+		/**
+		 * Function that deletes a particular file from the Dropbox repository
+		 *
+		 * @param {File} file - the path of the file to delete from our Dropbox repository
+		 *
+		 * @author kinsho
+		 */
+		deleteFile: async function (filePath)
+		{
+			var serviceParams =
+				{
+					path: filePath,
+				};
+
+			await axios.post(DELETE_FILE_URL, serviceParams, false, _generateRequestHeaders(JSON_CONTENT_TYPE_HEADER));
 		},
 
 		/**

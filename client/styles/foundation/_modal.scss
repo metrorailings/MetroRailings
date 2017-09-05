@@ -135,6 +135,26 @@
 	z-index: inherit;
 
 	text-align: center;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	& > *
+	{
+		margin:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+	}
+
+	& > img
+	{
+		max-width: 150px;
+		max-height: 150px;
+	}
 }
 
 #confirmationModalAnswerBar

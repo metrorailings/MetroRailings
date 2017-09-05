@@ -237,6 +237,64 @@ var prospectsModule =
 	},
 
 	/**
+	 * Function responsible for deleting image metadata from a prospect record
+	 *
+	 * @param {String} prospectID - the ID of the prospect being modified
+	 * @param {Object} meta - the metadata of the image being deleted
+	 * @param {String} username - the name of the admin making the changes
+	 *
+	 * @returns {Boolean} - a simple flag indicating whether changes to the prospect were successfully saved
+	 *
+	 * @author kinsho
+	 */
+	deletePicFromOrder: async function (prospectID, imgMeta, username)
+	{
+		var prospect = await prospectsModule.searchProspectById(parseInt(prospectID, 10)),
+			updateRecord,
+			i;
+
+		// Ensure that the prospect is properly updated with a record indicating when this order was updated
+		// and who updated this order
+		_applyModificationUpdates(prospect, username);
+
+		// Find the index of the image to remove from the metadata collection
+		for (i = prospect.pictures.length - 1; i >= 0; i--)
+		{
+			if (prospect.pictures[i].id === imgMeta.id)
+			{
+				break;
+			}
+		}
+
+		// Splice out that image metadata
+		prospect.pictures.splice(i, 1);
+
+		// Generate a record to push the changes into the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: prospect._id
+		},
+		{
+			pictures: prospect.pictures
+		},
+		false);
+
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error updating prospect ' + prospect._id);
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
 	 * Function responsible for converting an existing prospect into an order
 	 *
 	 * @param {String} prospectID - the ID of the prospect being converted into an order

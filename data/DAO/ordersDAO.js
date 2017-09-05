@@ -562,6 +562,64 @@ var ordersModule =
 
 			throw error;
 		}
+	},
+
+	/**
+	 * Function responsible for deleting image metadata from an order record
+	 *
+	 * @param {String} orderID - the ID of the order being modified
+	 * @param {Object} meta - the metadata of the image being deleted
+	 * @param {String} username - the name of the admin making the changes
+	 *
+	 * @returns {Boolean} - a simple flag indicating whether changes to the order were successfully saved
+	 *
+	 * @author kinsho
+	 */
+	deletePicFromOrder: async function (orderID, imgMeta, username)
+	{
+		var order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
+			updateRecord,
+			i;
+
+		// Ensure that the order is properly updated with a record indicating when this order was updated
+		// and who updated this order
+		_applyModificationUpdates(order, username);
+
+		// Find the index of the image to remove from the metadata collection
+		for (i = order.pictures.length - 1; i >= 0; i--)
+		{
+			if (order.pictures[i].id === imgMeta.id)
+			{
+				break;
+			}
+		}
+
+		// Splice out that image metadata
+		order.pictures.splice(i, 1);
+
+		// Generate a record to push the changes into the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: order._id
+		},
+		{
+			pictures: order.pictures
+		},
+		false);
+
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error updating order ' + order._id);
+			console.log(error);
+
+			throw error;
+		}
 	}
 };
 
