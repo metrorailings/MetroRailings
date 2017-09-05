@@ -17,6 +17,7 @@ var COLORS = ['white', 'black', 'silver', 'mahogany'],
 	POST_CAP_DESIGNS = ['PC-BALL', 'PC-SQ'],
 	CENTER_DESIGNS = ['CD-NONE', 'CD-SC', 'CD-GALE', 'CD-DHRT', 'CD-SNC'],
 	PLATFORM_TYPES = ['earth', 'cement', 'tile', 'wood', 'limestone'],
+	PROSPECT_SETUP_CODES = ['admin'],
 
 	OTHER_DESIGN =
 	{
@@ -76,9 +77,15 @@ var COLORS = ['white', 'black', 'silver', 'mahogany'],
 		charset: 'alphanumeric'
 	},
 
+	AGREEMENT_TEXT =
+	{
+		length: 200,
+		charset: 'alphanumeric'
+	},
+
 	TEST_CC_TOKEN = 'tok_visa',
 
-	ESTIMATE_STATUS = 'estimate';
+	ESTIMATE_STATUS = 'prospect';
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -154,11 +161,12 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 		finishedHeight: Math.floor(Math.random() * 20) + 10,
 		rushOrder: _randomBoolean(),
 		ccToken: TEST_CC_TOKEN,
+		agreement: [_randomstring.generate(AGREEMENT_TEXT), _randomstring.generate(AGREEMENT_TEXT)],
 
 		notes:
 		{
 			order: _randomstring.generate(ORDER_NOTES),
-			internal: ''
+			internal: _randomstring.generate(ORDER_NOTES)
 		},
 
 		pricing:
@@ -216,10 +224,32 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 		order.stripe.charges.push(await creditCardProcessor.chargeTotal(order.pricing.orderTotal / 2, order.stripe.customer, order._id));
 	}
 
-	// Randomly delete the design specs for orders in Estimate status
-	if ((status === ESTIMATE_STATUS) && (Math.round(Math.random())))
+	if (status === ESTIMATE_STATUS)
 	{
-		delete order.design;
+		// Randomly delete the design specs for orders for prospects
+		if (Math.round(Math.random()))
+		{
+			delete order.design;
+		}
+
+		// Delete all properties that are not to be associated with a prospect
+		delete order.installation;
+		delete order.agreement;
+		delete order.pricing;
+		delete order.stripe;
+		delete order.notes.order;
+
+		delete order.rushOrder;
+		delete order.length;
+		delete order.finishedHeight;
+		delete order.ccToken;
+
+		// Set up properties unique to a prospect
+		order.conception =
+		{
+			userType: _randomSelect(PROSPECT_SETUP_CODES),
+			user: _randomstring.generate(FIRST_NAME)
+		};
 	}
 
 	return order;

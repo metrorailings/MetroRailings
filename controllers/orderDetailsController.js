@@ -166,5 +166,29 @@ module.exports =
 			statusCode: responseCodes.OK,
 			data: {}
 		};
+	},
+
+	/**
+	 * Function meant to wipe away an image's metadata from the order associated with that image
+	 *
+	 * @params {Object} params - the ID of the order to modify and the picture metadata to delete from that order
+	 *
+	 * @author kinsho
+	 */
+	deletePicture: async function (params, cookie)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie))
+		{
+			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+
+			console.log('Deleting a picture from an order...');
+
+			await ordersDAO.deletePicFromOrder(params.id, params.imgMeta, username);
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
 	}
 };

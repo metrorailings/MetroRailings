@@ -21,7 +21,7 @@ var SUBMIT_BUTTON = 'saveChangesButton',
 		' paid?',
 	CHARGE_PLACEHOLDER = '::charge',
 
-	SAVE_ORDER_URL = 'orderDetails/saveChanges';
+	SAVE_ORDER_URL = 'orderDetails/deletePicture';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
