@@ -246,7 +246,7 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 
-		viewModel.__extendTimeLimit = value.timeLimit.extension;
+		viewModel.__extendTimeLimit = (value.timeLimit ? value.timeLimit.extension : '');
 		viewModel.__orderDescription = value.notes.order;
 		viewModel.__agreement = value.agreement;
 	}
