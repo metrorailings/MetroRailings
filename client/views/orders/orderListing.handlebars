@@ -66,6 +66,15 @@
                 </span>
             {{/can_status_be_updated}}
 
+			<!-- Allow for prospects and pending orders to be removed from the system -->
+			{{#if_cond_group this.status '["prospect", "pending"]'}}
+				<span class='orderCell'>
+					<span class='trashLink' data-id='{{ this._id }}'>
+						<i class='fa fa-trash'></i>Remove from System
+					</span>
+				</span>
+			{{/if_cond_group}}
+
 			<!-- Only show this section for actual orders and not estimates -->
 			{{#unless_cond this.status 'prospect'}}
 				{{#unless_cond this.status 'pending'}}

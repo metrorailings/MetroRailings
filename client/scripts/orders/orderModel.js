@@ -14,7 +14,7 @@ import vm from 'client/scripts/orders/viewModel';
 // ----------------- ENUM/CONSTANTS -----------------------------
 
 var ORDER_BLOCK_PREFIX = 'order-',
-	LEVEL_UP_ICON = "<i class='fa fa-level-up'></i>",
+	LEVEL_UP_ICON = '<i class="fa fa-level-up"></i>',
 	MOVE_TO_NEXT_STATUS_PREFIX = 'Move to ',
 
 	ORDER_STATUS_CLASS = 'orderStatusCell',

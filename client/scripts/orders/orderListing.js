@@ -19,7 +19,10 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
+	ORDER_BLOCK_PREFIX = 'order-',
+
 	STATUS_LINK_CLASS = 'nextStatusLink',
+	REMOVE_ORDER_CLASS = 'trashLink',
 	PRINT_LINK_CLASS = 'printLink',
 	LOAD_PICTURES_LINK_CLASS = 'loadPicturesLink',
 	CONVERT_ORDER_LINK_CLASS = 'convertOrderLink',
@@ -30,9 +33,12 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
 	HIDE_CLASS = 'hide',
 
-	NEXT_STATUS_MESSAGE = 'Are you sure you want to update order <b>::orderID</b> to <b>::nextStatus</b>?',
+	NEXT_STATUS_MESSAGE = '<span>Are you sure you want to update order <b>::orderID</b> to <b>::nextStatus</b>?</span>',
+	DELETE_ORDER_MESSAGE = '<span>Are you sure you want to <b>DELETE</b> this potential order? Once you delete this' +
+		' order, you will need to go to the database administrator to restore this prospect back into the system.</span>',
 
 	UPDATE_STATUS_URL = 'orders/updateStatus',
+	DELETE_ORDER_URL = 'orders/removeOrder',
 	ORDER_DETAILS_URL = '/orderDetails?orderNumber=::orderID',
 	PROSPECT_DETAILS_URL = '/prospectDetails?orderNumber=::orderID',
 	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
@@ -160,6 +166,23 @@ function _attachInvoiceLinkListeners()
 	for (i = invoiceLinks.length - 1; i >= 0; i--)
 	{
 		invoiceLinks[i].addEventListener('click', navigateToInvoicePage);
+	}
+}
+
+/**
+ * Function meant to dynamically attach listeners to all 'Remove from System' links
+ * Needed so that we can reattach listeners every time orders are re-rendered onto screen
+ *
+ * @author kinsho
+ */
+function _attachOrderRemovalListeners()
+{
+	var removeLinks = document.getElementsByClassName(REMOVE_ORDER_CLASS),
+		i;
+
+	for (i = removeLinks.length - 1; i >= 0; i--)
+	{
+		removeLinks[i].addEventListener('click', removeOrder);
 	}
 }
 
@@ -318,6 +341,41 @@ function updateStatus(event)
 }
 
 /**
+ * Listener meant to remove a prospect or pending order from the system
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function removeOrder(event)
+{
+	var targetElement = event.currentTarget,
+		orderID = window.parseInt(targetElement.dataset.id, 10),
+		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
+		modalMessage = DELETE_ORDER_MESSAGE,
+		orderBlock = document.getElementById(ORDER_BLOCK_PREFIX + orderID);
+
+	// Confirm that we will be updating the status
+	confirmationModal.open([modalMessage], () =>
+	{
+		// Remove the order in the back-end so that it will no longer appear in the front-facing admin system
+		axios.post(DELETE_ORDER_URL, { orderID: orderID }).then(() =>
+		{
+			// Remove the order from the cached collection of orders
+			vm.orders.splice(orderIndex, 1);
+
+			// Hide the block associated with this order from view
+			orderBlock.classList.add(HIDE_CLASS);
+
+		}, () =>
+		{
+			notifier.showGenericServerError();
+		});
+
+	}, () => {});
+}
+
+/**
  * Listener meant to take the user to the details page for a particular prospect/order
  *
  * @param {Event} event - the event associated with the firing of this listener
@@ -392,4 +450,5 @@ document.addEventListener(LISTENER_INIT_EVENT, () =>
 	_attachNavigationListeners();
 	_attachOrderConversionListeners();
 	_attachInvoiceLinkListeners();
+	_attachOrderRemovalListeners();
 });

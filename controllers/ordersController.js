@@ -132,5 +132,33 @@ module.exports =
 			statusCode: responseCodes.OK,
 			data: updatedData || {}
 		};
+	},
+
+	/**
+	 * Function meant to remove an order from being managed through the admin system. That order will instead be
+	 * transferred to an archival table in the database for the purposes of data back-up
+	 *
+	 * @params {Object} params -
+	 * 		{
+	 * 			orderID - the ID of the order to remove
+	 * 		}
+	 *
+	 * @author kinsho
+	 */
+	removeOrder: async function (params, cookie)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie))
+		{
+			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+
+			console.log('"Deleting" order ' + params.orderID);
+
+			await ordersDAO.removeOrder(parseInt(params.orderID, 10), username);
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
 	}
 };

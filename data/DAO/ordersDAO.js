@@ -13,6 +13,7 @@ var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
 var ORDERS_COLLECTION = 'orders',
 	COUNTERS_COLLECTION = 'counters',
+	REMOVED_ORDERS_COLLECTION = 'removedOrders',
 
 	SYSTEM_USER_NAME = 'system',
 
@@ -671,6 +672,43 @@ var ordersModule =
 		catch(error)
 		{
 			console.log('Ran into an error updating order ' + order._id);
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for removing an order from being managed through the admin system
+	 *
+	 * @param {Number} orderID - the ID of the order being modified
+	 * @param {String} username - the name of the admin making the changes
+	 *
+	 * @returns {Boolean} - a simple flag indicating whether the order was successfully removed
+	 *
+	 * @author kinsho
+	 */
+	removeOrder: async function (orderID, username)
+	{
+		var order = await ordersModule.searchOrderById(parseInt(orderID, 10));
+
+		// Ensure that the order is properly updated with a record indicating when this order was updated
+		// and who updated this order
+		_applyModificationUpdates(order, username);
+
+		try
+		{
+			// Add the order to remove from a collection specifically meant to house these removed orders
+			await mongo.bulkWrite(REMOVED_ORDERS_COLLECTION, true, mongo.formInsertSingleQuery(order));
+
+			// Remove the order from the main orders collection
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, mongo.formDeleteOneQuery({ _id : order._id }));
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error removing order ' + order._id);
 			console.log(error);
 
 			throw error;
