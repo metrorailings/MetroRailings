@@ -32,6 +32,8 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
 	DEDUCTIONS_TEXTFIELD = 'deductions',
 
+	TIME_LIMIT_TEXTFIELD = 'timeLimit',
+
 	SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
 	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
 
@@ -52,8 +54,10 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
-		LENGTH_INVALID: 'Please enter a non-zero length here.',
-		TOTAL_INVALID: 'Please enter a valid dollar amount here.'
+		WHOLE_NUMBER_INVALID: 'Please enter a non-zero number here.',
+		TOTAL_INVALID: 'Please enter a valid dollar amount here.',
+		TIME_LIMIT_INVALID: 'Please enter a non-zero number here. Keep in mind you can only assign a time limit up' +
+		' to 100 days. If you need to assign a higher time limit, just leave the field blank.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -81,6 +85,8 @@ var _validationSet = new Set(),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
+
+	_timeLimitField = document.getElementById(TIME_LIMIT_TEXTFIELD),
 
 	_saveAndContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
 	_saveAndExitButton = document.getElementById(SAVE_AND_EXIT_BUTTON);
@@ -433,7 +439,7 @@ Object.defineProperty(viewModel, 'length',
 		var isInvalid = !(formValidator.isNumeric(value)) ||
 			(value.length && !(window.parseInt(value, 10)));
 
-		rQueryClient.updateValidationOnField(isInvalid, _orderLengthField, ERROR.LENGTH_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(isInvalid, _orderLengthField, ERROR.WHOLE_NUMBER_INVALID, _validationSet);
 		rQueryClient.setField(_orderLengthField, value);
 
 		_validate();
@@ -459,7 +465,7 @@ Object.defineProperty(viewModel, 'finishedHeight',
 		var isInvalid = !(formValidator.isNumeric(value)) ||
 			(value.length && !(window.parseInt(value, 10)));
 
-		rQueryClient.updateValidationOnField(isInvalid, _finishedHeightField, ERROR.LENGTH_INVALID, _validationSet);
+		rQueryClient.updateValidationOnField(isInvalid, _finishedHeightField, ERROR.WHOLE_NUMBER_INVALID, _validationSet);
 		rQueryClient.setField(_finishedHeightField, value);
 
 		_validate();
@@ -580,6 +586,33 @@ Object.defineProperty(viewModel, 'deductions',
 
 		rQueryClient.updateValidationOnField(isInvalid, _deductionsField, ERROR.TOTAL_INVALID, _validationSet);
 		rQueryClient.setField(_deductionsField, value);
+
+		_validate();
+	}
+});
+
+// Order Time Limit
+Object.defineProperty(viewModel, 'timeLimit',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__timeLimit;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__timeLimit = value;
+
+		// Make sure a valid integer is being set here
+		var isInvalid = !(formValidator.isNumeric(value)) ||
+			(value.length && !(window.parseInt(value, 10))) ||
+			(window.parseInt(value, 10) > 100);
+
+		rQueryClient.updateValidationOnField(isInvalid, _timeLimitField, ERROR.TIME_LIMIT_INVALID, _validationSet);
+		rQueryClient.setField(_timeLimitField, value);
 
 		_validate();
 	}

@@ -6,6 +6,7 @@ var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
+	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 	statuses = global.OwlStakes.require('shared/orderStatus');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -57,6 +58,21 @@ function _parseNumberOrReturnZero(num)
 {
 	return (num ? (parseFloat(num) || 0) : 0);
 }
+
+/**
+ * Simple utility function that's to generate a fully-formed user-friendly date from a Date object
+ *
+ * @param {Date} date - the date to transform
+ *
+ * @returns {String} - the date, formatted and ready to be presented to users
+ *
+ * @author kinsho
+ */
+function _generateUserFriendlyDate(date)
+{
+	return dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
+}
+
 // ----------------- MODULE DEFINITION --------------------------
 
 var ordersModule =
@@ -242,6 +258,7 @@ var ordersModule =
 	{
 		var orderID = parseInt(approvedOrder._id, 10),
 			order = await ordersModule.searchOrderById(orderID),
+			dueDate,
 			transactionID,
 			updateRecord;
 
@@ -253,11 +270,24 @@ var ordersModule =
 		// Record that this order is being modified
 		_applyModificationUpdates(order, SYSTEM_USER_NAME);
 
+		// Note the date that this order was finalized
+		order.finalizationDate = new Date();
+
 		// Update the status to indicate that the order is now queued for production
 		order.status = QUEUE_STATUS;
 
 		// Run over this nickname logic again just in case the customer changed his name
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
+
+		// Figure out the due date on when this order is due, if a time limit has been specified
+		if (order.timeLimit.original)
+		{
+			dueDate = new Date();
+			dueDate.setDate(dueDate.getDate() + order.timeLimit.original);
+			order.timeLimit.rawDueDate = dueDate;
+			order.timeLimit.translatedDueDate = _generateUserFriendlyDate(dueDate);
+			order.timeLimit.extension = 0;
+		}
 
 		// Generate a payment record for the order if the user provided a credit card number
 		// And don't forget to charge the customer either
@@ -381,13 +411,14 @@ var ordersModule =
 			amountToBePaid,
 			transactionID,
 			dataToUpdate,
+			rawDueDate,
 			updateRecord;
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
 		_applyModificationUpdates(order, username);
 
-		// Convert any modified pricing into a numerical format
+		// Convert any modified pricing and other numeric data into a numerical format
 		orderModifications.pricing.modification = _parseNumberOrReturnZero(orderModifications.pricing.modification);
 		orderModifications.pricing.pricePerFoot = _parseNumberOrReturnZero(orderModifications.pricing.pricePerFoot);
 		orderModifications.pricing.additionalPrice = _parseNumberOrReturnZero(orderModifications.pricing.additionalPrice);
@@ -400,6 +431,16 @@ var ordersModule =
 		if (order.status === PENDING_STATUS)
 		{
 			orderModifications.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
+		}
+
+		if (order.timeLimit.original)
+		{
+			// If the time limit has been extended or shortened, adjust the due date. Otherwise, adjust the due date back to
+			// what it was before it was adjusted
+			rawDueDate = order.finalizationDate;
+			rawDueDate.setDate(rawDueDate.getDate() + order.timeLimit.original + (orderModifications.timeLimit.extension || 0));
+			orderModifications.timeLimit.rawDueDate = rawDueDate;
+			orderModifications.timeLimit.translatedDueDate = _generateUserFriendlyDate(rawDueDate);
 		}
 
 		try
@@ -469,7 +510,6 @@ var ordersModule =
 			'pricing.deductions': orderModifications.pricing.deductions,
 			'pricing.modification': orderModifications.pricing.modification,
 			'pricing.orderTotal': orderModifications.pricing.orderTotal,
-			'pricing.balanceRemaining': orderModifications.pricing.balanceRemaining,
 
 			'design.post': orderModifications.design.post,
 			'design.handrailing': orderModifications.design.handrailing,
@@ -490,6 +530,21 @@ var ordersModule =
 		if ( !(order.pricing.paidByCheck) )
 		{
 			dataToUpdate['pricing.restByCheck'] = orderModifications.pricing.restByCheck;
+		}
+		if (order.timeLimit.original)
+		{
+			dataToUpdate.timeLimit =
+			{
+				original : order.timeLimit.original,
+				extension : orderModifications.timeLimit.extension,
+				rawDueDate : orderModifications.timeLimit.rawDueDate,
+				translatedDueDate : orderModifications.timeLimit.translatedDueDate,
+			};
+		}
+		// If the order is still pending finalization, reset the balance remaining
+		if (order.status === PENDING_STATUS)
+		{
+			dataToUpdate.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
 		}
 
 		// Now generate a record of data we will be using to update the database

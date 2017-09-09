@@ -324,11 +324,6 @@ $FONTS:
 	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli);
 }
 
-%greenSignificantText
-{
-	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli, $color: darkGreenTheme);
-}
-
 %bigSignificantText
 {
 	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);

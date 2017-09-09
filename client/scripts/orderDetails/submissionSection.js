@@ -21,7 +21,7 @@ var SUBMIT_BUTTON = 'saveChangesButton',
 		' paid?',
 	CHARGE_PLACEHOLDER = '::charge',
 
-	SAVE_ORDER_URL = 'orderDetails/deletePicture';
+	SAVE_ORDER_URL = 'orderDetails/saveChanges';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -66,6 +66,11 @@ function _submitChanges()
 		{
 			order: vm.orderDescription.split('\n').join('<br />'),
 			internal: (vm.notes ? vm.notes.split('\n').join('<br />') : '')
+		},
+
+		timeLimit:
+		{
+			extension: vm.extendTimeLimit
 		},
 
 		customer:

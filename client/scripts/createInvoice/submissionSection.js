@@ -48,6 +48,11 @@ function submit(event)
 			additionalFeatures: vm.additionalFeatures.split('\n\n').join('<br /><br />'),
 			agreement: vm.agreement,
 
+			timeLimit:
+			{
+				original: window.parseInt(vm.timeLimit, 10) || ''
+			},
+
 			notes:
 			{
 				order: vm.notes.order.split('\n').join('<br />'),

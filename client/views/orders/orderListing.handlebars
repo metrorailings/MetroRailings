@@ -29,22 +29,20 @@
                 <span class='orderCell'>({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
             </span>
 
-			<!-- Only show this section for actual orders and not estimates -->
-			{{#if this.design }}
+			<!-- Only show this section for orders with time limits -->
+			{{#if this.timeLimit.original }}{{#unless_cond_group this.status '["closed", "cancelled"]' }}
 				<span class='orderInfoSection'>
-					<span class='orderInfoSectionHeader'>Order Details</span>
-					<span class='orderCell'><span class='orderLabel'>Length:</span> {{ length }} feet</span>
-					<span class='orderCell'><span class='orderLabel'>Post Design:</span> {{#map_design_code_to_full_name design.post}}{{/map_design_code_to_full_name}}</span>
-					{{#if design.postEnd }}
-						<span class='orderCell'><span class='orderLabel'>Post End:</span> {{#map_design_code_to_full_name design.postEnd}}{{/map_design_code_to_full_name}}</span>
-					{{/if}}
-					{{#if design.postCap }}
-						<span class='orderCell'><span class='orderLabel'>Post Cap:</span> {{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</span>
-					{{/if}}
-					<span class='orderCell'><span class='orderLabel'>Center Design:</span> {{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</span>
-					<span class='orderCell'><span class='orderLabel'>Color:</span> {{#map_design_code_to_full_name design.color }}{{/map_design_code_to_full_name }}</span>
+					<span class='orderInfoSectionHeader'>Time Left</span>
+					<span class='orderCell timeLeftCell {{#determine_priority_level timeLimit.rawDueDate}}{{/determine_priority_level}}'>
+						<div class='daysRemainingText'>
+							<b>{{#determine_days_left timeLimit.rawDueDate }}{{/determine_days_left}}</b>&nbsp;days left
+						</div>
+						<div>
+							<span class='orderLabel'>Due Date:</span> {{ timeLimit.translatedDueDate }}
+						</div>
+					</span>
 				</span>
-			{{/if}}
+			{{/unless_cond_group}}{{/if}}
 
 		</div>
 

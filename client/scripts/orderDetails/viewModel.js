@@ -53,6 +53,7 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
 	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
 
+	TIME_LIMIT_EXTENSION_TEXTFIELD = 'extendTimeLimit',
 	DESCRIPTION_TEXT_AREA = 'orderDescription',
 	AGREEMENT_TEXT_AREA = 'agreement',
 
@@ -79,6 +80,8 @@ var STATUS_RADIO_SUFFIX = 'Status',
 		PHONE_TWO_INVALID: 'Please enter exactly four digits here.',
 
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
+		TIME_LIMIT_INVALID: 'Please enter a whole number here. And make sure whatever time extension you apply here' +
+		' does not go above 45 days.',
 
 		WHOLE_NUMBER_INVALID: 'Please enter only whole numbers here.',
 		TOTAL_INVALID: 'Please enter a valid dollar amount here.'
@@ -130,6 +133,7 @@ var _validationSet = new Set(),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
 
+	_timeLimitExtensionField = document.getElementById(TIME_LIMIT_EXTENSION_TEXTFIELD),
 	_descriptionField = document.getElementById(DESCRIPTION_TEXT_AREA),
 	_agreementField = document.getElementById(AGREEMENT_TEXT_AREA),
 
@@ -242,6 +246,7 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 
+		viewModel.__extendTimeLimit = value.timeLimit.extension;
 		viewModel.__orderDescription = value.notes.order;
 		viewModel.__agreement = value.agreement;
 	}
@@ -995,6 +1000,39 @@ Object.defineProperty(viewModel, 'pricingModifications',
 		_markAsModified((value === viewModel.originalOrder.pricing.modification), _pricingModificationsField);
 
 		_validate();
+	}
+});
+
+// Time Limit Extension
+Object.defineProperty(viewModel, 'extendTimeLimit',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__extendTimeLimit;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__extendTimeLimit = window.parseInt(value, 10) || '';
+
+		// The time limit extension field will not exist for those orders that don't have time limits specified
+		if (_timeLimitExtensionField)
+		{
+			// Make sure a valid integer is being set here
+			var isInvalid = !(formValidator.isNumeric(value)) ||
+				(value.length && !(window.parseInt(value, 10))) ||
+				(window.parseInt(value, 10) > 45);
+
+			rQueryClient.updateValidationOnField(isInvalid, _timeLimitExtensionField, ERROR.TIME_LIMIT_INVALID, _validationSet);
+
+			rQueryClient.setField(_timeLimitExtensionField, value);
+			_markAsModified((viewModel.__extendTimeLimit === viewModel.originalOrder.timeLimit.extension), _timeLimitExtensionField);
+
+			_validate();
+		}
 	}
 });
 

@@ -82,7 +82,8 @@ module.exports =
 	{
 		var populatedPageTemplate,
 			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
-			prospect = {};
+			prospect = {},
+			pageData;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie)) )
 		{
@@ -98,8 +99,15 @@ module.exports =
 			prospect = await prospectsDAO.searchProspectById(parseInt(params.id, 10));
 		}
 
+		pageData =
+		{
+			prospect: prospect,
+			agreement: agreementText,
+			defaultTimeLimit: config.DEFAULT_TIME_LIMIT
+		};
+
 		// Now render the page template
-		populatedPageTemplate = await templateManager.populateTemplate( { prospect: prospect, agreement: agreementText }, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { prospectId: prospect._id }, true, true);
 	},

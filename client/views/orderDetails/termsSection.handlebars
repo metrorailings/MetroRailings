@@ -1,5 +1,32 @@
 <div id='termsSection'>
 
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>Time Limit</span>
+		<span class='staticValue'>
+			{{#if timeLimit.original}}
+				{{timeLimit.original}} days
+			{{else}}
+				No Time Limit
+			{{/if}}
+		</span>
+	</div>
+
+	{{#if timeLimit.original}}
+		<div class='dataGrouping'>
+			<span class='specializedLabel'>Due Date</span>
+			<span class='staticValue'>{{ timeLimit.translatedDueDate }}</span>
+		</div>
+
+		<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Extend Time Limit?
+		</span>
+			<input id='extendTimeLimit' class='optionalField' type='tel' value='{{timeLimit.extension}}' {{#if_cond status 'closed'}} disabled{{/if_cond}} /> days
+			<i class='fa fa-question-circle' data-tooltip-position='right middle' data-tooltip='<div class="tooltipMedium">Use this field to extend the date by which this order has to be done.</div>'></i>
+		</div>
+	{{/if}}
+
 	<!--
 		Display a heads-up message here indicating that the terms or description of the order cannot be modified now
 		that the customer has finalized the invoice.
