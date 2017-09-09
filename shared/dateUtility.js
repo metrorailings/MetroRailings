@@ -23,6 +23,22 @@ module.exports =
 		'Dec'
 	],
 
+	FULL_MONTHS:
+	[
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	],
+
 	/**
 	 * Function responsible for finding the ordinal suffix that would naturally be associated
 	 * with a given date

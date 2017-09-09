@@ -1,6 +1,9 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _randomstring = require('randomstring'),
+
+	dateUtility = global.OwlStakes.require('shared/dateUtility'),
+
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor');
 
 // ----------------- ENUM/CONSTANTS -----------------------------
@@ -71,6 +74,12 @@ var COLORS = ['white', 'black', 'silver', 'mahogany'],
 		charset: 'alphanumeric'
 	},
 
+	TIME_LIMIT =
+	{
+		length: 2,
+		charset: 'numeric'
+	},
+
 	ORDER_NOTES =
 	{
 		length: 100,
@@ -129,6 +138,20 @@ function _randomBoolean()
 	return !!(Math.round(Math.random()));
 }
 
+/**
+ * Simple utility function that's to generate a fully-formed user-friendly date from a Date object
+ *
+ * @param {Date} date - the date to transform
+ *
+ * @returns {String} - the date, formatted and ready to be presented to users
+ *
+ * @author kinsho
+ */
+function _generateUserFriendlyDate(date)
+{
+	return dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
+}
+
 // ----------------- MODULE DEFINITION --------------------------
 
 /**
@@ -156,6 +179,7 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 		_id: parseInt(_randomstring.generate(ID)),
 		createDate: dateCreatedBy,
 		lastModifiedDate: modificationDate,
+		finalizationDate: new Date(modificationDate.getTime() + 2 * 24 * 60 * 60 * 1000),
 		status: status,
 		length: Math.floor(Math.random() * 20) + 20,
 		finishedHeight: Math.floor(Math.random() * 20) + 10,
@@ -224,6 +248,19 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 		order.stripe.charges.push(await creditCardProcessor.chargeTotal(order.pricing.orderTotal / 2, order.stripe.customer, order._id));
 	}
 
+	// Randomly assign time limits to orders
+	if (Math.round(Math.random()))
+	{
+		order.timeLimit =
+		{
+			original: parseInt(_randomstring.generate(TIME_LIMIT), 10),
+		};
+
+		order.timeLimit.rawDueDate = new Date();
+		order.timeLimit.rawDueDate.setDate(order.timeLimit.rawDueDate.getDate() + order.timeLimit.original);
+		order.timeLimit.translatedDueDate = _generateUserFriendlyDate(order.timeLimit.rawDueDate);
+	}
+
 	if (status === ESTIMATE_STATUS)
 	{
 		// Randomly delete the design specs for orders for prospects
@@ -238,11 +275,11 @@ module.exports = async function(status, dateCreatedBy, modificationDate)
 		delete order.pricing;
 		delete order.stripe;
 		delete order.notes.order;
-
 		delete order.rushOrder;
 		delete order.length;
 		delete order.finishedHeight;
 		delete order.ccToken;
+		delete order.timeLimit;
 
 		// Set up properties unique to a prospect
 		order.conception =

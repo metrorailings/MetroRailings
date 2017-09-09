@@ -200,7 +200,7 @@
 
 .orderStatusCell
 {
-	@extend %greenSignificantText;
+	@extend %significantText;
 
 	border-right:
 	{
@@ -211,6 +211,8 @@
 
 	width: 100%;
 	flex: 1;
+
+	color: map-get($COLORS, darkGreenTheme);
 }
 
 .orderInfoSectionHeader
@@ -361,4 +363,69 @@
 		top: 50px;
 		bottom: 50px;
 	}
+}
+
+.timeLeftCell
+{
+	border-left:
+	{
+		width: 3px;
+		color: map-get($COLORS, darkerGrayTheme);
+		style: solid;
+	}
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	&.orderCell
+	{
+		padding: 0px;
+	}
+
+	& > div
+	{
+		flex: 1;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&:first-of-type
+		{
+			align-items: flex-end;
+			padding-bottom: 5px;
+		}
+
+		&:last-of-type
+		{
+			align-items: flex-start;
+			padding-top: 5px;
+		}
+	}
+}
+
+.daysRemainingText
+{
+	@extend %bigSignificantText;
+}
+
+.greenPriority
+{
+	background-color: map-get($COLORS, lightGreenTheme);
+}
+
+.yellowPriority
+{
+	background-color: map-get($COLORS, lightYellowTheme);
+}
+
+.redPriority
+{
+	background-color: map-get($COLORS, lightRedTheme);
+}
+
+.criticalPriority
+{
+	background-color: map-get($COLORS, indianRedTheme);
 }

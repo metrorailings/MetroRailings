@@ -24,6 +24,14 @@ var STATUS_FILTER_CLASS = 'statusFilter',
 	ORDER_LISTINGS_CONTAINER = 'orderListing',
 	ORDER_LISTING_TEMPLATE = 'orderListingTemplate',
 
+	PRIORITY_LEVELS =
+	{
+		GREEN: 'greenPriority',
+		YELLOW: 'yellowPriority',
+		RED: 'redPriority',
+		CRITICAL: 'criticalPriority'
+	},
+
 	SEARCH_ORDERS_URL = 'orders/searchOrders',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
@@ -103,26 +111,89 @@ Handlebars.registerHelper('unless_cond', function(val1, val2, block)
 });
 
 /**
+ * Helper designed to help us test whether a value already exists within a set of given values. We execute
+ * blocks of code depending on the results of that test
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('if_cond_group', function(val, groupVals, block)
+{
+	groupVals = JSON.parse(groupVals);
+
+	for (var i = groupVals.length - 1; i >= 0; i--)
+	{
+		if (groupVals[i] === val)
+		{
+			return block.fn(this);
+		}
+	}
+
+	return block.inverse(this);
+});
+
+/**
  * Helper designed to help us test whether a value already exists within a set of given values. We execute opposite
  * blocks of code depending on the results of that test
  *
  * @author kinsho
  */
-Handlebars.registerHelper('unless_cond_group', function(val, [groupVals], block)
+Handlebars.registerHelper('unless_cond_group', function(val, groupVals, block)
 {
+	groupVals = JSON.parse(groupVals);
+
 	for (var i = groupVals.length - 1; i >= 0; i--)
 	{
 		if (groupVals[i] === val)
 		{
-			block.inverse(this);
-		}
-		else
-		{
-			block.fn(this);
+			return block.inverse(this);
 		}
 	}
+
+	return block.fn(this);
 });
 
+/**
+ * Helper designed to determine how many days are left before a given date has been reached
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('determine_days_left', function(goalDate)
+{
+	var currentDate = new Date(),
+		timeRemaining = new Date(goalDate) - currentDate,
+		daysRemaining = Math.ceil(timeRemaining / (1000 * 3600 * 24));
+
+	return daysRemaining;
+});
+
+/**
+ * Helper designed to determine the priority level of the order given the number of days remaining before its due date
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('determine_priority_level', function(goalDate)
+{
+	var currentDate = new Date(),
+		timeRemaining = new Date(goalDate) - currentDate,
+		daysRemaining = Math.ceil(timeRemaining / (1000 * 3600 * 24));
+
+	if (daysRemaining >= 35)
+	{
+		return PRIORITY_LEVELS.GREEN;
+	}
+	else if (daysRemaining >= 20)
+	{
+		return PRIORITY_LEVELS.YELLOW;
+	}
+	else if (daysRemaining > 7)
+	{
+		return PRIORITY_LEVELS.RED;
+	}
+	else
+	{
+		return PRIORITY_LEVELS.CRITICAL;
+	}
+});
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 

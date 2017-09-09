@@ -61,6 +61,12 @@
 	{
 		opacity: 0.6;
 	}
+
+	& > i
+	{
+		color: map-get($COLORS, darkBlueTheme);
+		margin-left: 5px;
+	}
 }
 
 .staticValue

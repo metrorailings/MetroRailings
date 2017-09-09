@@ -52,6 +52,11 @@
 
 		text-align: left;
 	}
+
+	& > i
+	{
+		color: map-get($COLORS, darkBlueTheme);
+	}
 }
 
 .specializedLabel

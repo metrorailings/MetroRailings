@@ -10,6 +10,7 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
+	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 	designTranslator = global.OwlStakes.require('shared/designs/translator');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -254,6 +255,16 @@ _Handlebars.registerHelper('is_custom_design', function(designCode, block)
 _Handlebars.registerHelper('format_value_for_textarea', function(str)
 {
 	return (str ? str.split('<br />').join('\n') : '');
+});
+
+/**
+ * Handlebars helper function designed to translate computerized dates into user-friendly text
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_date', function(date)
+{
+	return dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
 });
 
 // ----------------- MODULE DEFINITION --------------------------
