@@ -434,7 +434,7 @@ var ordersModule =
 			orderModifications.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
 		}
 
-		if (order.timeLimit.original)
+		if (order.timeLimit && order.timeLimit.original)
 		{
 			// If the time limit has been extended or shortened, adjust the due date. Otherwise, adjust the due date back to
 			// what it was before it was adjusted
@@ -532,7 +532,7 @@ var ordersModule =
 		{
 			dataToUpdate['pricing.restByCheck'] = orderModifications.pricing.restByCheck;
 		}
-		if (order.timeLimit.original)
+		if (order.timeLimit && order.timeLimit.original)
 		{
 			dataToUpdate.timeLimit =
 			{
