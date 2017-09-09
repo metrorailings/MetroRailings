@@ -280,7 +280,7 @@
 	flex-wrap: wrap;
 }
 
-.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink
+.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink
 {
 	@extend %regularLinkText;
 
