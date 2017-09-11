@@ -545,7 +545,7 @@ var ordersModule =
 		// If the order is still pending finalization, reset the balance remaining
 		if (order.status === PENDING_STATUS)
 		{
-			dataToUpdate.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
+			dataToUpdate['pricing.balanceRemaining'] = orderModifications.pricing.orderTotal;
 		}
 
 		// Now generate a record of data we will be using to update the database
