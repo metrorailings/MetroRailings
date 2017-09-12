@@ -281,7 +281,7 @@ var ordersModule =
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
 
 		// Figure out the due date on when this order is due, if a time limit has been specified
-		if (order.timeLimit.original)
+		if (order.timeLimit && order.timeLimit.original)
 		{
 			dueDate = new Date();
 			dueDate.setDate(dueDate.getDate() + order.timeLimit.original);
