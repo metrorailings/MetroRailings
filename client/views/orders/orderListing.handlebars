@@ -30,7 +30,7 @@
             </span>
 
 			<!-- Only show this section for orders with time limits -->
-			{{#if this.timeLimit.original }}{{#unless_cond_group this.status '["closed", "cancelled"]' }}
+			{{#if this.timeLimit.original }}{{#unless_cond_group this.status '["closed", "cancelled", "pending"]' }}
 				<span class='orderInfoSection'>
 					<span class='orderInfoSectionHeader'>Time Left</span>
 					<span class='orderCell timeLeftCell {{#determine_priority_level timeLimit.rawDueDate}}{{/determine_priority_level}}'>
