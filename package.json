@@ -17,7 +17,8 @@
     "stripe": "*",
     "nodemailer": "*",
     "styliner": "*",
-    "jspm": "*"
+    "jspm": "*",
+    "dropbox" : "*"
   },
   "jspm": {
     "directories": {
