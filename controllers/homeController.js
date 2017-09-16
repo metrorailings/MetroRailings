@@ -9,12 +9,12 @@ var _Handlebars = require('handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
+	dropboxManager = global.OwlStakes.require('utility/dropbox'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'home',
-	GALLERY_FOLDER = 'gallery',
 	THANK_YOU_FOLDER = 'thankYou',
 
 	GENERIC_SLOGAN = 'Proudly serving artfully crafted railings to all of New Jersey and New York City',
@@ -75,7 +75,7 @@ module.exports =
 
 		// Fetch all the images that we will need to display on the home page
 		templateData.homeBannerImages = await fileManager.fetchImagePaths(CONTROLLER_FOLDER);
-		pageData.galleryImages = await fileManager.fetchImagePaths(GALLERY_FOLDER);
+		pageData.galleryImages = await dropboxManager.loadGallery();
 		templateData.thankYouImages = await fileManager.fetchImagePaths(THANK_YOU_FOLDER);
 
 		// Fetch the galleria template as well so that we can add pictures to the gallery from within the client
