@@ -106,7 +106,7 @@ module.exports =
 				dropboxMetadata = await dropboxConnection.filesUpload(
 				{
 					contents: file,
-					path: ORDERS_DIRECTORY + new Date().getTime() + '-' + filenames[i],
+					path: ORDERS_DIRECTORY + orderID + '-' + new Date().getTime() + '-' + filenames[i],
 					mode: { '.tag' : 'add' },
 					autorename: true,
 					mute: false
