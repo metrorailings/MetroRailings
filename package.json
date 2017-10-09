@@ -18,7 +18,9 @@
     "nodemailer": "*",
     "styliner": "*",
     "jspm": "*",
-    "dropbox" : "*"
+    "dropbox" : "*",
+    "busboy" : "*",
+    "jpeg-autorotate" : "*"
   },
   "jspm": {
     "directories": {

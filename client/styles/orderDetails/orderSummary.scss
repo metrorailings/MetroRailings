@@ -3,10 +3,71 @@
 @import '../foundation/colors';
 @import '../foundation/form';
 @import '../foundation/gallery';
+@import '../foundation/loader';
+@import '../foundation/animations';
 
 /* ----------------------- STYLES ----------------------------- */
+
+#picturesListingContainer
+{
+	@include transitionSettings($property: opacity, $duration: 0.25s);
+
+	opacity: 1.0;
+
+	&.hide
+	{
+		opacity: 0.0;
+	}
+}
 
 #orderNotes
 {
 	height: 140px;
+}
+
+#picturesListingLoadingIcons
+{
+	@include transitionSettings($property: opacity, $duration: 0.25s);
+
+	position: absolute;
+
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	opacity: 0.0;
+	z-index: -100;
+
+	&.show
+	{
+		opacity: 1.0;
+		z-index: 100;
+	}
+
+	& > #uploadingText
+	{
+		color: map-get($COLORS, indianRedTheme);
+
+		text-transform: none;
+
+		margin-bottom: 25px;
+	}
+
+	& > .loadingBall
+	{
+		background-color: map-get($COLORS, indianRedTheme);
+
+		width: 20px;
+		height: 20px;
+	}
+}
+
+#uploadingText
+{
+	@extend %loaderText;
+
+	width: 100%;
 }
