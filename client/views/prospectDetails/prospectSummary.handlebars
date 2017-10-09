@@ -21,7 +21,13 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Pictures</span>
-		<span id='picturesListingContainer'><!-- Show pictures here --></span>
+		<span id='picturesListingContainer'>{{> prospectPictures }}</span>
+		<span id='picturesListingLoadingIcons'>
+			<span id='uploadingText'>Processing</span>
+			<span class='loadingBall'></span>
+			<span class='loadingBall'></span>
+			<span class='loadingBall'></span>
+		</span>
 	</div>
 
 </div>

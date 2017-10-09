@@ -570,17 +570,17 @@ var ordersModule =
 	},
 
 	/**
-	 * Function responsible for saving image metadata to an order record
+	 * Function responsible for saving images to an order record
 	 *
 	 * @param {String} orderID - the ID of the order being modified
-	 * @param {Object} meta - the metadata of the newly uploaded image
+	 * @param {Object} images - the metadata of the newly uploaded image(s)
 	 * @param {String} username - the name of the admin making the changes
 	 *
 	 * @returns {Boolean} - a simple flag indicating whether changes to the order were successfully saved
 	 *
 	 * @author kinsho
 	 */
-	saveNewPicToOrder: async function (orderID, imgMeta, username)
+	saveNewPicToOrder: async function (orderID, images, username)
 	{
 		var order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
 			updateRecord;
@@ -593,7 +593,7 @@ var ordersModule =
 		order.pictures = order.pictures || [];
 
 		// Push the new image metadata into the order record
-		order.pictures.push(imgMeta);
+		order.pictures.push(...images);
 
 		// Generate a record to push into the database
 		updateRecord = mongo.formUpdateOneQuery(

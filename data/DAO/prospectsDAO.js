@@ -186,17 +186,17 @@ var prospectsModule =
 	},
 
 	/**
-	 * Function responsible for saving image metadata to a prospect record
+	 * Function responsible for saving images to a prospect record
 	 *
 	 * @param {String} orderID - the ID of the prospect being modified
-	 * @param {Object} meta - the metadata of the newly uploaded image
+	 * @param {Object} meta - the metadata of the newly uploaded image(s)
 	 * @param {String} username - the name of the admin making the changes
 	 *
 	 * @returns {boolean} - a simple flag indicating whether changes to the order were successfully saved
 	 *
 	 * @author kinsho
 	 */
-	saveNewPicToProspect: async function (prospectID, imgMeta, username)
+	saveNewPicToProspect: async function (prospectID, images, username)
 	{
 		var prospect = await prospectsModule.searchProspectById(parseInt(prospectID, 10)),
 			updateRecord;
@@ -209,7 +209,7 @@ var prospectsModule =
 		prospect.pictures = prospect.pictures || [];
 
 		// Push the new image metadata into the order record
-		prospect.pictures.push(imgMeta);
+		prospect.pictures.push(...images);
 
 		// Generate a record to push into the database
 		updateRecord = mongo.formUpdateOneQuery(

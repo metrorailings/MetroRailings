@@ -3,7 +3,6 @@
 import vm from 'client/scripts/orderDetails/viewModel';
 
 import axios from 'client/scripts/utility/axios';
-import dropbox from 'client/scripts/utility/dropbox';
 import gallery from 'client/scripts/utility/gallery';
 import confirmationModal from 'client/scripts/utility/confirmationModal';
 
@@ -15,17 +14,18 @@ var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
 	UPLOAD_PICTURE_INPUT = 'uploadPictureInput',
 	PICTURES_LISTING = 'picturesListingContainer',
+	PICTURES_LISTING_LOADER = 'picturesListingLoadingIcons',
 	FILE_UPLOAD_BUTTON = 'uploadPictureInput',
 	ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
-	LOADING_VEIL = 'baseLoaderOverlay',
 
 	RUSH_ORDER_BUTTONS = 'rushOrder',
 
 	SAVE_PICTURES_URL = 'orderDetails/saveNewPicture',
 	DELETE_PICTURE_URL = 'orderDetails/deletePicture',
 
-	VISIBILITY_CLASS = 'show',
 	DISABLED_CLASS = 'disabled',
+	SHOW_CLASS = 'show',
+	HIDE_CLASS = 'hide',
 	STATUS_RADIO_BUTTONS = 'statusRadio',
 	DATA_GROUPING_CLASS = 'dataGrouping',
 	UPLOADED_IMAGES_CLASS = 'uploadedImageThumbnail',
@@ -41,8 +41,8 @@ var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 var _orderNotesFields = document.getElementById(ORDER_NOTES_TEXT_AREA),
 	_statusRadioButtons = document.getElementsByClassName(STATUS_RADIO_BUTTONS),
 	_picturesContainer = document.getElementById(PICTURES_LISTING),
-	_rushOrderButtons = document.getElementsByName(RUSH_ORDER_BUTTONS),
-	_loadingVeil = document.getElementById(LOADING_VEIL);
+	_picturesLoader = document.getElementById(PICTURES_LISTING_LOADER),
+	_rushOrderButtons = document.getElementsByName(RUSH_ORDER_BUTTONS);
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -54,41 +54,37 @@ var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PIC
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
 /**
- * Function meant to show all images associated with the order currently in context
+ * Function responsible for attaching all image-related listeners to any pictures attached to this order
  *
  * @author kinsho
  */
-async function _renderImageListing()
+function _attachPictureListeners()
 {
 	var imageElements,
 		deleteIcons,
 		i;
 
-	// Cycle through each picture to see if there's a link that we can use to view the picture
-	// If not, generate that link
-	for (i = vm.pictures.length - 1; i >= 0; i--)
-	{
-		if ( !(vm.pictures[i].fullLink) )
-		{
-			vm.pictures[i].fullLink = await dropbox.fetchLink(vm.pictures[i]);
-		}
-	}
-
-	_picturesContainer.innerHTML = orderPicturesTemplate({pictures: vm.pictures});
+	/*
+	 * Ensure that any prior listeners are removed prior to adding new event listeners
+	 */
 
 	// Reset all the listeners for the section
+	document.getElementById(UPLOAD_PICTURE_BUTTON).removeEventListener('click', triggerFileBrowser);
 	document.getElementById(UPLOAD_PICTURE_BUTTON).addEventListener('click', triggerFileBrowser);
+	document.getElementById(UPLOAD_PICTURE_BUTTON).removeEventListener('click', uploadImage);
 	document.getElementById(UPLOAD_PICTURE_INPUT).addEventListener('change', uploadImage);
 
 	imageElements = _picturesContainer.getElementsByClassName(UPLOADED_IMAGES_CLASS);
 	for (i = imageElements.length - 1; i >= 0; i--)
 	{
+		imageElements[i].removeEventListener('click', openGallery);
 		imageElements[i].addEventListener('click', openGallery);
 	}
 
 	deleteIcons = _picturesContainer.getElementsByClassName(DELETE_IMAGE_ICON_CLASS);
 	for (i = deleteIcons.length - 1; i >= 0; i--)
 	{
+		deleteIcons[i].removeEventListener('click', deleteImage);
 		deleteIcons[i].addEventListener('click', deleteImage);
 	}
 
@@ -112,23 +108,28 @@ async function _renderImageListing()
  */
 async function _deleteImage(imageIndex)
 {
-	var imgMetadata = vm.pictures[imageIndex],
-		saveData =
+	var saveData =
 		{
 			id: vm._id,
+			// Remove the metadata from our local cache of order data
+			imgMeta: vm.pictures.splice(imageIndex, 1)[0]
 		};
 
-	_loadingVeil.classList.add(VISIBILITY_CLASS);
+	// Show a localized message indicating that we are in the midst of deleting a picture from our remote server
+	_picturesContainer.classList.add(HIDE_CLASS);
+	_picturesLoader.classList.add(SHOW_CLASS);
 
-	// Erase the file from the Dropbox repository
-	await dropbox.deleteFile(imgMetadata.path_lower);
+	// Reach out to the server to delete the image from Dropbox and wipe its metadata traces from the database
+	await axios.post(DELETE_PICTURE_URL, saveData);
 
-	// Then erase metadata about the wiped image from the database
-	saveData.imgMeta = vm.pictures.splice(imageIndex, 1)[0];
-	await axios.post(DELETE_PICTURE_URL, saveData, false);
+	// Take off any loading indicators now that we have a response back from the server
+	_picturesContainer.classList.remove(HIDE_CLASS);
+	_picturesLoader.classList.remove(SHOW_CLASS);
 
-	_loadingVeil.classList.remove(VISIBILITY_CLASS);
-	_renderImageListing();
+	// Re-render the pictures template again to remove the now-deleted image
+	_picturesContainer.innerHTML = orderPicturesTemplate( { pictures: vm.pictures } );
+
+	_attachPictureListeners();
 }
 
 // ----------------- LISTENERS ---------------------------
@@ -191,7 +192,7 @@ function openGallery(event)
 	// Cycle through each of the uploaded images and collect their src links
 	for (var i = 0; i < vm.pictures.length; i++)
 	{
-		imageURLs.push(vm.pictures[i].fullLink);
+		imageURLs.push(vm.pictures[i].shareLink);
 	}
 	gallery.open(imageURLs, window.parseInt(event.currentTarget.dataset.index, 10));
 }
@@ -204,29 +205,42 @@ function openGallery(event)
  */
 async function uploadImage()
 {
-	var fileToUpload = document.getElementById(UPLOAD_PICTURE_INPUT).files[0],
-		imageNameComponents = fileToUpload.name.split('.'),
-		// All file names will take on the form of <orderID>-<latest picture count on order>
-		revisedFileName = vm._id + '-' + (new Date().toTimeString()) + '.' + imageNameComponents[imageNameComponents.length - 1],
-		saveData =
-		{
-			id: vm._id,
-		},
-		imgMetadata;
+	var filesToUpload = document.getElementById(UPLOAD_PICTURE_INPUT).files,
+		saveData = new FormData(),
+		imgMetadata,
+		i;
 
-	_loadingVeil.classList.add(VISIBILITY_CLASS);
+	// Prepare all the files that needs to be uploaded
+	for (i = 0; i < filesToUpload.length; i++)
+	{
+		saveData.append('files', filesToUpload[i], filesToUpload[i].name);
+	}
 
-	// Upload the image to Dropbox
-	imgMetadata = await dropbox.uploadFile(fileToUpload, revisedFileName);
+	// Append the ID of the order as well to the payload
+	saveData.append('id', vm._id);
 
-	// Push the image metadata into the database
-	saveData.imgMeta = imgMetadata.data;
-	vm.pictures.push(saveData.imgMeta);
+	// Show a localized message indicating that we are in the midst of uploading pictures to our remote server
+	_picturesContainer.classList.add(HIDE_CLASS);
+	_picturesLoader.classList.add(SHOW_CLASS);
 
-	await axios.post(SAVE_PICTURES_URL, saveData, false);
+	// Upload the images into Dropbox and save all the metadata within our own database
+	imgMetadata = await axios.post(SAVE_PICTURES_URL, saveData, false,
+	{
+		'content-type': 'multipart/form-data',
+	}, 15000 * filesToUpload.length);
+	imgMetadata = imgMetadata.data;
 
-	_loadingVeil.classList.remove(VISIBILITY_CLASS);
-	_renderImageListing();
+	// Take off any loading indicators now that we have a response back from the server
+	_picturesContainer.classList.remove(HIDE_CLASS);
+	_picturesLoader.classList.remove(SHOW_CLASS);
+
+	// Store the metadata within our own local cache of data for this particular order
+	vm.pictures.push(...imgMetadata);
+
+	// Re-render the image template again to account for the newly uploaded image
+	_picturesContainer.innerHTML = orderPicturesTemplate( {pictures: vm.pictures } );
+
+	_attachPictureListeners();
 }
 
 /**
@@ -243,7 +257,7 @@ async function deleteImage(event)
 		imageIndex = window.parseInt(imgElement.dataset.index, 10),
 		imgMetadata = vm.pictures[imageIndex];
 
-	confirmationModal.open([DELETE_IMAGE_MESSAGE.replace(IMAGE_SOURCE_PLACEHOLDER, imgMetadata.fullLink)], () => { _deleteImage(imageIndex); }, () => {});
+	confirmationModal.open([DELETE_IMAGE_MESSAGE.replace(IMAGE_SOURCE_PLACEHOLDER, imgMetadata.shareLink)], () => { _deleteImage(imageIndex); }, () => {});
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
@@ -258,6 +272,4 @@ _orderNotesFields.addEventListener('change', setNotes);
 _rushOrderButtons[0].addEventListener('change', setRushOrder);
 _rushOrderButtons[1].addEventListener('change', setRushOrder);
 
-// ----------------- PAGE INITIALIZATION --------------------------------
-
-_renderImageListing();
+_attachPictureListeners();

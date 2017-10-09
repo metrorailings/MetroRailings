@@ -71,15 +71,18 @@ var axiosModule =
 		 * @param {boolean} [showLoader] - a flag indicating whether a loading animation should be shown to the user
 		 * 		until the AJAX request returns back with data from the server
 		 * @param {Object} [requestHeaders] - request headers that modify the nature of this connection
+		 * @param {Number} [customTimeout] - the max length of time it should take to properly service this request
+		 * 		prior to it be being rejected
 		 *
 		 * @returns {Promise<Object>} - an object containing either data from an external source or a a plain old rejection
 		 *
 		 * @author kinsho
 		 */
-		post: function(url, payload, showLoader, requestHeaders)
+		post: function(url, payload, showLoader, requestHeaders, customTimeout)
 		{
 			var configObj = DEFAULT_CONFIG;
 
+			configObj.timeout = customTimeout || configObj.timeout;
 			configObj.headers = requestHeaders || {};
 
 			return new Promise((resolve, reject) =>

@@ -10,6 +10,7 @@ var _Handlebars = require('handlebars'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
+	dropbox = global.OwlStakes.require('utility/dropbox'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
@@ -43,6 +44,11 @@ var CONTROLLER_FOLDER = 'orderDetails',
  * The template for the order summary section
  */
 _Handlebars.registerPartial('orderSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUMMARY));
+
+/**
+ * The template for the order pictures section
+ */
+_Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES));
 
 /**
  * The template for the customer summary section
@@ -145,9 +151,10 @@ module.exports =
 	},
 
 	/**
-	 * Function meant to attach new image metadata to the order associated with the new image
+	 * Function meant to upload a new image into Dropbox and attach new image metadata to the order associated with
+	 * the new image
 	 *
-	 * @params {Object} params - the ID of the order to modify and the new picture metadata
+	 * @params {Object} params - the ID of the order to modify and the new pictures to upload
 	 *
 	 * @author kinsho
 	 */
@@ -155,21 +162,27 @@ module.exports =
 	{
 		if (await usersDAO.verifyAdminCookie(cookie))
 		{
-			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+			var username = cookieManager.retrieveAdminCookie(cookie)[0],
+				imgMetas;
 
-			console.log('Saving a new picture to the order...');
+			console.log('Saving new picture(s) to the order...');
 
-			await ordersDAO.saveNewPicToOrder(params.id, params.imgMeta, username);
+			// Upload the image(s) to Dropbox
+			imgMetas = await dropbox.uploadImage(params.id, params.files);
+
+			// Save all the metadata from the newly uploaded images into the database
+			await ordersDAO.saveNewPicToOrder(params.id, imgMetas, username);
 		}
 
 		return {
 			statusCode: responseCodes.OK,
-			data: {}
+			data: imgMetas
 		};
 	},
 
 	/**
-	 * Function meant to wipe away an image's metadata from the order associated with that image
+	 * Function meant to delete an image from the Dropbox repository and wipe away an image's metadata from the order
+	 * associated with that image
 	 *
 	 * @params {Object} params - the ID of the order to modify and the picture metadata to delete from that order
 	 *
@@ -183,7 +196,12 @@ module.exports =
 
 			console.log('Deleting a picture from an order...');
 
-			await ordersDAO.deletePicFromOrder(params.id, params.imgMeta, username);
+			// Delete the image from the Dropbox repository
+			if (await dropbox.deleteImage(params.imgMeta.path_lower))
+			{
+				// Now delete the picture's metadata from the database
+				await ordersDAO.deletePicFromOrder(params.id, params.imgMeta, username);
+			}
 		}
 
 		return {

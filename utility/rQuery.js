@@ -111,5 +111,27 @@ module.exports =
 		}
 
 		return destObj;
+	},
+
+	/**
+	 * Function that determines whether a given string qualifies as a JSON string
+	 *
+	 * @param {String} str - the string to test
+	 *
+	 * @returns {Boolean} - a flag indicating whether the string adheres to the JSON format
+	 *
+	 * @author kinsho
+	 */
+	isJSON: function(str)
+	{
+		try
+		{
+			JSON.parse(str);
+			return true;
+		}
+		catch(error)
+		{
+			return false;
+		}
 	}
 };
