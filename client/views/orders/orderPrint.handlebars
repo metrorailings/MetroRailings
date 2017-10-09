@@ -33,7 +33,7 @@
 		font-weight: 400;
 	}
 
-	#generalSection, #designSection, #notesSection
+	#generalSection, #designSection, #notesSection, #writtenNotesSection
 	{
 		margin-left: auto;
 		margin-right: auto;
@@ -48,7 +48,7 @@
 		width: 90%;
 	}
 
-	#generalSection, #notesSection
+	#generalSection, #notesSection, #writtenNotesSection
 	{
 		display: flex;
 		flex-direction: column;
@@ -74,6 +74,16 @@
 	#designSection > span
 	{
 		width: 50%;
+	}
+
+	#writtenNotesSection
+	{
+		height: 300px;
+	}
+
+	#writtenNotesSection > span
+	{
+		height: 90%;
 	}
 
 	.sectionHeader
@@ -222,12 +232,17 @@
 			</span>
 		</div>
 	{{/if}}
+	<!-- Section that allows drawings to be penciled onto the page -->
+	<div id='writtenNotesSection'>
+		<div class='sectionHeader'>OTHER INFO</div>
+		<span></span>
+	</div>
 
 </div>
 
 {{#if order.pictures}}
 	{{#each order.pictures}}
-		<img src='{{fullLink}}' class='orderPicture' />
+		<img src='{{shareLink}}' class='orderPicture' />
 		<br />
 	{{/each}}
 {{/if}}
