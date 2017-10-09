@@ -246,7 +246,7 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 
-		viewModel.__extendTimeLimit = (value.timeLimit ? value.timeLimit.extension : '');
+		viewModel.__extendTimeLimit = (value.timeLimit ? value.timeLimit.extension : 0);
 		viewModel.__orderDescription = value.notes.order;
 		viewModel.__agreement = value.agreement;
 	}
@@ -1023,7 +1023,7 @@ Object.defineProperty(viewModel, 'extendTimeLimit',
 		{
 			// Make sure a valid integer is being set here
 			var isInvalid = !(formValidator.isNumeric(value)) ||
-				(value.length && !(window.parseInt(value, 10))) ||
+				(value.length && Number.isNaN(window.parseInt(value, 10))) ||
 				(window.parseInt(value, 10) > 45);
 
 			rQueryClient.updateValidationOnField(isInvalid, _timeLimitExtensionField, ERROR.TIME_LIMIT_INVALID, _validationSet);
