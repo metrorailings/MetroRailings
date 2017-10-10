@@ -9,7 +9,6 @@ import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 import confirmationModal from 'client/scripts/utility/confirmationModal';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
-import dropbox from 'client/scripts/utility/dropbox';
 import gallery from 'client/scripts/utility/gallery';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
@@ -201,19 +200,7 @@ async function printOrder()
 		orderID = window.parseInt(currentTarget.dataset.id, 10),
 		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
 		order = vm.orders[orderIndex],
-		pictures = order.pictures || [],
-		printWindow = window.open('', '', 'left=360,top=10,width=1,height=1,toolbar=0,scrollbars=1,status=0'),
-		i;
-
-	// Fetch a link to each picture
-	for (i = 0; i < pictures.length; i++)
-	{
-		if ( !(pictures[i].fullLink) )
-		{
-			pictures[i].fullLink = await dropbox.fetchLink(pictures[i]);
-		}
-	}
-	order.pictures = pictures;
+		printWindow = window.open('', '', 'left=360,top=10,width=1,height=1,toolbar=0,scrollbars=1,status=0');
 
 	// Use the newly initialized window to print out details relating to the order
 	printWindow.document.write(orderPrintTemplate({order: order}));
@@ -248,22 +235,13 @@ async function loadPictures(event)
 	// Fade out the link prior to loading images
 	targetElement.classList.add(HIDE_CLASS);
 
-	// Fetch a link to each picture
-	for (i = 0; i < pictures.length; i++)
-	{
-		if ( !(pictures[i].fullLink) )
-		{
-			pictures[i].fullLink = await dropbox.fetchLink(pictures[i]);
-		}
-	}
-
 	// Replace the link with the pictures
 	parentContainer.removeChild(parentContainer.lastElementChild);
 	parentContainer.innerHTML += orderPicturesTemplate(
-		{
-			id: orderID,
-			pictures: pictures
-		});
+	{
+		id: orderID,
+		pictures: pictures
+	});
 
 	// Set up a listener on each newly generated image so that we can load the image in gallery form
 	thumbnails = parentContainer.getElementsByClassName(UPLOADED_IMAGE_THUMBNAIL_CLASS);
