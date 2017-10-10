@@ -47,7 +47,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: async function (params, cookie)
+	init: async function (params, cookie, request)
 	{
 		var populatedPageTemplate,
 			pageData = {},
@@ -56,7 +56,7 @@ module.exports =
 				dropboxToken: config.DROPBOX_TOKEN
 			};
 
-		if ( !(await usersDAO.verifyAdminCookie(cookie)) )
+		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
 			console.log('Redirecting the user to the log-in page...');
 
@@ -90,9 +90,9 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	searchOrders: async function (params, cookie)
+	searchOrders: async function (params, cookie, request)
 	{
-		if (await usersDAO.verifyAdminCookie(cookie))
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
 			console.log('Searching for newly modified orders...');
 
@@ -115,11 +115,11 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	updateStatus: async function (params, cookie)
+	updateStatus: async function (params, cookie, request)
 	{
 		var updatedData;
 
-		if (await usersDAO.verifyAdminCookie(cookie))
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
 			var username = cookieManager.retrieveAdminCookie(cookie)[0];
 
@@ -145,9 +145,9 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	removeOrder: async function (params, cookie)
+	removeOrder: async function (params, cookie, request)
 	{
-		if (await usersDAO.verifyAdminCookie(cookie))
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
 			var username = cookieManager.retrieveAdminCookie(cookie)[0];
 

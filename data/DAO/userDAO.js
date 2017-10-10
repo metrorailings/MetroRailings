@@ -55,29 +55,32 @@ module.exports =
 	},
 
 	/**
-	 * Function responsible for storing new administrator cookies into the database for future verification
+	 * Function responsible for storing a new administrator cookie into the database for future verification
 	 *
 	 * @param {String} username - the user name to associate with the cookie
 	 * @param {String} cookie - the cookie to store into the database
+	 * @param {String} userAgent - the user-agent string that will be used to associate this cookie only with the
+	 * 		device currently logging in
 	 *
 	 * @returns {Boolean} - just a simple return value to indicate that the function has successfully stored
 	 * 		the new cookie
 	 *
 	 * @author kinsho
 	 */
-	storeAdminCookie: async function (username, cookie)
+	storeAdminCookie: async function (username, cookie, userAgent)
 	{
 		var cookieRecord =
 			{
 				username: username,
 				// Ensure we only store the part of the cookie responsible for logging admins into the system
-				cookie: cookieManager.parseCookie(cookie)[ADMIN_COOKIE]
+				cookie: cookieManager.parseCookie(cookie)[ADMIN_COOKIE],
+				userAgent: userAgent
 			};
 
 		try
 		{
 			// Overwrite any old cookie records for the user in context, should one exists
-			await mongo.bulkWrite(COOKIES_COLLECTION, true, mongo.formUpdateOneQuery({ username: username }, cookieRecord, true));
+			await mongo.bulkWrite(COOKIES_COLLECTION, true, mongo.formUpdateOneQuery({ username: username, userAgent: userAgent }, cookieRecord, true));
 
 			return true;
 		}
@@ -94,12 +97,14 @@ module.exports =
 	 * Function responsible for verifying that a cookie is a valid admin cookie
 	 *
 	 * @param {String} cookie - the cookie to test
+	 * @param {String} userAgent - the user-agent string that will be used to verify that the cookie being tested
+	 * 		belongs rightfully so to the device passing that cookie
 	 *
 	 * @returns {boolean} - indicating whether the cookie is still valid
 	 *
 	 * @author kinsho
 	 */
-	verifyAdminCookie: async function (cookie)
+	verifyAdminCookie: async function (cookie, userAgent)
 	{
 		var	username = cookieManager.retrieveAdminCookie(cookie)[0],
 			dbResults;
@@ -113,11 +118,12 @@ module.exports =
 		try
 		{
 			dbResults = await mongo.read(COOKIES_COLLECTION,
-				{
-					username: username,
-					// Search only against the part of the cookie responsible for logging in admins
-					cookie: cookieManager.parseCookie(cookie)[ADMIN_COOKIE]
-				});
+			{
+				username: username,
+				// Search only against the part of the cookie responsible for logging in admins
+				cookie: cookieManager.parseCookie(cookie)[ADMIN_COOKIE],
+				userAgent: userAgent
+			});
 
 			return !!(dbResults.length);
 		}

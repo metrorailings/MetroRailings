@@ -44,7 +44,7 @@ async function _servicePostRequest(request, data, deferred)
 
 	// Find the correct action method indicated within the URL, then invoke that action method with
 	// all the relevant parameters needed to properly service the POST request
-	responseData = await ctrl[ router.findAction(action) ](data, cookie);
+	responseData = await ctrl[ router.findAction(action) ](data, cookie, request);
 
 	deferred.resolve(responseData);
 }
