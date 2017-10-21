@@ -22,6 +22,7 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'orderDetails',
+	UTILITY_FOLDER = 'utility',
 
 	ADMIN_LOG_IN_URL = '/admin',
 
@@ -35,7 +36,8 @@ var CONTROLLER_FOLDER = 'orderDetails',
 		PRICING_SUMMARY: 'pricingSummary',
 		TERMS_SECTION: 'termsSection',
 		SAVE_BUTTON: 'submissionSection',
-		ORDER_PICTURES: 'orderPictures'
+		ORDER_PICTURES: 'orderPictures',
+		ORDER_NOTES: 'orderNotes'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -44,6 +46,11 @@ var CONTROLLER_FOLDER = 'orderDetails',
  * The template for the order summary section
  */
 _Handlebars.registerPartial('orderSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUMMARY));
+
+/**
+ * The template for the order notes section
+ */
+_Handlebars.registerPartial('orderNotes', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ORDER_NOTES));
 
 /**
  * The template for the order pictures section

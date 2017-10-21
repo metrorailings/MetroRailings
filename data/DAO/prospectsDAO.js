@@ -11,6 +11,8 @@ var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 var ORDERS_COLLECTION = 'orders',
 	COUNTERS_COLLECTION = 'counters',
 
+	UNKNOWN_AUTHOR = 'Unknown',
+
 	PROSPECT_STATUS = 'prospect',
 	PENDING_STATUS = 'pending';
 
@@ -31,11 +33,48 @@ function _applyModificationUpdates(prospect, username)
 
 	prospect.lastModifiedDate = modificationDate;
 	prospect.modHistory = prospect.modHistory || [];
-	prospect.modHistory.push(
+	prospect.modHistory.unshift(
 	{
 		user: username,
 		date: modificationDate
 	});
+}
+
+/**
+ * Function responsible for storing a note in a special format that would allow us to track all the notes that were
+ * written on this prospect
+ *
+ * @param {Object} prospect - the prospect
+ * @param {String} note - the note
+ * @param {String} username - the name of the user writing the note
+ *
+ * @author kinsho
+ */
+function _formNoteRecord(prospect, note, username)
+{
+	prospect.notes.internal = prospect.notes.internal || [];
+
+	// If we are dealing with old orders here, we need to convert the old notes so that they remain accessible
+	// through the new format
+	if (typeof prospect.notes.internal === 'string')
+	{
+		prospect.notes.internal =
+		[{
+			note: prospect.notes.internal,
+			author: UNKNOWN_AUTHOR,
+			date: prospect.lastModifiedDate
+		}];
+	}
+
+	if (note && note.trim())
+	{
+		prospect.notes.internal.unshift(
+		{
+			note: note,
+			author: username,
+			date: new Date()
+		});
+	}
 }
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -104,6 +143,9 @@ var prospectsModule =
 		// Attach a new ID to this prospect
 		prospect._id = counterRecord.seq;
 
+		// Format any notes written on this prospect
+		_formNoteRecord(prospect, prospect.notes.internal, username);
+
 		// Attach other metadata showing exactly how this prospect came to be
 		prospect.conception =
 		{
@@ -145,6 +187,9 @@ var prospectsModule =
 		// and who updated this prospect
 		_applyModificationUpdates(originalProspect, username);
 
+		// Properly store any notes that may have been added to this prospect
+		_formNoteRecord(originalProspect, prospectModifications.notes.internal, username);
+
 		// Gather the data that we will need to put into the database
 		dataToUpdate =
 		{
@@ -161,7 +206,7 @@ var prospectsModule =
 			'customer.state': prospectModifications.customer.state,
 			'customer.zipCode': prospectModifications.customer.zipCode,
 
-			'notes.internal': prospectModifications.notes.internal
+			'notes.internal': originalProspect.notes.internal
 		};
 
 		// Now generate a record of data we will be using to update the database

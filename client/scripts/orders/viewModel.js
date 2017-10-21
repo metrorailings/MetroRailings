@@ -12,6 +12,7 @@ import notifier from 'client/scripts/utility/notifications';
 
 import statuses from 'shared/orderStatus';
 import designTranslator from 'shared/designs/translator';
+import dateUtility from 'shared/dateUtility';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
@@ -23,6 +24,7 @@ var STATUS_FILTER_CLASS = 'statusFilter',
 	RESET_SEARCH_ICON = 'resetSearch',
 	ORDER_LISTINGS_CONTAINER = 'orderListing',
 	ORDER_LISTING_TEMPLATE = 'orderListingTemplate',
+	ORDER_NOTES_TEMPLATE = 'orderNotesTemplate',
 
 	PRIORITY_LEVELS =
 	{
@@ -195,12 +197,70 @@ Handlebars.registerHelper('determine_priority_level', function(goalDate)
 	}
 });
 
+/**
+ * Handlebars helper function designed to test whether a value qualifies as a string
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('is_string', function(val)
+{
+	return (typeof val === 'string');
+});
+
+/**
+ * Handlebars helper function designed to translate computerized dates into user-friendly text
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('format_date', function(date)
+{
+	date = new Date(date);
+
+	return dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
+});
+
+/**
+ * Handlebars helper function designed to translate computerized time strings into user-friendly text
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('format_time', function(date)
+{
+	var dateObj = new Date(date),
+		militaryHour = dateObj.getHours(),
+		readableHour = (militaryHour % 12 ? militaryHour % 12 : 12),
+		useAMorPM = (militaryHour - 12 < 0 ? 'AM' : 'PM'),
+		readableMinute = dateObj.getMinutes(),
+		readableSecond = dateObj.getSeconds();
+
+	// Add zeroes to the front of any time component that's less than 10
+	if (readableHour < 10)
+	{
+		readableHour = '0' + readableHour;
+	}
+	if (readableMinute < 10)
+	{
+		readableMinute = '0' + readableMinute;
+	}
+	if (readableSecond < 10)
+	{
+		readableSecond = '0' + readableSecond;
+	}
+
+	return readableHour + ':' + readableMinute + ':' + readableSecond + ' ' + useAMorPM;
+});
+
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
  * The partial to render individual orders on the orders page
  */
 var orderListingTemplate = Handlebars.compile(document.getElementById(ORDER_LISTING_TEMPLATE).innerHTML);
+
+/**
+ * The partial to render the HTML that renders out all the notes associated with any given order
+ */
+Handlebars.registerPartial('orderNotes', document.getElementById(ORDER_NOTES_TEMPLATE).innerHTML);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 

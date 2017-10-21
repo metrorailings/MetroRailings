@@ -21,6 +21,7 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'orders',
+	UTILITY_FOLDER = 'utility',
 
 	ADMIN_LOG_IN_URL = '/admin',
 
@@ -29,7 +30,8 @@ var CONTROLLER_FOLDER = 'orders',
 		FILTER: 'orderFilter',
 		LISTING: 'orderListing',
 		PICTURES: 'orderPictures',
-		PRINT: 'orderPrint'
+		PRINT: 'orderPrint',
+		NOTES: 'orderNotes'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -73,6 +75,9 @@ module.exports =
 
 		// Grab the raw HTML of the order pictures template
 		pageData.orderPicturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.PICTURES);
+
+		// Grab the raw HTML of the template we'll use to print out all the notes for any order
+		pageData.orderNotesTemplate = await fileManager.fetchTemplate(UTILITY_FOLDER, PARTIALS.NOTES);
 
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

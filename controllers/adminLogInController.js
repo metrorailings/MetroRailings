@@ -22,10 +22,6 @@ var CONTROLLER_FOLDER = 'adminLogIn',
 
 	ORDERS_PAGE_URL = '/orders';
 
-// ----------------- PRIVATE VARIABLES --------------------------
-
-// ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
-
 // ----------------- MODULE DEFINITION --------------------------
 module.exports =
 {

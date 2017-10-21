@@ -51,13 +51,20 @@
 
     <!-- @TODO - For orders in open status, allow the admin to set a date of visitation -->
 
-    <!-- @TODO - Allow multiple notes to be stored, one on top of another --->
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Notes
+		</span>
+		{{> orderNotes }}
+	</div>
+
     <div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Order Notes
+		    Add a New Note
 		</span>
-		<textarea id='orderNotes' class='optionalField' {{#if_cond status 'closed'}}disabled{{/if_cond}}>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
+		<textarea id='orderNotes' class='optionalField' {{#if_cond status 'closed'}}disabled{{/if_cond}}></textarea>
     </div>
 
     <div class='dataGrouping'>

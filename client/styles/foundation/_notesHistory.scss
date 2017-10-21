@@ -1,0 +1,131 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.notesHistory
+{
+	border:
+	{
+		style: solid;
+		width: 2.5px;
+		radius: 10px;
+		color: map-get($COLORS, grayTheme);
+	}
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 70%;
+}
+
+.noteRecord
+{
+	border-bottom:
+	{
+		width: 2.5px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+	}
+
+	display: flex;
+	width: 100%;
+	min-height: 120px;
+
+	&:nth-of-type(2n+1)
+	{
+		background-color: map-get($COLORS, whiteTheme);
+	}
+
+	&:nth-of-type(2n)
+	{
+		background-color: map-get($COLORS, lightMoccasinTheme);
+	}
+
+	&:first-of-type
+	{
+		border-top: none;
+
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+	}
+
+	&:last-of-type
+	{
+		border-bottom: none;
+
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+	}
+}
+
+.noteMetadata
+{
+	border-right:
+	{
+		width: 1.5px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+	}
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	flex: 1;
+}
+
+.noteCell
+{
+	@extend %regularPlusText;
+
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: left;
+
+	padding: 15px;
+	flex: 3;
+}
+
+.noteDate
+{
+	@extend %tabularSmallHeaderText;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+}
+
+.noteTime
+{
+	@extend %tabularSmallHeaderText;
+
+	padding-bottom: 10px;
+}
+
+.noteAuthor
+{
+	@extend %tabularHeaderText;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 20px;
+	}
+
+	width: 100%;
+}
