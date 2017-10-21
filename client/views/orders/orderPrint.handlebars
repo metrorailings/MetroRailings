@@ -33,7 +33,7 @@
 		font-weight: 400;
 	}
 
-	#generalSection, #designSection, #notesSection, #writtenNotesSection
+	#generalSection, #designSection, #writtenNotesSection
 	{
 		margin-left: auto;
 		margin-right: auto;
@@ -48,7 +48,7 @@
 		width: 90%;
 	}
 
-	#generalSection, #notesSection, #writtenNotesSection
+	#generalSection, #writtenNotesSection
 	{
 		display: flex;
 		flex-direction: column;
@@ -65,7 +65,7 @@
 		flex-wrap: wrap;
 	}
 
-	#generalSection > span, #designSection > span, #notesSection > span
+	#generalSection > span, #designSection > span
 	{
 		padding-top: 7px;
 		padding-bottom: 7px;
@@ -221,20 +221,9 @@
 
 	</div>
 
-	<!-- Notes details --->
-	{{#if order.notes.internal}}
-		<div id='notesSection'>
-
-			<div class='sectionHeader'>NOTES</div>
-
-			<span>
-				{{{ order.notes.internal }}}
-			</span>
-		</div>
-	{{/if}}
 	<!-- Section that allows drawings to be penciled onto the page -->
 	<div id='writtenNotesSection'>
-		<div class='sectionHeader'>OTHER INFO</div>
+		<div class='sectionHeader'>OTHER INFO / DRAWINGS</div>
 		<span></span>
 	</div>
 
