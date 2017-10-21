@@ -16,6 +16,7 @@ var ORDERS_COLLECTION = 'orders',
 	REMOVED_ORDERS_COLLECTION = 'removedOrders',
 
 	SYSTEM_USER_NAME = 'system',
+	UNKNOWN_USER_NAME = 'Unknown',
 
 	PENDING_STATUS = 'pending',
 	QUEUE_STATUS = 'queue',
@@ -43,6 +44,43 @@ function _applyModificationUpdates(order, username)
 		user: username,
 		date: modificationDate
 	});
+}
+
+/**
+ * Function responsible for storing a note in a special format that would allow us to track all the notes that were
+ * written on this order
+ *
+ * @param {Object} prospect - the prospect
+ * @param {String} note - the note
+ * @param {String} username - the name of the user writing the note
+ *
+ * @author kinsho
+ */
+function _formNoteRecord(order, note, username)
+{
+	order.notes.internal = order.notes.internal || [];
+
+	// If we are dealing with old orders here, we need to convert the old notes so that they remain accessible
+	// through the new format
+	if (typeof order.notes.internal === 'string')
+	{
+		order.notes.internal =
+		[{
+			note: order.notes.internal,
+			author: UNKNOWN_USER_NAME,
+			date: order.lastModifiedDate
+		}];
+	}
+
+	if (note && note.trim())
+	{
+		order.notes.internal.unshift(
+		{
+			note: note,
+			author: username,
+			date: new Date()
+		});
+	}
 }
 
 /**
@@ -419,6 +457,9 @@ var ordersModule =
 		// and who updated this order
 		_applyModificationUpdates(order, username);
 
+		// Properly store any notes that may have been added to this order
+		_formNoteRecord(order, orderModifications.notes.internal, username);
+
 		// Convert any modified pricing and other numeric data into a numerical format
 		orderModifications.pricing.modification = _parseNumberOrReturnZero(orderModifications.pricing.modification);
 		orderModifications.pricing.pricePerFoot = _parseNumberOrReturnZero(orderModifications.pricing.pricePerFoot);
@@ -523,7 +564,7 @@ var ordersModule =
 			'installation.coverPlates': orderModifications.installation.coverPlates,
 			'installation.platformType': orderModifications.installation.platformType,
 
-			'notes.internal': orderModifications.notes.internal,
+			'notes.internal': order.notes.internal,
 			'notes.order': orderModifications.notes.order
 		};
 

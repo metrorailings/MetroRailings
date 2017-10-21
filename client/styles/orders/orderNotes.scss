@@ -1,0 +1,22 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.orderNotesSection
+{
+	.orderCell
+	{
+		padding: 0px;
+	}
+
+	.notesHistory
+	{
+		border: none;
+		margin: 0px;
+
+		width: 100%;
+	}
+}

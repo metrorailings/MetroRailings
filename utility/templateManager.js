@@ -267,6 +267,46 @@ _Handlebars.registerHelper('format_date', function(date)
 	return dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
 });
 
+/**
+ * Handlebars helper function designed to translate computerized time strings into user-friendly text
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_time', function(date)
+{
+	var militaryHour = date.getHours(),
+		readableHour = (militaryHour % 12 ? militaryHour % 12 : 12),
+		useAMorPM = (militaryHour - 12 < 0 ? 'AM' : 'PM'),
+		readableMinute = date.getMinutes(),
+		readableSecond = date.getSeconds();
+
+	// Add zeroes to the front of any time component that's less than 10
+	if (readableHour < 10)
+	{
+		readableHour = '0' + readableHour;
+	}
+	if (readableMinute < 10)
+	{
+		readableMinute = '0' + readableMinute;
+	}
+	if (readableSecond < 10)
+	{
+		readableSecond = '0' + readableSecond;
+	}
+
+	return readableHour + ':' + readableMinute + ':' + readableSecond + ' ' + useAMorPM;
+});
+
+/**
+ * Handlebars helper function designed to test whether a value qualifies as a string
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('is_string', function(val)
+{
+	return (typeof val === 'string');
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =

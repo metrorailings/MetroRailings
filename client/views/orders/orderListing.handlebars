@@ -47,11 +47,11 @@
 		</div>
 
         {{#if this.notes }}
-			{{#if this.notes.internal}}
+			{{#if this.notes.internal.length }}
 				<div class='orderGrouping orderNotesSection'>
 					<span class='orderInfoSection'>
 						<span class='orderInfoSectionHeader'>Notes</span>
-						<span class='orderCell'>{{{ this.notes.internal }}}</span>
+						<span class='orderCell'>{{> orderNotes }}</span>
 					</span>
 				</div>
 			{{/if}}

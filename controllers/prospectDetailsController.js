@@ -22,6 +22,7 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'prospectDetails',
+	UTILITY_FOLDER = 'utility',
 
 	ADMIN_LOG_IN_URL = '/admin',
 
@@ -31,7 +32,8 @@ var CONTROLLER_FOLDER = 'prospectDetails',
 		CUSTOMER_INFO: 'customerSummary',
 		LOCATION_INFO: 'locationSummary',
 		SAVE_BUTTON: 'submissionSection',
-		PROSPECT_PICTURES: 'prospectPictures'
+		PROSPECT_PICTURES: 'prospectPictures',
+		PROSPECT_NOTES: 'orderNotes'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -40,6 +42,11 @@ var CONTROLLER_FOLDER = 'prospectDetails',
  * The template for the prospect pictures section
  */
 _Handlebars.registerPartial('prospectPictures', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PROSPECT_PICTURES));
+
+/**
+ * The template for the prospect notes section
+ */
+_Handlebars.registerPartial('prospectNotes', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.PROSPECT_NOTES));
 
 /**
  * The template for the prospect summary section
@@ -62,6 +69,7 @@ _Handlebars.registerPartial('locationSummary', fileManager.fetchTemplateSync(CON
 _Handlebars.registerPartial('saveProspectChangesButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SAVE_BUTTON));
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**

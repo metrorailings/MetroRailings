@@ -10,13 +10,20 @@
 		<span class='staticValue'>{{ conception.user }} ({{#capitalize conception.userType}}{{/capitalize}}) </span>
 	</div>
 
-	<!-- @TODO - Allow multiple notes to be stored, one on top of another --->
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Prospect Notes
+		    Notes
 		</span>
-		<textarea id='prospectNotes' class='optionalField'>{{#format_value_for_textarea notes.internal }}{{/format_value_for_textarea}}</textarea>
+		{{> prospectNotes }}
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+            <i class='fa fa-tag fa-rotate-180'></i>
+		    Add a New Note
+		</span>
+		<textarea id='prospectNotes' class='optionalField'></textarea>
 	</div>
 
 	<div class='dataGrouping'>
