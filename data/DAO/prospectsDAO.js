@@ -133,7 +133,8 @@ var prospectsModule =
 			},
 			{
 				_id: ORDERS_COLLECTION
-			});
+			}),
+			initialNote = prospect.notes.internal;
 
 		prospect.status = PROSPECT_STATUS;
 
@@ -144,7 +145,8 @@ var prospectsModule =
 		prospect._id = counterRecord.seq;
 
 		// Format any notes written on this prospect
-		_formNoteRecord(prospect, prospect.notes.internal, username);
+		prospect.notes.internal = ''; // For sanity's sake, wipe out any notes that may have been stored in the prospect object
+		_formNoteRecord(prospect, initialNote, username);
 
 		// Attach other metadata showing exactly how this prospect came to be
 		prospect.conception =

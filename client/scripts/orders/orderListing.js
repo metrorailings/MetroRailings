@@ -272,7 +272,7 @@ function openGallery(event)
 	// Cycle through each image within the set and collect their src links
 	for (i = 0; i < order.pictures.length; i++)
 	{
-		imageURLs.push(order.pictures[i].fullLink);
+		imageURLs.push(order.pictures[i].shareLink);
 	}
 	gallery.open(imageURLs, pictureIndex);
 }
