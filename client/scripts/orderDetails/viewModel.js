@@ -212,7 +212,7 @@ Object.defineProperty(viewModel, 'originalOrder',
 		// Copy over the values from the original order into the view model
 		viewModel._id = value._id;
 		viewModel.__status = value.status;
-		viewModel.__notes = value.notes.internal;
+		viewModel.__notes = '';
 		viewModel.__rushOrder = value.rushOrder;
 		viewModel.__pictures = value.pictures || [];
 
