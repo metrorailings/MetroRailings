@@ -15,18 +15,26 @@
                 <span class='orderInfoSectionHeader'>Customer Info</span>
                 <span class='orderCell'>{{ customer.name }}</span>
                 <span class='orderCell'>
-					{{ customer.address }}
-					{{#if customer.aptSuiteNo}}
+					<span class='linkText addressLink' data-id='{{ this._id }}'>
+						{{ customer.address }}
+						{{#if customer.aptSuiteNo}}
+							<br />
+							{{ customer.aptSuiteNo }}
+						{{/if}}
 						<br />
-						{{ customer.aptSuiteNo }}
-					{{/if}}
-					<br />
-					{{ customer.city }}, {{ customer.state }}{{#if customer.zipCode}}, {{ customer.zipCode }}{{/if}}
+						{{ customer.city }}, {{ customer.state }}{{#if customer.zipCode}}, {{ customer.zipCode }}{{/if}}
+						<i class='fa fa-map-marker'></i>
+					</span>
 				</span>
 				{{#if customer.email }}
 					<span class='orderCell'>{{ customer.email }}</span>
 				{{/if}}
-                <span class='orderCell'>({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}</span>
+                <span class='orderCell'>
+					<a class='linkText' href='tel:+{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>
+						({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}
+						<i class='fa fa-phone-square'></i>
+					</a>
+				</span>
             </span>
 
 			<!-- Only show this section for orders with time limits -->
