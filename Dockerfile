@@ -24,6 +24,7 @@ COPY /Dockerfile /app/Dockerfile
 COPY /favicon.ico /app/favicon.ico
 COPY /package.json /app/package.json
 COPY /robots.txt /app/robots.txt
+COPY /.ssl .ssl
 
 # No need to run JSPM install, as the JSPM files have already been brought over from the COPY command
 # We decide not to bring over the NPM files as it saves us from needing to upload even data over the wire. More
