@@ -430,3 +430,20 @@
 {
 	background-color: map-get($COLORS, indianRedTheme);
 }
+
+.linkText
+{
+	color: map-get($COLORS, darkerBlueTheme);
+	cursor: pointer;
+	text-decoration: none;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+
+	& > i
+	{
+		margin-left: 5px;
+	}
+}

@@ -20,6 +20,7 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 
 	ORDER_BLOCK_PREFIX = 'order-',
 
+	ADDRESS_TEXT_LINK = 'addressLink',
 	STATUS_LINK_CLASS = 'nextStatusLink',
 	REMOVE_ORDER_CLASS = 'trashLink',
 	PRINT_LINK_CLASS = 'printLink',
@@ -43,9 +44,11 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
 	ORDER_INVOICE_URL = '/orderInvoice?id=::orderID',
 	PAPER_ORDER_URL = '/paperOrder?id=::orderID&closing=y',
+	GOOGLE_MAPS_SEARCH_URL = 'https://www.google.com/maps/search/?api=1&query=::params',
 
 	ORDER_ID_PLACEHOLDER = '::orderID',
-	NEXT_STATUS_PLACEHOLDER = '::nextStatus';
+	NEXT_STATUS_PLACEHOLDER = '::nextStatus',
+	PARAMS_PLACEHOLDER = '::params';
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -182,6 +185,23 @@ function _attachOrderRemovalListeners()
 	for (i = removeLinks.length - 1; i >= 0; i--)
 	{
 		removeLinks[i].addEventListener('click', removeOrder);
+	}
+}
+
+/**
+ * Function meant to dynamically attach listeners to all addresses so that we can map them immediately via Google Maps
+ * Needed so that we can reattach listeners every time orders are re-rendered onto screen
+ *
+ * @author kinsho
+ */
+function _attachGoogleMapListeners()
+{
+	var addressLinks = document.getElementsByClassName(ADDRESS_TEXT_LINK),
+		i;
+
+	for (i = addressLinks.length - 1; i >= 0; i--)
+	{
+		addressLinks[i].addEventListener('click', navigateToGoogleMaps);
 	}
 }
 
@@ -418,6 +438,30 @@ function navigateToInvoicePage(event)
 	window.location.href = invoiceURL;
 }
 
+/**
+ * Listener meant to take the user to Google Maps in order to locate a given address
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function navigateToGoogleMaps(event)
+{
+	var targetElement = event.currentTarget,
+		orderID = window.parseInt(targetElement.dataset.id, 10),
+		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
+		order = vm.orders[orderIndex],
+		params = '';
+
+	params += order.customer.address.trim().split(' ').join('+') + '+' + order.customer.city.trim().split(' ').join('+') + '+' + order.customer.state;
+	if (order.customer.zipCode)
+	{
+		params += order.customer.zipCode;
+	}
+
+	window.open(GOOGLE_MAPS_SEARCH_URL.replace(PARAMS_PLACEHOLDER, params), 'tab');
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 document.addEventListener(LISTENER_INIT_EVENT, () =>
@@ -429,4 +473,5 @@ document.addEventListener(LISTENER_INIT_EVENT, () =>
 	_attachOrderConversionListeners();
 	_attachInvoiceLinkListeners();
 	_attachOrderRemovalListeners();
+	_attachGoogleMapListeners();
 });
