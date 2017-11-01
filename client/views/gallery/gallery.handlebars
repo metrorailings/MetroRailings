@@ -5,8 +5,9 @@
 
 <div id='galleryCollection'>
 	{{#pictures}}
-		<span>
-            <img src='{{this}}' class='galleryPicture' />
+		<span class='pictureHolder'>
+            <img src='{{url}}' class='galleryPicture' />
+			<span class='indexBubble'>{{index}}</span>
         </span>
 	{{/pictures}}
 </div>

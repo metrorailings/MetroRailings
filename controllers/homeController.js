@@ -8,8 +8,9 @@ var _Handlebars = require('handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
+	picturesDAO = global.OwlStakes.require('data/DAO/picturesDAO'),
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	dropboxManager = global.OwlStakes.require('utility/dropbox'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
 // ----------------- ENUM/CONSTANTS --------------------------
@@ -75,7 +76,7 @@ module.exports =
 
 		// Fetch all the images that we will need to display on the home page
 		templateData.homeBannerImages = await fileManager.fetchImagePaths(CONTROLLER_FOLDER);
-		pageData.galleryImages = await dropboxManager.loadGallery();
+		pageData.galleryImages = await picturesDAO.fetchGalleryData();
 		templateData.thankYouImages = await fileManager.fetchImagePaths(THANK_YOU_FOLDER);
 
 		// Fetch the galleria template as well so that we can add pictures to the gallery from within the client
