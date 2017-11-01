@@ -314,6 +314,12 @@ $FONTS:
 }
 
 /* --- Miscellany stylings --- */
+
+%smallerSignificantText
+{
+	@include basicFontSettings($weight: 400, $size: smallFontSize, $family: Muli);
+}
+
 %smallSignificantText
 {
 	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Muli);

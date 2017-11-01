@@ -20,7 +20,9 @@
     "jspm": "*",
     "dropbox" : "*",
     "busboy" : "*",
-    "jpeg-autorotate" : "*"
+    "jpeg-autorotate" : "*",
+    "imagemin" : "*",
+    "imagemin-jpegtran" : "*"
   },
   "jspm": {
     "directories": {

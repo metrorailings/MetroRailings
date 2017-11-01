@@ -6,7 +6,8 @@
 
 var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
-	dropboxManager = global.OwlStakes.require('utility/dropbox'),
+	picturesDAO = global.OwlStakes.require('data/DAO/picturesDAO'),
+
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
 // ----------------- ENUM/CONSTANTS --------------------------
@@ -29,7 +30,7 @@ module.exports =
 		console.log('Loading the gallery page...');
 
 		// Pull all the images from the gallery
-		pageData.pictures = await dropboxManager.loadGallery();
+		pageData.pictures = await picturesDAO.fetchGalleryData();
 
 		// Render the page template
 		var populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

@@ -84,7 +84,7 @@ function loadNewImages()
 	// Update the collection we use to track visible pictures
 	for (i = 0; i < imagesToLoad.length; i++)
 	{
-		_imagesLoaded.push(imagesToLoad[i].path);
+		_imagesLoaded.push(imagesToLoad[i].url);
 	}
 
 	// If all the pictures have been loaded, take away the link to load more pictures
