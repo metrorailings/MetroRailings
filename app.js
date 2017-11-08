@@ -8,20 +8,27 @@ global.OwlStakes =
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _http = require('http'),
+	_https = require('https'),
+
+	config = global.OwlStakes.require('config/config'),
+
 	requestHandler = global.OwlStakes.require('utility/requestHandler'),
 	responseHandler = global.OwlStakes.require('utility/responseHandler'),
+	fileManager = global.OwlStakes.require('utility/fileManager'),
+
 	databaseDriver = global.OwlStakes.require('data/DAO/utility/databaseDriver');
 
-// ----------------- OPENING LOGIC --------------------------
+// ----------------- SERVER LOGIC --------------------------
 
-// Open up a connection to the database
-(async function()
-{
-	await databaseDriver.initialize();
-}());
-
-// Define a server that will act as a gateway point for all incoming server requests
-_http.createServer(function(request, response)
+/**
+ * The logic the server would execute for every single request that comes in
+ *
+ * @param {HTTP Request} request
+ * @param {HTTP Response} response
+ *
+ * @author kinsho
+ */
+function _process(request, response)
 {
 	console.log('Connection made from URL: ' + request.url.trim());
 
@@ -47,10 +54,32 @@ _http.createServer(function(request, response)
 			responseHandler.sendInternalServerErrorResponse(response, request.url.trim());
 		}
 	}());
+}
 
-}).listen(80);
+// ----------------- OPENING LOGIC --------------------------
 
-// ----------------- END --------------------------
+var privateKey,
+	certificate;
 
-console.log('Server started!');
-console.log('Listening on port 80...');
+(async function()
+{
+	// Open up a connection to the database
+	await databaseDriver.initialize();
+
+	// Fetch the SSL certificate data
+	privateKey = await fileManager.fetchFile(config.SSL.KEY);
+	certificate = await fileManager.fetchFile(config.SSL.CERTIFICATE);
+
+	// Define a INSECURE server that will act as a gateway point for all insecure incoming server requests
+	_http.createServer(_process).listen(80);
+
+	// Define a SECURE server that will act as a gateway point for all secure incoming server requests
+	_https.createServer(
+	{
+		key: privateKey,
+		cert: certificate
+	}, _process).listen(443);
+
+	console.log('Server started!');
+	console.log('Listening on ports 80 and 443...');
+}());
