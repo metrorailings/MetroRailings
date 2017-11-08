@@ -140,7 +140,7 @@ Object.defineProperty(viewModel, 'originalProspect',
 
 		// Copy over the values from the original prospect into the view model
 		viewModel._id = value._id;
-		viewModel.__notes = value.notes.internal;
+		viewModel.__notes = '';
 		viewModel.__pictures = value.pictures || [];
 
 		viewModel.__email = value.customer.email;

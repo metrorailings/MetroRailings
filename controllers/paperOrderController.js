@@ -10,7 +10,10 @@ var _Handlebars = require('handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
-	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
+	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
+	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
+
+	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
@@ -18,6 +21,8 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'paperOrder',
+
+	ADMIN_LOG_IN_URL = '/admin',
 
 	PARTIALS =
 	{
@@ -27,7 +32,8 @@ var CONTROLLER_FOLDER = 'paperOrder',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
 		SIGNATURE_SECTION: 'signatureSection',
 		CLOSING_TERMS_SECTION: 'closingTermsSection',
-		TIP_SECTION: 'tipSection'
+		TIP_SECTION: 'tipSection',
+		PAYMENT_HISTORY_SECTION: 'paymentHistorySection'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -63,6 +69,11 @@ _Handlebars.registerPartial('paperOrderClosingTerms', fileManager.fetchTemplateS
 _Handlebars.registerPartial('paperOrderTip', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TIP_SECTION));
 
 /**
+ * The template for the payment history section
+ */
+_Handlebars.registerPartial('paymentHistorySection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PAYMENT_HISTORY_SECTION));
+
+/**
  * The template for the signature section
  */
 _Handlebars.registerPartial('paperOrderSignature', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SIGNATURE_SECTION));
@@ -76,10 +87,18 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: async function (params)
+	init: async function (params, cookie, request)
 	{
 		var pageData = {},
+			currentDate = new Date(),
 			populatedPageTemplate;
+
+		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
+		{
+			console.log('Redirecting the user to the log-in page...');
+
+			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
+		}
 
 		console.log('Loading the paper order page...');
 
@@ -89,7 +108,11 @@ module.exports =
 		{
 			if (params.id)
 			{
-				pageData.order = await DAO.searchOrderById(parseInt(params.id, 10));
+				pageData.order = await ordersDAO.searchOrderById(parseInt(params.id, 10));
+
+				// Take into account any modifications made to the price
+				pageData.order.pricing.modification = pageData.order.pricing.modification || 0;
+				pageData.order.pricing.trueBalanceRemaining = pageData.order.pricing.balanceRemaining + (pageData.order.pricing.modification || 0);
 			}
 
 			pageData.closing = params.closing;
@@ -97,6 +120,10 @@ module.exports =
 
 		// Fetch the locations of each of our shops
 		pageData.companyInfo = config.COMPANY_INFO;
+
+		// Note the current date as well for signing purposes
+		pageData.currentDate = dateUtility.FULL_MONTHS[currentDate.getMonth()] + ' ' + currentDate.getDate() +
+			dateUtility.findOrdinalSuffix(currentDate.getDate()) + ', ' + currentDate.getFullYear();
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

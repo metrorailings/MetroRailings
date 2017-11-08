@@ -29,7 +29,7 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	INVOICE_LINK_CLASS = 'invoiceLink',
 	DETAILS_BUTTON_CLASS = 'detailsButton',
 	ORDER_DETAILS_BUTTON_CLASS = 'orderDetailsButton',
-	PRINT_FINISHING_FORM_BUTTON_CLASS = 'closeOrderFormButton',
+	PRINT_FINISHING_FORM_BUTTON_CLASS = 'closeOrderAgreementLink',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
 	HIDE_CLASS = 'hide',
 

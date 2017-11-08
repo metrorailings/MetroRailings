@@ -56,7 +56,7 @@ var estimatesModule =
 
 		// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
 		// inside the order itself
-		transactionID = await creditCardProcessor.chargeTotal(estimate.totalPrice, estimate.stripe.customer, estimate._id);
+		transactionID = await creditCardProcessor.chargeTotal(estimate.totalPrice, estimate.stripe.customer, estimate._id, estimate.customer.email);
 		estimate.stripe.charges.push(transactionID);
 
 		// Figure out how we'll be referencing the customer

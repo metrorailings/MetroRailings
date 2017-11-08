@@ -30,7 +30,7 @@
 					<span class='orderCell'>{{ customer.email }}</span>
 				{{/if}}
                 <span class='orderCell'>
-					<a class='linkText' href='tel:+{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>
+					<a class='linkText' href='tel:{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>
 						({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}
 						<i class='fa fa-phone-square'></i>
 					</a>
@@ -97,18 +97,18 @@
 						<i class='fa fa-file-text'></i>View Invoice
 					</span>
 				</span>
+				{{#if_cond_group this.status '["install", "closed"]'}}
+					<span class='orderCell'>
+						<span class='closeOrderAgreementLink' data-id={{ this._id }}>
+							<i class='fa fa-file-text'></i>Generate Closing Form
+						</span>
+					</span>
+				{{/if_cond_group}}
 				<span class='orderCell'>
 					<button class='detailsButton orderDetailsButton' data-id={{ this._id }}>
 						Edit<i class='fa fa-arrow-circle-o-right'></i>
 					</button>
 				</span>
-				{{#if_cond this.status 'install'}}
-					<span class='orderCell'>
-						<button class='closeOrderFormButton' data-id={{ this._id }}>
-							Print Finishing Form<i class='fa fa-file-text'></i>
-						</button>
-					</span>
-				{{/if_cond}}
 			{{else}}
 				<span class='orderCell'>
 					<span class='convertOrderLink' data-id='{{ this._id }}'>

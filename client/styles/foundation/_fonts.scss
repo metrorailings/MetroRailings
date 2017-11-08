@@ -10,9 +10,10 @@
  * Muli
  * Playfair Display
  * Raleway
+ * Dancing Script (Signatures)
  *
  */
-@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display);
+@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script);
 
 /* ----------------------- LOCAL CONSTANTS ----------------------------- */
 
@@ -333,4 +334,9 @@ $FONTS:
 %bigSignificantText
 {
 	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
+}
+
+%signatureFont
+{
+	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: 'Dancing Script');
 }
