@@ -24,7 +24,7 @@ COPY /Dockerfile /app/Dockerfile
 COPY /favicon.ico /app/favicon.ico
 COPY /package.json /app/package.json
 COPY /robots.txt /app/robots.txt
-COPY /.ssl .ssl
+COPY /.ssl /app/.ssl
 COPY /external /app/external
 COPY /external/processGallery.sh /etc/cron.daily/processGallery.sh
 
