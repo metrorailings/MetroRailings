@@ -342,7 +342,7 @@ var ordersModule =
 
 				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
 				// inside the order itself
-				transactionID = await creditCardProcessor.chargeTotal(order.pricing.orderTotal / 2, order.stripe.customer, order._id);
+				transactionID = await creditCardProcessor.chargeTotal(order.pricing.orderTotal / 2, order.stripe.customer, order._id, order.customer.email);
 				order.stripe.charges.push(transactionID);
 			}
 			catch(error)
@@ -499,7 +499,7 @@ var ordersModule =
 					if (amountToBePaid > 0)
 					{
 						// Charge the customer if the order total has been increased
-						transactionID = await creditCardProcessor.chargeTotal(amountToBePaid, order.stripe.customer, order._id);
+						transactionID = await creditCardProcessor.chargeTotal(amountToBePaid, order.stripe.customer, order._id, orderModifications.customer.email);
 						order.stripe.charges.push(transactionID);
 					}
 					else if (amountToBePaid < 0)

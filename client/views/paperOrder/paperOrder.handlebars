@@ -17,7 +17,9 @@
 	{{/each}}
 </div>
 
-{{> paperOrderRailingsInvoice }}
+{{#unless closing}}
+	{{> paperOrderRailingsInvoice }}
+{{/unless}}
 
 {{#if closing}}
 	{{> paperOrderClosingTerms }}
@@ -31,6 +33,9 @@
 
 {{> paperOrderPersonalInfo }}
 
+{{#if closing}}
+	{{> paymentHistorySection }}
+{{/if}}
 {{#if closing}}
 	{{> paperOrderTip }}
 {{/if}}

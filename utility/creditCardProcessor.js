@@ -67,12 +67,13 @@ module.exports =
 	 * @param {Number} orderTotal - the price to charge the customer
 	 * @param {String} customerID - the ID of the customer who will be charged
 	 * @param {Number} orderID - the ID of the order that's currently making us some money
+	 * @param {String} emailAddr - the e-mail address which to e-mail the receipt to once the transaction is complete
 	 *
 	 * @returns {boolean} - the transaction ID
 	 *
 	 * @author kinsho
 	 */
-	chargeTotal: async function (orderTotal, customerID, orderID)
+	chargeTotal: async function (orderTotal, customerID, orderID, emailAddr)
 	{
 		var charge = await _chargeCard(
 			{
@@ -80,7 +81,8 @@ module.exports =
 				customer: customerID,
 				currency: ACCEPTABLE_CURRENCY,
 				metadata: { 'Order ID' : orderID },
-				description: TRANSACTION_DESCRIPTION.CHARGE.replace(ORDER_ID_PLACEHOLDER, orderID)
+				description: TRANSACTION_DESCRIPTION.CHARGE.replace(ORDER_ID_PLACEHOLDER, orderID),
+				receipt_email: emailAddr || null
 			});
 
 		return charge.id;
