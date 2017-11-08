@@ -2,10 +2,11 @@
 
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
 
-#closingAgreementSection
+#paymentHistorySection
 {
 	padding:
 	{
@@ -29,5 +30,35 @@
 		line-height: 22px;
 
 		text-align: left;
+	}
+}
+
+.priceAmount
+{
+	font-size: map-get($FONTS, print-regularPlusFontSize);
+
+	margin-right: 2px;
+
+	@include printOnly()
+	{
+		margin-right: 0px;
+	}
+}
+
+#amountPaid, #balanceRemaining
+{
+	@include printOnly()
+	{
+		padding:
+		{
+			left: 1px;
+			right: 2px;
+			top: 0px;
+			bottom: 0px;
+		}
+
+		margin: 0px;
+		border: none;
+		box-shadow: none;
 	}
 }

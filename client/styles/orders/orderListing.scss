@@ -281,7 +281,7 @@
 	flex-wrap: wrap;
 }
 
-.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink
+.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink, .closeOrderAgreementLink
 {
 	@extend %regularLinkText;
 
@@ -330,24 +330,6 @@
 	}
 
 	width: 100px;
-
-	& > i
-	{
-		margin-left: 10px;
-	}
-}
-
-.closeOrderFormButton
-{
-	@include button($bgColor: darkGreenTheme);
-
-	margin:
-	{
-		left: auto;
-		right: 25px;
-	}
-
-	width: 250px;
 
 	& > i
 	{

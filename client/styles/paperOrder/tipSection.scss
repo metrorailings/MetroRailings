@@ -14,30 +14,4 @@
 
 		text-align: left;
 	}
-
-	& > div
-	{
-		margin-bottom: 20px;
-
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-}
-
-#tipField
-{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	& > .fieldLabel
-	{
-		font-size: 12px;
-	}
-
-	& > .numberBox
-	{
-		width: 200px;
-	}
 }

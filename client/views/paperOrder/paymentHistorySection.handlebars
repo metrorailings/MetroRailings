@@ -1,0 +1,18 @@
+<div id='paymentHistorySection'>
+
+	<p>
+		The total price for this order came out to&nbsp;
+		<span class='priceAmount'>${{#to_fixed order.pricing.orderTotal 2 }}{{/to_fixed}}</span>.
+	</p>
+
+	<p>
+		<span>So far, you have paid&nbsp;<span class='priceAmount'>$</span></span>
+		<input id='amountPaid' type='tel' value='{{#to_fixed order.pricing.balanceRemaining 2 }}{{/to_fixed}}' />
+	</p>
+
+	<p>
+		<span>As of the date indicated below next to the signature, the balance left to be paid is&nbsp;<span class='priceAmount'>$</span></span>
+		<input id='balanceRemaining' type='tel' value='{{#to_fixed order.pricing.trueBalanceRemaining 2 }}{{/to_fixed}}' />
+	</p>
+
+</div>
