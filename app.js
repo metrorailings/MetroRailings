@@ -12,6 +12,8 @@ var _http = require('http'),
 
 	config = global.OwlStakes.require('config/config'),
 
+	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+
 	requestHandler = global.OwlStakes.require('utility/requestHandler'),
 	responseHandler = global.OwlStakes.require('utility/responseHandler'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
@@ -71,7 +73,11 @@ var privateKey,
 	certificate = await fileManager.fetchFile(config.SSL.CERTIFICATE);
 
 	// Define a INSECURE server that will act as a gateway point for all insecure incoming server requests
-	_http.createServer(_process).listen(80);
+	_http.createServer(async function(request, response)
+	{
+		// Reroute all insecure traffic to the port that can interpret SSL connections
+		responseHandler.delegateResponse(request, response, await controllerHelper.renderRedirectView(config.BASE_URL + request.url.trim()), request.url.trim());
+	}).listen(80);
 
 	// Define a SECURE server that will act as a gateway point for all secure incoming server requests
 	_https.createServer(
