@@ -33,7 +33,7 @@
 		font-weight: 400;
 	}
 
-	#generalSection, #designSection, #writtenNotesSection
+	#generalSection, #designSection
 	{
 		margin-left: auto;
 		margin-right: auto;
@@ -48,7 +48,7 @@
 		width: 90%;
 	}
 
-	#generalSection, #writtenNotesSection
+	#generalSection
 	{
 		display: flex;
 		flex-direction: column;
@@ -74,16 +74,6 @@
 	#designSection > span
 	{
 		width: 50%;
-	}
-
-	#writtenNotesSection
-	{
-		height: 200px;
-	}
-
-	#writtenNotesSection > span
-	{
-		height: 90%;
 	}
 
 	.sectionHeader
@@ -115,8 +105,8 @@
 		margin-left: auto;
 		margin-right: auto;
 
-		max-width: 400px;
-		max-height: 400px;
+		max-width: 550px;
+		max-height: 550px;
 
 		display: block;
 
@@ -219,12 +209,6 @@
 			<span class='orderLabel'>Cover Plates:</span> {{#if order.installation.coverPlates}}Yes{{else}}No{{/if}}
 		</span>
 
-	</div>
-
-	<!-- Section that allows drawings to be penciled onto the page -->
-	<div id='writtenNotesSection'>
-		<div class='sectionHeader'>OTHER INFO / DRAWINGS</div>
-		<span></span>
 	</div>
 
 </div>
