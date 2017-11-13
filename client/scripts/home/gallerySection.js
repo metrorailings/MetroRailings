@@ -84,7 +84,7 @@ function loadNewImages()
 	// Update the collection we use to track visible pictures
 	for (i = 0; i < imagesToLoad.length; i++)
 	{
-		_imagesLoaded.push(imagesToLoad[i].url);
+		_imagesLoaded.push(imagesToLoad[i]);
 	}
 
 	// If all the pictures have been loaded, take away the link to load more pictures
@@ -93,7 +93,7 @@ function loadNewImages()
 		_expandGalleryRow.parentNode.removeChild(_expandGalleryRow);
 	}
 
-	// Show the new images on a delay so that the browser has time to prepare to slide the new pictures into view
+	// Show the new images on a delay so that the browser has time to slide the new pictures into view
 	window.setTimeout(() =>
 	{
 		newGalleria.classList.add(SHOW_CLASS);
@@ -105,24 +105,27 @@ function loadNewImages()
  *
  * @param {Event} event - the event associated with the firing of this listener
  *
+ * @author kinsho
  */
 function openGallery(event)
 {
 	var element = event.currentTarget,
-		imageURL = element.src,
+		imageIndex = window.parseInt(element.dataset.index, 10),
+		imagesToDisplay = [],
 		index, i;
 
-	// Find the index of the photo that will need to loaded into the gallery viewer when it opens
-	// up. Also collect all the image URLs that may need to be loaded by the gallery
+	// Find the index of the photo that will need to loaded into the gallery viewer when it opens up.
 	for (i = 0; i < _imagesLoaded.length; i++)
 	{
-		if (imageURL.indexOf(_imagesLoaded[i]) > -1)
+		if (imageIndex === _imagesLoaded[i].index)
 		{
 			index = i;
 		}
+
+		imagesToDisplay.push(_imagesLoaded[i].url);
 	}
 
-	gallery.open(_imagesLoaded, index);
+	gallery.open(imagesToDisplay, index);
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
@@ -132,7 +135,9 @@ _expandGalleryLink.addEventListener('click', loadNewImages);
 for (var i = 0; i < _defaultGalleryPics.length; i++)
 {
 	_defaultGalleryPics[i].addEventListener('click', openGallery);
-
-	// Don't forget to create a record noting that all the default pictures have been made available to the user
-	_imagesLoaded.push(_defaultGalleryPics[i].src);
 }
+
+// ----------------- PAGE INITIALIZATION -----------------------------
+
+// Don't forget to create a record noting that all the default pictures have been made available to the user
+_imagesLoaded = window.MetroRailings.galleryImages.slice(0, _defaultGalleryPics.length);

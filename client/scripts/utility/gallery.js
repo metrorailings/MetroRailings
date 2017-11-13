@@ -106,7 +106,17 @@ function fadeInLeft()
 	_galleryPictureViewer.removeEventListener('animationend', fadeInLeft);
 
 	_currentIndex += 1;
+
+	// Remember to only commence with the animations once the new image is fully loaded
+	_galleryPicture.addEventListener('load', finishFadeInLeft);
+
 	_galleryPicture.src = _imageURLs[_currentIndex];
+}
+
+function finishFadeInLeft()
+{
+	_galleryPictureViewer.removeEventListener('load', finishFadeInLeft);
+
 	_galleryPictureViewer.classList.add(FADE_CLASSES.IN_LEFT);
 
 	_toggleControlsVisibility();
@@ -118,7 +128,17 @@ function fadeInRight()
 	_galleryPictureViewer.removeEventListener('animationend', fadeInRight);
 
 	_currentIndex -= 1;
+
+	// Remember to only commence with the animations once the new image is fully loaded
+	_galleryPicture.addEventListener('load', finishFadeInRight);
+
 	_galleryPicture.src = _imageURLs[_currentIndex];
+}
+
+function finishFadeInRight()
+{
+	_galleryPictureViewer.removeEventListener('load', finishFadeInRight);
+
 	_galleryPictureViewer.classList.add(FADE_CLASSES.IN_RIGHT);
 
 	_toggleControlsVisibility();
@@ -128,6 +148,7 @@ function fadeInRight()
 function removeFadeTracesAndUpdateGallery()
 {
 	_galleryPictureViewer.removeEventListener('animationend', removeFadeTracesAndUpdateGallery);
+	_galleryPicture.onload = '';
 
 	_disableEnableControls(false);
 	_galleryPictureViewer.classList.remove(FADE_CLASSES.OUT_LEFT);

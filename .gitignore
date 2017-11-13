@@ -8,3 +8,5 @@ client/scripts/jspm_packages
 node_modules
 MetroRailings.iml
 .idea/
+client/images/gallery
+**/*.DS_Store

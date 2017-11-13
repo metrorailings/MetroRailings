@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-node /app/external/processGallery.js
+node external/wipeOutGallery.js
+node external/processGallery.js

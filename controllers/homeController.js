@@ -88,9 +88,6 @@ module.exports =
 		defaultGalleriaData.show = true;
 		templateData.defaultGalleria = await templateManager.populateTemplate(defaultGalleriaData, CONTROLLER_FOLDER, PARTIALS.GALLERIA);
 
-		// Only images that have not been loaded yet need to be sent over to the client in bootstrapped form
-		pageData.galleryImages = pageData.galleryImages.slice(6);
-
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(templateData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
