@@ -29,7 +29,7 @@ var CONTROLLER_FOLDER = 'createInvoice',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	ADMIN_LOG_IN_URL = '/admin',
-	INVOICE_URL = 'orderInvoice?id=::orderId',
+	INVOICE_URL = '/orderInvoice?id=::orderId',
 
 	VIEWS_DIRECTORY = '/client/views/',
 	DEFAULT_AGREEMENT_TEXT = 'defaultAgreement.txt',
