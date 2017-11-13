@@ -22,7 +22,8 @@
     "busboy" : "*",
     "jpeg-autorotate" : "*",
     "imagemin" : "*",
-    "imagemin-jpegtran" : "*"
+    "imagemin-jpegtran" : "*",
+    "sharp" : "*"
   },
   "jspm": {
     "directories": {

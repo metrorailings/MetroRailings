@@ -11,6 +11,8 @@ var _dropbox = require('dropbox'),
 	_jpegrotator = require('jpeg-autorotate'),
 	_imagemin = require('imagemin'),
 	_imageminJpegTran = require('imagemin-jpegtran'),
+	_sharp = require('sharp'),
+	_randomstring = require('randomstring'),
 	_Q = require('q'),
 
 	mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
@@ -21,8 +23,18 @@ var _dropbox = require('dropbox'),
 
 var GALLERY_METADATA_COLLECTION = 'gallery',
 
+	GALLERY_IMAGE_DIRECTORY = 'client/images/gallery/',
+	DESKTOP_THUMBNAIL_DIRECTORY = 'desktop/',
+	MOBILE_THUMBNAIL_DIRECTORY = 'mobile/',
+
 	DROPBOX_DOMAIN = 'www.dropbox.com',
-	DIRECT_LINK_DROPBOX_DOMAIN = 'dl.dropboxusercontent.com';
+	DIRECT_LINK_DROPBOX_DOMAIN = 'dl.dropboxusercontent.com',
+
+	THUMBNAIL_NAME_GENERATOR =
+	{
+		length: 6,
+		charset: 'alphanumeric'
+	};
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
@@ -41,6 +53,7 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 		maxIndex = 0,
 		newGalleryMeta = [],
 		shareLink,
+		thumbnail, thumbnailFileName, fileExtension,
 		i;
 
 	// Start pulling metadata for all the gallery images
@@ -143,6 +156,17 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 			// Replace the generic Dropbox subdomain with the other subdomain used to directly link to images
 			shareLink = shareLink.replace(DROPBOX_DOMAIN, DIRECT_LINK_DROPBOX_DOMAIN);
 
+			// Generate different sized thumbnails for each gallery image
+			console.log('Generating thumbnails for the image - ' + files[i].path_lower);
+
+			fileExtension = files[i].name.split('.').pop();
+			thumbnailFileName = _randomstring.generate(THUMBNAIL_NAME_GENERATOR) + new Date().getTime() + '.' + fileExtension;
+
+			thumbnail = _sharp(fileBlob).resize(250, 250);
+			await thumbnail.toFile(GALLERY_IMAGE_DIRECTORY + DESKTOP_THUMBNAIL_DIRECTORY + thumbnailFileName);
+			thumbnail = _sharp(fileBlob).resize(150, 150);
+			await thumbnail.toFile(GALLERY_IMAGE_DIRECTORY + MOBILE_THUMBNAIL_DIRECTORY + thumbnailFileName);
+
 			// Assign an index to the photo
 			maxIndex += 1;
 
@@ -150,6 +174,8 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 			{
 				_id : files[i].path_lower,
 				url: shareLink,
+				desktopThumbnail: GALLERY_IMAGE_DIRECTORY + DESKTOP_THUMBNAIL_DIRECTORY + thumbnailFileName,
+				mobileThumbnail: GALLERY_IMAGE_DIRECTORY + MOBILE_THUMBNAIL_DIRECTORY + thumbnailFileName,
 				index: maxIndex
 			}));
 		}

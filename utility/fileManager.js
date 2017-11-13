@@ -28,7 +28,8 @@ var CLIENT_DIRECTORY = process.cwd() + '/client/',
 
 var fsReadDir = _Q.denodeify(_fs.readdir),
 	fsStat = _Q.denodeify(_fs.stat),
-	fsReadFile = _Q.denodeify(_fs.readFile);
+	fsReadFile = _Q.denodeify(_fs.readFile),
+	fsUnlink = _Q.denodeify(_fs.unlink);
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -349,5 +350,42 @@ module.exports =
 	fetchImagePaths: async function (dirPath)
 	{
 		return await _fileNameScraper(CLIENT_DIRECTORY + IMAGES_DIRECTORY + dirPath + '/', true);
+	},
+
+	/**
+	 * Generic generator function meant to remove all files from a given directory
+	 *
+	 * @param {String} dirPath - the directory from which to remove all files and subdirectories
+	 *
+	 * @returns {Boolean} - a flag indicating whether the removal operation was successful
+	 *
+	 * @author kinsho
+	 */
+	deleteFiles: async function (dirPath)
+	{
+		var fileNames,
+			i;
+
+		console.log('Deleting everything in ' + dirPath);
+
+		try
+		{
+			// Fetch all the files from the directory
+			fileNames = await fsReadDir(dirPath);
+
+			// Then delete each file one by onesss
+			for (i = fileNames.length - 1; i >= 0; i--)
+			{
+				await fsUnlink(dirPath + fileNames[i]);
+			}
+		}
+		catch (error)
+		{
+			console.log(error);
+			return false;
+		}
+
+		console.log('Success!');
+		return true;
 	}
 };
