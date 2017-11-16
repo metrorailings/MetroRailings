@@ -21,14 +21,20 @@
 
 	position: fixed;
 	width: 100%;
-	height: 100px;
 
 	background-color: map-get($COLORS, smokeWhiteTheme);
 	opacity: 0.95;
 	z-index: 500;
 
+	@include desktopOnly()
+	{
+		height: 100px;
+	}
+
 	@include mobileOnly()
 	{
+		min-height: 65px;
+
 		flex-wrap: wrap;
 	}
 
@@ -173,9 +179,17 @@
 
 #topMenuSpace
 {
-	height: 100px;
-
 	display: block;
+
+	@include desktopOnly()
+	{
+		height: 100px;
+	}
+
+	@include mobileOnly()
+	{
+		height: 65px;
+	}
 }
 
 #topMenuPrintableLogo
