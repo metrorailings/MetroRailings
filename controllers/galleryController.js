@@ -35,6 +35,6 @@ module.exports =
 		// Render the page template
 		var populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData);
 	}
 };

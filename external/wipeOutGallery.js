@@ -17,7 +17,8 @@ var GALLERY_METADATA_COLLECTION = 'gallery',
 
 	GALLERY_IMAGE_DIRECTORY = 'client/images/gallery/',
 	DESKTOP_THUMBNAIL_DIRECTORY = 'desktop/',
-	MOBILE_THUMBNAIL_DIRECTORY = 'mobile/';
+	TABLET_THUMBNAIL_DIRECTORY = 'tablet/',
+	PHONE_THUMBNAIL_DIRECTORY = 'phone/';
 
 // ----------------- INITIALIZATION --------------------------
 
@@ -32,7 +33,8 @@ var GALLERY_METADATA_COLLECTION = 'gallery',
 	// Empty out all thumbnail directories too
 	console.log('Removing all gallery thumbnails as well');
 	await fileManager.deleteFiles(GALLERY_IMAGE_DIRECTORY + DESKTOP_THUMBNAIL_DIRECTORY);
-	await fileManager.deleteFiles(GALLERY_IMAGE_DIRECTORY + MOBILE_THUMBNAIL_DIRECTORY);
+	await fileManager.deleteFiles(GALLERY_IMAGE_DIRECTORY + TABLET_THUMBNAIL_DIRECTORY);
+	await fileManager.deleteFiles(GALLERY_IMAGE_DIRECTORY + PHONE_THUMBNAIL_DIRECTORY);
 
 	// Close out this program
 	console.log('Done!');

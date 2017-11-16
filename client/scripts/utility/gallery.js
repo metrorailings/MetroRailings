@@ -9,19 +9,14 @@ var GALLERY_OVERLAY = 'galleryOverlay',
 	GALLERY_PICTURE_VIEWER = 'galleryPictureViewer',
 	GALLERY_LEFT_SLIDER = 'galleryLeftButton',
 	GALLERY_RIGHT_SLIDER = 'galleryRightButton',
+	GALLERY_EXIT_ROW = 'galleryExitRow',
 	GALLERY_EXIT_ICON = 'galleryExitButton',
+	GALLERY_LOADING_ICON = 'galleryLoadingIcon',
 
 	SHOW_CLASS = 'show',
 	HIDE_CLASS = 'hide',
 	SURFACE_CLASS = 'surface',
-	DISABLED_CLASS = 'disabled',
-	FADE_CLASSES =
-	{
-		OUT_LEFT: 'fadeOutLeft',
-		OUT_RIGHT: 'fadeOutRight',
-		IN_LEFT: 'fadeInLeft',
-		IN_RIGHT: 'fadeInRight'
-	};
+	DISABLED_CLASS = 'disabled';
 
 // ----------------- PRIVATE MEMBERS --------------------------
 
@@ -35,8 +30,9 @@ var _imageURLs = [], // The list of image URLs to show within the gallery
 	_galleryPictureViewer = document.getElementById(GALLERY_PICTURE_VIEWER),
 	_galleryLeftSlider = document.getElementById(GALLERY_LEFT_SLIDER),
 	_galleryRightSlider = document.getElementById(GALLERY_RIGHT_SLIDER),
-	_galleryExitIcon = document.getElementById(GALLERY_EXIT_ICON);
-
+	_galleryExitRow = document.getElementById(GALLERY_EXIT_ROW),
+	_galleryExitIcon = document.getElementById(GALLERY_EXIT_ICON),
+	_galleryLoadingIcon = document.getElementById(GALLERY_LOADING_ICON);
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -101,60 +97,33 @@ function _disableEnableControls(disable)
 
 // The following are animation listeners designed to gracefully manage the gallery sliding and fading
 
-function fadeInLeft()
+function fadeIn()
 {
-	_galleryPictureViewer.removeEventListener('animationend', fadeInLeft);
-
-	_currentIndex += 1;
+	_galleryPictureViewer.removeEventListener('transitionend', fadeIn);
 
 	// Remember to only commence with the animations once the new image is fully loaded
-	_galleryPicture.addEventListener('load', finishFadeInLeft);
+	_galleryPicture.addEventListener('load', finishFadeIn);
 
+	_galleryLoadingIcon.classList.remove(HIDE_CLASS);
 	_galleryPicture.src = _imageURLs[_currentIndex];
 }
 
-function finishFadeInLeft()
+function finishFadeIn()
 {
-	_galleryPictureViewer.removeEventListener('load', finishFadeInLeft);
+	_galleryPicture.removeEventListener('load', finishFadeIn);
 
-	_galleryPictureViewer.classList.add(FADE_CLASSES.IN_LEFT);
+	fadeOutLoader();
+	_galleryPictureViewer.classList.add(SHOW_CLASS);
 
-	_toggleControlsVisibility();
-	_galleryPictureViewer.addEventListener('animationend', removeFadeTracesAndUpdateGallery);
-}
-
-function fadeInRight()
-{
-	_galleryPictureViewer.removeEventListener('animationend', fadeInRight);
-
-	_currentIndex -= 1;
-
-	// Remember to only commence with the animations once the new image is fully loaded
-	_galleryPicture.addEventListener('load', finishFadeInRight);
-
-	_galleryPicture.src = _imageURLs[_currentIndex];
-}
-
-function finishFadeInRight()
-{
-	_galleryPictureViewer.removeEventListener('load', finishFadeInRight);
-
-	_galleryPictureViewer.classList.add(FADE_CLASSES.IN_RIGHT);
-
-	_toggleControlsVisibility();
-	_galleryPictureViewer.addEventListener('animationend', removeFadeTracesAndUpdateGallery);
+	_galleryPictureViewer.addEventListener('transitionend', removeFadeTracesAndUpdateGallery);
 }
 
 function removeFadeTracesAndUpdateGallery()
 {
-	_galleryPictureViewer.removeEventListener('animationend', removeFadeTracesAndUpdateGallery);
-	_galleryPicture.onload = '';
+	_galleryPictureViewer.removeEventListener('transitionend', removeFadeTracesAndUpdateGallery);
 
+	_toggleControlsVisibility();
 	_disableEnableControls(false);
-	_galleryPictureViewer.classList.remove(FADE_CLASSES.OUT_LEFT);
-	_galleryPictureViewer.classList.remove(FADE_CLASSES.OUT_RIGHT);
-	_galleryPictureViewer.classList.remove(FADE_CLASSES.IN_LEFT);
-	_galleryPictureViewer.classList.remove(FADE_CLASSES.IN_RIGHT);
 }
 
 function desurface()
@@ -163,6 +132,12 @@ function desurface()
 	_galleryOverlay.classList.remove(SURFACE_CLASS);
 }
 
+function fadeOutLoader()
+{
+	_galleryPicture.removeEventListener('load', fadeOutLoader);
+
+	_galleryLoadingIcon.classList.add(HIDE_CLASS);
+}
 /**
  * Function will slide us over to the next photo in the collection
  *
@@ -174,9 +149,10 @@ function goToNextPhoto()
 	if (_currentIndex !== (_imageURLs.length - 1) && !(_transitioning))
 	{
 		_disableEnableControls(true);
+		_currentIndex += 1;
 
-		_galleryPictureViewer.addEventListener('animationend', fadeInLeft);
-		_galleryPictureViewer.classList.add(FADE_CLASSES.OUT_LEFT);
+		_galleryPictureViewer.addEventListener('transitionend', fadeIn);
+		_galleryPictureViewer.classList.remove(SHOW_CLASS);
 	}
 }
 
@@ -191,9 +167,10 @@ function goToPrevPhoto()
 	if ((_currentIndex !== 0) && !(_transitioning))
 	{
 		_disableEnableControls(true);
+		_currentIndex -= 1;
 
-		_galleryPictureViewer.addEventListener('animationend', fadeInRight);
-		_galleryPictureViewer.classList.add(FADE_CLASSES.OUT_RIGHT);
+		_galleryPictureViewer.addEventListener('transitionend', fadeIn);
+		_galleryPictureViewer.classList.remove(SHOW_CLASS);
 	}
 }
 
@@ -249,7 +226,11 @@ var galleryModule =
 			_currentIndex = index;
 			_imageURLs = URLs;
 
+			// Show a loader as the picture loads
+			_galleryPicture.addEventListener('load', finishFadeIn);
+			_galleryLoadingIcon.classList.remove(HIDE_CLASS);
 			_galleryPicture.src = _imageURLs[index];
+
 			_galleryOverlay.classList.add(SURFACE_CLASS);
 
 			// Set any animations on a slight delay following the surfacing of the gallery
@@ -260,8 +241,6 @@ var galleryModule =
 			}, 50);
 		}
 	};
-
-// ----------------- CONFIGURATION ---------------------------
 
 // ----------------- LISTENER INITIALIZATION --------------------------
 
@@ -274,9 +253,25 @@ document.addEventListener('keydown', detectArrowKeys);
 
 // Put up the listeners to allow the user to exit the gallery
 _galleryExitIcon.addEventListener('click', exitGallery);
+
+// Allow the user to exit the gallery when he clicks outside the confines of the gallery or any of its upper components
+_galleryPictureViewer.addEventListener('click', (event) =>
+{
+	if (event.target.id === _galleryPictureViewer.id)
+	{
+		exitGallery();
+	}
+});
+_galleryExitRow.addEventListener('click', (event) =>
+{
+	if (event.target.id === _galleryExitRow.id)
+	{
+		exitGallery();
+	}
+});
+
 _galleryOverlay.addEventListener('click', (event) =>
 {
-	// Allow the user to exit the gallery when he clicks outside the confines of the gallery
 	if (event.target.id === _galleryOverlay.id)
 	{
 		exitGallery();

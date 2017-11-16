@@ -23,18 +23,6 @@
 	margin: 25px;
 
 	cursor: pointer;
-
-	@include tabletUp()
-	{
-		width: 250px;
-		height: 250px;
-	}
-
-	@include phoneOnly()
-	{
-		width: 130px;
-		height: 130px;
-	}
 }
 
 .pictureHolder
@@ -64,7 +52,7 @@
 	{
 		width: 30px;
 
-		left: 225px;
+		left: 160px;
 	}
 
 	@include phoneOnly()

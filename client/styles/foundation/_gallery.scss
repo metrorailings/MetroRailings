@@ -5,69 +5,6 @@
 @import '../foundation/animations';
 @import '../foundation/responsive';
 
-/* ----------------------- ANIMATIONS ----------------------------- */
-
-// The animations responsible for moving the gallery viewer left and right
-@include keyframes($name: fadeOutLeft)
-{
-	0%
-	{
-		left: 50%;
-		opacity: 1.0;
-	}
-
-	100%
-	{
-		left: 40%;
-		opacity: 0.0;
-	}
-}
-
-@include keyframes($name: fadeOutRight)
-{
-	0%
-	{
-		left: 50%;
-		opacity: 1.0;
-	}
-
-	100%
-	{
-		left: 60%;
-		opacity: 0.0;
-	}
-}
-
-@include keyframes($name: fadeInLeft)
-{
-	0%
-	{
-		left: 60%;
-		opacity: 0.0;
-	}
-
-	100%
-	{
-		left: 50%;
-		opacity: 1.0;
-	}
-}
-
-@include keyframes($name: fadeInRight)
-{
-	0%
-	{
-		left: 40%;
-		opacity: 0.0;
-	}
-
-	100%
-	{
-		left: 50%;
-		opacity: 1.0;
-	}
-}
-
 /* ----------------------- GALLERY STYLES ----------------------------- */
 
 // Black background
@@ -91,46 +28,31 @@
 		z-index: 4000;
 		display: block;
 
-		& > #galleryControls
-		{
-			z-index: 4001;
-			display: block;
-		}
-
-		& > #galleryPictureViewer
+		& > #galleryContainer
 		{
 			z-index: 4001;
 			display: block;
 		}
 	}
+
 	&.show
 	{
 		background-color: rgba(0, 0, 0, 0.80);
 
-		& > #galleryControls
-		{
-			opacity: 1.0;
-			background-color: rgba(0, 0, 0, 0.95);
-		}
-
-		& > #galleryPictureViewer
+		& > #galleryContainer
 		{
 			opacity: 1.0;
 		}
 	}
 }
 
-#galleryControls
+#galleryContainer
 {
 	@include transitionSettings($property: all, $duration: 0.35s);
 	@include shiftTransition($x: -50%, $y: -50%);
 	@extend %bigIcons;
 
 	color: map-get($COLORS, whiteTheme);
-
-	position: fixed;
-	width: 80%;
-	height: 80%;
 
 	left: 50%;
 	top: 50%;
@@ -140,62 +62,120 @@
 	opacity: 0.0;
 	display: none;
 
-	@include landscapeMobileOnly()
+	position: absolute;
+
+	@include desktopOnly()
+	{
+		width: 90%;
+		height: 80%;
+	}
+
+	@include tabletOnly()
 	{
 		font-size: map-get($FONTS, regularPlusFont);
 
+		width: 95%;
 		height: 100%;
 	}
 
-	@include portraitMobileOnly()
+	@include phoneOnly()
 	{
 		font-size: map-get($FONTS, regularPlusFont);
 
 		width: 100%;
-		height: 50%;
+		height: 100%;
+	}
+}
+
+#galleryExitRow
+{
+	@include transitionSettings($property: all, $duration: 0.35s);
+	@extend %bigIcons;
+
+	color: map-get($COLORS, whiteTheme);
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	width: 100%;
+
+	@include desktopOnly()
+	{
+		height: 10%;
+	}
+
+	@include tabletOnly()
+	{
+		height: 10%;
+	}
+
+	@include phoneOnly()
+	{
+		height: 15%;
+	}
+}
+
+#galleryControls
+{
+	@include transitionSettings($property: all, $duration: 0.35s);
+	@extend %bigIcons;
+
+	color: map-get($COLORS, whiteTheme);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+
+	@include desktopOnly()
+	{
+		height: 10%;
+	}
+
+	@include tabletOnly()
+	{
+		height: 10%;
+	}
+
+	@include phoneOnly()
+	{
+		height: 15%;
 	}
 }
 
 #galleryPictureViewer
 {
 	@include transitionSettings($property: all, $duration: 0.35s);
-	@include shiftTransition($x: -50%, $y: -50%);
 
-	position: fixed;
-	width: 60%;
-	height: 60%;
-
-	left: 50%;
-	top: 50%;
-
-	z-index: -9999;
 	opacity: 0.0;
-	display: none;
 
-	@include portraitMobileOnly()
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include desktopOnly()
 	{
 		width: 100%;
-		height: 30%;
+		height: 80%;
 	}
 
-	&.fadeOutLeft
+	@include tabletOnly()
 	{
-		@include animationSettings($keyframeSet: fadeOutLeft, $duration: 0.35s, $timing: ease-in-out, $iterations: 1);
+		width: 100%;
+		height: 80%;
 	}
 
-	&.fadeOutRight
+	@include phoneOnly()
 	{
-		@include animationSettings($keyframeSet: fadeOutRight, $duration: 0.35s, $timing: ease-in-out, $iterations: 1);
+		width: 100%;
+		height: 70%;
 	}
 
-	&.fadeInLeft
+	&.show
 	{
-		@include animationSettings($keyframeSet: fadeInLeft, $duration: 0.35s, $timing: ease-in-out, $iterations: 1);
-	}
-
-	&.fadeInRight
-	{
-		@include animationSettings($keyframeSet: fadeInRight, $duration: 0.35s, $timing: ease-in-out, $iterations: 1);
+		opacity: 1.0;
 	}
 
 	& > img
@@ -207,15 +187,21 @@
 
 #galleryExitButton
 {
-	position: absolute;
-	top: 5%;
-	left: 80%;
-
 	cursor: pointer;
 
-	@include mobileOnly()
+	@include desktopOnly()
 	{
-		left: 90%;
+		margin-right: 50px;
+	}
+
+	@include tabletOnly()
+	{
+		margin-right: 25px;
+	}
+
+	@include phoneOnly()
+	{
+		margin-right: 15px;
 	}
 }
 
@@ -223,17 +209,10 @@
 {
 	@include transitionSettings($property: opacity, $duration: 0.35s);
 
-	position: absolute;
-	top: 90%;
-	left: 45%;
-
 	cursor: pointer;
 	opacity: 1.0;
 
-	@include mobileOnly()
-	{
-		left: 35%;
-	}
+	margin-right: 50px;
 
 	&.hide
 	{
@@ -252,17 +231,10 @@
 {
 	@include transitionSettings($property: opacity, $duration: 0.35s);
 
-	position: absolute;
-	top: 90%;
-	left: 55%;
-
 	cursor: pointer;
 	opacity: 1.0;
 
-	@include mobileOnly()
-	{
-		left: 65%;
-	}
+	margin-left: 50px;
 
 	&.hide
 	{
@@ -274,5 +246,35 @@
 	{
 		opacity: 0.3;
 		cursor: default;
+	}
+}
+
+#galleryLoadingIcon
+{
+	@extend %significantIcons;
+	@include shiftTransition($x: -50%, $y: -50%);
+	@include transitionSettings($property: opacity, $duration: 0.3s);
+
+	color: map-get($COLORS, whiteTheme);
+
+	position: absolute;
+	top: 50%;
+	z-index: -9999;
+
+	opacity: 1.0;
+
+	@include desktopOnly()
+	{
+		left: calc(50% - 32px);
+	}
+
+	@include mobileOnly()
+	{
+		left: calc(50% - 24px);
+	}
+
+ 	&.hide
+	{
+		opacity: 0.0;
 	}
 }
