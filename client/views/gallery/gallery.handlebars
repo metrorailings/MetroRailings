@@ -6,7 +6,11 @@
 <div id='galleryCollection'>
 	{{#pictures}}
 		<span class='pictureHolder'>
-            <img src='{{url}}' class='galleryPicture' />
+            <img data-index='{{index}}'
+				 class='galleryPicture'
+				 srcset='{{ phoneThumbnail }} 125w, {{ tabletThumbnail }} 185w, {{ desktopThumbnail }} 250w'
+				 sizes='(max-width: 729px) 125px, (max-width: 1023px) 185px, 250px'
+				 src='{{ phoneThumbnail }}' />
 			<span class='indexBubble'>{{index}}</span>
         </span>
 	{{/pictures}}

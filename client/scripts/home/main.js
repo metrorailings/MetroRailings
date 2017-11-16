@@ -29,8 +29,6 @@ var _bannerImages = [],
 	_homeBannerTwo = document.getElementById(HOME_BANNER_TWO),
 	_loadingVeil = document.getElementById(LOADING_VEIL);
 
-// ----------------- PRIVATE FUNCTIONS ---------------------------
-
 // ----------------- LISTENERS ---------------------------
 
 /**
@@ -65,7 +63,11 @@ function _revolveBannerImages()
 	}
 
 	// Set the new background image into the banner that will be shown very soon
-	waitingHomeBanner.style.backgroundImage = BACKGROUND_IMAGE_PHRASE.replace(IMAGE_SRC_PLACEHOLDER, _bannerImages[_randomIndex]);
+	if (waitingHomeBanner.children.length)
+	{
+		waitingHomeBanner.removeChild(waitingHomeBanner.firstElementChild);
+	}
+	waitingHomeBanner.appendChild(_bannerImages[_randomIndex]);
 
 	// Switch out the banners that are currently visible
 	visibleHomeBanner.classList.remove(SHOW_CLASS);
@@ -89,11 +91,11 @@ var i;
 // Collect the source links for all the images that will need to be used
 for (i = 0; i < _bannerImageElements.length; i++)
 {
-	_bannerImages.push(_bannerImageElements[i].src);
+	_bannerImages.push(_bannerImageElements[i]);
 }
 
 // Set the initial image into the home banner
-_homeBannerOne.style.backgroundImage = BACKGROUND_IMAGE_PHRASE.replace(IMAGE_SRC_PLACEHOLDER, _bannerImages[_randomIndex]);
+_homeBannerOne.appendChild(_bannerImages[_randomIndex]);
 
 // Check to see if the page has been loaded after 7.5 seconds. If not, reload the page
 window.setTimeout(() =>

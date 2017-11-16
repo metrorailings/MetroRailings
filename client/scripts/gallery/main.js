@@ -8,8 +8,7 @@ var PICTURE_CLASS = 'galleryPicture';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _galleryImages = document.getElementsByClassName(PICTURE_CLASS),
-	_gallerySrc = [];
+var _galleryImages = document.getElementsByClassName(PICTURE_CLASS);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -21,20 +20,23 @@ var _galleryImages = document.getElementsByClassName(PICTURE_CLASS),
 function _openGallery(event)
 {
 	var element = event.currentTarget,
-		imageURL = element.src,
+		imageIndex = window.parseInt(element.dataset.index, 10),
+		URLs = [],
 		index, i;
 
 	// Find the index of the photo that will need to loaded into the gallery viewer when it opens
 	// up. Also collect all the image URLs that may need to be loaded by the gallery
-	for (i = 0; i < _gallerySrc.length; i++)
+	for (i = 0; i < window.MetroRailings.pictures.length; i++)
 	{
-		if (imageURL.indexOf(_gallerySrc[i]) > -1)
+		if (window.MetroRailings.pictures[i].index === imageIndex)
 		{
 			index = i;
 		}
+
+		URLs.push(window.MetroRailings.pictures[i].url);
 	}
 
-	gallery.open(_gallerySrc, index);
+	gallery.open(URLs, index);
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
@@ -42,11 +44,4 @@ function _openGallery(event)
 for (var i = 0; i < _galleryImages.length; i++)
 {
 	_galleryImages[i].addEventListener('click', _openGallery);
-}
-
-// ----------------- PAGE INITIALIZATION -----------------------------
-
-for (var j = 0; j < _galleryImages.length; j++)
-{
-	_gallerySrc.push(_galleryImages[j].src);
 }
