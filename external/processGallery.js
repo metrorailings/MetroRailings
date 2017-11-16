@@ -25,7 +25,8 @@ var GALLERY_METADATA_COLLECTION = 'gallery',
 
 	GALLERY_IMAGE_DIRECTORY = 'client/images/gallery/',
 	DESKTOP_THUMBNAIL_DIRECTORY = 'desktop/',
-	MOBILE_THUMBNAIL_DIRECTORY = 'mobile/',
+	TABLET_THUMBNAIL_DIRECTORY = 'tablet/',
+	PHONE_THUMBNAIL_DIRECTORY = 'phone/',
 
 	DROPBOX_DOMAIN = 'www.dropbox.com',
 	DIRECT_LINK_DROPBOX_DOMAIN = 'dl.dropboxusercontent.com',
@@ -164,8 +165,10 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 
 			thumbnail = _sharp(fileBlob).resize(250, 250);
 			await thumbnail.toFile(GALLERY_IMAGE_DIRECTORY + DESKTOP_THUMBNAIL_DIRECTORY + thumbnailFileName);
-			thumbnail = _sharp(fileBlob).resize(150, 150);
-			await thumbnail.toFile(GALLERY_IMAGE_DIRECTORY + MOBILE_THUMBNAIL_DIRECTORY + thumbnailFileName);
+			thumbnail = _sharp(fileBlob).resize(185, 185);
+			await thumbnail.toFile(GALLERY_IMAGE_DIRECTORY + TABLET_THUMBNAIL_DIRECTORY + thumbnailFileName);
+			thumbnail = _sharp(fileBlob).resize(125, 125);
+			await thumbnail.toFile(GALLERY_IMAGE_DIRECTORY + PHONE_THUMBNAIL_DIRECTORY + thumbnailFileName);
 
 			// Assign an index to the photo
 			maxIndex += 1;
@@ -175,7 +178,8 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 				_id : files[i].path_lower,
 				url: shareLink,
 				desktopThumbnail: GALLERY_IMAGE_DIRECTORY + DESKTOP_THUMBNAIL_DIRECTORY + thumbnailFileName,
-				mobileThumbnail: GALLERY_IMAGE_DIRECTORY + MOBILE_THUMBNAIL_DIRECTORY + thumbnailFileName,
+				tabletThumbnail: GALLERY_IMAGE_DIRECTORY + TABLET_THUMBNAIL_DIRECTORY + thumbnailFileName,
+				phoneThumbnail: GALLERY_IMAGE_DIRECTORY + PHONE_THUMBNAIL_DIRECTORY + thumbnailFileName,
 				index: maxIndex
 			}));
 		}
