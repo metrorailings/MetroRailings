@@ -28,6 +28,12 @@
 	@include phoneOnly()
 	{
 		width: 100vw;
+		height: 65vh;
+	}
+
+	@include portraitMobileOnly()
+	{
+		width: 100vw;
 		height: 50vh;
 	}
 }
@@ -175,12 +181,12 @@
 
 #tabletTitle
 {
-	font-size: map-get($FONTS, giganticFontSize);
+	font-size: map-get($FONTS, giganticFontSize) !important;
 }
 
 #phoneTitle
 {
-	font-size: map-get($FONTS, mobile-regularPlusFontSize);
+	font-size: map-get($FONTS, mobile-regularPlusFontSize) !important;
 }
 
 #desktopSlogan, #tabletSlogan, #phoneSlogan
