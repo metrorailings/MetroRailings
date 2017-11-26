@@ -65,7 +65,14 @@ module.exports =
 		data[HBARS_CONTENT_HTML] = content;
 
 		// Other assets specific to the page being loaded
-		data[HBARS_STYLESHEET_FILES] = await fileManager.fetchStylesheets(directory);
+		if (config.IS_PROD)
+		{
+			data[HBARS_STYLESHEET_FILES] = [{ path: fileManager.fetchProductionStylesheet(directory) }];
+		}
+		else
+		{
+			data[HBARS_STYLESHEET_FILES] = await fileManager.fetchStylesheets(directory);
+		}
 		data[HBARS_LAUNCH_SCRIPT] = directory;
 
 		// Load the current year into the view as well for copyright purposes

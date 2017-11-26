@@ -20,17 +20,6 @@
         <!-- Favicon -->
         <link rel="icon" href="favicon.ico">
 
-        <!-- Load all third-party stylesheets here --->
-		<line rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"></line>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
-
-        <!-- Load all the application-specific CSS files for this page -->
-        {{#cssFiles}}
-            <link rel="stylesheet" type="text/css" href='{{path}}'/>
-        {{/cssFiles }}
-
         <!-- Load Stripe.js to help us process credit card payments -->
 		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
@@ -49,6 +38,17 @@
 		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/drop@1.4.2/dist/js/drop.js"></script>
 		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/tooltip@1.2.0/dist/js/tooltip.js"></script>
 -->
+
+		<!-- Load all third-party stylesheets here --->
+		<line rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"></line>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
+
+		<!-- Load all the application-specific CSS files for this page -->
+		{{#cssFiles}}
+			<link rel="stylesheet" type="text/css" href='{{path}}'/>
+		{{/cssFiles }}
     </head>
 
     <body>
@@ -79,21 +79,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            <span>
-                <i class='fa fa-copyright'></i> {{currentYear}}
-            </span>
-            <span id='socialMediaSection'>
-                <span>Share on</span>
-                <span>
-                    <i id='facebookShareLink' class='fa fa-facebook-official'></i>
-                    <i id='twitterShareLink' class='fa fa-twitter-square'></i>
-                    <i id='redditShareLink' class='fa fa-reddit-square'></i>
-                </span>
-            </span>
-        </footer>
-
         {{> notificationBar }}
         {{> successBar }}
 
@@ -120,4 +105,19 @@
 
     </body>
 
+	<!-- Page Footer -->
+	<footer>
+		<span>
+			<i class='fa fa-copyright'></i> {{currentYear}}
+		</span>
+		<span id='socialMediaSection'>
+			<span>Share on</span>
+			<span>
+				<i id='facebookShareLink' class='fa fa-facebook-official'></i>
+				<i id='twitterShareLink' class='fa fa-twitter-square'></i>
+				<i id='redditShareLink' class='fa fa-reddit-square'></i>
+			</span>
+		</span>
+
+	</footer>
 </html>

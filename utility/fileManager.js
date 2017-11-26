@@ -19,6 +19,8 @@ var CLIENT_DIRECTORY = process.cwd() + '/client/',
 	VIEWS_DIRECTORY = 'views/',
 	IMAGES_DIRECTORY = 'images/',
 
+	COMPILED_CSS_FILE = 'page.css',
+
 	TEMPLATE_EXTENSION = '.handlebars',
 	SCSS_EXTENSION = '.scss',
 	JSON_EXTENSION = '.json',
@@ -29,7 +31,8 @@ var CLIENT_DIRECTORY = process.cwd() + '/client/',
 var fsReadDir = _Q.denodeify(_fs.readdir),
 	fsStat = _Q.denodeify(_fs.stat),
 	fsReadFile = _Q.denodeify(_fs.readFile),
-	fsUnlink = _Q.denodeify(_fs.unlink);
+	fsUnlink = _Q.denodeify(_fs.unlink),
+	fsWriteFile = _Q.denodeify(_fs.writeFile);
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -80,10 +83,10 @@ async function _fileNameScraper(directoryName, recursiveRead, extensionFilter)
 				if ( (!(extensionFilter)) || (fileNames[i].endsWith(extensionFilter)) )
 				{
 					files.push(
-						{
-							'name': fileNames[i],
-							'path': directoryName.replace(CLIENT_DIRECTORY, CLIENT_RELATIVE_PATH) + fileNames[i]
-						});
+					{
+						'name': fileNames[i],
+						'path': directoryName.replace(CLIENT_DIRECTORY, CLIENT_RELATIVE_PATH) + fileNames[i]
+					});
 				}
 			}
 			else if ((recursiveRead) && (fileStats[i].isDirectory()))
@@ -131,8 +134,8 @@ async function _fileContentScraper(filePaths)
 		{
 			fileContents = await _Q.all(filePaths.map(function(file)
 			{
-				console.log('Fetching the following file: ' + file.path);
-				return fsReadFile(file.path);
+				console.log('Fetching the following file: ' + file);
+				return fsReadFile(file);
 			}));
 
 			// With the file contents in hand, set up an associative array so that each content block is
@@ -142,7 +145,7 @@ async function _fileContentScraper(filePaths)
 			{
 				labelledFileContents[i] =
 				{
-					name: filePaths[i].name,
+					name: filePaths[i].name || filePaths[i],
 					content: fileContents[i].toString()
 				};
 			}
@@ -240,6 +243,20 @@ module.exports =
 	},
 
 	/**
+	 * Utility function meant to generate a link to the compiled stylesheet for a given page
+	 *
+	 * @param {String} directory - the page-level directory from which to fetch the compiled stylesheet
+	 *
+	 * @returns {String} - the path of the file to which to pull all the style directives for a given page
+	 *
+	 * @author kinsho
+	 */
+	fetchProductionStylesheet: function (directory)
+	{
+		return CLIENT_RELATIVE_PATH + STYLESHEET_DIRECTORY + directory + '/' + COMPILED_CSS_FILE;
+	},
+
+	/**
 	 * Generator function that returns the content a specific template file
 	 *
 	 * @param {String} templateFolder - the name of the sub-directory within the views folder where
@@ -325,7 +342,7 @@ module.exports =
 	},
 
 	/**
-	 * Generic generator function meant to fetch the contents of any one file in the system
+	 * Generic generator function meant to fetch the contents of any file in the system
 	 *
 	 * @param {String} filePath - the relative path to the file starting from the project root
 	 *
@@ -336,6 +353,25 @@ module.exports =
 	fetchFile: async function (filePath)
 	{
 		return await _fileContentScraper(process.cwd() + filePath);
+	},
+
+	/**
+	 * Generic generator function meant to fetch the contents of multiple files from the system
+	 *
+	 * @param {String} filePaths - the relative paths to the files starting from the project root
+	 *
+	 * @returns {String} - the contents of the files indicated in the parameter
+	 *
+	 * @author kinsho
+	 */
+	fetchFiles: async function (filePaths)
+	{
+		for (var i = filePaths.length - 1; i >= 0; i--)
+		{
+			filePaths[i] = process.cwd() + filePaths[i];
+		}
+
+		return await _fileContentScraper(filePaths);
 	},
 
 	/**
@@ -386,6 +422,47 @@ module.exports =
 		}
 
 		console.log('Success!');
+		return true;
+	},
+
+	/**
+	 * Generator function responsible for fetching the paths of all child files and directories underneath a given directory
+	 *
+	 * @param {String} directory - the directory from which to pull all file paths
+	 *
+	 * @returns {Array<Object>} - a collection of file/directory names and their associated file/directory paths
+	 *
+	 * @author kinsho
+	 */
+	childFilenamesScraper: async function (directory)
+	{
+		return await fsReadDir(directory);
+	},
+
+	/**
+	 * Generator function responsible for writing a new file into the directory
+	 *
+	 * @param {String} contents - the contents of the file that need to be written out into storage
+	 * @param {String} path - the path that will be used to place and name the new file
+	 *
+	 * @returns {Boolean} - a flag indicating whether the operation was successful
+	 *
+	 * @author kinsho
+	 */
+	writeFile: async function (contents, path)
+	{
+		try
+		{
+			await fsWriteFile(path, contents);
+		}
+		catch(error)
+		{
+			console.log('Had trouble writing a file to ' + path);
+			console.log(error);
+
+			return false;
+		}
+
 		return true;
 	}
 };
