@@ -33,11 +33,14 @@ function shareOnReddit()
 
 // ----------------- LINKER INITIALIZATION -----------------------------
 
-// Facebook share link
-document.getElementById(FACEBOOK_SHARE_ICON).addEventListener('click', shareOnFacebook);
+window.addEventListener('load', function()
+{
+	// Facebook share link
+	document.getElementById(FACEBOOK_SHARE_ICON).addEventListener('click', shareOnFacebook);
 
-// Twitter share link
-document.getElementById(TWITTER_SHARE_ICON).addEventListener('click', shareOnTwitter);
+	// Twitter share link
+	document.getElementById(TWITTER_SHARE_ICON).addEventListener('click', shareOnTwitter);
 
-// Reddit share link
-document.getElementById(REDDIT_SHARE_ICON).addEventListener('click', shareOnReddit);
+	// Reddit share link
+	document.getElementById(REDDIT_SHARE_ICON).addEventListener('click', shareOnReddit);
+});

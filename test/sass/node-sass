@@ -1,0 +1,7 @@
+.testColor
+{
+	color: #FFF;
+}.testColor
+{
+    color: #FFF;
+}

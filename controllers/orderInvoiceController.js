@@ -16,9 +16,7 @@ var _Handlebars = require('handlebars'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
-	DAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-
-	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator');
+	DAO = global.OwlStakes.require('data/DAO/ordersDAO');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 

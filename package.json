@@ -23,7 +23,8 @@
     "jpeg-autorotate" : "*",
     "imagemin" : "*",
     "imagemin-jpegtran" : "*",
-    "sharp" : "*"
+    "sharp" : "*",
+    "css-purge" : "*"
   },
   "jspm": {
     "directories": {

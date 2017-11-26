@@ -1,0 +1,12 @@
+@import 'testImport';
+
+.testColor
+{
+	color: #FFF;
+	width: $DEVICE_WIDTH;
+}@import 'testImport';
+
+.testColor
+{
+    color: #FFF;
+}

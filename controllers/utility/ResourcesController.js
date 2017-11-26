@@ -48,11 +48,11 @@ module.exports =
 			if (url.endsWith(SCSS_EXTENSION))
 			{
 				fileContents = _sass.renderSync(
-					{
-						data: fileContents,
-						includePaths: SCSS_INCLUDE_PATHS,
-						outputStyle: COMPRESSED_KEYWORD
-					}).css;
+				{
+					data: fileContents,
+					includePaths: SCSS_INCLUDE_PATHS,
+					outputStyle: COMPRESSED_KEYWORD
+				}).css;
 			}
 
 			// gzip the file contents only if the file is not an image
