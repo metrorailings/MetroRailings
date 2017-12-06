@@ -20,17 +20,6 @@
         <!-- Favicon -->
         <link rel="icon" href="favicon.ico">
 
-        <!-- Load Stripe.js to help us process credit card payments -->
-		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
-        <!-- Load Handlebars on the client -->
-        <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
-
-        <!-- Load the tooltip library and its associated dependencies -->
-		<script type='text/javascript' src="https://cdn.jsdelivr.net/tether/1.4.0/tether.min.js"></script>
-        <script type='text/javascript' src="https://cdn.jsdelivr.net/drop/1.4.2/js/drop.min.js"></script>
-		<script type='text/javascript' src="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip.min.js"></script>
-
 <!--
         Just for testing purposes...
 
@@ -40,10 +29,18 @@
 -->
 
 		<!-- Load all third-party stylesheets here --->
-		<line rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"></line>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
+		{{#unless isProd}}
+			<div id='thirdPartyStyles'>
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
+			</div>
+		{{else}}
+			<link rel="stylesheet" href="prod/thirdParty.css">
+		{{/unless}}
+
+		<!-- Separating out the import of font-awesome from the other third-party stylesheets as its difficult for us
+		 to gracefully import its font libraries as well -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
 
 		<!-- Load all the application-specific CSS files for this page -->
 		{{#cssFiles}}
@@ -87,12 +84,27 @@
             window.MetroRailings = {{{initialData}}};
         </script>
 
+		<!--- In production, all scripts pulled from third-party servers will be bunded into the compiled production script -->
+		{{#unless isProd}}
+			<div id='thirdPartyScripts'>
+				<!-- Load Stripe.js to help us process credit card payments -->
+				<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+				<!-- Load Handlebars on the client -->
+				<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+
+				<!-- Load the tooltip library and its associated dependencies -->
+				<script type='text/javascript' src="https://cdn.jsdelivr.net/tether/1.4.0/tether.min.js"></script>
+				<script type='text/javascript' src="https://cdn.jsdelivr.net/drop/1.4.2/js/drop.min.js"></script>
+				<script type='text/javascript' src="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip.min.js"></script>
+			</div>
+		{{else}}
+			<script type="text/javascript" src="prod/thirdParty.js"></script>
+		{{/unless}}
+
 		<script src="client/scripts/jspm_packages/system.js" ></script>
 		<script src="client/scripts/jspm_config.js" ></script>
 		<script src="client/scripts/systemPaths.js" ></script>
-		<script src="client/scripts/plugins/facebook.js" ></script>
-		<script src="client/scripts/plugins/twitter.js" ></script>
-		<script src="client/scripts/plugins/socialLinks.js" ></script>
 		<script src="client/scripts/plugins/stripe.js" ></script>
 
 		<!-- In production, one file will house all page-specific code -->
@@ -110,14 +122,5 @@
 		<span>
 			<i class='fa fa-copyright'></i> {{currentYear}}
 		</span>
-		<span id='socialMediaSection'>
-			<span>Share on</span>
-			<span>
-				<i id='facebookShareLink' class='fa fa-facebook-official'></i>
-				<i id='twitterShareLink' class='fa fa-twitter-square'></i>
-				<i id='redditShareLink' class='fa fa-reddit-square'></i>
-			</span>
-		</span>
-
 	</footer>
 </html>
