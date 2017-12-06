@@ -24,7 +24,8 @@
     "imagemin" : "*",
     "imagemin-jpegtran" : "*",
     "sharp" : "*",
-    "css-purge" : "*"
+    "css-purge" : "*",
+    "clean-css" : "*"
   },
   "jspm": {
     "directories": {

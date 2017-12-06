@@ -11,16 +11,11 @@ footer
 {
 	@extend %footerText;
 
-	margin:
-	{
-		top: 15px;
-		bottom: 0px;
-	}
-
-	padding-top: 10px;
-
 	width: 100%;
-	display: block;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 
 	background-color: map-get($COLORS, blackTheme);
 
@@ -40,63 +35,8 @@ footer
 	}
 
 	// Copyright text
-	& > span:first-child
-	{
-		float: left;
-		margin-left: 25px;
-	}
-}
-
-// Social media section
-#socialMediaSection
-{
-	float: right;
-	margin-right: 25px;
-
-	text-align: center;
-
 	& > span
 	{
-		@include tabletUp()
-		{
-			margin-right: 10px;
-		}
-		@include phoneOnly()
-		{
-			margin-right: 5px;
-		}
-	}
-}
-
-// Social media icons
-#facebookShareLink, #redditShareLink, #twitterShareLink
-{
-	@include transitionSettings($property: color, $duration: 0.2s);
-
-	padding: 5px;
-	cursor: pointer;
-}
-
-#facebookShareLink:hover
-{
-	@include desktopOnly()
-	{
-		color: map-get($COLORS, darkBlueTheme);
-	}
-}
-
-#twitterShareLink:hover
-{
-	@include desktopOnly()
-	{
-		color: map-get($COLORS, darkBlueTheme);
-	}
-}
-
-#redditShareLink:hover
-{
-	@include desktopOnly()
-	{
-		color: map-get($COLORS, redTheme);
+		margin-right: 40px;
 	}
 }
