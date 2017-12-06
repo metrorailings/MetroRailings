@@ -3,6 +3,8 @@
 prod/buildScript.sh
 prod/build.src.js
 prod/app.js
+prod/thirdParty.js
+prod/thirdParty.css
 **/*.map
 client/scripts/jspm_packages
 node_modules

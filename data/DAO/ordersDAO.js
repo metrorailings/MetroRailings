@@ -146,6 +146,35 @@ var ordersModule =
 	},
 
 	/**
+	 * Function responsible for fetching a removed order from the database using its ID
+	 *
+	 * @param {Object} orderNumber - the order identification number
+	 *
+	 * @returns {Object} - the order itself, in its entirety
+	 *
+	 * @author kinsho
+	 */
+	searchRemovedOrderById: async function (orderNumber)
+	{
+		try
+		{
+			var dbResults = await mongo.read(REMOVED_ORDERS_COLLECTION,
+				{
+					_id: orderNumber
+				});
+
+			return dbResults[0];
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching a removed order using its ID...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for fetching orders from the database that were modified from a given date
 	 *
 	 * @param {Date} beginningDate - the date and time from which to look for new orders
@@ -750,6 +779,43 @@ var ordersModule =
 		catch(error)
 		{
 			console.log('Ran into an error removing order ' + order._id);
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for restoring an order that was removed from the system
+	 *
+	 * @param {Number} orderID - the ID of the order being restored
+	 * @param {String} [username] - the name of the admin making the changes
+	 *
+	 * @returns {Boolean} - a simple flag indicating whether the order was successfully removed
+	 *
+	 * @author kinsho
+	 */
+	restoreRemovedOrder: async function (orderID, username)
+	{
+		var order = await ordersModule.searchRemovedOrderById(parseInt(orderID, 10));
+
+		// Ensure that the order is properly updated with a record indicating when this order was updated
+		// and who updated this order
+		_applyModificationUpdates(order, username || UNKNOWN_USER_NAME);
+
+		try
+		{
+			// Add the order to remove from a collection specifically meant to house these removed orders
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, mongo.formInsertSingleQuery(order));
+
+			// Remove the order from the main orders collection
+			await mongo.bulkWrite(REMOVED_ORDERS_COLLECTION, true, mongo.formDeleteOneQuery({ _id : order._id }));
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error restoring order ' + order._id);
 			console.log(error);
 
 			throw error;
