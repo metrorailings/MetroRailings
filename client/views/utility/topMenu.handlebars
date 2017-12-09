@@ -1,6 +1,11 @@
 <div id='topMenu'>
 	<span id='topMenuLogoContainer'>
-		<img id='topMenuLogo' src='client/images/logo/png/color_logo_transparent_background_small.png' onclick='window.location.href="/"'/>
+		<img id='topMenuLogo'
+			 srcset='client/images/logo/png/color_logo_transparent_background_desktop.png 176w,
+			 	client/images/logo/png/color_logo_transparent_background_mobile.png 118w'
+			 sizes='(max-width: 1023px) 118px, 176px'
+			 src='client/images/logo/png/color_logo_transparent_background_desktop.png'
+			 onclick='window.location.href="/"'/>
 	</span>
 
 	<div id='desktopMenuLinks'>

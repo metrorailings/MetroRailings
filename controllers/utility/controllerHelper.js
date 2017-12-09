@@ -4,7 +4,10 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var config = global.OwlStakes.require('config/config'),
+var _Q = require('q'),
+	_zlib = require('zlib'),
+
+	config = global.OwlStakes.require('config/config'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
@@ -27,6 +30,10 @@ var BASE_TEMPLATE_FILE = 'base',
 	HBARS_IS_PROD_FLAG = 'isProd',
 	HBARS_IS_ADMIN_PAGE = 'isAdmin',
 	HBARS_CURRENT_YEAR = 'currentYear';
+
+// ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
+
+var zlibGZipper = _Q.denodeify(_zlib.gzip);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -51,7 +58,8 @@ module.exports =
 	 */
 	renderInitialView: async function (content, directory, bootData, ignoreScaling, isAdmin)
 	{
-		var data = {};
+		var data = {},
+			response;
 
 		// Augment the bootlegged data with other data that needs to be loaded for all pages
 		bootData = bootData || {};
@@ -87,7 +95,11 @@ module.exports =
 		// Set a flag indicating whether we are operating in a production environment
 		data[HBARS_IS_PROD_FLAG] = config.IS_PROD;
 
-		return await templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
+		// Render the template
+		response = await templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
+
+		// Now gzip the template and return it back
+		return await zlibGZipper(response);
 	},
 
 	/**
@@ -111,7 +123,7 @@ module.exports =
 		redirectTemplate = await templateManager.populateTemplate(data, '', REDIRECT_TEMPLATE_FILE);
 
 		return {
-			template: redirectTemplate,
+			template: await zlibGZipper(redirectTemplate),
 			redirect: true
 		};
 	}

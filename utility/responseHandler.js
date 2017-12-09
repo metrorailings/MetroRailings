@@ -29,7 +29,7 @@ module.exports =
 	 */
 	sendResponse: function(response, responseData, url)
 	{
-		var contentEncoding = router.isResourceWanted(url) && !(router.isImage(url)) ? 'gzip' : '';
+		var contentEncoding = !(router.isImage(url)) ? 'gzip' : '';
 
 		try
 		{
