@@ -5,7 +5,9 @@
 
     <div id='techLogos'>
         {{#thankYouImages}}
-            <img src='{{path}}' />
+            <img srcset='{{ desktopPath.path }} 70w, {{ phonePath.path }} 50w'
+				 size='(max-width: 729px) 50px, 70px'
+				 src='{{ desktopPath.path }}' />
         {{/thankYouImages}}
     </div>
 </div>

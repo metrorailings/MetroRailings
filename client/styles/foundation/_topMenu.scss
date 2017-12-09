@@ -89,16 +89,6 @@
 #topMenuLogo
 {
 	cursor: pointer;
-
-	@include desktopOnly()
-	{
-		height: 90px;
-	}
-
-	@include mobileOnly()
-	{
-		height: 60px;
-	}
 }
 
 #topMenuExpander

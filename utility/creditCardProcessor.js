@@ -27,14 +27,39 @@ var ACCEPTABLE_CURRENCY = 'usd',
 var _createCustomer = _Q.nbind(_stripe.customers.create, _stripe.customers),
 	_chargeCard = _Q.nbind(_stripe.charges.create, _stripe.charges),
 	_retrieveTransaction = _Q.nbind(_stripe.charges.retrieve, _stripe.charges),
-	_refundMoney = _Q.nbind(_stripe.refunds.create, _stripe.refunds);
-
-// ----------------- PRIVATE FUNCTIONS --------------------------
+	_refundMoney = _Q.nbind(_stripe.refunds.create, _stripe.refunds),
+	_createToken = _Q.nbind(_stripe.tokens.create, _stripe.tokens);
 
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
 {
+	/**
+	 * Function meant to codify all credit card information into a token
+	 *
+	 * @param {String} ccNumber - the credit card number, in full
+	 * @param {Number} expMonth - the month on which this credit card will expire
+	 * @param {Number} expYear - the year on which this credit card will expire
+	 * @param {String} cvc - the credit card verification code
+	 *
+	 * @returns {String} - the token that will be used to reference the credit card in Stripe's database
+	 *
+	 * @author kinsho
+	 */
+	generateToken: async function (ccNumber, expMonth, expYear, cvc)
+	{
+		var token = await _createToken({
+			card :
+			{
+				number: ccNumber,
+				exp_month: parseInt(expMonth, 10),
+				exp_year: parseInt(expYear, 10),
+				cvc: cvc
+			}});
+
+		return token.id;
+	},
+
 	/**
 	 * Simple little function meant to create a new customer object from a Stripe credit card token.
 	 * Creating a customer record would allow us to transact with that customer again without requesting his or her

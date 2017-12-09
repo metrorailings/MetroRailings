@@ -103,11 +103,17 @@ module.exports =
 
 			var newData = await ordersDAO.searchOrdersByDate(new Date(params.date));
 
-			return JSON.stringify(newData);
+			return {
+				statusCode: responseCodes.OK,
+				data: newData
+			};
 		}
 
 		// Return a meaningless response for unauthorized calls
-		return JSON.stringify('');
+		return {
+			statusCode: responseCodes.OK,
+			data: ''
+		};
 	},
 
 	/**

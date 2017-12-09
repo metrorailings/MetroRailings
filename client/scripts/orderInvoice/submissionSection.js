@@ -11,6 +11,7 @@ var SUBMIT_BUTTON = 'orderSubmissionButton',
 
 	CREDIT_CARD_PAYMENT_METHOD = 'cc',
 
+	GENERATE_TOKEN_URL = 'orderInvoice/generatePaymentToken',
 	SAVE_ORDER_URL = 'orderInvoice/approveOrder',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation',
 
@@ -96,26 +97,23 @@ function submit()
 		// to our back-end
 		if (vm.paymentMethod === CREDIT_CARD_PAYMENT_METHOD)
 		{
-			window.Stripe.card.createToken(
+			// Generate a credit card token
+			axios.post(GENERATE_TOKEN_URL,
 			{
 				number: vm.ccNumber,
 				exp_month: vm.ccExpMonth,
 				exp_year: vm.ccExpYear,
 				cvc: vm.ccSecurityCode
-			}, (status, token) =>
+			}, true).then((token) =>
 			{
-				if (status === 200)
-				{
-					// Append the token to the data to be sent over the wire
-					data.ccToken = token.id;
+				// Append that token to the data to be sent over the wire
+				data.ccToken = token.data;
 
-					_submitOrder(data);
-				}
-				else
-				{
-					axios.toggleLoadingVeil();
-					notifier.showSpecializedServerError(CREDIT_CARD_INVALID_MESSAGE);
-				}
+				_submitOrder(data);
+			}, () =>
+			{
+				axios.toggleLoadingVeil();
+				notifier.showSpecializedServerError(CREDIT_CARD_INVALID_MESSAGE);
 			});
 		}
 		// For check jobs, just submit the order
