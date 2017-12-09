@@ -27,21 +27,6 @@
 		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/drop@1.4.2/dist/js/drop.js"></script>
 		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/tooltip@1.2.0/dist/js/tooltip.js"></script>
 -->
-
-		<!-- Load all third-party stylesheets here --->
-		{{#unless isProd}}
-			<div id='thirdPartyStyles'>
-				<link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
-				<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
-			</div>
-		{{else}}
-			<link rel="stylesheet" href="prod/thirdParty.css">
-		{{/unless}}
-
-		<!-- Separating out the import of font-awesome from the other third-party stylesheets as its difficult for us
-		 to gracefully import its font libraries as well -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
-
 		<!-- Load all the application-specific CSS files for this page -->
 		{{#cssFiles}}
 			<link rel="stylesheet" type="text/css" href='{{path}}'/>
@@ -87,9 +72,6 @@
 		<!--- In production, all scripts pulled from third-party servers will be bunded into the compiled production script -->
 		{{#unless isProd}}
 			<div id='thirdPartyScripts'>
-				<!-- Load Stripe.js to help us process credit card payments -->
-				<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
 				<!-- Load Handlebars on the client -->
 				<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
 
@@ -105,12 +87,13 @@
 		<script src="client/scripts/jspm_packages/system.js" ></script>
 		<script src="client/scripts/jspm_config.js" ></script>
 		<script src="client/scripts/systemPaths.js" ></script>
-		<script src="client/scripts/plugins/stripe.js" ></script>
 
 		<!-- In production, one file will house all page-specific code -->
 		{{#if isProd}}
 			<script src="prod/app.js"></script>
-			<script src="client/scripts/plugins/googleAnalytics.js" ></script>
+
+			<!-- @TODO Smartly integrate Google Analytics so that we can track user behavior without tracking our own admin behavior -->
+			<!-- <script src="client/scripts/plugins/googleAnalytics.js" ></script> -->
 		{{/if}}
 
 		<script>System.import("{{launchScript}}");</script>
@@ -122,5 +105,19 @@
 		<span>
 			<i class='fa fa-copyright'></i> {{currentYear}}
 		</span>
+
+		<!-- Defer the loading of all non-essential third-party stylesheets to this section here --->
+		{{#unless isProd}}
+			<div id='thirdPartyStyles'>
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
+			</div>
+		{{else}}
+			<link rel="stylesheet" href="prod/thirdParty.css">
+		{{/unless}}
+
+		<!-- Separating out the import of font-awesome from the other third-party stylesheets as it is difficult for us
+		 to gracefully import its font libraries as well when in production -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
 	</footer>
 </html>

@@ -16,7 +16,8 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'home',
-	THANK_YOU_FOLDER = 'thankYou',
+	THANK_YOU_DESKTOP_FOLDER = 'thankYou/desktop',
+	THANK_YOU_PHONE_FOLDER = 'thankYou/mobile',
 
 	GENERIC_SLOGAN = 'Proudly serving artfully crafted railings to all of New Jersey and New York City',
 
@@ -67,7 +68,9 @@ module.exports =
 	init: async function ()
 	{
 		var pageData = {}, templateData = {}, defaultGalleriaData = {},
-			populatedPageTemplate;
+			thankYouDesktopImages, thankYouPhoneImages, thankYouImages = [],
+			populatedPageTemplate,
+			i;
 
 		console.log('Loading the home page...');
 
@@ -77,8 +80,20 @@ module.exports =
 		// Fetch all the images that we will need to display on the home page
 		templateData.homeBannerImages = await fileManager.fetchImagePaths(CONTROLLER_FOLDER);
 		pageData.galleryImages = await picturesDAO.fetchGalleryData();
-		templateData.thankYouImages = await fileManager.fetchImagePaths(THANK_YOU_FOLDER);
 
+		// Collect all the 'Thank You' images that we need to display
+		thankYouDesktopImages = await fileManager.fetchImagePaths(THANK_YOU_DESKTOP_FOLDER);
+		thankYouPhoneImages = await fileManager.fetchImagePaths(THANK_YOU_PHONE_FOLDER);
+		for (i = 0; i < thankYouDesktopImages.length; i++)
+		{
+			thankYouImages[i] =
+			{
+				desktopPath : thankYouDesktopImages[i],
+				phonePath : thankYouPhoneImages[i]
+			};
+		}
+		templateData.thankYouImages = thankYouImages;
+console.log(thankYouImages);
 		// Fetch the galleria template as well so that we can add pictures to the gallery from within the client
 		templateData.galleriaTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.GALLERIA);
 

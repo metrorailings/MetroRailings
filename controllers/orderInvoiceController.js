@@ -13,6 +13,7 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
+	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
@@ -118,6 +119,35 @@ module.exports =
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData);
+	},
+
+	/**
+	 * Function meant to generate a token that represents the credit card we will be using for a given order
+	 *
+	 * @param {Object} params - the credit card information we will be using to create the token
+	 *
+	 * @author kinsho
+	 */
+	generatePaymentToken: async function (params)
+	{
+		try
+		{
+			var token = await creditCardProcessor.generateToken(params.number, params.exp_month, params.exp_year, params.cvc);
+
+			return {
+				statusCode: responseCodes.OK,
+				data: token
+			};
+		}
+		catch (error)
+		{
+			console.log('Credit card was unable to be processed...');
+
+			return {
+				statusCode: responseCodes.BAD_REQUEST
+			};
+		}
+
 	},
 
 	/**

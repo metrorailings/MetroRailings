@@ -477,9 +477,9 @@ Object.defineProperty(viewModel, 'pingTheServer',
 			dateToSearch = (orders[0] ? new Date(orders[0].lastModifiedDate) : DEFAULT_MODIFICATION_DATE),
 			changeCount;
 
-		axios.get(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
+		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
 		{
-			changeCount = orderUtility.reconcileOrders(orders, results);
+			changeCount = orderUtility.reconcileOrders(orders, results.data);
 
 			// Only re-render the orders should there be any changes made to the order
 			if (changeCount)
