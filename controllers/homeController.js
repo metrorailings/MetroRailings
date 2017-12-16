@@ -93,7 +93,7 @@ module.exports =
 			};
 		}
 		templateData.thankYouImages = thankYouImages;
-console.log(thankYouImages);
+
 		// Fetch the galleria template as well so that we can add pictures to the gallery from within the client
 		templateData.galleriaTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.GALLERIA);
 
