@@ -8,6 +8,10 @@
 
 var pricing = global.OwlStakes.require('shared/pricing/pricingData');
 
+// ----------------- ENUMS/CONSTANTS --------------------------
+
+var NJ_STATE_CODE = 'NJ';
+
 // ----------------- MODULE DEFINITION --------------------------
 
 var pricingModule =
@@ -58,6 +62,28 @@ var pricingModule =
 	calculateEstimateTotal: function(distance)
 	{
 		return (pricing.MINIMUM_COST_PER_ESTIMATE + (distance * pricing.COST_PER_MILE_TRAVELED));
+	},
+
+	/**
+	 * Function calculates the tax given a particular value
+	 *
+	 * @param {Number} amount - the given dollar amount for which to calculate tax
+	 * @param {Object} order - the order, should we need to analyze details about the order itself to properly
+	 * 		assess tax
+	 *
+	 * @returns {Number} - the tax for the given dollar amount
+	 *
+	 * @author kinsho
+	 */
+	calculateTax: function(amount, order)
+	{
+		// Only calculate taxes for orders where the installation address is within the state of New Jersey
+		if (amount && (order.customer.state === NJ_STATE_CODE))
+		{
+			return amount * pricing.NJ_SALES_TAX_RATE;
+		}
+
+		return 0.00;
 	},
 
 	/**

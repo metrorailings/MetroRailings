@@ -215,10 +215,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 
 	height: 75px;
 
-	& > span
+	& > div
 	{
 		border:
 		{
@@ -233,53 +234,53 @@
 		align-items: center;
 
 		height: 100%;
+	}
+}
 
-		&:first-of-type
-		{
-			border-left: none;
+.orderFooterHeader
+{
+	border-left: none;
 
-			justify-content: flex-end;
+	justify-content: flex-end;
 
-			padding-right: 20px;
+	padding-right: 20px;
 
-			background-color: map-get($COLORS, lightGrayTheme);
+	background-color: map-get($COLORS, lightGrayTheme);
 
-			@include tabletUp()
-			{
-				width: 75%;
-			}
+	@include tabletUp()
+	{
+		width: 75%;
+	}
 
-			@include phoneOnly()
-			{
-				width: 60%;
-			}
+	@include phoneOnly()
+	{
+		width: 60%;
+	}
 
-			@include printOnly()
-			{
-				width: 75%;
-			}
-		}
+	@include printOnly()
+	{
+		width: 75%;
+	}
+}
 
-		&:last-of-type
-		{
-			border-right: none;
+.orderFooterValue
+{
+	border-right: none;
 
-			justify-content: center;
+	justify-content: center;
 
-			@include tabletUp()
-			{
-				width: 25%;
-			}
+	@include tabletUp()
+	{
+		width: 25%;
+	}
 
-			@include phoneOnly()
-			{
-				width: 40%;
-			}
+	@include phoneOnly()
+	{
+		width: 40%;
+	}
 
-			@include printOnly()
-			{
-				width: 25%;
-			}
-		}
+	@include printOnly()
+	{
+		width: 25%;
 	}
 }
