@@ -291,7 +291,9 @@ var ordersModule =
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
 
 		// Calculate the amount to charge the customer
-		order.pricing.orderTotal = pricingCalculator.calculateOrderTotal(order);
+		order.pricing.subTotal = pricingCalculator.calculateOrderTotal(order);
+		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal);
+		order.pricing.orderTotal = order.pricing.subTotal + order.pricing.tax;
 
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
 		order.pricing.balanceRemaining = order.pricing.orderTotal;
@@ -390,6 +392,7 @@ var ordersModule =
 
 		// Note that the order has yet to be paid off, as only half of the total amount has been paid up until now
 		order.pricing.balanceRemaining = order.pricing.orderTotal / 2;
+		order.pricing.taxRemaining = order.pricing.tax / 2;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
@@ -496,7 +499,15 @@ var ordersModule =
 		orderModifications.pricing.deductions = _parseNumberOrReturnZero(orderModifications.pricing.deductions);
 
 		// Recalculate the total price of the order
-		orderModifications.pricing.orderTotal = pricingCalculator.calculateOrderTotal(orderModifications);
+		orderModifications.pricing.subTotal = pricingCalculator.calculateOrderTotal(orderModifications);
+		orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subTotal, orderModifications);
+		orderModifications.pricing.orderTotal = orderModifications.pricing.subTotal + orderModifications.pricing.tax;
+
+		// Account for any new taxes should there be modifications to pricing after an order has been confirmed
+		if (order.pricing.taxRemaining)
+		{
+			orderModifications.pricing.taxRemaining += pricingCalculator.calculateTax(orderModifications.pricing.modification, orderModifications);
+		}
 
 		// If the order is still pending finalization, reset the balance remaining
 		if (order.status === PENDING_STATUS)
@@ -581,6 +592,8 @@ var ordersModule =
 			'pricing.deductions': orderModifications.pricing.deductions,
 			'pricing.modification': orderModifications.pricing.modification,
 			'pricing.orderTotal': orderModifications.pricing.orderTotal,
+			'pricing.tax': orderModifications.pricing.tax,
+			'pricing.taxRemaining': orderModifications.pricing.taxRemaining || 0,
 
 			'design.post': orderModifications.design.post,
 			'design.handrailing': orderModifications.design.handrailing,

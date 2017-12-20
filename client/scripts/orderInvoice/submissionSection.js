@@ -36,8 +36,6 @@ var _submitButton = document.getElementById(SUBMIT_BUTTON);
  */
 function _submitOrder(data)
 {
-	axios.toggleLoadingVeil();
-
 	// Save the data
 	axios.post(SAVE_ORDER_URL, data, true).then(() =>
 	{
@@ -66,9 +64,6 @@ function submit()
 	{
 		// Hide any service-related error that may have popped up before
 		notifier.hideErrorBar();
-
-		// Show that loading veil before we reach out to Stripe to pre-verify the credit card
-		axios.toggleLoadingVeil();
 
 		// Figure out the order ID
 		orderID = window.location.href.slice(window.location.href.indexOf(ID_URL_PARAM) + 3);
@@ -112,7 +107,6 @@ function submit()
 				_submitOrder(data);
 			}, () =>
 			{
-				axios.toggleLoadingVeil();
 				notifier.showSpecializedServerError(CREDIT_CARD_INVALID_MESSAGE);
 			});
 		}

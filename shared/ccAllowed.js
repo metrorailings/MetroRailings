@@ -10,7 +10,8 @@ var BRANDS =
 	{
 		VISA: 'visa',
 		MASTERCARD: 'mastercard',
-		DISCOVER: 'discover'
+		DISCOVER: 'discover',
+		AMEX: 'amex'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -75,6 +76,24 @@ function _isDiscover(number)
 		((first6 >= 622126) && (first6 <= 622925)) );
 }
 
+/**
+ * Function to check whether the passed credit card number belongs to an Amex card
+ *
+ * @param {String} number - the credit card number to analyze
+ *
+ * @returns {boolean} - a flag indicating whether the number corresponds to an Amex card
+ *
+ * @author kinsho
+ */
+function _isAmex(number)
+{
+	number = number || '';
+
+	var first2 = parseInt(number.slice(0, 2), 10);
+
+	return ( (first2 === 34) || (first2 === 37) );
+}
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -103,6 +122,11 @@ module.exports =
 		if (_isDiscover(ccNumber))
 		{
 			return BRANDS.DISCOVER;
+		}
+
+		if (_isAmex(ccNumber))
+		{
+			return BRANDS.AMEX;
 		}
 
 		return '';

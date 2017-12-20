@@ -63,7 +63,7 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
 		CC_NUMBER_INVALID: 'Please enter only digits here in the credit card number field.',
-		CC_NUMBER_UNACCEPTABLE: 'Please enter a valid credit card number. Keep in mind that we only accept Visa, Mastercard, and Discover cards.',
+		CC_NUMBER_UNACCEPTABLE: 'Please enter a valid credit card number. Keep in mind that we accept Visa, Mastercard, Discover, and Amex cards.',
 		CC_SECURITY_CODE_INVALID: 'Please put in a 3 or 4 digit code here.'
 	};
 
