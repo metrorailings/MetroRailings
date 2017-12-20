@@ -44,9 +44,7 @@
 
 		&.label
 		{
-			@extend %formLabelText;
-
-			font-size: 8px;
+			@extend %smallerSignificantText;
 		}
 
 		&.signatureBox

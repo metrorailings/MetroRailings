@@ -48,6 +48,13 @@
 	}
 }
 
+#nameField, #phoneField, #emailField, #installationAddressField
+{
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+}
+
 #nameField
 {
 	width: 400px;
