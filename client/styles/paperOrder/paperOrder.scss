@@ -110,9 +110,8 @@
 
 .fieldLabel
 {
-	@extend %majorText;
+	@extend %smallerSignificantText;
 
-	font-size: 8px;
 	white-space: nowrap;
 }
 
