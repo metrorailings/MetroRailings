@@ -76,7 +76,10 @@
 		<span class='specializedLabel'>Original Total Price</span>
 		<span class='staticValue'>
 			{{#if pricing.orderTotal}}
-				${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}
+				<span class='orderValueAmount'>${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}</span>
+			{{/if}}
+			{{#if pricing.tax}}
+				<span class='orderTaxAmount'>(Tax: ${{#to_fixed pricing.tax 2 }}{{/to_fixed}})</span>
 			{{/if}}
 		</span>
 	</div>
@@ -85,7 +88,13 @@
 		<span class='specializedLabel'>Balance Remaining</span>
 		<span id='balanceRemaining' class='staticValue'>
 			{{#if pricing.balanceRemaining}}
-				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed }}
+				<span class='orderValueAmount'>${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed }}</span>
+			{{else}}
+				<span class='orderValueAmount'>$0.00</span>
+			{{/if}}
+
+			{{#if pricing.tax}}
+				<span class='orderTaxAmount'>(Tax: ${{#to_fixed pricing.taxRemaining 2 }}{{/to_fixed}})</span>
 			{{/if}}
 		</span>
 	</div>
@@ -135,6 +144,9 @@
 			$<input id='priceModifications' type='tel' value='{{pricing.modification}}'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}} />
 			<span class='hint hint--right hint--always' data-hint=''></span>
+			{{#if pricing.tax}}
+				<span class='orderTaxAmount'>(Additional Tax: $<span id='additionalTax'>0.00</span>)</span>
+			{{/if}}
 		</div>
 	{{/unless_cond}}
 

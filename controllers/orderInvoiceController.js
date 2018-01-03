@@ -16,6 +16,7 @@ var _Handlebars = require('handlebars'),
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+	pricing = global.OwlStakes.require('shared/pricing/pricingData'),
 
 	DAO = global.OwlStakes.require('data/DAO/ordersDAO');
 
@@ -114,6 +115,9 @@ module.exports =
 			expirationYears.push(i);
 		}
 		pageData.expirationYears = expirationYears;
+
+		// If any taxes are being charged, set the tax rate so that it can be shown on the page
+		pageData.taxRate = pricing.NJ_SALES_TAX_RATE * 100;
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

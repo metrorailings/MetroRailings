@@ -9,9 +9,30 @@
 {
 	@extend %largePlusText;
 
-	text-decoration: underline;
-
 	width: auto;
+
+	& > .orderTaxAmount
+	{
+		@extend %regularPlusText;
+
+		text-decoration: none;
+	}
+}
+
+.orderValueAmount
+{
+	margin:
+	{
+		right: 10px;
+	}
+}
+
+.orderTaxAmount
+{
+	margin:
+	{
+		left: 10px;
+	}
 }
 
 #priceModifications, #additionalPrice, #deductions, #pricePerFoot

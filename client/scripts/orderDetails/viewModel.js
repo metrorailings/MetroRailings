@@ -7,6 +7,7 @@
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import tooltipManager from 'client/scripts/utility/tooltip';
 
+import pricingCalculator from 'shared/pricing/pricingCalculator';
 import formValidator from 'shared/formValidator';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
@@ -52,6 +53,7 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	DEDUCTIONS_TEXTFIELD = 'deductions',
 	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
 	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
+	ADDITIONAL_TAX_DISPLAY = 'additionalTax',
 
 	TIME_LIMIT_EXTENSION_TEXTFIELD = 'extendTimeLimit',
 	DESCRIPTION_TEXT_AREA = 'orderDescription',
@@ -132,6 +134,7 @@ var _validationSet = new Set(),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
+	_additionalTaxDisplay = document.getElementById(ADDITIONAL_TAX_DISPLAY),
 
 	_timeLimitExtensionField = document.getElementById(TIME_LIMIT_EXTENSION_TEXTFIELD),
 	_descriptionField = document.getElementById(DESCRIPTION_TEXT_AREA),
@@ -207,6 +210,8 @@ Object.defineProperty(viewModel, 'originalOrder',
 
 	set: (value) =>
 	{
+		var additionalTax;
+
 		viewModel.__originalOrder = value;
 
 		// Copy over the values from the original order into the view model
@@ -245,6 +250,13 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__deductions = value.pricing.deductions;
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
+
+		// Set any additional taxes as well should there be pricing modifications in place
+		if (_additionalTaxDisplay)
+		{
+			additionalTax = pricingCalculator.calculateTax(value.pricing.modification, value);
+			_additionalTaxDisplay.innerHTML = (additionalTax ? additionalTax.toFixed(2) : 0.00);
+		}
 
 		viewModel.__extendTimeLimit = (value.timeLimit ? value.timeLimit.extension : 0);
 		viewModel.__orderDescription = value.notes.order;
@@ -1000,6 +1012,14 @@ Object.defineProperty(viewModel, 'pricingModifications',
 		_markAsModified((value === viewModel.originalOrder.pricing.modification), _pricingModificationsField);
 
 		_validate();
+
+		// For valid values, determine if a tax needs to be applied as well
+		if ( !(isInvalid) )
+		{
+			var additionalTax = pricingCalculator.calculateTax(window.parseFloat(value), viewModel.originalOrder);
+		}
+
+		_additionalTaxDisplay.innerHTML = (additionalTax ? additionalTax.toFixed(2) : '0.00');
 	}
 });
 

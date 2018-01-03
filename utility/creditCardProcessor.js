@@ -79,7 +79,7 @@ module.exports =
 			{
 				source: ccToken,
 				metadata: { Name: name },
-				email: email,
+				email: email || null,
 				description: name
 			});
 
@@ -92,7 +92,7 @@ module.exports =
 	 * @param {Number} orderTotal - the price to charge the customer
 	 * @param {String} customerID - the ID of the customer who will be charged
 	 * @param {Number} orderID - the ID of the order that's currently making us some money
-	 * @param {String} emailAddr - the e-mail address which to e-mail the receipt to once the transaction is complete
+	 * @param {String} [emailAddr] - the e-mail address which to e-mail the receipt to once the transaction is complete
 	 *
 	 * @returns {boolean} - the transaction ID
 	 *
@@ -100,15 +100,22 @@ module.exports =
 	 */
 	chargeTotal: async function (orderTotal, customerID, orderID, emailAddr)
 	{
-		var charge = await _chargeCard(
+		var chargeParams =
 			{
 				amount: orderTotal * 100,
 				customer: customerID,
 				currency: ACCEPTABLE_CURRENCY,
 				metadata: { 'Order ID' : orderID },
-				description: TRANSACTION_DESCRIPTION.CHARGE.replace(ORDER_ID_PLACEHOLDER, orderID),
-				receipt_email: emailAddr || null
-			});
+				description: TRANSACTION_DESCRIPTION.CHARGE.replace(ORDER_ID_PLACEHOLDER, orderID)
+			},
+			charge;
+
+		if (emailAddr)
+		{
+			chargeParams.receipt_email = emailAddr;
+		}
+
+		charge = await _chargeCard(chargeParams);
 
 		return charge.id;
 	},
