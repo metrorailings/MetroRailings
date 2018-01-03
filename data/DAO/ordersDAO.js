@@ -292,7 +292,7 @@ var ordersModule =
 
 		// Calculate the amount to charge the customer
 		order.pricing.subTotal = pricingCalculator.calculateOrderTotal(order);
-		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal);
+		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal, order);
 		order.pricing.orderTotal = order.pricing.subTotal + order.pricing.tax;
 
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
@@ -328,14 +328,12 @@ var ordersModule =
 	{
 		var orderID = parseInt(approvedOrder._id, 10),
 			order = await ordersModule.searchOrderById(orderID),
+			chargeAmount, taxBalanceRemaining,
 			dueDate,
 			transactionID,
 			updateRecord;
 
 		order = rQuery.mergeObjects(approvedOrder, order);
-
-		// Calculate the amount to charge the customer
-		order.pricing.orderTotal = pricingCalculator.calculateOrderTotal(order);
 
 		// Record that this order is being modified
 		_applyModificationUpdates(order, SYSTEM_USER_NAME);
@@ -371,9 +369,13 @@ var ordersModule =
 					charges: []
 				};
 
+				// Calculate the proper charge amount, making sure to round down should we have an uneven change amount
+				chargeAmount = Math.floor(order.pricing.orderTotal * 50) / 50;
+				taxBalanceRemaining = Math.floor(order.pricing.tax * 50) / 50;
+
 				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
 				// inside the order itself
-				transactionID = await creditCardProcessor.chargeTotal(order.pricing.orderTotal / 2, order.stripe.customer, order._id, order.customer.email);
+				transactionID = await creditCardProcessor.chargeTotal(chargeAmount, order.stripe.customer, order._id, order.customer.email);
 				order.stripe.charges.push(transactionID);
 			}
 			catch(error)
@@ -391,8 +393,8 @@ var ordersModule =
 		}
 
 		// Note that the order has yet to be paid off, as only half of the total amount has been paid up until now
-		order.pricing.balanceRemaining = order.pricing.orderTotal / 2;
-		order.pricing.taxRemaining = order.pricing.tax / 2;
+		order.pricing.balanceRemaining = chargeAmount;
+		order.pricing.taxRemaining = taxBalanceRemaining;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
@@ -503,12 +505,6 @@ var ordersModule =
 		orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subTotal, orderModifications);
 		orderModifications.pricing.orderTotal = orderModifications.pricing.subTotal + orderModifications.pricing.tax;
 
-		// Account for any new taxes should there be modifications to pricing after an order has been confirmed
-		if (order.pricing.taxRemaining)
-		{
-			orderModifications.pricing.taxRemaining += pricingCalculator.calculateTax(orderModifications.pricing.modification, orderModifications);
-		}
-
 		// If the order is still pending finalization, reset the balance remaining
 		if (order.status === PENDING_STATUS)
 		{
@@ -527,15 +523,15 @@ var ordersModule =
 
 		try
 		{
-			// Calculate the balance remaining to be paid
-			amountToBePaid = order.pricing.balanceRemaining + orderModifications.pricing.modification;
-
 			if (orderModifications.status === CLOSED_STATUS)
 			{
 				// Generate credit card transactions necessary to satisfy any changes that may have been made to the order
 				// price only after the order has been closed
 				if ( !(order.pricing.paidByCheck) && !(orderModifications.pricing.restByCheck) )
 				{
+					// Calculate the balance remaining to be paid
+					amountToBePaid = order.pricing.balanceRemaining + orderModifications.pricing.modification + pricingCalculator.calculateTax(orderModifications.pricing.modification, orderModifications);
+
 					if (amountToBePaid > 0)
 					{
 						// Charge the customer if the order total has been increased
@@ -550,7 +546,8 @@ var ordersModule =
 				}
 
 				// If the order is closed, we assume that any balance has been paid off.
-				orderModifications.pricing.balanceRemaining = 0;
+				order.pricing.balanceRemaining = 0;
+				order.pricing.taxRemaining = 0;
 			}
 		}
 		catch(error)
@@ -591,9 +588,11 @@ var ordersModule =
 			'pricing.additionalPrice': orderModifications.pricing.additionalPrice,
 			'pricing.deductions': orderModifications.pricing.deductions,
 			'pricing.modification': orderModifications.pricing.modification,
+			'pricing.subTotal': orderModifications.pricing.subTotal,
 			'pricing.orderTotal': orderModifications.pricing.orderTotal,
 			'pricing.tax': orderModifications.pricing.tax,
-			'pricing.taxRemaining': orderModifications.pricing.taxRemaining || 0,
+			'pricing.taxRemaining': order.pricing.taxRemaining || 0,
+			'pricing.balanceRemaining': orderModifications.pricing.balanceRemaining,
 
 			'design.post': orderModifications.design.post,
 			'design.handrailing': orderModifications.design.handrailing,
