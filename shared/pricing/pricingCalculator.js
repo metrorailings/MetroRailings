@@ -6,7 +6,19 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var pricing = global.OwlStakes.require('shared/pricing/pricingData');
+// Dependencies must be pulled differently depending on whether we are pulling these files from within the server
+// or within the client
+
+var pricing;
+
+if (global.OwlStakes)
+{
+	pricing = global.OwlStakes.require('shared/pricing/pricingData');
+}
+else
+{
+	pricing = require('shared/pricing/pricingData');
+}
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -80,7 +92,9 @@ var pricingModule =
 		// Only calculate taxes for orders where the installation address is within the state of New Jersey
 		if (amount && (order.customer.state === NJ_STATE_CODE))
 		{
-			return amount * pricing.NJ_SALES_TAX_RATE;
+			// Let's not forget to do some floor rounding in the event that we have more than two numbers to the
+			// right of the decimal point
+			return Math.floor(amount * pricing.NJ_SALES_TAX_RATE * 100) / 100;
 		}
 
 		return 0.00;

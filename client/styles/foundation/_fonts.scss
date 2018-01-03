@@ -292,6 +292,11 @@ $FONTS:
 	@include basicFontSettings($weight: 700, $size: regularFontSize, $family: Raleway, $color: slateGrayTheme);
 }
 
+%tabularSmallerHeaderText
+{
+	@include basicFontSettings($weight: 700, $size: smallFontSize, $family: Raleway, $color: blackTheme);
+}
+
 %tabularRegularText
 {
 	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Playfair Display);
