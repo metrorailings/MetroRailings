@@ -48,7 +48,9 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 
 	ORDER_ID_PLACEHOLDER = '::orderID',
 	NEXT_STATUS_PLACEHOLDER = '::nextStatus',
-	PARAMS_PLACEHOLDER = '::params';
+	PARAMS_PLACEHOLDER = '::params',
+
+	IS_ADMIN = 'isAdmin';
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -434,6 +436,8 @@ function navigateToInvoicePage(event)
 	var targetElement = event.currentTarget,
 		orderID = targetElement.dataset.id,
 		invoiceURL = ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
+
+	window.localStorage.setItem(IS_ADMIN, 'true');
 
 	window.location.href = invoiceURL;
 }

@@ -92,13 +92,11 @@
 
 	@include desktopOnly()
 	{
-		width: 176px;
 		height: 90px;
 	}
 
 	@include mobileOnly()
 	{
-		width: 118px;
 		height: 60px;
 	}
 }
