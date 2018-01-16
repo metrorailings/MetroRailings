@@ -4,6 +4,7 @@ import vm from 'client/scripts/designRailings/viewModel';
 import carousel from 'client/scripts/utility/optionsCarousel';
 import gallery from 'client/scripts/utility/gallery';
 
+import typeDesigns from 'shared/designs/typeDesigns';
 import postDesigns from 'shared/designs/postDesigns';
 import postEndDesigns from 'shared/designs/postEndDesigns';
 import postCapDesigns from 'shared/designs/postCapDesigns';
@@ -15,11 +16,6 @@ import submissionSection from 'client/scripts/designRailings/submissionSection';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var DESIGN_TEMPLATE = 'designTemplate',
-
-	POST_DESIGN_CAROUSEL = 'postDesignCarousel',
-	POST_END_DESIGN_CAROUSEL = 'postEndDesignCarousel',
-	POST_CAPS_DESIGN_CAROUSEL = 'postCapDesignCarousel',
-	CENTER_DESIGN_CAROUSEL = 'centerDesignCarousel',
 
 	DESIGN_PREVIEW_PIC_CLASS = 'designPreview',
 	MAIN_PICTURE_CLASS = 'enlargedCarouselPicture',
@@ -33,6 +29,7 @@ var DESIGN_TEMPLATE = 'designTemplate',
 
 	VIEW_MODEL_DESIGN_PROPERTIES =
 	{
+		TYPE: 'type',
 		POST: 'postDesign',
 		POST_END: 'postEndDesign',
 		POST_CAP: 'postCapDesign',
@@ -244,8 +241,6 @@ for (let i = propKeys.length - 1; i >= 0; i--)
 {
 	vm[propKeys[i]] = '';
 }
-
-vm.orderType = window.MetroRailings.order.type;
 
 // ----------------- MODULE INITIALIZATION -----------------------------
 

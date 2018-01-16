@@ -3,36 +3,9 @@
 	<div class='headerUnderline'></div>
 </div>
 
-<p>
-    Let's begin the design process. We offer a set of standard design options below. If you wish for something more ambitious
-	with your railings, we can make your vision come to reality. Just let us know what else you would like when we
-	come over to take measurements and we'll make it happen.
-</p>
+{{> selectedOptionsSection }}
 
-{{#if orderData.designMethodology }}
-	<div id='freeOptionsNotice' class='specialMessageSection'>
-	<span>
-		<div id='freeIcons'><i class='fa fa-shopping-cart'></i></div>
-	</span>
-		<p>
-			All the following design options below are free...so you can shop without any worries about price!
-		</p>
-	</div>
-{{/if}}
-
-{{> designRailingsPostSection }}
-
-{{> designRailingsPostEndSection }}
-
-{{> designRailingsPostCapSection }}
-
-{{> designRailingsCenterDesignSection }}
-
-{{> designRailingsColorSection }}
-
-{{> designRailingsSubmissionButton }}
-
-{{> scrollDownLabel }}
+{{> featureSection }}
 
 {{> gallery }}
 

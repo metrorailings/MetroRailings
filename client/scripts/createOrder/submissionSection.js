@@ -32,8 +32,6 @@ function submit()
 		// Organize the data that will need to be sent over the wire
 		data =
 		{
-			curvesNecessary: vm.curvesNecessary,
-			balconyOrder: vm.balconyOrder,
 			designMethodology: vm.designMethodology
 		};
 

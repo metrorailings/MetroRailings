@@ -19,13 +19,11 @@ var _Handlebars = require('handlebars'),
 var CONTROLLER_FOLDER = 'designRailings',
 	UTILITY_FOLDER = 'utility',
 
-	COOKIE_ORDER_INFO = 'basicOrderInfo',
 	COOKIE_DESIGN_INFO = 'designInfo',
-
-	CREATE_ORDER_URL = '/createOrder',
 
 	PARTIALS =
 	{
+		TYPE_SECTION: 'typeSection',
 		POST_SECTION: 'postSection',
 		POST_END_SECTION: 'postEndSection',
 		POST_CAP_SECTION: 'postCapSection',
@@ -37,6 +35,11 @@ var CONTROLLER_FOLDER = 'designRailings',
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
+
+/**
+ * The template for the step in which the user specifies the type of railing needed for the project
+ */
+_Handlebars.registerPartial('designRailingsTypeSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TYPE_SECTION));
 
 /**
  * The template for the step in which the user specifies the style of post needed for the project
@@ -77,22 +80,12 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: async function (params, cookie)
+	init: async function ()
 	{
 		var populatedPageTemplate,
-			cookieData = cookieManager.parseCookie(cookie || ''),
-			orderData = cookieData[COOKIE_ORDER_INFO],
 			pageData = {};
 
 		console.log('Loading the design railings page...');
-
-		// If the user has not started the order process, redirect him to the first page of the order process
-		if (!(orderData))
-		{
-			console.log('Redirecting the user to the create order page...');
-
-			return await controllerHelper.renderRedirectView(CREATE_ORDER_URL);
-		}
 
 		// Load the options carousel template that will be used to render multiple carousels on the page
 		pageData.optionsCarouselTemplate = await fileManager.fetchTemplate(UTILITY_FOLDER, PARTIALS.OPTIONS_CAROUSEL);
@@ -100,16 +93,10 @@ module.exports =
 		// Load the design template
 		pageData.designTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.DESIGN_TEMPLATE);
 
-		// Parse the order data as long as the cookie carrying the data exists
-		orderData = (orderData ? JSON.parse(orderData) : {});
-
-		// Load the data from the last page into the page here
-		pageData.orderData = orderData;
-
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { order: orderData });
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
 	},
 
 	/**

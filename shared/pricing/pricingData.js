@@ -12,6 +12,30 @@ module.exports =
 
 	DESIGNS:
 	{
+		'T-TRA' :
+		{
+			name: 'Traditional Railings',
+			priceRating: 1,
+			price: 85,
+			rate: 0,
+		},
+
+		'T-CABLE' :
+		{
+			name: 'Stainless Steel Cable Railings',
+			priceRating: 2,
+			price: 170,
+			rate: 0,
+		},
+
+		'T-GLASS' :
+		{
+			name: 'Glass Railings',
+			priceRating: 3,
+			price: 200,
+			rate: 0,
+		},
+
 		'P-BPC' :
 		{
 			name: 'Colonial Big Post',

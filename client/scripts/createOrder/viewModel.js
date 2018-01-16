@@ -9,27 +9,19 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CURVES_YES_RADIO = 'curvesYes',
-	CURVES_NO_RADIO = 'curvesNo',
-	BALCONY_YES_RADIO = 'balconyYes',
-	BALCONY_NO_RADIO = 'balconyNo',
-	DESIGN_METHODOLOGY_PREMIUM = 'designMethodologyPremium',
-	DESIGN_METHODOLOGY_BASIC = 'designMethodologyBasic',
+var DESIGN_METHODOLOGY_CUSTOM = 'designMethodologyCustom',
+	DESIGN_METHODOLOGY_PRESET = 'designMethodologyPreset',
 	SUBMIT_BUTTON = 'submissionButton',
 
-	SUBMISSION_INSTRUCTIONS = 'Please answer all the questions above prior to designing your railings.';
+	SUBMISSION_INSTRUCTIONS = 'Please answer the question above prior to continuing.';
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
 var _validationSet = new Set(),
 
 	// Elements
-	_curvesYesRadio = document.getElementById(CURVES_YES_RADIO),
-	_curvesNoRadio = document.getElementById(CURVES_NO_RADIO),
-	_balconyYesRadio = document.getElementById(BALCONY_YES_RADIO),
-	_balconyNoRadio = document.getElementById(BALCONY_NO_RADIO),
-	_designMethodologyPremium = document.getElementById(DESIGN_METHODOLOGY_PREMIUM),
-	_designMethodologyBasic = document.getElementById(DESIGN_METHODOLOGY_BASIC),
+	_designMethodologyCustom = document.getElementById(DESIGN_METHODOLOGY_CUSTOM),
+	_designMethodologyPreset = document.getElementById(DESIGN_METHODOLOGY_PRESET),
 	_submitButton = document.getElementById(SUBMIT_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
@@ -50,56 +42,6 @@ function _validate()
 
 var viewModel = {};
 
-// Curves Flag
-Object.defineProperty(viewModel, 'curvesNecessary',
-{
-	configurable: false,
-	enumerable: true,
-
-	get: () =>
-	{
-		return viewModel.__curvesNecessary;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__curvesNecessary = value;
-
-		_validate();
-
-		if (!(value))
-		{
-			_curvesYesRadio.checked = false;
-			_curvesNoRadio.checked = false;
-		}
-	}
-});
-
-// Big Order Flag
-Object.defineProperty(viewModel, 'balconyOrder',
-{
-	configurable: false,
-	enumerable: true,
-
-	get: () =>
-	{
-		return viewModel.__balconyOrder;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__balconyOrder = value;
-
-		_validate();
-
-		if (!(value))
-		{
-			_balconyYesRadio.checked = false;
-			_balconyNoRadio.checked = false;
-		}
-	}
-});
-
 Object.defineProperty(viewModel, 'designMethodology',
 {
 	configurable: false,
@@ -118,8 +60,8 @@ Object.defineProperty(viewModel, 'designMethodology',
 
 		if (!(value))
 		{
-			_designMethodologyPremium.checked = false;
-			_designMethodologyBasic.checked = false;
+			_designMethodologyCustom.checked = false;
+			_designMethodologyPreset.checked = false;
 		}
 	}
 });

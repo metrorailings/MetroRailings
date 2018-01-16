@@ -1,14 +1,18 @@
 /**
- * A module listing restriction information for each design section
+ * A module listing rules for how to proceed with the design process
  *
- * @module restrictions
+ * @module rules
  */
 // ----------------- MODULE DEFINITION --------------------------
 
-var restrictions =
+var rules =
 {
 	sections:
 	{
+		// Type
+
+		type: {},
+
 		// Post Design
 		postSection: {},
 
@@ -37,9 +41,14 @@ var restrictions =
 
 		// Color
 		colorSection: {}
+	},
+
+	nextSection: function (currentSection)
+	{
+		return currentSection;
 	}
 };
 
 // ----------------- EXPORT --------------------------
 
-export default restrictions;
+export default rules;
