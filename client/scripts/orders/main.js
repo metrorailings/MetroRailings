@@ -1,5 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
+import officeTasks from 'client/scripts/orders/officeTasks';
 import orderFilter from 'client/scripts/orders/orderFilter';
 import orderListing from 'client/scripts/orders/orderListing';
 import vm from 'client/scripts/orders/viewModel';

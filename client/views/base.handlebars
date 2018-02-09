@@ -28,6 +28,7 @@
 		<script type='text/javascript' src="client/scripts/jspm_packages/github/HubSpot/tooltip@1.2.0/dist/js/tooltip.js"></script>
 -->
 		<!-- Load all the application-specific CSS files for this page -->
+
 		{{#cssFiles}}
 			<link rel="stylesheet" type="text/css" href='{{path}}'/>
 		{{/cssFiles }}
@@ -103,7 +104,7 @@
 	<!-- Page Footer -->
 	<footer>
 		<span>
-			<i class='fa fa-copyright'></i> {{currentYear}}
+			<i class='fa fa-copyright'></i> {{currentYear}} 
 		</span>
 
 		<!-- Defer the loading of all non-essential third-party stylesheets to this section here --->
@@ -111,6 +112,8 @@
 			<div id='thirdPartyStyles'>
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/tooltip/1.2.0/tooltip-theme-arrows.css">
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/spinkit/1.2.5/spinkit.css">
+				<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css"/>
+				<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css"/>
 			</div>
 		{{else}}
 			<link rel="stylesheet" href="prod/thirdParty.css">

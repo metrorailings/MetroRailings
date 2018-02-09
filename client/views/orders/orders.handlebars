@@ -1,11 +1,14 @@
 <div class='scrollableHorizontal'>
 	<p id='instructionText'>
-		Over here, we can look and inspect all the orders in our system. Feel free to use the status and search filters below
-		to help you find certain orders quicker.
+		Over here, we can look and inspect all the orders in our system as well as the tasks that need to be addressed.
 	</p>
 
-	<button id='prospectCreationButton' class='navButton'>Set Up New Prospect<i class='fa fa-user-circle-o'></i></button>
-	<button id='orderCreationButton' class='navButton'>Create Invoice<i class='fa fa-shopping-cart'></i></button>
+	{{> officeTasks }}
+
+	<div id='buttonSection'>
+		<button id='prospectCreationButton' class='navButton'>Set Up New Prospect<i class='fa fa-user-circle-o'></i></button>
+		<button id='orderCreationButton' class='navButton'>Create Invoice<i class='fa fa-shopping-cart'></i></button>
+	</div>
 
     {{> orderFilter }}
 
@@ -21,11 +24,11 @@
 		{{{ orderPicturesTemplate }}}
 	</script>
 
-	<script id='orderPrintTemplate' type='text/x-handlebars/template'>
+	<script id='orderPrintTemplate' type='text/x-handlebars-template'>
 		{{{ orderPrintTemplate }}}
 	</script>
 
-	<script id='orderNotesTemplate' type='text/x-handlebars/template'>
+	<script id='orderNotesTemplate' type='text/x-handlebars-template'>
 		{{{ orderNotesTemplate }}}
 	</script>
 
