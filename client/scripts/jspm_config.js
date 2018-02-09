@@ -21,6 +21,8 @@ System.config({
     "drop": "github:HubSpot/drop@1.4.2",
     "es6-promise": "npm:es6-promise@3.3.1",
     "handlebars": "npm:handlebars@4.0.6",
+    "jquery": "npm:jquery@3.3.1",
+    "slick": "github:kenwheeler/slick@1.8.1",
     "smoothScroll": "github:cferdinandi/smooth-scroll@10.3.1",
     "tether": "github:HubSpot/tether@1.4.0",
     "tooltip": "github:HubSpot/tooltip@1.2.0",

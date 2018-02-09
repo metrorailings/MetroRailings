@@ -1,0 +1,213 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#tasksList
+{
+	@include transitionSettings($property: opacity, $duration: 0.3s);
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 80%;
+
+	opacity: 0.0;
+
+	&.visible
+	{
+		opacity: 1.0;
+	}
+
+	// Carousel overrides
+	.slick-prev:before, .slick-next:before
+	{
+		color: map-get($COLORS, logoBlueTheme);
+	}
+
+	.slick-slide
+	{
+		height: 400px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	.slick-dots
+	{
+		li button:before
+		{
+			font-size: map-get($FONTS, largeFontSize);
+		}
+	}
+}
+
+#officeTasks
+{
+	border-top:
+	{
+		style: solid;
+		width: 2px;
+		color: map-get($COLORS, blackTheme);
+	}
+}
+
+.taskSlickContainer
+{
+	width: 100%;
+}
+
+.taskGrid
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		width: 2px;
+		color: map-get($COLORS, grayTheme);
+		radius: 10px;
+	}
+
+	padding: 0px;
+	width: 80%;
+
+	& > legend
+	{
+		@extend %largePlusText;
+
+		padding:
+		{
+			left: 10px;
+			right: 10px;
+		}
+	}
+}
+
+.taskInfo
+{
+	padding:
+	{
+		top: 5px;
+		bottom: 5px;
+		left: 10px;
+		right: 10px;
+	}
+
+	border-bottom:
+	{
+		width: 0.5px;
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:nth-of-type(2n)
+	{
+		background-color: map-get($COLORS, lightMoccasinTheme);
+	}
+
+	&:last-of-type
+	{
+		border-bottom: none;
+
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+	}
+}
+
+.taskDescription
+{
+	flex: 3;
+
+	& > h1
+	{
+		@extend %regularPlusText;
+
+		font-style: italic;
+		text-align: center;
+
+		margin: 0px;
+		padding: 0px;
+	}
+
+	& > p
+	{
+		@extend %regularText;
+
+		margin:
+		{
+			left: 5px;
+			right: 0px;
+			top: 10px;
+			bottom: 0px;
+		}
+
+		text-align: center;
+	}
+
+	& > ul
+	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		& > li
+		{
+			@extend %smallText;
+
+			&.completedSubTask
+			{
+				text-decoration: line-through;
+			}
+		}
+	}
+}
+
+.taskOwner
+{
+	@extend %regularText;
+
+	flex: 2;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	& > div
+	{
+		flex: 1;
+	}
+}
+
+.taskActions
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+
+	font-size: map-get($FONTS, largeFontSize);
+
+	& > i
+	{
+		cursor: pointer;
+	}
+}

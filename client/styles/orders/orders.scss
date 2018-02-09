@@ -18,12 +18,23 @@
 	}
 }
 
+#buttonSection
+{
+	border-top:
+	{
+		style: solid;
+		width: 2px;
+		color: map-get($COLORS, blackTheme);
+	}
+}
+
 #orderCreationButton, #prospectCreationButton
 {
 	@include button($bgColor: darkGreenTheme);
 
 	margin:
 	{
+		top: 25px;
 		bottom: 25px;
 		left: 15px;
 		right: 15px;

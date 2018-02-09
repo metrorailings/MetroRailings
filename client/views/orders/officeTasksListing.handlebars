@@ -1,0 +1,22 @@
+{{#tasks}}
+	<li class='taskRow'>
+		<span class='taskDate'>{{date}}</span>
+		<span class='taskDescription'>{{description}}</span>
+		<span class='taskOrder'>{{orderID}}</span>
+		{{#unless_cond taskStatusFilter 'closed'}}
+			<span class='taskActions'>
+				<i class='fa fa-check-circle'></i>
+				<i class='fa fa-pencil-square'></i>
+			</span>
+		{{else}}
+			<span class='taskDate'>
+				Closed on {{closedDate}}
+			</span>
+		{{/unless_cond}}
+	</li>
+{{/tasks}}
+{{#unless_cond taskStatusFilter 'closed'}}
+	<div class='taskRow'>
+		<div id='addNewTaskButton'>Add New Task</div>
+	</div>
+{{/unless_cond}}
