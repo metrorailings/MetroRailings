@@ -15,10 +15,7 @@ var INSERT_ONE = 'insertOne',
 	UPDATE_ONE = 'updateOne',
 	UPDATE_MANY = 'updateMany',
 	DELETE_ONE = 'deleteOne',
-	DELETE_MANY = 'deleteMany',
-
-	// Database configuration
-	DATABASE_URL = config.DATABASE_URL;
+	DELETE_MANY = 'deleteMany';
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
@@ -42,14 +39,15 @@ module.exports =
 	 */
 	initialize: async function ()
 	{
-		console.log('Connecting to the database using the following URL: ' + DATABASE_URL);
+		console.log('Connecting to the database using the following URL: ' + config.DATABASE_URL);
 
 		if ( !(db) )
 		{
 			try
 			{
 				// Initialize the MongoDB client
-				db = await connect(DATABASE_URL);
+				var clientConnection = await connect(config.DATABASE_URL);
+				db = clientConnection.db(config.DATABASE_NAME);
 				console.log('Connected to Mongo!');
 			}
 			catch(error)
