@@ -19,7 +19,7 @@
     "nodemailer": "*",
     "styliner": "*",
     "jspm": "*",
-    "dropbox": "*",
+    "dropbox": "~2",
     "busboy": "*",
     "jpeg-autorotate": "*",
     "imagemin": "*",
