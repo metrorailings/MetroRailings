@@ -96,7 +96,6 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 			{
 				console.log('Re-orienting an image - ' + files[i].path_lower);
 				fileBlob = await jpegRotate(fileBlob, {});
-				fileBlob = fileBlob[0];
 			}
 			catch(error)
 			{
@@ -135,6 +134,7 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 			try
 			{
 				shareLink = await dropboxConnection.sharingCreateSharedLinkWithSettings({ path : files[i].path_lower });
+				shareLink = shareLink.url;
 			}
 			catch(error)
 			{
@@ -196,4 +196,5 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 	// Close out this program
 	console.log('Done!');
 	process.exit();
+
 })();
