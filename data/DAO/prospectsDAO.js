@@ -381,7 +381,9 @@ var prospectsModule =
 		order.customer.nickname = (prospect.customer.name.split(' ').length > 1 ? rQuery.capitalize(prospect.customer.name.split(' ')[0]) : prospect.customer.name);
 
 		// Calculate the amount to charge the customer
-		order.pricing.orderTotal = pricingCalculator.calculateOrderTotal(order);
+		order.pricing.subTotal = pricingCalculator.calculateOrderTotal(order);
+		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal, order);
+		order.pricing.orderTotal = order.pricing.subTotal + order.pricing.tax;
 
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
 		order.pricing.balanceRemaining = order.pricing.orderTotal;
