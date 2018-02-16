@@ -93,7 +93,7 @@
 				<span class='orderValueAmount'>$0.00</span>
 			{{/if}}
 
-			{{#if pricing.tax}}
+			{{#if pricing.taxRemaining}}
 				<span class='orderTaxAmount'>(Tax: ${{#to_fixed pricing.taxRemaining 2 }}{{/to_fixed}})</span>
 			{{/if}}
 		</span>
