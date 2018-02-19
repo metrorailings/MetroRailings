@@ -6,6 +6,7 @@
 @import '../foundation/responsive';
 @import '../foundation/colors';
 @import '../foundation/modal';
+@import '../foundation/adminOnly';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -40,7 +41,13 @@
 		right: 15px;
 	}
 
-	width: 300px;
+	padding:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	width: auto;
 
 	& > i
 	{

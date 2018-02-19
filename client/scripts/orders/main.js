@@ -5,6 +5,8 @@ import orderFilter from 'client/scripts/orders/orderFilter';
 import orderListing from 'client/scripts/orders/orderListing';
 import vm from 'client/scripts/orders/viewModel';
 
+import translate from 'client/scripts/utility/translate';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var ORDER_CREATION_BUTTON = 'orderCreationButton',

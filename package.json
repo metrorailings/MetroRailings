@@ -5,7 +5,7 @@
   "dependencies": {
     "app-root-path": "*",
     "cheerio": "*",
-    "q": "*",
+    "q": "~1",
     "request": "*",
     "request-promise": "*",
     "handlebars": "*",
@@ -18,7 +18,7 @@
     "stripe": "*",
     "nodemailer": "*",
     "styliner": "*",
-    "jspm": "*",
+    "jspm": "beta",
     "dropbox": "~2",
     "busboy": "*",
     "jpeg-autorotate": "*",
@@ -26,11 +26,16 @@
     "imagemin-jpegtran": "*",
     "sharp": "*",
     "css-purge": "*",
-    "clean-css": "*"
+    "clean-css": "*",
+    "google-translate-api": "*"
   },
   "jspm": {
+    "main": "MR.js",
     "directories": {
       "packages": "client/scripts/jspm_packages"
+    },
+    "configFiles": {
+      "jspm": "client/scripts/jspm_config.js"
     },
     "configFile": "client/scripts/jspm_config.js",
     "dependencies": {
@@ -39,17 +44,125 @@
       "es6-promise": "npm:es6-promise@^3.2.1",
       "handlebars": "npm:handlebars@^4.0.6",
       "jquery": "npm:jquery@^3.3.1",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25",
       "slick": "github:kenwheeler/slick@^1.8.1",
       "smoothScroll": "github:cferdinandi/smooth-scroll@^10.1.0",
       "tether": "github:HubSpot/tether@^1.4.0",
       "tooltip": "github:HubSpot/tooltip@^1.2.0"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
       "core-js": "npm:core-js@^1.1.4",
       "traceur": "github:jmcriffey/bower-traceur@0.0.93",
       "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93"
+    },
+    "peerDependencies": {
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
+      "child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
+      "constants": "npm:jspm-nodelibs-constants@^0.2.0",
+      "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+      "events": "npm:jspm-nodelibs-events@^0.2.0",
+      "fs": "npm:jspm-nodelibs-fs@^0.2.0",
+      "http": "npm:jspm-nodelibs-http@^0.2.0",
+      "https": "npm:jspm-nodelibs-https@^0.2.0",
+      "module": "npm:jspm-nodelibs-module@^0.2.0",
+      "net": "npm:jspm-nodelibs-net@^0.2.0",
+      "os": "npm:jspm-nodelibs-os@^0.2.0",
+      "path": "npm:jspm-nodelibs-path@^0.2.0",
+      "process": "npm:jspm-nodelibs-process@^0.2.0",
+      "querystring": "npm:jspm-nodelibs-querystring@^0.2.0",
+      "stream": "npm:jspm-nodelibs-stream@^0.2.0",
+      "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
+      "timers": "npm:jspm-nodelibs-timers@^0.2.0",
+      "tty": "npm:jspm-nodelibs-tty@^0.2.0",
+      "uglify-js": "npm:uglify-js@^2.6",
+      "uglify-to-browserify": "npm:uglify-to-browserify@1.0",
+      "url": "npm:jspm-nodelibs-url@^0.2.0",
+      "util": "npm:jspm-nodelibs-util@^0.2.0",
+      "vm": "npm:jspm-nodelibs-vm@^0.2.0",
+      "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
+    },
+    "overrides": {
+      "github:HubSpot/tether@1.4.0": {
+        "main": "js/tether",
+        "directories": {
+          "lib": "dist"
+        },
+        "meta": {
+          "js/tether.js": {
+            "exports": "Tether",
+            "format": "global"
+          }
+        }
+      },
+      "github:jmcriffey/bower-traceur-runtime@0.0.93": {
+        "meta": {
+          "traceur-runtime.js": {
+            "exports": "$traceurRuntime",
+            "format": "global"
+          }
+        }
+      },
+      "github:jmcriffey/bower-traceur@0.0.93": {
+        "meta": {
+          "traceur.js": {
+            "exports": "traceur",
+            "format": "global"
+          }
+        }
+      },
+      "npm:babel-runtime@5.8.38": {
+        "main": false,
+        "dependencies": {},
+        "optionalDependencies": {
+          "core-js": "^1.2.0"
+        }
+      },
+      "npm:browserify-zlib@0.1.4": {
+        "dependencies": {
+          "readable-stream": "^2.0.2",
+          "pako": "~0.2.0"
+        },
+        "map": {
+          "_stream_transform": "readable-stream/transform"
+        }
+      },
+      "npm:debug@2.6.3": {
+        "main": "src/browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./src/browser.js": {
+            "node": "./src/node.js"
+          },
+          "./node.js": {
+            "browser": "./src/browser.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:jquery@3.3.1": {
+        "format": "amd"
+      },
+      "npm:ms@0.7.2": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      },
+      "npm:pbkdf2@3.0.14": {
+        "main": "browser.js"
+      },
+      "npm:safe-buffer@5.1.1": {
+        "browser": "index.js"
+      }
     }
   },
   "devDependencies": {

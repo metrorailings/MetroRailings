@@ -43,6 +43,10 @@
 			<div id='topMenuSpace'>
 				<img id='topMenuPrintableLogo' src='client/images/logo/png/color_logo_transparent_background_small.png' />
 			</div>
+		{{else}}
+			<div id='languageSelection'>
+				<a id='englishLanguageTranslator'>English</a> | <a id='spanishLanguageTranslator'>Espanol</a>
+			</div>
 		{{/unless}}
 
         <!-- All page-specific HTML goes here -->
@@ -85,9 +89,9 @@
 			<script type="text/javascript" src="prod/thirdParty.js"></script>
 		{{/unless}}
 
-		<script src="client/scripts/jspm_packages/system.js" ></script>
+		<script src="client/scripts/jspm_packages/system.src.js" ></script>
 		<script src="client/scripts/jspm_config.js" ></script>
-		<script src="client/scripts/systemPaths.js" ></script>
+		<script src="client/scripts/systemConfig.js" ></script>
 
 		<!-- In production, one file will house all page-specific code -->
 		{{#if isProd}}
