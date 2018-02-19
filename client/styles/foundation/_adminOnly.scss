@@ -1,0 +1,51 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#languageSelection
+{
+	margin:
+	{
+		top: 15px;
+		right: 35px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	font-size: map-get($FONTS, largePlusFontSize);
+
+	& > a
+	{
+		margin:
+		{
+			left: 25px;
+			right: 25px;
+		}
+
+		@extend %regularLinkText;
+
+		cursor: pointer;
+
+		&:hover
+		{
+			text-decoration: underline;
+		}
+
+		&.selected
+		{
+			cursor: default;
+
+			color: map-get($COLORS, blackTheme);
+
+			&:hover
+			{
+				text-decoration: none;
+			}
+		}
+	}
+}
