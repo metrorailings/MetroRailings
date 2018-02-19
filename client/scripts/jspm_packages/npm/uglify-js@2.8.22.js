@@ -1,1 +1,0 @@
-module.exports = require("npm:uglify-js@2.8.22/tools/node.js");
