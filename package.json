@@ -39,7 +39,7 @@
     },
     "configFile": "client/scripts/jspm_config.js",
     "dependencies": {
-      "axios": "npm:axios@^0.13.1",
+      "axios": "npm:axios@^0.18.0",
       "drop": "github:HubSpot/drop@^1.4.2",
       "es6-promise": "npm:es6-promise@^3.2.1",
       "handlebars": "npm:handlebars@^4.0.6",
@@ -128,23 +128,6 @@
           "_stream_transform": "readable-stream/transform"
         }
       },
-      "npm:debug@2.6.3": {
-        "main": "src/browser.js",
-        "jspmNodeConversion": false,
-        "format": "cjs",
-        "map": {
-          "./src/browser.js": {
-            "node": "./src/node.js"
-          },
-          "./node.js": {
-            "browser": "./src/browser.js"
-          },
-          "fs": "@node/fs",
-          "net": "@node/net",
-          "tty": "@node/tty",
-          "util": "@node/util"
-        }
-      },
       "npm:inherits@2.0.3": {
         "ignore": [
           "test.js"
@@ -152,10 +135,6 @@
       },
       "npm:jquery@3.3.1": {
         "format": "amd"
-      },
-      "npm:ms@0.7.2": {
-        "jspmNodeConversion": false,
-        "format": "cjs"
       },
       "npm:pbkdf2@3.0.14": {
         "main": "browser.js"
