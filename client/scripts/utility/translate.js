@@ -4,7 +4,8 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-import _translator from 'google-translate-api';
+import axios from 'client/scripts/utility/axios';
+import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -17,7 +18,10 @@ var LOADING_VEIL = 'baseLoaderOverlay',
 	TRANSLATE_TO_SPANISH_LINK = 'spanishLanguageTranslator',
 
 	ENGLISH_LANGUAGE_DESIGNATION = 'en',
-	SPANISH_LANGUAGE_DESIGNATION = 'es';
+	SPANISH_LANGUAGE_DESIGNATION = 'es',
+
+	TRANSLATE_TO_ENGLISH_URL = 'utility/translateTextToEnglish',
+	TRANSLATE_TO_SPANISH_URL = 'utility/translateTextToSpanish';
 
 // ----------------- ELEMENTS --------------------------
 
@@ -38,12 +42,28 @@ function translatePage(languageCode)
 {
 	var translationPoints = document.getElementsByClassName(TO_TRANSLATE_CLASS),
 		textToTranslate = '',
+		translateURL,
 		i;
+
+	// Figure out which URL to invoke in order to translate the text
+	if (languageCode === ENGLISH_LANGUAGE_DESIGNATION)
+	{
+		translateURL = TRANSLATE_TO_ENGLISH_URL;
+	}
+	else if (languageCode === SPANISH_LANGUAGE_DESIGNATION)
+	{
+		translateURL = TRANSLATE_TO_SPANISH_URL;
+	}
 
 	// Gather all the text on the page that's designated for translation
 	for (i = 0; i < translationPoints.length; i++)
 	{
-		textToTranslate += translationPoints[i].innerText + '|';
+		textToTranslate += translationPoints[i].innerText;
+
+		if (i !== translationPoints.length - 1)
+		{
+			textToTranslate += '|';
+		}
 	}
 
 	if (textToTranslate)
@@ -52,16 +72,21 @@ function translatePage(languageCode)
 		_veil.classList.add(VISIBILITY_CLASS);
 
 		// Translate the text
-		_translator(textToTranslate, { to: languageCode }, (results) =>
+		axios.post(translateURL, { textToTranslate: textToTranslate }).then((results) =>
 		{
 			// Now replace the marked text with their corresponding translated versions
-			results = results.split('|');
+			results = results.data.split('|');
 			for (i = 0; i < translationPoints.length; i++)
 			{
 				translationPoints[i].innerText = results[i];
 			}
 
+			// Remove the veil to indicate that the text has been successfully translated
 			_veil.classList.remove(VISIBILITY_CLASS);
+		}, () =>
+		{
+			_veil.classList.remove(VISIBILITY_CLASS);
+			notifier.showGenericServerError();
 		});
 	}
 }
