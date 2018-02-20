@@ -33,7 +33,6 @@ var STYLE_DIRECTORY = 'client/styles/',
 		pageLevelCSSFilenames, pageLevelCSSFiles,
 		pageLevelFile, compiledCSSFile,
 		i, j;
-
 	for (i = filePaths.length - 1; i >= 0; i--)
 	{
 		if (filePaths[i].indexOf(FOUNDATION_DIRECTORY) !== 0)
@@ -65,7 +64,7 @@ var STYLE_DIRECTORY = 'client/styles/',
 			try
 			{
 				// Generate the CSS file from the SASS file, and then process that CSS file to remove any duplicate
-				// rules
+				// rules and statements
 				compiledCSSFile = _sass.renderSync(
 				{
 					data: pageLevelFile,

@@ -45,7 +45,7 @@ var fsWriteFile = _Q.denodeify(_fs.writeFile);
 	var scriptFiles = await fileManager.fetchAllFilePaths(SCRIPTS_DIRECTORY),
 		baseHTML = await fileManager.fetchFile(VIEWS_DIRECTORY + BASE_HANDLEBARS_FILE),
 		thirdPartyScriptURLs, thirdPartyScripts, thirdPartyScriptContents = '',
-		thirdPartyStylesheetURLs, thirdPartyStylesheets, thirdPartyStylesheetContents = '',
+		thirdPartyStylesheetURLs, thirdPartyStylesheetParentFolder, thirdPartyStylesheets, thirdPartyStylesheetContents = '',
 		scriptFile, buildString,
 		filesToBuild = [],
 		cssCleaner = new _cleanCSS({ level : 1 }),
@@ -86,6 +86,15 @@ var fsWriteFile = _Q.denodeify(_fs.writeFile);
 			{
 				deferred.reject(error);
 			}
+
+			// Before returning the CSS, ensure that any relative URLs in the stylesheet are converted into absolute
+			// URL paths
+			thirdPartyStylesheetParentFolder = data.attribs.href.split('/');
+			thirdPartyStylesheetParentFolder.pop();
+			thirdPartyStylesheetParentFolder = thirdPartyStylesheetParentFolder.join('/');
+
+			body = body.split('./').join(thirdPartyStylesheetParentFolder + '/');
+
 			deferred.resolve(body);
 		});
 
