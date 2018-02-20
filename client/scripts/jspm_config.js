@@ -57,7 +57,7 @@ SystemJS.config({
   ],
   map: {
     "assert": "npm:jspm-nodelibs-assert@0.2.1",
-    "axios": "npm:axios@0.13.1",
+    "axios": "npm:axios@0.18.0",
     "buffer": "npm:jspm-nodelibs-buffer@0.2.3",
     "child_process": "npm:jspm-nodelibs-child_process@0.2.1",
     "constants": "npm:jspm-nodelibs-constants@0.2.1",
@@ -112,12 +112,6 @@ SystemJS.config({
     },
     "npm:async@1.5.2": {
       "map": {}
-    },
-    "npm:axios@0.13.1": {
-      "map": {
-        "follow-redirects": "npm:follow-redirects@0.0.7",
-        "systemjs-json": "github:systemjs/plugin-json@0.1.2"
-      }
     },
     "npm:browserify-aes@1.1.1": {
       "map": {
@@ -240,11 +234,6 @@ SystemJS.config({
         "randomfill": "npm:randomfill@1.0.4"
       }
     },
-    "npm:debug@2.6.3": {
-      "map": {
-        "ms": "npm:ms@0.7.2"
-      }
-    },
     "npm:des.js@1.0.0": {
       "map": {
         "inherits": "npm:inherits@2.0.3",
@@ -278,12 +267,6 @@ SystemJS.config({
       "map": {
         "md5.js": "npm:md5.js@1.3.4",
         "safe-buffer": "npm:safe-buffer@5.1.1"
-      }
-    },
-    "npm:follow-redirects@0.0.7": {
-      "map": {
-        "debug": "npm:debug@2.6.3",
-        "stream-consume": "npm:stream-consume@0.1.0"
       }
     },
     "npm:handlebars@4.0.6": {
@@ -322,12 +305,9 @@ SystemJS.config({
     "npm:inherits@2.0.3": {
       "map": {}
     },
-    "npm:is-buffer@1.1.5": {
-      "map": {}
-    },
     "npm:kind-of@3.1.0": {
       "map": {
-        "is-buffer": "npm:is-buffer@1.1.5"
+        "is-buffer": "npm:is-buffer@1.1.6"
       }
     },
     "npm:lazy-cache@1.0.4": {
@@ -536,6 +516,22 @@ SystemJS.config({
     "npm:timers-browserify@1.4.2": {
       "map": {
         "process": "npm:process@0.11.10"
+      }
+    },
+    "npm:axios@0.18.0": {
+      "map": {
+        "is-buffer": "npm:is-buffer@1.1.6",
+        "follow-redirects": "npm:follow-redirects@1.4.1"
+      }
+    },
+    "npm:follow-redirects@1.4.1": {
+      "map": {
+        "debug": "npm:debug@3.1.0"
+      }
+    },
+    "npm:debug@3.1.0": {
+      "map": {
+        "ms": "npm:ms@2.0.0"
       }
     }
   }
