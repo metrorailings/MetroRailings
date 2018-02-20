@@ -328,7 +328,8 @@ var ordersModule =
 	{
 		var orderID = parseInt(approvedOrder._id, 10),
 			order = await ordersModule.searchOrderById(orderID),
-			chargeAmount, taxBalanceRemaining,
+			chargeAmount = 0,
+			taxBalanceRemaining = 0,
 			dueDate,
 			transactionID,
 			updateRecord;
@@ -370,8 +371,8 @@ var ordersModule =
 				};
 
 				// Calculate the proper charge amount, making sure to round down should we have an uneven change amount
-				chargeAmount = Math.floor(order.pricing.orderTotal * 50) / 50;
-				taxBalanceRemaining = Math.floor(order.pricing.tax * 50) / 50;
+				chargeAmount = Math.floor(order.pricing.orderTotal * 50) / 100;
+				taxBalanceRemaining = Math.floor(order.pricing.tax * 50) / 100;
 
 				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
 				// inside the order itself
@@ -392,9 +393,9 @@ var ordersModule =
 			order.pricing.paidByCheck = true;
 		}
 
-		// Note that the order has yet to be paid off, as only half of the total amount has been paid up until now
-		order.pricing.balanceRemaining = chargeAmount;
-		order.pricing.taxRemaining = taxBalanceRemaining;
+		// Note that the order has yet to be paid off, regardless of payment method
+		order.pricing.balanceRemaining = order.pricing.orderTotal - chargeAmount;
+		order.pricing.taxRemaining = order.pricing.tax - taxBalanceRemaining;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
