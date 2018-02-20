@@ -11,7 +11,7 @@ COPY /client/views /app/client/views/
 COPY /client/scripts/plugins /app/client/scripts/plugins
 COPY /client/scripts/jspm_packages /app/client/scripts/jspm_packages
 COPY /client/scripts/jspm_config.js /app/client/scripts/jspm_config.js
-COPY /client/scripts/systemPaths.js /app/client/scripts/systemPaths.js
+COPY /client/scripts/systemConfig.js /app/client/scripts/systemConfig.js
 COPY /config /app/config
 COPY /controllers /app/controllers
 COPY /data /app/data
