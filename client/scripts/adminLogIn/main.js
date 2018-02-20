@@ -18,12 +18,9 @@ var USERNAME_TEXTFIELD = 'userName',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-
 var _usernameField = document.getElementById(USERNAME_TEXTFIELD),
 	_passwordField = document.getElementById(PASSWORD_TEXTFIELD),
 	_rememberMe = document.getElementById(REMEMBER_ME_CHECKBOX);
-
-// ----------------- PRIVATE FUNCTIONS ---------------------------
 
 // ----------------- LISTENERS ---------------------------
 
@@ -73,7 +70,3 @@ function listenToEnter(event)
 
 document.getElementById(SUBMISSION_BUTTON).addEventListener('click', logIn);
 document.addEventListener('keyup', listenToEnter);
-
-// ----------------- DATA INITIALIZATION -----------------------------
-
-// ----------------- PAGE INITIALIZATION -----------------------------
