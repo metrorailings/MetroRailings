@@ -5,7 +5,7 @@
  */
 
 SystemJS.config({
-	paths:
+	map:
 	{
 		home: '/client/scripts/home/main.js',
 		createOrder: '/client/scripts/createOrder/main.js',
@@ -39,5 +39,6 @@ SystemJS.config({
 		{
 			defaultExtension: 'js'
 		}
-	}
+	},
+	production: true
 });
