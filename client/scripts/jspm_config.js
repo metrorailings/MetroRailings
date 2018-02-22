@@ -6,7 +6,7 @@ SystemJS.config({
   browserConfig: {
     "baseURL": "/",
     "paths": {
-      "MetroRailings/": "src/"
+      "MetroRailings/": ""
     }
   },
   nodeConfig: {
