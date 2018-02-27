@@ -17,23 +17,50 @@ module.exports =
 	/**
 	 * Function responsible translating marked text to whatever language is indicated by the parameter
 	 *
-	 * @param {String} textToTranslate - the text to translate
+	 * @param {String | Array} textToTranslate - the text (or set of strings) to translate
 	 * @param {String} languageCode - an enumerated code indicating to which language to translate the text
 	 *
-	 * @returns {String} - the translated text
+	 * @returns {String | Array} - the translated text, returned back in whatever form the original text was
+	 * 		supplied to us
 	 *
 	 * @author kinsho
 	 */
-	translateText: function(textToTranslate, languageCode)
+	translateText: async function(textToTranslate, languageCode)
 	{
-		var deferred = _Q.defer();
+		var translatedText;
 
-		// Translate the text
-		_translator(textToTranslate, { to: languageCode }).then((results) =>
+		if (textToTranslate instanceof Array)
 		{
-			deferred.resolve(results);
-		});
+			// Translate the text, phrase by phrase
+			translatedText = await _Q.all(textToTranslate.map(function(text)
+			{
+				var deferred = _Q.defer();
 
-		return deferred.promise;
+				console.log('TRANSLATING: ' + text);
+				_translator(text, { to: languageCode }).then((results) =>
+				{
+					deferred.resolve(results.text);
+				});
+
+				return deferred.promise;
+			}));
+		}
+		else
+		{
+			translatedText = await (async function()
+			{
+				var deferred = _Q.defer();
+
+				console.log('TRANSLATING: ' + textToTranslate);
+				_translator(textToTranslate, { to: languageCode }).then((results) =>
+				{
+					deferred.resolve(results.text);
+				});
+
+				return deferred.promise;
+			}());
+		}
+
+		return translatedText;
 	}
 };

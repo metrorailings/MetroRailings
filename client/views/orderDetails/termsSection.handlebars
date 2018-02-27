@@ -1,8 +1,8 @@
 <div id='termsSection'>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Time Limit</span>
-		<span class='staticValue'>
+		<span class='specializedLabel translate'>Time Limit</span>
+		<span class='staticValue translate'>
 			{{#if timeLimit.original}}
 				{{timeLimit.original}} days
 			{{else}}
@@ -13,17 +13,17 @@
 
 	{{#if timeLimit.original}}
 		<div class='dataGrouping'>
-			<span class='specializedLabel'>Due Date</span>
-			<span class='staticValue'>{{ timeLimit.translatedDueDate }}</span>
+			<span class='specializedLabel translate'>Due Date</span>
+			<span class='staticValue translate'>{{ timeLimit.translatedDueDate }}</span>
 		</div>
 
 		<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Extend Time Limit?
+			<span class='translate'>Extend Time Limit?</span>
 		</span>
 			<input id='extendTimeLimit' class='optionalField' type='tel' value='{{timeLimit.extension}}' {{#if_cond status 'closed'}} disabled{{/if_cond}} /> days
-			<i class='fa fa-question-circle' data-tooltip-position='right middle' data-tooltip='<div class="tooltipMedium">Use this field to extend the date by which this order has to be done.</div>'></i>
+			<i class='fa fa-question-circle' data-tooltip-position='right middle' data-tooltip='<div class="tooltipMedium translate">Use this field to extend the date by which this order has to be done.</div>'></i>
 		</div>
 	{{/if}}
 
@@ -36,7 +36,7 @@
 			<span>
 				<i class='fa fa-exclamation-circle'></i>
 			</span>
-			<p>
+			<p class='translate'>
 				The description and terms of this order can no longer be modified now that the customer has agreed to
 				the invoice that was sent earlier.
 			</p>
@@ -46,7 +46,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Order Description
+			<span class='translate'>Order Description</span>
 		</span>
 		<textarea id='orderDescription' {{#unless_cond status 'pending'}} disabled {{/unless_cond}}>{{#format_value_for_textarea notes.order }}{{/format_value_for_textarea}}</textarea>
 	</div>
@@ -54,7 +54,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Terms & Conditions
+			<span class='translate'>Terms & Conditions</span>
 		</span>
 		<textarea id='agreement' {{#unless_cond status 'pending'}} disabled {{/unless_cond}}>{{agreement}}</textarea>
 	</div>

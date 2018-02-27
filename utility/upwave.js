@@ -7,6 +7,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _request = require('request-promise'),
+	_striptags = require('striptags'),
 
 	upwaveDAO = global.OwlStakes.require('data/DAO/upwaveDAO'),
 
@@ -103,6 +104,10 @@ module.exports =
 
 				data[i].subtasks = JSON.parse(subtaskData).results;
 			}
+
+			// For each card, make sure to parse the description from the title and wipe out any HTML markup
+			data[i].description = data[i].description.slice(data[i].description.indexOf('</h1>') + 5);
+			data[i].description = _striptags(data[i].description);
 
 			// Sort the cards into categories
 			if (data[i].board.title === BOARD_NAMES.CUSTOMERS)

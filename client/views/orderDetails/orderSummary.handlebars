@@ -1,7 +1,7 @@
 <div id='orderSummary'>
 
     <div class='dataGrouping'>
-        <span class='specializedLabel'>Order Number</span>
+        <span class='specializedLabel translate'>Order Number</span>
         <span class='staticValue'>{{ _id }}</span>
     </div>
 
@@ -9,7 +9,7 @@
 		<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 			<span class='specializedLabel'>
 				<i class='fa fa-tag fa-rotate-180'></i>
-				Status
+				<span class='translate'>Status</span>
 			</span>
 
 			<span id='statusButtonSet' class='buttonSet'>
@@ -17,32 +17,32 @@
 				<input type='radio' class='statusRadio' id='queueStatus' name='status' value='queue'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'queue'}}checked{{/if_cond}}/>
-				<label for='queueStatus'>Queued</label>
+				<label for='queueStatus' class='translate'>Queued</label>
 
 				<input type='radio' class='statusRadio' id='productionStatus' name='status' value='production'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'production'}}checked{{/if_cond}}/>
-				<label for='productionStatus'>Production</label>
+				<label for='productionStatus' class='translate'>Production</label>
 
 				<input type='radio' class='statusRadio' id='finishingStatus' name='status' value='finishing'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'finishing'}}checked{{/if_cond}}/>
-				<label for='finishingStatus'>Finishing</label>
+				<label for='finishingStatus' class='translate'>Finishing</label>
 
 				<input type='radio' class='statusRadio' id='installStatus' name='status' value='install'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'install'}}checked{{/if_cond}}/>
-				<label for='installStatus'>Install</label>
+				<label for='installStatus' class='translate'>Install</label>
 
 				<input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'closed'}}checked{{/if_cond}}/>
-				<label for='closedStatus'>Closed</label>
+				<label for='closedStatus' class='translate'>Closed</label>
 
 				<input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}}
 					{{#if_cond status 'cancelled'}}checked{{/if_cond}}/>
-				<label for='cancelledStatus'>Cancelled</label>
+				<label for='cancelledStatus' class='translate'>Cancelled</label>
 
 			</span>
 		</div>
@@ -54,7 +54,7 @@
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Notes
+		    <span class='translate'>Notes</span>
 		</span>
 		{{> orderNotes }}
 	</div>
@@ -62,16 +62,16 @@
     <div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Add a New Note
+			<span class='translate'>Add a New Note</span>
 		</span>
 		<textarea id='orderNotes' class='optionalField' {{#if_cond status 'closed'}}disabled{{/if_cond}}></textarea>
     </div>
 
     <div class='dataGrouping'>
-        <span class='specializedLabel'>Pictures</span>
+        <span class='specializedLabel translate'>Pictures</span>
         <span id='picturesListingContainer'>{{> orderPictures }}</span>
 		<span id='picturesListingLoadingIcons'>
-			<span id='uploadingText'>Processing</span>
+			<span id='uploadingText' class='translate'>Processing</span>
 			<span class='loadingBall'></span>
 			<span class='loadingBall'></span>
 			<span class='loadingBall'></span>
@@ -81,17 +81,17 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
 		    <i class='fa fa-tag fa-rotate-180'></i>
-			Rush Order
+			<span class='translate'>Rush Order</span>
 		</span>
 		<span id='rushOrderButtonSet' class='buttonSet'>
             <input type='radio' class='yesRadio' id='rushOrderYes' name='rushOrder' value='y'
 				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
 				   {{#if rushOrder }}checked{{/if}}/>
-			<label for='rushOrderYes'>Yes</label>
+			<label for='rushOrderYes' class='translate'>Yes</label>
 			<input type='radio' class='noRadio' id='rushOrderNo' name='rushOrder' value=''
 				   {{#if_cond status 'closed'}}disabled{{/if_cond}}
 				   {{#unless rushOrder }}checked{{/unless}}/>
-			<label for='rushOrderNo'>No</label>
+			<label for='rushOrderNo' class='translate'>No</label>
 		</span>
 	</div>
 </div>

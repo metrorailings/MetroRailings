@@ -1,14 +1,14 @@
 <div id='customerSummary'>
 
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
-		<span class='specializedLabel'>Customer Name</span>
+		<span class='specializedLabel translate'>Customer Name</span>
 		<span class='staticValue'>{{ customer.name }}</span>
 	</div>
 
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    E-mail Address
+			<span class='translate'>E-mail Address</span>
 		</span>
         <input id='customerEmail' type='email' class='optionalField' value='{{ customer.email }}' {{#if_cond status 'closed'}} disabled {{/if_cond}}/>
 		<span class='hint hint--right hint--always' data-hint=''></span>
@@ -17,7 +17,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Phone Number
+			<span class='translate'>Phone Number</span>
 		</span>
 		(<input id='areaCode' type='tel' maxlength='3' placeholder='Area Code' value='{{ customer.areaCode }}' {{#if_cond status 'closed'}} disabled {{/if_cond}} />)
 		<span class='hint hint--right hint--always' data-hint=''></span>

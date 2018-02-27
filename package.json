@@ -27,7 +27,8 @@
     "sharp": "*",
     "css-purge": "*",
     "clean-css": "*",
-    "google-translate-api": "*"
+    "google-translate-api": "*",
+    "striptags": "~2"
   },
   "jspm": {
     "main": "MR.js",

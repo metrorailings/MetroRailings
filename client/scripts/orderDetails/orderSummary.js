@@ -5,8 +5,8 @@ import vm from 'client/scripts/orderDetails/viewModel';
 import axios from 'client/scripts/utility/axios';
 import gallery from 'client/scripts/utility/gallery';
 import confirmationModal from 'client/scripts/utility/confirmationModal';
-
 import rQueryClient from 'client/scripts/utility/rQueryClient';
+import translator from 'client/scripts/utility/translate';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
@@ -31,8 +31,9 @@ var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	UPLOADED_IMAGES_CLASS = 'uploadedImageThumbnail',
 	DELETE_IMAGE_ICON_CLASS = 'deleteImage',
 
-	DELETE_IMAGE_MESSAGE = '<span id=\'deleteImageWarning\'>Are you sure you want to delete this image?' +
-		' Once you delete this image, it\'\ll be gone for good.</span><img src=\'::imageSrc\' />',
+	DELETE_IMAGE_MESSAGE = '<span id=\'deleteImageWarning\'> Are you sure you want to delete this image?' +
+		' Once you delete this image, it\'\ll be gone for good. </span>',
+	IMAGE_DISPLAY_HTML = '<img src=\'::imageSrc\' />',
 	IMAGE_SOURCE_PLACEHOLDER = '::imageSrc';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -255,9 +256,15 @@ async function deleteImage(event)
 {
 	var imgElement = event.currentTarget.parentNode.children[0],
 		imageIndex = window.parseInt(imgElement.dataset.index, 10),
-		imgMetadata = vm.pictures[imageIndex];
+		imgMetadata = vm.pictures[imageIndex],
+		modalMessage = DELETE_IMAGE_MESSAGE.replace(IMAGE_SOURCE_PLACEHOLDER, imgMetadata.shareLink),
+		imgSrc = IMAGE_DISPLAY_HTML.replace(IMAGE_SOURCE_PLACEHOLDER, imgMetadata.shareLink);
 
-	confirmationModal.open([DELETE_IMAGE_MESSAGE.replace(IMAGE_SOURCE_PLACEHOLDER, imgMetadata.shareLink)], () => { _deleteImage(imageIndex); }, () => {});
+	// Translate the modal's message should the page's default language be set in anything other than English
+	translator.translateText(modalMessage).then((modalBodyText) =>
+	{
+		confirmationModal.open([modalBodyText + imgSrc], () => { _deleteImage(imageIndex); }, () => {});
+	}, () => {});
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
