@@ -9,6 +9,7 @@ import orderUtility from 'client/scripts/orders/orderUtility';
 import axios from 'client/scripts/utility/axios';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import notifier from 'client/scripts/utility/notifications';
+import translator from 'client/scripts/utility/translate';
 
 import statuses from 'shared/orderStatus';
 import designTranslator from 'shared/designs/translator';
@@ -307,6 +308,9 @@ function _displayListings(orders)
 	{
 		_orderListing.innerHTML = orderListingTemplate({ orders: orders });
 
+		// If English is not the default language, then translate the newly listed orders
+		translator.forceTranslatePage(_orderListing);
+
 		// Trigger the following custom event so that we can trigger logic to attach event listeners to the status links
 		document.dispatchEvent(new Event(LISTENER_INIT_EVENT));
 	}
@@ -340,6 +344,9 @@ function _displayListingsWithDelay(orders)
 
 			window.setTimeout(() =>
 			{
+				// If English is not the default language, then translate the newly listed orders
+				translator.forceTranslatePage(_orderListing);
+
 				_orderListing.classList.add(REVEAL_CLASS);
 			}, 500);
 		}, 500);

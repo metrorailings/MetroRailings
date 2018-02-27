@@ -135,31 +135,10 @@
 {
 	flex: 3;
 
-	& > h1
-	{
-		@extend %regularPlusText;
-
-		font-style: italic;
-		text-align: center;
-
-		margin: 0px;
-		padding: 0px;
-	}
-
-	& > p
-	{
-		@extend %regularText;
-
-		margin:
-		{
-			left: 5px;
-			right: 0px;
-			top: 10px;
-			bottom: 0px;
-		}
-
-		text-align: center;
-	}
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 
 	& > ul
 	{
@@ -178,6 +157,35 @@
 			}
 		}
 	}
+}
+
+.taskTitle
+{
+	@extend %regularPlusText;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	font-style: italic;
+	text-align: center;
+
+	margin: 0px;
+}
+
+.taskDetails
+{
+	@extend %regularText;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	text-align: center;
 }
 
 .taskOwner

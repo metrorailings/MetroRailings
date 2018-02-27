@@ -3,33 +3,33 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Platform Type
+			<span class='translate'>Platform Type</span>
 		</span>
 		<select id='orderPlatformType' {{#if_cond status 'closed'}} disabled {{/if_cond}}>
-			<option value='earth' {{#if_cond installation.platformType 'earth'}} selected {{/if_cond}}>Earth</option>
-			<option value='concrete' {{#if_cond installation.platformType 'concrete'}} selected {{/if_cond}}>Concrete</option>
-			<option value='tile' {{#if_cond installation.platformType 'tile'}} selected {{/if_cond}}>Tile</option>
-			<option value='wood' {{#if_cond installation.platformType 'wood'}} selected {{/if_cond}}>Wood</option>
-			<option value='limestone' {{#if_cond installation.platformType 'limestone'}} selected {{/if_cond}}>Limestone</option>
-			<option value='sheetrock' {{#if_cond installation.platformType 'sheetrock'}} selected {{/if_cond}}>Sheetrock</option>
-			<option value='brick' {{#if_cond installation.platformType 'brick'}} selected {{/if_cond}}>Brick</option>
+			<option value='earth' {{#if_cond installation.platformType 'earth'}} selected {{/if_cond}} class='translate'>Earth</option>
+			<option value='concrete' {{#if_cond installation.platformType 'concrete'}} selected {{/if_cond}} class='translate'>Concrete</option>
+			<option value='tile' {{#if_cond installation.platformType 'tile'}} selected {{/if_cond}} class='translate'>Tile</option>
+			<option value='wood' {{#if_cond installation.platformType 'wood'}} selected {{/if_cond}} class='translate'>Wood</option>
+			<option value='limestone' {{#if_cond installation.platformType 'limestone'}} selected {{/if_cond}} class='translate'>Limestone</option>
+			<option value='sheetrock' {{#if_cond installation.platformType 'sheetrock'}} selected {{/if_cond}} class='translate'>Sheetrock</option>
+			<option value='brick' {{#if_cond installation.platformType 'brick'}} selected {{/if_cond}} class='translate'>Brick</option>
 		</select>
 	</div>
 
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
 			<i class='fa fa-tag fa-rotate-180'></i>
-			Cover Plates?
+			<span class='translate'>Cover Plates?</span>
 		</span>
 		<span id='coverPlatesButtonSet' class='buttonSet'>
 			<input type='radio' class='yesRadio' id='coverPlatesYes' name='coverPlates' value='y'
 				{{#if_cond status 'closed'}}disabled{{/if_cond}}
 				{{#if installation.coverPlates}}checked{{/if}} />
-			<label for='coverPlatesYes'>Yes</label>
+			<label for='coverPlatesYes' class='translate'>Yes</label>
 			<input type='radio' class='noRadio' id='coverPlatesNo' name='coverPlates' value=''
 				{{#if_cond status 'closed'}}disabled{{/if_cond}}
 				{{#unless installation.coverPlates}}checked{{/unless}} />
-			<label for='coverPlatesNo'>No</label>
+			<label for='coverPlatesNo' class='translate'>No</label>
 		</span>
 	</div>
 </div>

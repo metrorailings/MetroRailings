@@ -17,7 +17,7 @@ module.exports =
 	 *
 	 * @params {Object} params -
 	 * 		{
-	 * 			{String} textToTranslate - the text to translate
+	 * 			{String | Array} textToTranslate - the string(s) to translate
 	 * 		}
 	 *
 	 * @author kinsho
@@ -30,7 +30,7 @@ module.exports =
 
 		return {
 			statusCode: responseCodes.OK,
-			data: translation.text
+			data: translation
 		};
 	},
 
@@ -39,7 +39,7 @@ module.exports =
 	 *
 	 * @params {Object} params -
 	 * 		{
-	 * 			{String} textToTranslate - the text to translate
+	 * 			{String | Array} textToTranslate - the string(s) to translate
 	 * 		}
 	 *
 	 * @author kinsho
@@ -52,7 +52,7 @@ module.exports =
 
 		return {
 			statusCode: responseCodes.OK,
-			data: translation.text
+			data: translation
 		};
 	}
 };

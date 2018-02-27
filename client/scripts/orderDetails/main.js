@@ -9,3 +9,5 @@ import installationSummary from 'client/scripts/orderDetails/installationSummary
 import pricingSummary from 'client/scripts/orderDetails/pricingSummary';
 import termsSection from 'client/scripts/orderDetails/termsSection';
 import submissionSection from 'client/scripts/orderDetails/submissionSection';
+
+import translate from 'client/scripts/utility/translate';

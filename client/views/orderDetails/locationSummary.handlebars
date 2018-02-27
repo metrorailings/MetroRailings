@@ -3,7 +3,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Address
+			<span class='translate'>Address</span>
 		</span>
 		<input type='text' id='address' value='{{ customer.address }}' {{#if_cond status 'closed'}} disabled {{/if_cond}} />
 	</div>
@@ -11,7 +11,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Apt. Number / Suite
+			<span class='translate'>Apt. Number / Suite</span>
 		</span>
 		<input type='text' id='aptSuiteNo' class='optionalField' value='{{#if customer.aptSuiteNo }} {{ customer.aptSuiteNo	}} {{/if}}'
 			   {{#if_cond status 'closed'}} disabled {{/if_cond}} />
@@ -20,7 +20,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    City
+			<span class='translate'>City</span>
 		</span>
 		<input type='text' id='city' value='{{ customer.city }}' {{#if_cond status 'closed'}} disabled {{/if_cond}} />
 	</div>
@@ -28,7 +28,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    State
+			<span class='translate'>State</span>
 		</span>
 		<select id='state' {{#if_cond status 'closed'}} disabled {{/if_cond}} >
 			<option value='' disabled>Select a state...</option>
@@ -41,7 +41,7 @@
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-		    Zip Code
+			<span class='translate'>Zip Code</span>
 		</span>
 		<input type='text' id='zipCode' maxlength='5' class='optionalField' value='{{ customer.zipCode }}' {{#if_cond status 'closed'}} disabled {{/if_cond}} />
 		<span class='hint hint--right hint--always' data-hint=''></span>

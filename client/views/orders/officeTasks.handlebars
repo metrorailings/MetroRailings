@@ -5,17 +5,20 @@
 		<div class='taskSlickContainer'>
 
 			<fieldset class='taskGrid'>
-				<legend>Estimates</legend>
+				<legend class='translate'>Estimates</legend>
 
 				{{#each upwaveCards.estimates}}
 					<div class='taskInfo'>
 						<span class='taskDescription'>
-							{{{description}}}
+							<span class='taskTitle'>{{title}}</span>
+							{{#if description }}
+								<span class='taskDetails translate'>{{{description}}}</span>
+							{{/if}}
 
 							{{#if subtasks}}
 								<ul>
 									{{#each subtasks}}
-										<li {{#finished_dt}} class='completedSubTask' {{/finished_dt}}>{{description}}</li>
+										<li class='translate {{#finished_dt}} completedSubTask{{/finished_dt}}'>{{description}}</li>
 									{{/each}}
 								</ul>
 							{{/if}}
@@ -27,7 +30,7 @@
 									<div>- {{firstname}} -</div>
 								{{/each}}
 							{{else}}
-								- Unassigned -
+								<span class='translate'>- Unassigned -</span>
 							{{/if}}
 						</span>
 
@@ -48,17 +51,20 @@
 		<div class='taskSlickContainer'>
 
 			<fieldset class='taskGrid'>
-				<legend>Installations</legend>
+				<legend class='translate'>Installations</legend>
 
 				{{#each upwaveCards.installations}}
 					<div class='taskInfo'>
 						<span class='taskDescription'>
-							{{{description}}}
+							<span class='taskTitle'>{{title}}</span>
+							{{#if description }}
+								<span class='taskDetails translate'>{{{description}}}</span>
+							{{/if}}
 
 							{{#if subtasks}}
 								<ul>
 									{{#each subtasks}}
-										<li {{#finished_dt}} class='completedSubTask' {{/finished_dt}}>{{description}}</li>
+										<li class='translate {{#finished_dt}} completedSubTask{{/finished_dt}}'>{{description}}</li>
 									{{/each}}
 								</ul>
 							{{/if}}
@@ -70,7 +76,7 @@
 									<div>- {{firstname}} -</div>
 								{{/each}}
 							{{else}}
-								- Unassigned -
+								<span class='translate'>- Unassigned -</span>
 							{{/if}}
 						</span>
 
@@ -90,17 +96,20 @@
 		<div class='taskSlickContainer'>
 
 			<fieldset class='taskGrid'>
-				<legend>Customers</legend>
+				<legend class='translate'>Customers</legend>
 
 				{{#each upwaveCards.customers}}
 					<div class='taskInfo'>
 						<span class='taskDescription'>
-							{{{description}}}
+							<span class='taskTitle'>{{title}}</span>
+							{{#if description }}
+								<span class='taskDetails translate'>{{{description}}}</span>
+							{{/if}}
 
 							{{#if subtasks}}
 								<ul>
 									{{#each subtasks}}
-										<li {{#finished_dt}} class='completedSubTask' {{/finished_dt}}>{{description}}</li>
+										<li class='translate {{#finished_dt}} completedSubTask{{/finished_dt}}'>{{description}}</li>
 									{{/each}}
 								</ul>
 							{{/if}}
@@ -112,7 +121,7 @@
 									<div>- {{firstname}} -</div>
 								{{/each}}
 							{{else}}
-								- Unassigned -
+								<span class='translate'>- Unassigned -</span>
 							{{/if}}
 						</span>
 
