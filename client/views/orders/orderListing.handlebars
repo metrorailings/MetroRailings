@@ -6,13 +6,13 @@
                 <span class='orderIDCell'>
                     {{ this._id }}
                 </span>
-                <span class='orderStatusCell'>
+                <span class='orderStatusCell translate'>
                     {{#capitalize this.status }}{{/capitalize }}
                 </span>
             </span>
 
             <span class='orderInfoSection'>
-                <span class='orderInfoSectionHeader'>Customer Info</span>
+                <span class='orderInfoSectionHeader translate'>Customer Info</span>
                 <span class='orderCell'>{{ customer.name }}</span>
                 <span class='orderCell'>
 					<span class='linkText addressLink' data-id='{{ this._id }}'>
@@ -40,13 +40,13 @@
 			<!-- Only show this section for orders with time limits -->
 			{{#if this.timeLimit.original }}{{#unless_cond_group this.status '["closed", "cancelled", "pending"]' }}
 				<span class='orderInfoSection'>
-					<span class='orderInfoSectionHeader'>Time Left</span>
+					<span class='orderInfoSectionHeader translate'>Time Left</span>
 					<span class='orderCell timeLeftCell {{#determine_priority_level timeLimit.rawDueDate}}{{/determine_priority_level}}'>
-						<div class='daysRemainingText'>
-							<b>{{#determine_days_left timeLimit.rawDueDate }}{{/determine_days_left}}</b>&nbsp;days left
+						<div class='daysRemainingText translate'>
+							<b> {{#determine_days_left timeLimit.rawDueDate }}{{/determine_days_left}} </b> &nbsp; days left
 						</div>
 						<div>
-							<span class='orderLabel'>Due Date:</span> {{ timeLimit.translatedDueDate }}
+							<span class='orderLabel translate'>Due Date:</span> {{ timeLimit.translatedDueDate }}
 						</div>
 					</span>
 				</span>
@@ -58,7 +58,7 @@
 			{{#if this.notes.internal.length }}
 				<div class='orderGrouping orderNotesSection'>
 					<span class='orderInfoSection'>
-						<span class='orderInfoSectionHeader'>Notes</span>
+						<span class='orderInfoSectionHeader translate'>Notes</span>
 						<span class='orderCell'>{{> orderNotes }}</span>
 					</span>
 				</div>
@@ -69,7 +69,7 @@
             {{#can_status_be_updated this.status}}
                 <span class='orderCell'>
                     <span class='nextStatusLink' data-id={{ this._id }}>
-                        <i class='fa fa-level-up'></i>Move to {{#next_state this.status}}{{/next_state}}
+                        <i class='fa fa-level-up'></i><span class='translate'>Move to {{#next_state this.status}}{{/next_state}}</span>
                     </span>
                 </span>
             {{/can_status_be_updated}}
@@ -78,7 +78,7 @@
 			{{#if_cond_group this.status '["prospect", "pending"]'}}
 				<span class='orderCell'>
 					<span class='trashLink' data-id='{{ this._id }}'>
-						<i class='fa fa-trash'></i>Remove from System
+						<i class='fa fa-trash'></i><span class='translate'>Remove from System</span>
 					</span>
 				</span>
 			{{/if_cond_group}}
@@ -88,36 +88,36 @@
 				{{#unless_cond this.status 'pending'}}
 					<span class='orderCell'>
 						<span class='printLink' data-id='{{ this._id }}'>
-							<i class='fa fa-print'></i>Print Order
+							<i class='fa fa-print'></i><span class='translate'>Print Order</span>
 						</span>
 					</span>
 				{{/unless_cond}}
 				<span class='orderCell'>
 					<span class='invoiceLink' data-id='{{ this._id }}'>
-						<i class='fa fa-file-text'></i>View Invoice
+						<i class='fa fa-file-text'></i><span class='translate'>View Invoice</span>
 					</span>
 				</span>
 				{{#if_cond_group this.status '["install", "closed"]'}}
 					<span class='orderCell'>
 						<span class='closeOrderAgreementLink' data-id={{ this._id }}>
-							<i class='fa fa-file-text'></i>Generate Closing Form
+							<i class='fa fa-file-text'></i><span class='translate'>Generate Closing Form</span>
 						</span>
 					</span>
 				{{/if_cond_group}}
 				<span class='orderCell'>
 					<button class='detailsButton orderDetailsButton' data-id={{ this._id }}>
-						Edit<i class='fa fa-arrow-circle-o-right'></i>
+						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
 					</button>
 				</span>
 			{{else}}
 				<span class='orderCell'>
 					<span class='convertOrderLink' data-id='{{ this._id }}'>
-						<i class='fa fa-first-order'></i>Convert to Order
+						<i class='fa fa-first-order'></i><span class='translate'>Convert to Order</span>
 					</span>
 				</span>
 				<span class='orderCell'>
 					<button class='detailsButton prospectDetailsButton' data-id={{ this._id }}>
-						Edit<i class='fa fa-arrow-circle-o-right'></i>
+						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
 					</button>
 				</span>
 			{{/unless_cond}}
@@ -126,8 +126,8 @@
         {{#if this.pictures }}
             <div class='orderGrouping orderPictures'>
                 <span class='orderInfoSection' data-id={{ this._id }}>
-					<span class='orderInfoSectionHeader'>Pictures</span>
-					<span class='loadPicturesLink' data-id={{ this._id }}>Load Pictures...</span>
+					<span class='orderInfoSectionHeader translate'>Pictures</span>
+					<span class='loadPicturesLink translate' data-id={{ this._id }}>Load Pictures...</span>
                 </span>
             </div>
         {{/if}}
@@ -136,5 +136,5 @@
 {{/each}}
 
 {{#unless orders.length}}
-    <div id='nothingToDisplay'>Nothing to display here...</div>
+    <div id='nothingToDisplay' class='translate'>Nothing to display here...</div>
 {{/unless}}

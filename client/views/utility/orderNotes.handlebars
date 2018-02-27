@@ -14,14 +14,14 @@
 					</span>
 					<span class='noteAuthor'>{{ this.author }}</span>
 				</span>
-					<span class='noteCell'>{{{ this.note }}}</span>
+					<span class='noteCell translate'>{{{ this.note }}}</span>
 				</div>
 
 			{{/each}}
 
 		{{else}}
 			<!-- Assume we are dealing with a string value here -->
-			{{ notes.internal }}
+			<span class='translate'>{{ notes.internal }}</span>
 		{{/unless}}
 	</div>
 {{/if}}

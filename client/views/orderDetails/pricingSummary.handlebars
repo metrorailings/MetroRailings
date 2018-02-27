@@ -3,27 +3,27 @@
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-			Order Length
+			<span class='translate'>Order Length</span>
 		</span>
 		<input id='orderLength' type='tel' value='{{length}}'
-				{{#if_cond status 'closed'}}disabled{{/if_cond}} /> linear feet
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}} /> <span class='translate'>linear feet</span>
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-			Finishing Height
+			<span class='translate'>Finishing Height</span>
 		</span>
 		<input id='orderFinishedHeight' type='tel' value='{{finishedHeight}}'
-			   {{#if_cond status 'closed'}}disabled{{/if_cond}} /> inches
+			   {{#if_cond status 'closed'}}disabled{{/if_cond}} /> <span class='translate'>inches</span>
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-			Price Per Foot
+			<span class='translate'>Price Per Foot</span>
 		</span>
 		{{#if_cond status 'pending'}}
 			$<input id='pricePerFoot' type='tel' value={{ pricing.pricePerFoot }} />
@@ -35,7 +35,7 @@
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-			Additional Features
+			<span class='translate'>Additional Features</span>
 		</span>
 		{{#if_cond status 'pending'}}
 			<textarea id='additionalFeatures' class='optionalField'>{{#format_value_for_textarea additionalFeatures}}{{/format_value_for_textarea}}</textarea>
@@ -51,7 +51,7 @@
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-			Additional Price
+			<span class='translate'>Additional Price</span>
 		</span>
 		{{#if_cond status 'pending'}}
 			$<input id='additionalPrice' type='tel' class='optionalField' value={{ pricing.additionalPrice }} />
@@ -63,7 +63,7 @@
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
             <i class='fa fa-tag fa-rotate-180'></i>
-			Deductions
+			<span class='translate'>Deductions</span>
 		</span>
 		{{#if_cond status 'pending'}}
 			$<input id='deductions' type='tel' class='optionalField' value={{ pricing.deductions }} />
@@ -73,42 +73,42 @@
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Original Total Price</span>
+		<span class='specializedLabel translate'>Original Total Price</span>
 		<span class='staticValue'>
 			{{#if pricing.orderTotal}}
 				<span class='orderValueAmount'>${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}</span>
 			{{/if}}
 			{{#if pricing.tax}}
-				<span class='orderTaxAmount'>(Tax: ${{#to_fixed pricing.tax 2 }}{{/to_fixed}})</span>
+				<span class='orderTaxAmount translate'>(Tax: ${{#to_fixed pricing.tax 2 }}{{/to_fixed}})</span>
 			{{/if}}
 		</span>
 	</div>
 
 	<div class='dataGrouping'>
-		<span class='specializedLabel'>Balance Remaining</span>
+		<span class='specializedLabel translate'>Balance Remaining</span>
 		<span id='balanceRemaining' class='staticValue'>
 			{{#if pricing.balanceRemaining}}
 				<span class='orderValueAmount'>${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed }}</span>
 			{{else}}
-				<span class='orderValueAmount'>$0.00</span>
+				<span class='orderValueAmount translate'>$0.00</span>
 			{{/if}}
 
 			{{#if pricing.taxRemaining}}
-				<span class='orderTaxAmount'>(Tax: ${{#to_fixed pricing.taxRemaining 2 }}{{/to_fixed}})</span>
+				<span class='orderTaxAmount translate'>(Tax: ${{#to_fixed pricing.taxRemaining 2 }}{{/to_fixed}})</span>
 			{{/if}}
 		</span>
 	</div>
 
 	{{#unless_cond status 'pending'}}
 		<div class='dataGrouping'>
-			<span class='specializedLabel'>Payment Method</span>
+			<span class='specializedLabel translate'>Payment Method</span>
 			<span class='staticValue'>
 				{{#if pricing.paidByCheck }}
-					<span>Check/Cash</span>
-				<i class='fa fa-bank'></i>
+					<span class='translate'>Check/Cash</span>
+					<i class='fa fa-bank'></i>
 				{{else}}
-					<span>Credit Card</span>
-				<i class='fa fa-credit-card'></i>
+					<span class='translate'>Credit Card</span>
+					<i class='fa fa-credit-card'></i>
 				{{/if}}
 			</span>
 		</div>
@@ -117,20 +117,20 @@
 	{{#unless_cond status 'pending'}}
 		{{#unless pricing.paidByCheck }}
 			<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
-			<span class='specializedLabel'>
-			    <i class='fa fa-tag fa-rotate-180'></i>
-				Rest to be Paid By Check?
-			</span>
+				<span class='specializedLabel'>
+					<i class='fa fa-tag fa-rotate-180'></i>
+					<span class='translate'>Rest to be Paid By Check?</span>
+				</span>
 				<span id='restByCheckButtonSet' class='buttonSet'>
-				<input type='radio' class='yesRadio' id='restByCheckYes' name='restByCheck' value='y'
-					{{#if_cond status 'closed'}}disabled{{/if_cond}}
-					{{#if pricing.restByCheck}}checked{{/if}} />
-				<label for='restByCheckYes'>Yes</label>
-				<input type='radio' class='noRadio' id='restByCheckNo' name='restByCheck' value=''
-					{{#if_cond status 'closed'}}disabled{{/if_cond}}
-					{{#unless pricing.restByCheck}}checked{{/unless}} />
-				<label for='restByCheckNo'>No</label>
-			</span>
+					<input type='radio' class='yesRadio' id='restByCheckYes' name='restByCheck' value='y'
+						{{#if_cond status 'closed'}}disabled{{/if_cond}}
+						{{#if pricing.restByCheck}}checked{{/if}} />
+					<label for='restByCheckYes' class='translate'>Yes</label>
+					<input type='radio' class='noRadio' id='restByCheckNo' name='restByCheck' value=''
+						{{#if_cond status 'closed'}}disabled{{/if_cond}}
+						{{#unless pricing.restByCheck}}checked{{/unless}} />
+					<label for='restByCheckNo' class='translate'>No</label>
+				</span>
 			</div>
 		{{/unless}}
 	{{/unless_cond}}
@@ -139,13 +139,13 @@
 		<div class='dataGrouping'>
 			<span class='specializedLabel'>
 				<i class='fa fa-tag fa-rotate-180'></i>
-				Price Modifications
+				<span class='translate'>Price Modifications</span>
 			</span>
 			$<input id='priceModifications' type='tel' value='{{pricing.modification}}'
 					{{#if_cond status 'closed'}}disabled{{/if_cond}} />
 			<span class='hint hint--right hint--always' data-hint=''></span>
 			{{#if pricing.tax}}
-				<span class='orderTaxAmount'>(Additional Tax: $<span id='additionalTax'>0.00</span>)</span>
+				<span class='orderTaxAmount translate'>(Additional Tax: $<span id='additionalTax'>0.00</span>)</span>
 			{{/if}}
 		</div>
 	{{/unless_cond}}
