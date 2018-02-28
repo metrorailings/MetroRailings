@@ -90,10 +90,9 @@
 
 .infoBlock
 {
-	@extend %regularText;
+	@extend %tinyText;
 
-	font-size: 10px;
-	line-height: 14px;
+	line-height: 16px;
 
 	flex: 1;
 }
