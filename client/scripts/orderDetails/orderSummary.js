@@ -31,8 +31,8 @@ var ORDER_NOTES_TEXT_AREA = 'orderNotes',
 	UPLOADED_IMAGES_CLASS = 'uploadedImageThumbnail',
 	DELETE_IMAGE_ICON_CLASS = 'deleteImage',
 
-	DELETE_IMAGE_MESSAGE = '<span id=\'deleteImageWarning\'> Are you sure you want to delete this image?' +
-		' Once you delete this image, it\'\ll be gone for good. </span>',
+	DELETE_IMAGE_MESSAGE = 'Are you sure you want to delete this image? Once you delete this image, it will be gone' +
+		' for good.',
 	IMAGE_DISPLAY_HTML = '<img src=\'::imageSrc\' />',
 	IMAGE_SOURCE_PLACEHOLDER = '::imageSrc';
 
@@ -263,7 +263,7 @@ async function deleteImage(event)
 	// Translate the modal's message should the page's default language be set in anything other than English
 	translator.translateText(modalMessage).then((modalBodyText) =>
 	{
-		confirmationModal.open([modalBodyText + imgSrc], () => { _deleteImage(imageIndex); }, () => {});
+		confirmationModal.open(['<span>' + modalBodyText + '</span>' + imgSrc], () => { _deleteImage(imageIndex); }, () => {});
 	}, () => {});
 }
 
