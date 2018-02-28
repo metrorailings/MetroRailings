@@ -2,6 +2,7 @@
 
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -18,6 +19,11 @@
 	justify-content: flex-end;
 
 	font-size: map-get($FONTS, largePlusFontSize);
+
+	@include printOnly()
+	{
+		display: none;
+	}
 
 	& > a
 	{
