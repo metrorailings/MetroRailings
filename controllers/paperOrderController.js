@@ -112,6 +112,7 @@ module.exports =
 
 				// Take into account any modifications made to the price
 				pageData.order.pricing.modification = pageData.order.pricing.modification || 0;
+				pageData.order.pricing.balanceRemaining = pageData.order.pricing.balanceRemaining || pageData.order.pricing.orderTotal / 2;
 				pageData.order.pricing.trueBalanceRemaining = pageData.order.pricing.balanceRemaining + (pageData.order.pricing.modification || 0);
 			}
 
