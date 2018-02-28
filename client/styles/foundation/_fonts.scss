@@ -142,6 +142,11 @@ $FONTS:
 
 /* --- Regular stylings --- */
 
+%tinyText
+{
+	@include basicFontSettings($size: tinyFontSize);
+}
+
 %smallText
 {
 	@include basicFontSettings($size: smallFontSize);
