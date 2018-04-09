@@ -1,0 +1,29 @@
+<div class='optionsCarousel'>
+
+    <div class='optionsSelector'>
+        {{#options}}
+            {{#if previewImage }}
+				<span class='carouselPreviewOption'>
+                    <img class='carouselPreviewPic shiftTrigger' src='{{ previewImage }}' data-index='{{ @index }}' />
+                    <div class='carouselPreviewLabel'>{{ label }}</div>
+                </span>
+            {{else}}
+				<span class='carouselPreviewOption'>
+                    <div class='carouselPreviewLabelContainer shiftTrigger' data-index='{{ @index }}'>{{ label }}</div>
+                    <div class='carouselPreviewLabel'></div>
+                </span>
+            {{/if}}
+        {{/options}}
+    </div>
+
+    <div class='thinSeparator'></div>
+
+    <div class='carouselContent'>
+
+		<div class='optionViewer'>
+			<!-- Insert options data here -->
+		</div>
+
+    </div>
+
+</div>

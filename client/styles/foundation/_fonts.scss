@@ -128,6 +128,11 @@ $FONTS:
 	@include basicFontSettings($weight: 300, $size: giganticFontSize, $family: Raleway);
 }
 
+%h4
+{
+	@include basicFontSettings($weight: 300, $size: largeFontSize, $family: Raleway);
+}
+
 %sectionHeader
 {
 	@include basicFontSettings($weight: 200, $size: largePlusFontSize, $family: Raleway, $color: darkBlueTheme);
@@ -231,6 +236,11 @@ $FONTS:
 {
 	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display);
 	letter-spacing: 0.05em;
+}
+
+%formNoteText
+{
+	@include basicFontSettings($weight: 700, $size: tinyFontSize, $family: Cardo);
 }
 
 /* --- Button stylings --- */

@@ -1,11 +1,11 @@
 /**
- * A module listing important information about all the types of railing we offer
+ * A module listing basic information about all the types of railing we offer
  *
  * @module typeDesigns
  */
 // ----------------- EXTERNAL MODULES --------------------------
 
-import pricing from 'shared/pricing/pricingData';
+import category from 'shared/designs/categoryClassifications';
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -14,53 +14,28 @@ var typeDesigns =
 		options:
 		[
 			{
-				id: 'T-TRA',
+				id: category.TYPE.CODE + '-TRA',
 				label: 'Traditional Railings',
-				previewImage: 'client/images/designs/type/traditional.jpg',
+				previewImage: 'client/images/designs/type/traditional.png',
+				nextSection: 'post'
 			},
 			{
-				id: 'T-CABLE',
+				id: category.TYPE.CODE + '-MOD',
+				label: 'Modern Railings',
+				previewImage: 'client/images/designs/type/modern.png',
+				nextSection: 'post'
+			},
+			{
+				id: category.TYPE.CODE + '-CABLE',
 				label: 'Stainless Steel Cable Railings',
-				previewImage: 'client/images/designs/type/cable.jpg',
+				previewImage: 'client/images/designs/type/cable.png',
+				nextSection: 'post'
 			},
 			{
-				id: 'T-GLASS',
+				id: category.TYPE.CODE + '-GLASS',
 				label: 'Glass Railings',
-				previewImage: 'client/images/designs/type/glass.jpg',
-			}
-
-		],
-		designMetadata:
-		[
-			{
-				id: 'T-TRA',
-				label: 'Traditional Railings',
-				priceRating: pricing.DESIGNS['T-TRA'].priceRating,
-				designDescription: '',
-				designImages:
-				[
-					'client/images/designs/type/traditional.jpg',
-				]
-			},
-			{
-				id: 'T-CABLE',
-				label: 'Stainless Steel Cable Railings',
-				priceRating: pricing.DESIGNS['T-CABLE'].priceRating,
-				designDescription: '',
-				designImages:
-				[
-					'client/images/designs/type/cable.jpg',
-				]
-			},
-			{
-				id: 'T-GLASS',
-				label: 'Glass Railings',
-				priceRating: pricing.DESIGNS['T-GLASS'].priceRating,
-				designDescription: '',
-				designImages:
-				[
-					'client/images/designs/type/glass.jpg',
-				]
+				previewImage: 'client/images/designs/type/glass.png',
+				nextSection: 'glassArchitecture'
 			}
 		]
 	};

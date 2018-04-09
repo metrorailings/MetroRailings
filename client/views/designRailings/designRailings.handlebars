@@ -1,11 +1,22 @@
 <div class='pageHeader'>
-	<h3>Design your Railings</h3>
+	<h4>Design your Railings</h4>
 	<div class='headerUnderline'></div>
 </div>
 
-{{> selectedOptionsSection }}
+<!-- All options that have been selected will be displayed here -->
+<div id='selectedOptionsContainer'></div>
 
-{{> featureSection }}
+<!-- The user will select designs within this area of the page -->
+<div id='designArea'>
+	<!-- List all the different sections that will be shuffled in and out to help the user design his railings -->
+	{{> designRailingsTypeSection }}
+	{{> designRailingsPostSection }}
+</div>
+
+<div id='buttonArea'>
+	<button id='prevButton' disabled>Previous</button>
+	<button id='nextButton' disabled>Confirm Selection</button>
+</div>
 
 {{> gallery }}
 
@@ -13,6 +24,14 @@
     {{{ optionsCarouselTemplate }}}
 </script>
 
-<script id='designTemplate' type='text/x-handlebars-template'>
-    {{{ designTemplate }}}
+<script id='optionsListTemplate' type='text/x-handlebars-template'>
+	{{{ optionsListTemplate }}}
+</script>
+
+<script id='carouselPanelTemplate' type='text/x-handlebars-template'>
+    {{{ carouselPanelTemplate }}}
+</script>
+
+<script id='selectionsTemplate' type='text/x-handlebars-template'>
+	{{{ selectionsTemplate }}}
 </script>

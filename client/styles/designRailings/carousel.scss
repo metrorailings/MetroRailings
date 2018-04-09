@@ -1,0 +1,404 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/animations';
+@import '../foundation/responsive';
+@import '../foundation/form';
+@import '../designRailings/common';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.optionsCarousel
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.optionsSelector
+{
+	margin:
+	{
+		left: 20px;
+		right: 20px;
+		bottom: 30px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	width: 100%;
+}
+
+.carouselPreviewOption
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	position: relative;
+
+	@include tabletUp()
+	{
+		margin:
+		{
+			left: 25px;
+			right: 25px;
+		}
+	}
+
+	@include phoneOnly()
+	{
+		width: 50%;
+	}
+}
+
+.carouselPreviewPic
+{
+	@include transitionSettings($property: all, $duration: 0.3s);
+
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 4px;
+		style: solid;
+	}
+
+	filter: contrast(100%);
+	-webkit-filter: contrast(100%);
+
+	cursor: pointer;
+
+	@include tabletUp()
+	{
+		width: 150px;
+		height: 150px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 100px;
+		height: 100px;
+	}
+
+	&.selected
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+
+		filter: contrast(150%);
+		-webkit-filter: contrast(150%);
+	}
+}
+
+.carouselPreviewLabel
+{
+	@extend %formSelectText;
+
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+}
+
+.carouselPreviewLabelContainer
+{
+	@include transitionSettings($property: all, $duration: 0.3s);
+	@extend %formSelectText;
+
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		style: solid;
+		width: 2px;
+	}
+
+	padding: 10px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	cursor: pointer;
+
+	background-color: map-get($COLORS, lightGrayTheme);
+
+	@include tabletUp()
+	{
+		min-width: 150px;
+		min-height: 150px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 100px;
+		height: 100px;
+	}
+
+	&.selected
+	{
+		border:
+		{
+			width: 4px;
+			color: map-get($COLORS, darkBlueTheme);
+		}
+
+		background-color: map-get($COLORS, lightGreenTheme);
+	}
+}
+
+.carouselContent
+{
+	width: 100%;
+	min-height: 200px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.optionViewer
+{
+	width: 100%;
+	position: relative;
+
+	&.shiftOutLeft
+	{
+		@include animationSettings($keyframeSet: shiftOutLeft, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftInLeft
+	{
+		@include animationSettings($keyframeSet: shiftInLeft, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftOutRight
+	{
+		@include animationSettings($keyframeSet: shiftOutRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftInRight
+	{
+		@include animationSettings($keyframeSet: shiftInRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+}
+
+.carouselPanel
+{
+	@extend %formSectionHeaderText;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.designImageContainer
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include desktopOnly()
+	{
+		flex-direction: row;
+	}
+
+	@include mobileOnly()
+	{
+		flex-direction: column-reverse;
+	}
+
+	& > div
+	{
+		@include desktopOnly()
+		{
+			margin:
+			{
+				left: 20px;
+				right: 20px;
+			}
+		}
+
+		@include mobileOnly()
+		{
+			margin:
+			{
+				top: 20px;
+				bottom: 20px;
+			}
+		}
+	}
+}
+
+.designImages
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include desktopOnly()
+	{
+		flex-direction: column;
+	}
+
+	@include mobileOnly()
+	{
+		flex-direction: row;
+	}
+}
+
+.designPreview
+{
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 6px;
+		style: solid;
+	}
+
+	cursor: pointer;
+
+	@include desktopOnly()
+	{
+		height: 130px;
+		width: 130px;
+	}
+
+	@include tabletOnly()
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		height: 100px;
+		width: 100px;
+	}
+
+	@include phoneOnly()
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		height: 75px;
+		width: 75px;
+	}
+
+	&.selected
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+	}
+}
+
+.enlargedCarouselPicture
+{
+	@include transitionSettings($property: opacity, $duration: 0.35s);
+
+	opacity: 1.0;
+	cursor: default;
+
+	@include desktopOnly()
+	{
+		max-height: 375px;
+		max-width: 375px;
+	}
+
+	@include tabletOnly()
+	{
+		max-height: 250px;
+		max-width: 250px;
+	}
+
+	@include phoneOnly()
+	{
+		max-height: 250px;
+		max-width: 250px;
+	}
+
+	&.fade
+	{
+		opacity: 0.0;
+	}
+}
+
+.designName
+{
+	border-bottom:
+	{
+		color: map-get($COLORS, grayTheme);
+		width: 1px;
+		style: solid;
+	}
+
+	@include desktopOnly()
+	{
+		margin:
+		{
+			top: 25px;
+			bottom: 25px;
+		}
+	}
+
+	@include mobileOnly()
+	{
+		margin:
+		{
+			top: 13px;
+			bottom: 13px;
+		}
+	}
+}
+
+.designDescription
+{
+	@extend %formDescriptiveText;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+		left: 15px;
+		right: 15px;
+	}
+
+	text-align: left;
+}
+
+.noDesignSelected
+{
+	color: map-get($COLORS, darkerGrayTheme);
+
+	margin-bottom: 100px;
+}

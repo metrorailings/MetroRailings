@@ -30,6 +30,7 @@
         "console" : false,
         "Tooltip" : false,
         "$" : false,
-        "SystemJS" : false
+        "SystemJS" : false,
+        "import" : false
     }
 }

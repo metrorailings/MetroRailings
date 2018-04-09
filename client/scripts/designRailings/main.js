@@ -1,31 +1,24 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import vm from 'client/scripts/designRailings/viewModel';
-import carousel from 'client/scripts/utility/optionsCarousel';
-import gallery from 'client/scripts/utility/gallery';
-
-import typeDesigns from 'shared/designs/typeDesigns';
-import postDesigns from 'shared/designs/postDesigns';
-import postEndDesigns from 'shared/designs/postEndDesigns';
-import postCapDesigns from 'shared/designs/postCapDesigns';
-import centerDesigns from 'shared/designs/centerDesigns';
-
-import colorSection from 'client/scripts/designRailings/colorSection';
-import submissionSection from 'client/scripts/designRailings/submissionSection';
+import carousel from 'client/scripts/designRailings/optionsCarousel';
+import list from 'client/scripts/designRailings/optionsList';
+import slider from 'client/scripts/designRailings/sectionSlider';
+import selections from 'client/scripts/designRailings/selectedOptions';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var DESIGN_TEMPLATE = 'designTemplate',
+var LIST_SECTION_CLASS = 'listContainer',
+	CAROUSEL_CLASS = 'carouselContainer',
 
-	DESIGN_PREVIEW_PIC_CLASS = 'designPreview',
-	MAIN_PICTURE_CLASS = 'enlargedCarouselPicture',
-	FADE_CLASS = 'fade',
-	HIDE_CLASS = 'hide',
-	SELECTED_CLASS = 'selected',
-	UNSELECTED_CLASS = 'unselected',
-	SELECT_DESIGN_BUTTON = 'designChosenButton',
+	NEXT_BUTTON = 'nextButton',
+	PREV_BUTTON = 'prevButton',
+	DESIGN_SECTION_SUFFIX = '-DesignSection',
 
-	SET_SELECTED_ICON_LISTENER = 'setSelectedIcon',
+	ACTIVE_CLASS = 'activeSection',
+
+	SELECTION_MADE_LISTENER = 'selectionMade',
+	FINISH_SECTION_TRANSITION_LISTENER = 'finishSectionTransition',
 
 	VIEW_MODEL_DESIGN_PROPERTIES =
 	{
@@ -36,202 +29,24 @@ var DESIGN_TEMPLATE = 'designTemplate',
 		CENTER: 'centerDesign'
 	};
 
+// ----------------- PRIVATE VARIABLES ---------------------------
+
+var _selectedOption, // A reference to whatever option is currently selected
+	_currentVMProp, // A reference to the view model property we are looking to currently set
+
+	// Elements
+	_optionLists = document.getElementsByClassName(LIST_SECTION_CLASS),
+	_carousels = document.getElementsByClassName(CAROUSEL_CLASS),
+	_nextButton = document.getElementById(NEXT_BUTTON),
+	_prevButton = document.getElementById(PREV_BUTTON);
+
+
 // ----------------- HANDLEBARS HELPERS ---------------------------
 
 Handlebars.registerHelper('if_more_than_one_image', function(collection, block)
 {
 	return (collection.length > 1 ? block.fn(this) : block.inverse(this));
 });
-
-// ----------------- PRIVATE FUNCTIONS ---------------------------
-
-/**
- * Major function responsible for moving the panels of the posts carousel around as the user
- * selects different options
- *
- * @param {Number} index - the index of the option chosen by the user
- *
- * @returns {Object} - a collection of data and pictures to better illustrate to the user the details of a
- * 		particular design
- *
- * @author kinsho
- */
-function _movePostDesignCarousel(index)
-{
-	var data = postDesigns.designMetadata[index] || {};
-
-	// Note the data we need to determine if the user has already selected this design
-	data.selection = vm.postDesign;
-	data.isSelected = (vm.postDesign === data.id);
-
-	// Let's also note what property of the view model will be effected should this design be selected
-	data.vmProp = VIEW_MODEL_DESIGN_PROPERTIES.POST;
-
-	return data;
-}
-
-/**
- * Major function responsible for moving the panels of the post ends carousel around as the user
- * selects different options
- *
- * @param {Number} index - the index of the option chosen by the user
- *
- * @returns {Object} - a collection of data and pictures to better illustrate to the user the details of a
- * 		particular design
- *
- * @author kinsho
- */
-function _movePostEndDesignCarousel(index)
-{
-	var data = postEndDesigns.designMetadata[index] || {};
-
-	// Note the data we need to determine if the user has already selected this design
-	data.selection = vm.postEndDesign;
-	data.isSelected = (vm.postEndDesign === data.id);
-
-	// Let's also note what property of the view model will be effected should this design be selected
-	data.vmProp = VIEW_MODEL_DESIGN_PROPERTIES.POST_END;
-
-	return data;
-}
-
-/**
- * Major function responsible for moving the panels of the post tops carousel around as the user
- * selects different options
- *
- * @param {Number} index - the index of the option chosen by the user
- *
- * @returns {Object} - a collection of data and pictures to better illustrate to the user the details of a
- * 		particular design
- *
- * @author kinsho
- */
-function _movePostCapDesignCarousel(index)
-{
-	var data = postCapDesigns.designMetadata[index] || {};
-
-	// Note the data we need to determine if the user has already selected this design
-	data.selection = vm.postCapDesign;
-	data.isSelected = (vm.postCapDesign === data.id);
-
-	// Let's also note what property of the view model will be effected should this design be selected
-	data.vmProp = VIEW_MODEL_DESIGN_PROPERTIES.POST_CAP;
-
-	return data;
-}
-
-/**
- * Major function responsible for moving the panels of the center designs carousel around as the user
- * selects different options
- *
- * @param {Number} index - the index of the option chosen by the user
- *
- * @returns {Object} - a collection of data and pictures to better illustrate to the user the details of a
- * 		particular design
- *
- * @author kinsho
- */
-function _moveCenterDesignCarousel(index)
-{
-	var data = centerDesigns.designMetadata[index] || {};
-
-	// Note the data we need to determine if the user has already selected this design
-	data.selection = vm.centerDesign;
-	data.isSelected = (vm.centerDesign === data.id);
-
-	// Let's also note what property of the view model will be effected should this design be selected
-	data.vmProp = VIEW_MODEL_DESIGN_PROPERTIES.CENTER;
-
-	return data;
-}
-
-/**
- * Function used to conduct any logic that needs to be processed following a new panel being loaded into the carousel
- *
- * @param {HTMLElement} viewer - the panel itself
- *
- * @author kinsho
- */
-function _newDesignTemplateLoaded(viewer)
-{
-	var designPreviewPics = viewer.getElementsByClassName(DESIGN_PREVIEW_PIC_CLASS),
-		enlargedPic = viewer.getElementsByClassName(MAIN_PICTURE_CLASS)[0],
-		selectionButton = viewer.getElementsByClassName(SELECT_DESIGN_BUTTON)[0];
-
-	// Ensure that whenever the user clicks on a preview image, the image is loaded into the image viewer
-	for (let i = designPreviewPics.length - 1; i >= 0; i--)
-	{
-		designPreviewPics[i].addEventListener('click', (event) =>
-		{
-			var selectedPic = event.currentTarget;
-
-			// Mark which picture has been selected
-			for (let j = designPreviewPics.length - 1; j >= 0; j--)
-			{
-				if (designPreviewPics[j].src === selectedPic.src)
-				{
-					designPreviewPics[j].classList.add(SELECTED_CLASS);
-				}
-				else
-				{
-					designPreviewPics[j].classList.remove(SELECTED_CLASS);
-				}
-			}
-
-			// Fade out the picture, and then switch it out
-			enlargedPic.classList.add(FADE_CLASS);
-			window.setTimeout(() =>
-			{
-				enlargedPic.src = designPreviewPics[i].src;
-				enlargedPic.classList.remove(FADE_CLASS);
-			}, 500);
-		});
-	}
-
-	if (selectionButton)
-	{
-		// Also allow for the user to select or deselect the design
-		selectionButton.addEventListener('click', () =>
-		{
-			var vmProp = selectionButton.dataset.vmProp,
-				designCode = selectionButton.dataset.designCode,
-				wasSelected = (vm[vmProp] === designCode);
-
-			if (wasSelected)
-			{
-				vm[vmProp] = '';
-
-				viewer.dispatchEvent(new CustomEvent(SET_SELECTED_ICON_LISTENER, { detail: true, bubbles: true }));
-
-				selectionButton.getElementsByClassName(SELECTED_CLASS)[0].classList.add(HIDE_CLASS);
-				selectionButton.getElementsByClassName(UNSELECTED_CLASS)[0].classList.remove(HIDE_CLASS);
-
-				selectionButton.classList.add(UNSELECTED_CLASS);
-				selectionButton.classList.remove(SELECTED_CLASS);
-			}
-			else
-			{
-				vm[vmProp] = designCode;
-
-				viewer.dispatchEvent(new CustomEvent(SET_SELECTED_ICON_LISTENER, { bubbles: true }));
-
-				selectionButton.getElementsByClassName(SELECTED_CLASS)[0].classList.remove(HIDE_CLASS);
-				selectionButton.getElementsByClassName(UNSELECTED_CLASS)[0].classList.add(HIDE_CLASS);
-
-				selectionButton.classList.remove(UNSELECTED_CLASS);
-				selectionButton.classList.add(SELECTED_CLASS);
-			}
-		});
-	}
-
-	if (enlargedPic)
-	{
-		enlargedPic.addEventListener('click', (event) =>
-		{
-			gallery.open([event.currentTarget.src], 0);
-		});
-	}
-}
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
@@ -242,10 +57,142 @@ for (let i = propKeys.length - 1; i >= 0; i--)
 	vm[propKeys[i]] = '';
 }
 
-// ----------------- MODULE INITIALIZATION -----------------------------
+// ----------------- LISTENERS -----------------------------
 
-// Instantiate all the carousels
-new carousel(POST_DESIGN_CAROUSEL, postDesigns.options, _movePostDesignCarousel, DESIGN_TEMPLATE, vm, _newDesignTemplateLoaded);
-new carousel(POST_END_DESIGN_CAROUSEL, postEndDesigns.options, _movePostEndDesignCarousel, DESIGN_TEMPLATE, vm, _newDesignTemplateLoaded);
-new carousel(POST_CAPS_DESIGN_CAROUSEL, postCapDesigns.options, _movePostCapDesignCarousel, DESIGN_TEMPLATE, vm, _newDesignTemplateLoaded);
-new carousel(CENTER_DESIGN_CAROUSEL, centerDesigns.options, _moveCenterDesignCarousel, DESIGN_TEMPLATE, vm, _newDesignTemplateLoaded);
+/**
+ * Function that notes that an option has been selected
+ *
+ * @param {Event} event - the event object associated with the firing of this listener. Note the event object
+ * 		contains a detail parameter that houses data about the option that was recently selected
+ *
+ * @author kinsho
+ */
+function registerSelection(event)
+{
+	var option = event.detail.option;
+
+	// Enable the next button depending on whether an actual selection was made or whether the section was merely reset
+	if (option && option.id)
+	{
+		_nextButton.disabled = false;
+	}
+	else
+	{
+		_nextButton.disabled = true;
+	}
+
+	// Record the option that's currently selected
+	_selectedOption = option;
+console.log('SET _selectedOption');
+console.log(_selectedOption);
+}
+
+/**
+ * Function responsible for taking the user to the next section
+ *
+ * @author kinsho
+ */
+function goToNextSection()
+{
+	var currentSectionIndex,
+		nextSectionIndex;
+
+	slider.followingSection = document.getElementById(_selectedOption.nextSection + DESIGN_SECTION_SUFFIX);
+
+	// Set a value in the view model
+	if (_selectedOption)
+	{
+		vm[_currentVMProp] = _selectedOption.id;
+	}
+
+	// Find out if we are traveling to a new section not recorded in current history
+	nextSectionIndex = slider.findSectionIndex(slider.followingSection);
+	currentSectionIndex = slider.findSectionIndex(slider.currentSection);
+	if ((nextSectionIndex === -1) || (nextSectionIndex !== currentSectionIndex + 1))
+	{
+		slider.removeSomeHistory(currentSectionIndex + 1);
+		selections.removeSomeHistory(currentSectionIndex + 1);
+	}
+
+	// Prepare to modify the selections section to account for the newly selected option, if one was made
+	selections.renderTemplate(_selectedOption);
+
+	// Discard whatever has been noted as the currently selected option
+	_selectedOption = null;
+console.log('RESET _selectedOption');
+
+	// Now shift through everything
+	slider.slideSections();
+}
+
+/**
+ * Function responsible for taking the user to the previous section
+ *
+ * @author kinsho
+ */
+function goToPrevSection()
+{
+	var activeSection = slider.currentSection.id.substring(0, slider.currentSection.id.indexOf('-')),
+		prevSectionIndex = slider.findSectionIndex(activeSection) - 1;
+
+	// Only travel to a previous section should we not be on the first section
+	if (prevSectionIndex >= 0)
+	{
+		// Discard whatever has been noted as the currently selected option
+		_selectedOption = null;
+
+		// Note the section we will soon travel to
+		slider.followingSection = document.getElementById(slider.sectionsTraversed[prevSectionIndex] + DESIGN_SECTION_SUFFIX);
+
+		// Discard whatever has been noted as the currently selected option
+		_selectedOption = null;
+console.log('RESET _selectedOption');
+		// Now shift, noting that we are traveling one step backward
+		slider.slideSections(prevSectionIndex, prevSectionIndex + 1);
+	}
+}
+
+/**
+ * Function responsible for examining the current section in place and figuring out to which view model property it
+ * correlates to
+ *
+ * @author kinsho
+ */
+function setCurrentVMProperty()
+{
+	_currentVMProp = document.getElementsByClassName(ACTIVE_CLASS)[0].dataset.vmProp;
+console.log('SET vmProp - ' + _currentVMProp);
+}
+
+// ----------------- PAGE INITIALIZATION -----------------------------
+
+// Instantiate all the design panels
+for (let i = _optionLists.length - 1; i >= 0; i--)
+{
+	// Pull the data that will need to be loaded into this particular panel
+	System.import(_optionLists[i].dataset.dataFile).then((options) =>
+	{
+		// Load the list instance
+		new list(_optionLists[i], options.default, vm, _optionLists[i].parentNode.dataset.vmProp);
+	});
+}
+for (let i = _carousels.length - 1; i >= 0; i--)
+{
+	// Pull the data that will need to be loaded into this particular panel
+	System.import(_carousels[i].dataset.dataFile).then((options) =>
+	{
+		// Load the carousel instance
+		new carousel(_carousels[i], options.default, vm, _carousels[i].parentNode.dataset.vmProp);
+	});
+}
+
+// Note whatever view model property belongs to the first section currently visible
+setCurrentVMProperty();
+
+// ----------------- LISTENER INITIALIZATION -----------------------------
+
+_nextButton.addEventListener('click', goToNextSection);
+_prevButton.addEventListener('click', goToPrevSection);
+
+document.body.addEventListener(SELECTION_MADE_LISTENER, registerSelection);
+document.body.addEventListener(FINISH_SECTION_TRANSITION_LISTENER, setCurrentVMProperty);

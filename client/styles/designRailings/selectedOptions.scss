@@ -1,0 +1,111 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/general';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#selectedOptionsContainer
+{
+	padding:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	border-top:
+	{
+		color: map-get($COLORS, blackTheme);
+		width: 2px;
+		style: solid;
+	}
+
+	height: 140px;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.selectedOption
+{
+	margin:
+	{
+		left: 20px;
+		right: 20px;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 2px;
+		style: solid;
+	}
+
+	&.selected
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+
+		filter: contrast(150%);
+		-webkit-filter: contrast(150%);
+	}
+}
+
+.selectedOptionThumbnail
+{
+	margin:
+	{
+		left: 15px;
+		right: 15px;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 4px;
+		style: solid;
+	}
+
+	cursor: pointer;
+
+	@include tabletUp()
+	{
+		width: 90px;
+		max-height: 90px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 50px;
+		max-height: 50px;
+	}
+}
+
+.selectedOptionName
+{
+	@extend %formNoteText;
+
+	margin:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	width: 150px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+#noOptionsSelectedYet
+{
+	@extend %italicizedFormDescriptiveText;
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+}

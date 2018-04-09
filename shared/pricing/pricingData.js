@@ -36,20 +36,32 @@ module.exports =
 			rate: 0,
 		},
 
-		'P-BPC' :
+		'P-1.5' :
 		{
-			name: 'Colonial Big Post',
-			industrialName: '2.5"',
+			name: '1.5" Square Post',
 			price: 0,
 			rate: 0
 		},
 
-		'P-SP' :
+		'P-2.0' :
 		{
-			name: 'Standard Small Post',
-			industrialName: '1.5"',
+			name: '2" Square Post',
 			price: 0,
 			rate: 0
+		},
+
+		'P-2.5' :
+		{
+			name: '2.5" Square Post',
+			price: 0,
+			rate: 0
+		},
+
+		'P-3.0' :
+		{
+			name: '3" Square Post',
+			price: 10,
+			rate: 5
 		},
 
 		'H-COL' :

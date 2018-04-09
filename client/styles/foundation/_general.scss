@@ -52,6 +52,14 @@ h3
 	margin-bottom: 0px;
 }
 
+h4
+{
+	@extend %h4;
+	display: block;
+
+	margin-bottom: 0px;
+}
+
 .sectionHeader
 {
 	@extend %sectionHeader;

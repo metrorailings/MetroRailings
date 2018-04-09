@@ -1,0 +1,59 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+
+/* ----------------------- ANIMATIONS ----------------------------- */
+
+
+// The animations responsible for moving the carousel left and right
+@include keyframes($name: shiftOutLeft)
+{
+	0%
+	{
+		left: 0;
+	}
+
+	100%
+	{
+		left: -120%;
+	}
+}
+
+@include keyframes($name: shiftInLeft)
+{
+	0%
+	{
+		left: 120%;
+	}
+
+	100%
+	{
+		left: 0;
+	}
+}
+
+@include keyframes($name: shiftOutRight)
+{
+	0%
+	{
+		left: 0;
+	}
+
+	100%
+	{
+		left: 120%;
+	}
+}
+
+@include keyframes($name: shiftInRight)
+{
+	0%
+	{
+		left: -120%;
+	}
+
+	100%
+	{
+		left: 0;
+	}
+}

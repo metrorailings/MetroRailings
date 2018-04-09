@@ -1,0 +1,99 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/general';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.optionsList
+{
+	padding:
+	{
+		top: 25px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.listOption
+{
+	width: 50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.optionThumbnail
+{
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+		left: 15px;
+		right: 15px;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, whiteTheme);
+		width: 4px;
+		style: solid;
+	}
+
+	filter: contrast(100%);
+	-webkit-filter: contrast(100%);
+
+	cursor: pointer;
+
+	@include tabletUp()
+	{
+		max-width: 400px;
+		max-height: 400px;
+	}
+
+	@include phoneOnly()
+	{
+		max-width: 250px;
+		max-height: 250px;
+	}
+
+	&.selected
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+
+		filter: contrast(150%);
+		-webkit-filter: contrast(150%);
+	}
+}
+
+.optionName
+{
+	@extend %formLabelText;
+
+	margin:
+	{
+		top: 10px;
+		bottom: 30px;
+	}
+
+	cursor: pointer;
+}
+
+.optionDescription
+{
+	@extend %formDescriptiveText;
+
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+}

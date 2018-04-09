@@ -1,0 +1,33 @@
+<div class='carouselPanel'>
+
+    {{#if designImages.length}}
+        <div class='designImageContainer'>
+			{{#if_more_than_one_image designImages}}
+				<div class='designImages'>
+					{{#designImages}}
+						<img class='designPreview {{#if @first}}selected{{/if}}' src='{{this}}' />
+					{{/designImages}}
+				</div>
+			{{/if_more_than_one_image}}
+
+            <div>
+                <img class='enlargedCarouselPicture' src='{{designImages.[0]}}' />
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if label}}
+		<div class='designName'>{{ label }}</div>
+    {{/if}}
+
+    {{#if designDescription}}
+		<div class='designDescription'>{{designDescription}}</div>
+	{{/if}}
+
+	{{#if isDefaultPanel}}
+		<div class='noDesignSelected'>
+			Over here, you will see more information about whatever design you select above.
+		</div>
+	{{/if}}
+
+</div>

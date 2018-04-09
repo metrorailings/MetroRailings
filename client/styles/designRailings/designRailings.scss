@@ -4,59 +4,59 @@
 @import '../foundation/fonts';
 @import '../foundation/loader';
 @import '../foundation/general';
-@import '../foundation/form';
-@import '../foundation/gallery';
 @import '../foundation/responsive';
-@import '../foundation/optionsCarousel';
-@import '../foundation/scrollDownLabel';
+@import '../foundation/gallery';
+@import '../foundation/animations';
+@import '../foundation/form';
+
+@import '../designRailings/common';
+
+/* ----------------------- OVERRIDES ----------------------------- */
+
+#topMenu
+{
+	display: none !important;
+}
+
+#topMenuSpace
+{
+	display: none !important;
+}
+
+footer
+{
+	display: none !important;
+}
 
 /* ----------------------- STYLES ----------------------------- */
 
-#freeOptionsNotice
+#designArea
 {
-	margin:
-	{
-		top: 20px;
-		bottom: 20px;
-	}
-}
-
-#freeIcons > i
-{
-	color: map-get($COLORS, moneyGreenTheme);
-}
-
-#postEndSection, #postCapSection, #centerDesignSection, #colorSection, #submissionSection
-{
-	@include transitionSettings($property: all, $duration: 0.3s);
+	@include transitionSettings($property: height, $duration: 0.3s);
 
 	border-top:
 	{
-		width: 0px;
-		style: solid;
 		color: map-get($COLORS, blackTheme);
+		width: 2px;
+		style: solid;
 	}
 
 	padding:
 	{
-		top: 0px;
-		bottom: 0px;
+		top: 25px;
+		bottom: 20px;
 	}
 
-	max-height: 0px;
-	overflow: hidden;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
 
-	&.rollDownSection
+	width: 100%;
+	height: 55vh;
+
+	&.extend
 	{
-		padding:
-		{
-			top: 20px;
-			bottom: 20px;
-		}
-
-		border-top-width: 2px;
-
-		max-height: 3000px;
+		height: 75vh;
 	}
 }
 
@@ -70,4 +70,95 @@
 		left: 10px;
 		right: 10px;
 	}
+
+	text-align: center;
+	width: 100%;
+}
+
+.designSection
+{
+	margin:
+	{
+		top: 30px;
+	}
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	width: 100%;
+
+	// By default, the section has to be hidden from view
+	display: none;
+
+	&.activeSection
+	{
+		display: block;
+	}
+
+	&.shiftOutLeft
+	{
+		@include animationSettings($keyframeSet: shiftOutLeft, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftInLeft
+	{
+		@include animationSettings($keyframeSet: shiftInLeft, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftOutRight
+	{
+		@include animationSettings($keyframeSet: shiftOutRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+
+	&.shiftInRight
+	{
+		@include animationSettings($keyframeSet: shiftInRight, $duration: 0.5s, $timing: ease-in-out, $iterations: 1, $persist: true);
+	}
+}
+
+#buttonArea
+{
+	border-top:
+	{
+		colors: map-get($COLORS, blackTheme);
+		width: 2px;
+		style: solid;
+	}
+
+	padding:
+	{
+		top: 35px;
+		bottom: 30px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#prevButton
+{
+	@include squareButton($bgColor: amberTheme);
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 200px;
+}
+
+#nextButton
+{
+	@include squareButton($bgColor: greenTheme);
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 250px;
 }

@@ -1,3 +1,12 @@
-<div id='selectedOptionsContainer'>
-
-</div>
+{{#if selectedOptions.length}}
+	{{#each selectedOptions}}
+		<span class='selectedOption' data-index='{{ @index }}' data-associated-section='{{ sectionID }}'>
+			<img class='selectedOptionThumbnail' src='{{ previewImage }}' />
+			<div class='selectedOptionName'>
+				{{ optionCategory }}: {{ label }}
+			</div>
+		</span>
+	{{/each}}
+{{else}}
+	<span id='noOptionsSelectedYet'>Any design options you select will appear here.</span>
+{{/if}}

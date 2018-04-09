@@ -17,7 +17,6 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'designRailings',
-	UTILITY_FOLDER = 'utility',
 
 	COOKIE_DESIGN_INFO = 'designInfo',
 
@@ -30,8 +29,10 @@ var CONTROLLER_FOLDER = 'designRailings',
 		CENTER_DESIGN_SECTION: 'centerDesignSection',
 		COLORS_SECTION: 'colorsSection',
 		SUBMISSION_SECTION: 'submissionSection',
-		DESIGN_TEMPLATE: 'designTemplate',
-		OPTIONS_CAROUSEL: 'optionsCarousel'
+		SELECTIONS_SECTION: 'selectedOptions',
+		CAROUSEL_PANEL: 'carouselPanel',
+		OPTIONS_CAROUSEL: 'optionsCarousel',
+		LIST_CAROUSEL: 'optionsList'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -66,11 +67,6 @@ _Handlebars.registerPartial('designRailingsCenterDesignSection', fileManager.fet
  */
 _Handlebars.registerPartial('designRailingsColorSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.COLORS_SECTION));
 
-/**
- * The template for the submission section
- */
-_Handlebars.registerPartial('designRailingsSubmissionButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
-
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -87,11 +83,17 @@ module.exports =
 
 		console.log('Loading the design railings page...');
 
-		// Load the options carousel template that will be used to render multiple carousels on the page
-		pageData.optionsCarouselTemplate = await fileManager.fetchTemplate(UTILITY_FOLDER, PARTIALS.OPTIONS_CAROUSEL);
+		// Load the options carousel template that will be used to render a carousel on the page
+		pageData.optionsCarouselTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.OPTIONS_CAROUSEL);
 
-		// Load the design template
-		pageData.designTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.DESIGN_TEMPLATE);
+		// Load the carousel panel template
+		pageData.carouselPanelTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.CAROUSEL_PANEL);
+
+		// Load the options list template that will be used to display a list of options that a user can select from
+		pageData.optionsListTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.LIST_CAROUSEL);
+
+		// Load the selections template that will be used to display all selections that have been made so far
+		pageData.selectionsTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.SELECTIONS_SECTION);
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

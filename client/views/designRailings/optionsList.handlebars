@@ -1,0 +1,13 @@
+<div class='optionsList'>
+
+	{{#each options}}
+		<span class='listOption' data-next-section='{{ nextSection }}' data-value='{{ id }}' data-index={{ @index }}>
+			<img class='optionThumbnail' src='{{ previewImage }}' />
+			<span class='optionName'>{{ label }}</span>
+			{{#if description}}
+				<span class='optionDescription'>{{ description }}</span>
+			{{/if}}
+		</span>
+	{{/each}}
+
+</div>
