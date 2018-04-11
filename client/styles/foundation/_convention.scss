@@ -1,0 +1,79 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- GENERAL STYLES ----------------------------- */
+
+#languageSelection
+{
+	display: none !important;
+}
+
+#banner
+{
+	width: 100%;
+	background-color: map-get($COLORS, logoBlueTheme);
+
+	& > img
+	{
+		max-width: 200px;
+		max-height: 150px;
+	}
+}
+
+#conventionNavigationSection
+{
+	padding:
+	{
+		top: 30px;
+		bottom: 10px;
+	}
+
+	border-bottom:
+	{
+		width: 0.5px;
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.conventionNavigationLink
+{
+	@extend %regularLinkText;
+
+	cursor: pointer;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+
+	&::after
+	{
+		content: '|';
+
+		padding:
+		{
+			left: 20px;
+			right: 20px;
+		}
+
+		color: map-get($COLORS, blackTheme);
+		cursor: default;
+	}
+
+	&:last-of-type
+	{
+		&::after
+		{
+			content: '';
+
+			padding: 0px;
+		}
+	}
+}

@@ -292,7 +292,7 @@ input[type=checkbox]
 
 	& + label
 	{
-		width: 32px;
+		@extend %smallerSignificantText;
 
 		&::before
 		{
@@ -308,7 +308,11 @@ input[type=checkbox]
 				color: map-get($COLORS, darkGrayTheme);
 			}
 
-			margin-top: 0px;
+			margin:
+			{
+				top: 0px;
+				right: 10px;
+			}
 
 			display: inline-block;
 			width: 32px;
