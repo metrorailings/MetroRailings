@@ -1,0 +1,31 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/animations';
+@import '../foundation/convention';
+@import '../foundation/general';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.conventionPhoto
+{
+	@include transitionSettings($property: opacity, $duration: 0.5s);
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	width: 100vw;
+	height: 100vh;
+
+	opacity: 0.0;
+
+	&.active
+	{
+		opacity: 1.0;
+	}
+}
+
+footer
+{
+	display: none !important;
+}
