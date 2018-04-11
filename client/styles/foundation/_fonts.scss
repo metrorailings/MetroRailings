@@ -13,7 +13,7 @@
  * Dancing Script (Signatures)
  *
  */
-@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script);
+@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy);
 
 /* ----------------------- LOCAL CONSTANTS ----------------------------- */
 
@@ -229,7 +229,8 @@ $FONTS:
 
 %formLabelText
 {
-	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display);
+	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Sorts Mill Goudy);
+
 	letter-spacing: 0.05em;
 }
 

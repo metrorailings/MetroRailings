@@ -1,0 +1,100 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/convention';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/fonts';
+
+/* ----------------------- GENERAL STYLES ----------------------------- */
+
+.formRow
+{
+	margin-left: 65px;
+}
+
+#customerPhoneNumberInputs
+{
+	display: flex;
+	align-items: center;
+
+	& > input
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+	}
+}
+
+#customerPhoneAreaCode, #customerPhoneNumber1, #customerPhoneNumber2
+{
+	width: 100px;
+}
+
+#customerEmail, #customerCompany
+{
+	width: 350px;
+}
+
+#interestsSection
+{
+	margin-top: 45px;
+
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+#interestsQuestion
+{
+	@extend %formLabelText;
+}
+
+.checkboxGrouping
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	&:nth-of-type(1)
+	{
+		margin-top: 20px;
+	}
+}
+
+#submissionSection
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+		bottom: 50px;
+	}
+}
+
+#conventionSubmissionButton
+{
+	@include squareButton($bgColor: darkBlueTheme);
+	@include transitionSettings($property: opacity, $duration: 0.2s);
+
+	width: 200px;
+	text-align: center;
+
+	cursor: pointer;
+	opacity: 1.0;
+
+	&.disabled
+	{
+		opacity: 0.4;
+
+		cursor: default;
+	}
+}

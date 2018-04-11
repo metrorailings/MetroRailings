@@ -1,0 +1,90 @@
+{{> bannerSection }}
+
+{{> conventionNavigationSection }}
+
+<div class='pageHeader'>
+	<h3>Stay In Touch With Us</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<div class='formRow'>
+	<span class='controlGrouping'>
+		<label for='customerName'>Name</label>
+		<input type='text' id='customerName' />
+	</span>
+</div>
+
+<div class='formRow'>
+	<span id='customerPhoneNumberInputs' class='controlGrouping controlGroupingRow'>
+		<label for='customerPhoneAreaCode'>Phone Number</label>
+		(<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code' />)
+		<input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###' >-
+		<input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####' >
+	</span>
+</div>
+
+<div class='formRow'>
+	<span class='controlGrouping'>
+		<label for='customerEmail'>E-mail Address</label>
+		<input type='email' id='customerEmail'/>
+	</span>
+</div>
+
+<div class='formRow'>
+	<span class='controlGrouping'>
+		<label for='customerCompany'>Company Affiliation</label>
+		<input type='text' id='customerCompany'/>
+	</span>
+</div>
+
+<div class='formRow'>
+	<span class='controlGrouping'>
+		<label for='customerRole'>Role in Company</label>
+		<input type='text' id='customerRole'/>
+	</span>
+</div>
+
+<div id='interestsSection' class='formRow'>
+	<div id='interestsQuestion'>How are you looking to potentially work with us here at Metro Railings?</div>
+	<div class='formDescriptiveText'>(Check all that apply)</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-developments' value='developments' />
+		<label for='goal-developments'>Railings for New Developments</label>
+	</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-skyscraper' value='skyscraper' />
+		<label for='goal-skyscraper'>Railings for Skyscrapers</label>
+	</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-luxury' value='luxury' />
+		<label for='goal-luxury'>Luxury Railings</label>
+	</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-regular' value='regular' />
+		<label for='goal-regular'>Regular/Industrial Railings</label>
+	</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-cable' value='cable' />
+		<label for='goal-cable'>Cable Railings</label>
+	</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-glass' value='glass' />
+		<label for='goal-glass'>Glass Railings</label>
+	</div>
+
+	<div class='checkboxGrouping'>
+		<input type='checkbox' name='customerGoals' id='goal-showroom' value='showroom' />
+		<label for='goal-showroom'>Visit Our Showroom</label>
+	</div>
+
+</div>
+
+<div id='submissionSection'>
+	<span id='conventionSubmissionButton'>Save Contact Info</span>
+</div>
