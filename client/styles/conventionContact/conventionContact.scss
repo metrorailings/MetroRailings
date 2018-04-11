@@ -47,7 +47,7 @@
 	flex-direction: column;
 }
 
-#interestsQuestion
+#interestsQuestion, #opinionSection
 {
 	@extend %formLabelText;
 }
@@ -56,8 +56,8 @@
 {
 	margin:
 	{
-		top: 15px;
-		bottom: 15px;
+		top: 5px;
+		bottom: 5px;
 	}
 
 	display: flex;
@@ -68,6 +68,21 @@
 	{
 		margin-top: 20px;
 	}
+}
+
+#opinionSection
+{
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+#opinion
+{
+	width: 200px;
+
+	margin-top: 10px;
 }
 
 #submissionSection

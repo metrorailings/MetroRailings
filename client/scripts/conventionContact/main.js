@@ -14,6 +14,7 @@ var CUSTOMER_NAME_FIELD = 'customerName',
 	EMAIL_FIELD = 'customerEmail',
 	COMPANY_FIELD = 'customerCompany',
 	COMPANY_ROLE_FIELD = 'customerRole',
+	OPINION_FIELD = 'opinion',
 	SUBMISSION_BUTTON = 'conventionSubmissionButton',
 
 	DISABLED_CLASS = 'disabled',
@@ -34,6 +35,7 @@ var _nameField = document.getElementById(CUSTOMER_NAME_FIELD),
 	_companyField = document.getElementById(COMPANY_FIELD),
 	_roleField = document.getElementById(COMPANY_ROLE_FIELD),
 	_interestsOptions = document.getElementsByName(CUSTOMER_GOALS_NAME),
+	_opinionField = document.getElementById(OPINION_FIELD),
 
 	_submitButton = document.getElementById(SUBMISSION_BUTTON);
 
@@ -122,6 +124,16 @@ function setCompanyRole()
 }
 
 /**
+ * A listener to set the customer's opinion of the company into the view model
+ *
+ * @author kinsho
+ */
+function setOpinion()
+{
+	vm.opinion = _opinionField.value;
+}
+
+/**
  * A listener designed to set a new interest
  *
  * @param {Event} event - the event object associated with the firing of this listener
@@ -162,6 +174,7 @@ function saveData()
 			phoneTwo: vm.phoneTwo,
 			company: vm.company,
 			companyRole: vm.companyRole,
+			opinion: vm.opinion,
 			interests: selectedInterests
 		};
 
@@ -199,6 +212,7 @@ _phoneTwoField.addEventListener('blur', setPhoneTwo);
 _emailField.addEventListener('blur', setEmail);
 _companyField.addEventListener('blur', setCompany);
 _roleField.addEventListener('blur', setCompanyRole);
+_opinionField.addEventListener('change', setOpinion);
 
 for (let i = 0; i < _interestsOptions.length; i++)
 {

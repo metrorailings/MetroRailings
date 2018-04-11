@@ -162,6 +162,23 @@ Object.defineProperty(viewModel, 'companyRole',
 	}
 });
 
+// Opinion
+Object.defineProperty(viewModel, 'opinion',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__opinion;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__opinion = window.parseInt(value, 10);
+	}
+});
+
 // Interests
 Object.defineProperty(viewModel, 'interests',
 {
@@ -196,6 +213,7 @@ viewModel.phoneTwo = '';
 viewModel.company = '';
 viewModel.companyRole = '';
 viewModel.__interests = new Set();
+viewModel.opinion = 0;
 
 // ----------------- EXPORT -----------------------------
 
