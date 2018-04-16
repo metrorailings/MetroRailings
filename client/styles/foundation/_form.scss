@@ -199,6 +199,25 @@
 	}
 }
 
+.centeredDescriptiveText
+{
+	@extend %italicizedFormDescriptiveText;
+
+	text-align: center;
+
+	@include phoneOnly()
+	{
+		margin:
+		{
+			top: 10px;
+			left: 10px;
+			right: 10px;
+		}
+
+		width: 100%;
+	}
+}
+
 .requiredWarning
 {
 	@extend %italicizedFormDescriptiveText;
