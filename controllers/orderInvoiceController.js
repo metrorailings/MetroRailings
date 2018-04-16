@@ -5,6 +5,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var _Handlebars = require('handlebars'),
+	_showdown = require('showdown'),
 
 	config = global.OwlStakes.require('config/config'),
 
@@ -77,6 +78,11 @@ _Handlebars.registerPartial('orderInvoicePaymentSection', fileManager.fetchTempl
  */
 _Handlebars.registerPartial('orderInvoiceSubmissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
 
+// ----------------- PRIVATE MEMBERS --------------------------
+
+// The tool used to convert Markdown text to HTML text
+var _showdownConverter = new _showdown.Converter();
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -118,6 +124,9 @@ module.exports =
 
 		// If any taxes are being charged, set the tax rate so that it can be shown on the page
 		pageData.taxRate = pricing.NJ_SALES_TAX_RATE * 100;
+
+		// Convert the agreement text from Markdown format into HTML that can then be pasted into place
+		pageData.order.agreement = _showdownConverter.makeHtml(pageData.order.agreement.join('\n\n'));
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

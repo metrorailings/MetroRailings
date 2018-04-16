@@ -128,6 +128,13 @@ $FONTS:
 	@include basicFontSettings($weight: 300, $size: giganticFontSize, $family: Raleway);
 }
 
+%h5
+{
+	@include basicFontSettings($weight: 700, $size: regularFontSize, $family: Raleway);
+
+	text-decoration: underline;
+}
+
 %sectionHeader
 {
 	@include basicFontSettings($weight: 200, $size: largePlusFontSize, $family: Raleway, $color: darkBlueTheme);
