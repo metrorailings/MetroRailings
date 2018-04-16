@@ -32,7 +32,7 @@ var CONTROLLER_FOLDER = 'createInvoice',
 	INVOICE_URL = '/orderInvoice?id=::orderId',
 
 	VIEWS_DIRECTORY = '/client/views/',
-	DEFAULT_AGREEMENT_TEXT = 'defaultAgreement.txt',
+	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt',
 
 	PARTIALS =
 	{

@@ -28,7 +28,8 @@
     "css-purge": "*",
     "clean-css": "*",
     "google-translate-api": "*",
-    "striptags": "~2"
+    "striptags": "~2",
+    "showdown": "*"
   },
   "jspm": {
     "main": "MR.js",

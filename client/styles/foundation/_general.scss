@@ -122,6 +122,21 @@ li
 	line-height: 28px;
 }
 
+// Generic header stylings
+h5
+{
+	@extend %h5;
+
+	margin:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	display: block;
+	text-align: center;
+}
+
 // Classes that guarantee spacing around HTML elements incorporated within paragraph elements
 .spaceBeforeAndAfter
 {
