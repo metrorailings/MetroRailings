@@ -1,0 +1,41 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#zipCodeSection
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+		top: 50px;
+		bottom: 40px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#submissionSection
+{
+	margin:
+	{
+		top: 25px;
+		left: auto;
+		right: auto;
+	}
+}
+
+#submissionButton
+{
+	@include squareButton($bgColor: steelBlueTheme);
+
+	width: 200px;
+}
