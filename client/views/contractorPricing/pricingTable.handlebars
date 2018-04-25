@@ -1,0 +1,73 @@
+{{#each options}}
+	<div class='railingTable'>
+
+		<span class='idSection'>
+			<div class='categoryCell'>{{ label }}</div>
+			<div class='previewImageCell'><img src='{{ previewImage }}' /></div>
+		</span>
+
+		<span class='pricingSection'>
+			<span class='priceColumn'>
+				<div class='priceHeader'>
+					<span>
+						{{#if regularPriceRange.floor}}
+							Regular Price Range
+						{{else}}
+							Regular Price
+						{{/if}}
+					</span>
+				</div>
+				<div class='priceCell'>
+					<span>
+						{{#if regularPriceRange.floor}}
+							${{ regularPriceRange.floor }} - ${{ regularPriceRange.ceiling }}
+						{{else}}
+							${{ regularPriceRange }}
+						{{/if}}
+						per foot
+					</span>
+				</div>
+			</span>
+
+			{{#if bulkPriceRange}}
+				<span class='priceColumn'>
+					<div class='priceHeader'>
+						<span>
+							{{#if bulkPriceRange.floor}}
+								Bulk Price Range
+							{{else}}
+								Bulk Price
+							{{/if}}
+						</span>
+					</div>
+					<div class='priceCell'>
+						<span>
+							{{#if bulkPriceRange.floor}}
+								${{ bulkPriceRange.floor }} - ${{ bulkPriceRange.ceiling }}
+							{{else}}
+								${{ bulkPriceRange }}
+							{{/if}}
+							per foot
+						</span>
+					</div>
+				</span>
+			{{/if}}
+
+			{{#if curves}}
+				<span class='priceColumn'>
+					<div class='priceHeader'>
+						<span>Curve Pricing</span>
+					</div>
+					<div class='priceCell'>
+						<span>Additional ${{ curves }} per foot</span>
+					</div>
+				</span>
+			{{/if}}
+		</span>
+
+		<span class='noteRow'>
+			<span>{{ note }}</span>
+		</span>
+
+	</div>
+{{/each}}
