@@ -85,6 +85,7 @@ function retrievePricing()
 // Set up the view model listeners
 _zipCodeField.addEventListener('change', setZipCode);
 _submitButton.addEventListener('click', retrievePricing);
+_submitButton.addEventListener('touchstart', retrievePricing);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
