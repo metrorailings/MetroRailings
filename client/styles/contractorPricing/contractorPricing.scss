@@ -1,4 +1,15 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import '../foundation/general';
+@import '../foundation/responsive';
 @import '../foundation/convention';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#instructionText
+{
+	@include printOnly()
+	{
+		display: none;
+	}
+}

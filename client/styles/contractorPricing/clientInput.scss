@@ -23,6 +23,20 @@
 	flex-direction: column;
 }
 
+#zipCode
+{
+	@include printOnly()
+	{
+		margin-left: 10px;
+		width: 75px;
+
+		border: none;
+		box-shadow: 0px 0px 0px 0px map-get($COLORS, whiteTheme);
+
+		text-align: center;
+	}
+}
+
 #submissionSection
 {
 	margin:
@@ -30,6 +44,11 @@
 		top: 25px;
 		left: auto;
 		right: auto;
+	}
+
+	@include printOnly()
+	{
+		display: none;
 	}
 }
 
