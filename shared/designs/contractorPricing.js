@@ -42,16 +42,17 @@ var contractorModule =
 				previewImage: 'client/images/designs/type/traditional.jpg',
 				regularPriceRange:
 				{
-					floor: 70,
-					ceiling: 90
-				},
-				bulkPriceRange:
-				{
 					floor: 60,
 					ceiling: 75
 				},
+				bulkPriceRange:
+				{
+					floor: 40,
+					ceiling: 60
+				},
 				curves: 15,
-				note: 'A price range is given depending on how ornate you want the railings to be.'
+				note: 'A price range is given depending on how ornate you want the railings to be. Bulk rates apply' +
+				' to any project that needs more than 100 feet of railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-MOD',
@@ -59,16 +60,17 @@ var contractorModule =
 				previewImage: 'client/images/designs/type/modern.jpg',
 				regularPriceRange:
 				{
-					floor: 85,
-					ceiling: 100
+					floor: 75,
+					ceiling: 90
 				},
 				bulkPriceRange:
 				{
-					floor: 70,
-					ceiling: 85
+					floor: 55,
+					ceiling: 70
 				},
 				curves: 15,
-				note: 'A price range is given depending on the complexity of the railing design.'
+				note: 'A price range is given depending on the complexity of the railing design. Bulk rates apply to' +
+				' any project that needs more than 100 feet of railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-CABLE',
@@ -76,15 +78,16 @@ var contractorModule =
 				previewImage: 'client/images/designs/type/cable.jpeg',
 				regularPriceRange:
 				{
-					floor: 180,
-					ceiling: 240
+					floor: 150,
+					ceiling: 210
 				},
 				bulkPriceRange:
 				{
-					floor: 160,
-					ceiling: 220
+					floor: 140,
+					ceiling: 200
 				},
-				note: 'A price range is given depending on the number of corners involved in the project.'
+				note: 'A price range is given depending on the number of corners involved in the project. Bulk rates' +
+				' apply to any order that needs more than 300 feet of cable railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-GLASS-FRAME',
@@ -92,7 +95,8 @@ var contractorModule =
 				previewImage: 'client/images/designs/type/glassFrame.jpg',
 				regularPriceRange: 160,
 				bulkPriceRange: 140,
-				note: 'Glass panes are inserted directly into a frame we build in-house.'
+				note: 'Glass panes are inserted directly into a frame we build in-house. Bulk rates apply to any' +
+				' order that needs more than 300 feet of glass railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-GLASS-POST',
@@ -100,7 +104,8 @@ var contractorModule =
 				previewImage: 'client/images/designs/type/glassPost.jpg',
 				regularPriceRange: 180,
 				bulkPriceRange: 170,
-				note: 'Glass panes are attached to posts using stainless steel clamps.'
+				note: 'Glass panes are attached to posts using stainless steel clamps. Bulk rates apply to any' +
+				' order that needs more than 300 feet of glass railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-GLASS-FLOOR',
@@ -108,7 +113,8 @@ var contractorModule =
 				previewImage: 'client/images/designs/type/glassFloor.jpg',
 				regularPriceRange: 210,
 				bulkPriceRange: 195,
-				note: 'Glass panes act as the railings and are held into place using specialized U-channels.'
+				note: 'Glass panes act as the railings and are held into place using specialized U-channels. Bulk rates apply to any' +
+				' order that needs more than 300 feet of glass railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-GLASS-WALL',
@@ -117,7 +123,8 @@ var contractorModule =
 				regularPriceRange: 220,
 				bulkPriceRange: 205,
 				note: 'Glass panes act as the railings and are anchored into position using screws that are' +
-				' threaded through the glass and into the side of whatever platform the glass sits on.'
+				' threaded through the glass and into the side of whatever platform the glass sits on. Bulk rates apply to any' +
+				' order that needs more than 300 feet of glass railing.'
 			},
 			{
 				id: category.CONTRACTOR.CODE + '-WROUGHT-IRON',

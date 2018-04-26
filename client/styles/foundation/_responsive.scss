@@ -149,3 +149,20 @@ $DEVICE_WIDTHS:
 		@content;
 	}
 }
+
+/*
+ * Mix-in is responsible for enforcing CSS stylings in print and on devices that can (at minimum) support resolution
+ * expected from a tablet environment
+ */
+@mixin tabletUpAndPrint()
+{
+	@media only screen and (min-device-width: map-get($DEVICE_WIDTHS, tabletMin))
+	{
+		@content;
+	}
+
+	@media print
+	{
+		@content;
+	}
+}
