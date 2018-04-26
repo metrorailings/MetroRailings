@@ -46,6 +46,13 @@
 	{
 		flex-direction: column;
 	}
+
+	@include printOnly()
+	{
+		width: 95%;
+
+		page-break-inside: avoid;
+	}
 }
 
 .idSection
@@ -57,7 +64,7 @@
 
 	background-color: map-get($COLORS, cadetBlueTheme);
 
-	@include tabletUp()
+	@include tabletUpAndPrint()
 	{
 		border:
 		{
@@ -71,7 +78,7 @@
 			top-left-radius: 15px;
 		}
 
-		width: 40%;
+		flex: 2;
 	}
 
 	@include phoneOnly()
@@ -97,33 +104,36 @@
 {
 	@extend %whiteCapitalHeader;
 
-	border-bottom:
+	border:
 	{
-		width: 1.5px;
-		style: solid;
-		color: map-get($COLORS, blackTheme);
+		bottom:
+		{
+			width: 1.5px;
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		top-left-radius: 15px;
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
 	}
 
 	width: 100%;
-
 	text-align: center;
-
-	@include tabletUp()
-	{
-		padding:
-		{
-			top: 20px;
-			bottom: 20px;
-		}
-	}
 
 	@include phoneOnly()
 	{
-		padding:
-		{
-			top: 10px;
-			bottom: 10px;
-		}
+		border-top-right-radius: 15px;
+	}
+
+	& > span
+	{
+		width: 90%;
+		display: inline-block;
 	}
 }
 
@@ -137,10 +147,25 @@
 
 	width: 100%;
 
+	@include printOnly()
+	{
+		padding:
+		{
+			left: 20px;
+			right: 20px;
+		}
+	}
+
 	& > img
 	{
 		max-width: 250px;
 		max-height: 250px;
+
+		@include printOnly()
+		{
+			max-width: 140px;
+			max-height: 105px;
+		}
 	}
 }
 
@@ -150,9 +175,9 @@
 	align-items: center;
 	justify-content: center;
 
-	@include tabletUp()
+	@include tabletUpAndPrint()
 	{
-		width: calc(60% - 1.5px);
+		flex: 3;
 	}
 
 	@include phoneOnly()
@@ -171,7 +196,7 @@
 	justify-content: center;
 	flex-direction: column;
 
-	@include tabletUp()
+	@include tabletUpAndPrint()
 	{
 		margin-top: 1px;
 
@@ -210,7 +235,7 @@
 
 	width: 100%;
 
-	@include tabletUp()
+	@include tabletUpAndPrint()
 	{
 		flex: 2;
 	}
@@ -224,6 +249,7 @@
 	{
 		width: 90%;
 		text-align: center;
+		display: inline-block;
 	}
 }
 
@@ -243,7 +269,7 @@
 
 	width: 100%;
 
-	@include tabletUp()
+	@include tabletUpAndPrint()
 	{
 		flex: 3;
 	}
@@ -257,6 +283,7 @@
 	{
 		width: 90%;
 		text-align: center;
+		display: inline-block;
 	}
 }
 
@@ -283,5 +310,6 @@
 	{
 		width: 90%;
 		text-align: center;
+		display: inline-block;
 	}
 }
