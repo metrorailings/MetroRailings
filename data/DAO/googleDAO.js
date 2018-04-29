@@ -127,8 +127,15 @@ module.exports =
 				// If the destination address is present in the response body, we have a legit address here
 				if (body.destination_addresses.length && body.destination_addresses[0])
 				{
-					// Return the distance (in kilometers) back to the invoker
-					deferred.resolve((body.rows[0].elements[0].distance.value) / 1000);
+					if (body.rows && body.rows[0] && body.rows[0].elements && body.rows[0].elements[0] && body.rows[0].elements[0].distance)
+					{
+						// Return the distance (in kilometers) back to the invoker
+						deferred.resolve((body.rows[0].elements[0].distance.value) / 1000);
+					}
+					else
+					{
+						deferred.resolve(-1);
+					}
 				}
 				else
 				{
