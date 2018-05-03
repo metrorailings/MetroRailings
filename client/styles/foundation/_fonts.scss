@@ -11,9 +11,10 @@
  * Playfair Display
  * Raleway
  * Dancing Script (Signatures)
- *
+ * Sorts Mill Goudy
+ * Julius Sans One
  */
-@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy);
+@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy|Julius+Sans+One);
 
 /* ----------------------- LOCAL CONSTANTS ----------------------------- */
 
@@ -145,6 +146,21 @@ $FONTS:
 	@include basicFontSettings($weight: 700, $size: largePlusFontSize, $family: Raleway);
 
 	letter-spacing: 3px;
+}
+
+%littleSpecialSectionHeader
+{
+	@include basicFontSettings($weight: 700, $size: largeFontSize, $family: Raleway);
+
+	letter-spacing: 2px;
+}
+
+%whiteCapitalHeader
+{
+	@include basicFontSettings($weight: 700, $size: largePlusFontSize, $family: Julius Sans One, $color: whiteTheme);
+
+	letter-spacing: 1.5px;
+	text-shadow: 1px 1px map-get($COLORS, blackTheme);
 }
 
 /* --- Regular stylings --- */
