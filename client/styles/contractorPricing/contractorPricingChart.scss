@@ -1,0 +1,315 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#pricingTable
+{
+	@include transitionSettings($property: opacity, $duration: 0.3s);
+
+	opacity: 0.0;
+
+	&.fadeIn
+	{
+		opacity: 1.0;
+	}
+}
+
+.railingTable
+{
+	margin:
+	{
+		top: 35px;
+		bottom: 35px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		radius: 15px;
+		width: 1.5px;
+		style: solid;
+		color: map-get($COLORS, slateGrayTheme);
+	}
+
+	width: 90%;
+
+	display: flex;
+	flex-wrap: wrap;
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
+
+	@include printOnly()
+	{
+		width: 95%;
+
+		page-break-inside: avoid;
+	}
+}
+
+.idSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	background-color: map-get($COLORS, cadetBlueTheme);
+
+	@include tabletUpAndPrint()
+	{
+		border:
+		{
+			right:
+			{
+				width: 1.5px;
+				style: solid;
+				color: map-get($COLORS, slateGrayTheme);
+			}
+
+			top-left-radius: 15px;
+		}
+
+		flex: 2;
+	}
+
+	@include phoneOnly()
+	{
+		border:
+		{
+			bottom:
+			{
+				width: 1.5px;
+				style: solid;
+				color: map-get($COLORS, slateGrayTheme);
+			}
+
+			top-left-radius: 15px;
+			top-right-radius: 15px;
+		}
+
+		width: 100%;
+	}
+}
+
+.categoryCell
+{
+	@extend %whiteCapitalHeader;
+
+	border:
+	{
+		bottom:
+		{
+			width: 1.5px;
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		top-left-radius: 15px;
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	width: 100%;
+	text-align: center;
+
+	@include phoneOnly()
+	{
+		border-top-right-radius: 15px;
+	}
+
+	& > span
+	{
+		width: 90%;
+		display: inline-block;
+	}
+}
+
+.previewImageCell
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	width: 100%;
+
+	@include printOnly()
+	{
+		padding:
+		{
+			left: 20px;
+			right: 20px;
+		}
+	}
+
+	& > img
+	{
+		max-width: 250px;
+		max-height: 250px;
+
+		@include printOnly()
+		{
+			max-width: 140px;
+			max-height: 105px;
+		}
+	}
+}
+
+.pricingSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include tabletUpAndPrint()
+	{
+		flex: 3;
+	}
+
+	@include phoneOnly()
+	{
+		width: 100%;
+	}
+}
+
+.priceColumn
+{
+	flex: 1;
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	@include tabletUpAndPrint()
+	{
+		margin-top: 1px;
+
+		&:last-of-type
+		{
+			border-top-right-radius: 15px;
+		}
+	}
+
+	&:nth-of-type(2)
+	{
+		background-color: map-get($COLORS, lightGreenTheme);
+	}
+}
+
+.priceHeader
+{
+	@extend %littleSpecialSectionHeader;
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	border-bottom:
+	{
+		width: 0.75px;
+		style: solid;
+		color: map-get($COLORS, steelBlueTheme);
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+
+	@include tabletUpAndPrint()
+	{
+		flex: 2;
+	}
+
+	@include phoneOnly()
+	{
+		height: 100px;
+	}
+
+	& > span
+	{
+		width: 90%;
+		text-align: center;
+		display: inline-block;
+	}
+}
+
+.priceCell
+{
+	@extend %decorativeText;
+
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+
+	@include tabletUpAndPrint()
+	{
+		flex: 3;
+	}
+
+	@include phoneOnly()
+	{
+		height: 80px;
+	}
+
+	& > span
+	{
+		width: 90%;
+		text-align: center;
+		display: inline-block;
+	}
+}
+
+.noteRow
+{
+	@extend %italicizedFormDescriptiveText;
+
+	padding:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	border-top:
+	{
+		style: solid;
+		width: 1.5px;
+		color: map-get($COLORS, slateGrayTheme);
+	}
+
+	width: 100%;
+
+	& > span
+	{
+		width: 90%;
+		text-align: center;
+		display: inline-block;
+	}
+}

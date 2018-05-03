@@ -1,0 +1,60 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#zipCodeSection
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+		top: 50px;
+		bottom: 40px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#zipCode
+{
+	@include printOnly()
+	{
+		margin-left: 10px;
+		width: 75px;
+
+		border: none;
+		box-shadow: 0px 0px 0px 0px map-get($COLORS, whiteTheme);
+
+		text-align: center;
+	}
+}
+
+#submissionSection
+{
+	margin:
+	{
+		top: 25px;
+		left: auto;
+		right: auto;
+	}
+
+	@include printOnly()
+	{
+		display: none;
+	}
+}
+
+#submissionButton
+{
+	@include squareButton($bgColor: steelBlueTheme);
+
+	width: 200px;
+}
