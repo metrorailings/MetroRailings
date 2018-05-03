@@ -2,6 +2,7 @@
 
 @import '../foundation/colors';
 @import '../foundation/fonts';
+@import '../foundation/responsive';
 
 /* ----------------------- GENERAL STYLES ----------------------------- */
 
@@ -15,10 +16,15 @@
 	width: 100%;
 	background-color: map-get($COLORS, logoBlueTheme);
 
+	@include printOnly()
+	{
+		display: none !important;
+	}
+
 	& > img
 	{
-		max-width: 200px;
-		max-height: 150px;
+		max-width: 140px;
+		max-height: 105px;
 	}
 }
 
