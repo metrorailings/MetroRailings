@@ -30,7 +30,7 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	INVOICE_LINK_CLASS = 'invoiceLink',
 	DETAILS_BUTTON_CLASS = 'detailsButton',
 	ORDER_DETAILS_BUTTON_CLASS = 'orderDetailsButton',
-	PRINT_FINISHING_FORM_BUTTON_CLASS = 'closeOrderAgreementLink',
+	CONTRACTOR_AGREEMENT_CLASS = 'contractorAgreementLink',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
 	HIDE_CLASS = 'hide',
 
@@ -46,7 +46,7 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 	PROSPECT_DETAILS_URL = '/prospectDetails?orderNumber=::orderID',
 	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
 	ORDER_INVOICE_URL = '/orderInvoice?id=::orderID',
-	PAPER_ORDER_URL = '/paperOrder?id=::orderID&closing=y',
+	CONTRACTOR_AGREEMENT_URL = '/contractorAgreement?id=::orderID',
 	GOOGLE_MAPS_SEARCH_URL = 'https://www.google.com/maps/search/?api=1&query=::params',
 
 	ORDER_ID_PLACEHOLDER = '::orderID',
@@ -127,15 +127,15 @@ function _attachPictureLoadListeners()
 function _attachNavigationListeners()
 {
 	var editButtons = document.getElementsByClassName(DETAILS_BUTTON_CLASS),
-		finishingFormButtons = document.getElementsByClassName(PRINT_FINISHING_FORM_BUTTON_CLASS),
+		contractorFormButtons = document.getElementsByClassName(CONTRACTOR_AGREEMENT_CLASS),
 		i;
 
 	for (i = editButtons.length - 1; i >= 0; i--)
 	{
 		editButtons[i].addEventListener('click', navigateToDetailsPage);
-		if (finishingFormButtons[i])
+		if (contractorFormButtons[i])
 		{
-			finishingFormButtons[i].addEventListener('click', navigateToPaperOrderPage);
+			contractorFormButtons[i].addEventListener('click', navigateToContractorAgreementPage);
 		}
 	}
 }
@@ -418,19 +418,19 @@ function navigateToCreateInvoicePage(event)
 }
 
 /**
- * Listener meant to take the user to the finishing form for a particular order
+ * Listener meant to take the user to the contractor agreement form for a particular order
  *
  * @param {Event} event - the event associated with the firing of this listener
  *
  * @author kinsho
  */
-function navigateToPaperOrderPage(event)
+function navigateToContractorAgreementPage(event)
 {
 	var targetElement = event.currentTarget,
 		orderID = targetElement.dataset.id,
-		paperOrderURL = PAPER_ORDER_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
+		agreementURL = CONTRACTOR_AGREEMENT_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
 
-	window.location.href = paperOrderURL;
+	window.location.href = agreementURL;
 }
 
 /**

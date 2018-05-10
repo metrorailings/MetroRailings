@@ -35,7 +35,8 @@ SystemJS.config({
 
 		conventionContact: '/client/scripts/conventionContact/main.js',
 		conventionGallery: '/client/scripts/conventionGallery/main.js',
-		contractorPricing: '/client/scripts/contractorPricing/main.js'
+		contractorPricing: '/client/scripts/contractorPricing/main.js',
+		contractorAgreement: '/client/scripts/contractorAgreement/main.js'
 	},
 	packages:
 	{
