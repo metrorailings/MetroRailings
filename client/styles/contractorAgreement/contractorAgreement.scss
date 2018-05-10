@@ -1,0 +1,20 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/convention';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#contractorAgreementPage
+{
+	input, textarea
+	{
+		@include printOnly()
+		{
+			border: none;
+			box-shadow: 0px 0px 0px 0px map-get($COLORS, whiteTheme);
+		}
+	}
+}
