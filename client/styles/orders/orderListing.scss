@@ -281,7 +281,7 @@
 	flex-wrap: wrap;
 }
 
-.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink, .closeOrderAgreementLink
+.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink, .closeOrderAgreementLink, .contractorAgreementLink
 {
 	@extend %regularLinkText;
 

@@ -1,0 +1,136 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/form';
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#contractorAgreementText
+{
+	margin:
+	{
+		top: 40px;
+	}
+}
+
+.articleSubject
+{
+	@extend %tabularHeaderText;
+
+	margin:
+	{
+		top: 40px;
+		bottom: 40px;
+	}
+
+	width: 100%;
+
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.bulletPoint
+{
+	@extend %regularText;
+
+	margin:
+	{
+		top: 40px;
+		bottom: 40px;
+	}
+
+	display: flex;
+	align-items: center;
+
+	width: 100%;
+
+	@include printOnly()
+	{
+		page-break-inside: avoid;
+	}
+}
+
+.bulletPointIdentifier
+{
+	@extend %boldFont;
+
+	justify-self: center;
+
+	width: 7.5%;
+}
+
+.bulletPointText
+{
+	margin-right: 40px;
+
+	justify-self: flex-start;
+
+	width: 92.5%;
+
+	text-align: left;
+
+	&:first-child
+	{
+		margin:
+		{
+			left: 100px;
+			right: 100px;
+		}
+
+		width: 100%;
+	}
+}
+
+.bulletPointHeader
+{
+	font-weight: 700;
+
+	margin-right: 5px;
+}
+
+#depositPercentage
+{
+	width: 30px;
+
+	text-align: right;
+}
+
+#descriptionText
+{
+	margin:
+	{
+		top: -25px;
+		bottom: 25px;
+		left: 45px;
+		right: 45px;
+	}
+
+	width: 85%;
+	min-height: 50px;
+}
+
+#descriptionTextCloneSpace
+{
+	@extend %regularText;
+
+	margin:
+	{
+		top: -25px;
+		bottom: 25px;
+		left: 45px;
+		right: 45px;
+	}
+
+	padding:
+	{
+		left: 3px;
+	}
+
+	overflow: hidden;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+
+	width: 85%;
+	height: 0px;
+}

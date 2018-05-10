@@ -1,0 +1,55 @@
+<div id='contractorAgreementOverview'>
+
+	<!-- Current Date and Order Number --->
+	<div class='controlGroupingRow'>
+		<span class='controlGrouping'>
+			<label>Date:</label>
+			<input type='text' value='{{ currentDate }}' />
+		</span>
+		<span class='controlGrouping'>
+			<label>Order ID:</label>
+			<input type='text' value='{{ order._id }}' />
+		</span>
+	</div>
+
+	<!-- Our Company Name --->
+	<div>
+		<span class='controlGrouping'>
+			<label>Subcontractor:</label>
+			<input type='text' value='Metro Railings' />
+		</span>
+	</div>
+
+	<!-- Contractor --->
+	<div>
+		<span class='controlGrouping'>
+			<label>Contractor:</label>
+			<input id='contractorName' type='text' value='{{ order.customer.name }}' />
+		</span>
+	</div>
+
+	<!-- Project -->
+	<div>
+		<span class='controlGrouping'>
+			<label>Project:</label>
+			<input id='projectName' type='text' />
+		</span>
+	</div>
+
+	<!-- Owner -->
+	<div>
+		<span class='controlGrouping'>
+			<label>Owner:</label>
+			<input id='ownerName' type='text' />
+		</span>
+	</div>
+
+	<!-- Installation Address -->
+	<div>
+		<span class='controlGrouping'>
+			<label>Installation Address:</label>
+			<input id='installationAddress' type='text' value='{{ order.customer.address }}, {{ order.customer.city }}, {{ order.customer.state }}'/>
+		</span>
+	</div>
+
+</div>

@@ -1,0 +1,74 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/form';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#contractorAgreementOverview
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+		left: 25px;
+	}
+
+	padding:
+	{
+		bottom: 15px;
+		left: 10px;
+		right: 10px;
+	}
+
+	border-bottom:
+	{
+		width: 1.5px;
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+	}
+
+	width: 100%;
+
+	& > div
+	{
+		margin:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
+		&:first-of-type
+		{
+			margin-top: 35px;
+		}
+	}
+}
+
+.controlGroupingRow > .controlGrouping
+{
+	flex: 1;
+
+	&:last-of-type
+	{
+		justify-content: center;
+	}
+}
+
+.controlGrouping > label
+{
+	@include printOnly()
+	{
+		font-weight: 700 !important;
+	}
+}
+
+#contractorName, #projectName, #ownerName
+{
+	width: 325px;
+}
+
+#installationAddress
+{
+	width: 400px;
+}
