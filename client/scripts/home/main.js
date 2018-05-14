@@ -1,7 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 import gallerySection from 'client/scripts/home/gallerySection';
-import orderSection from 'client/scripts/home/orderSection';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
@@ -9,9 +8,6 @@ var PAGE_LOADER_CLASS = 'pageLoad',
 	SURFACE_CLASS = 'surface',
 	SHOW_CLASS = 'show',
 	BANNER_IMAGE_CLASS = 'bannerImage',
-
-	BACKGROUND_IMAGE_PHRASE = 'url("::imageSrc")',
-	IMAGE_SRC_PLACEHOLDER = '::imageSrc',
 
 	HOME_BANNER_ONE = 'homeBanner1',
 	HOME_BANNER_TWO = 'homeBanner2',

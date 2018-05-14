@@ -278,3 +278,39 @@
 		opacity: 0.0;
 	}
 }
+
+.indexBubble
+{
+	@extend %smallSignificantText;
+
+	border:
+	{
+		radius: 50%;
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	padding: 5px;
+	background-color: map-get($COLORS, whiteTheme);
+	color: map-get($COLORS, blackTheme);
+
+	position: absolute;
+	top: 5px;
+
+	@include desktopOnly()
+	{
+		width: 60px;
+
+		left: calc(100% - 80px);
+	}
+
+	@include mobileOnly()
+	{
+		font-size: map-get($FONTS, tinyFontSize);
+
+		width: 25px;
+
+		left: calc(100% - 40px);
+	}
+}
