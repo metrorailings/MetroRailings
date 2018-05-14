@@ -12,7 +12,6 @@ $DEVICE_WIDTHS:
 
 /* ----------------------- MIX-INS ----------------------------- */
 
-
 /*
  * Mix-in is responsible for enforcing CSS stylings only on devices that can (at minimum) support resolution
  * expected from a desktop environment
@@ -164,5 +163,41 @@ $DEVICE_WIDTHS:
 	@media print
 	{
 		@content;
+	}
+}
+
+/* ----------------------- STYLES ----------------------------- */
+
+// Responsive Visibility Stylings
+
+.desktopOnly
+{
+	@include mobileOnly()
+	{
+		display: none !important;
+	}
+}
+
+.mobileOnly
+{
+	@include desktopOnly()
+	{
+		display: none !important;
+	}
+}
+
+.tabletUpOnly
+{
+	@include phoneOnly()
+	{
+		display: none !important;
+	}
+}
+
+.phoneOnly
+{
+	@include tabletUp()
+	{
+		display: none !important;
 	}
 }
