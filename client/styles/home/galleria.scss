@@ -39,10 +39,17 @@
 		{
 			width: 50%;
 		}
+	}
+}
 
-		& > img
-		{
-			cursor: pointer;
-		}
+.galleriaPictureHolder
+{
+	position: relative;
+	width: auto;
+	display: inline-block;
+
+	& > img
+	{
+		cursor: pointer;
 	}
 }

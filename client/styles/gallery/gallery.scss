@@ -25,38 +25,3 @@
 
 	position: relative;
 }
-
-.indexBubble
-{
-	@extend %significantText;
-
-	border:
-	{
-		radius: 50%;
-		width: 2px;
-		style: solid;
-		color: map-get($COLORS, blackTheme);
-	}
-
-	position: absolute;
-	top: 10px;
-
-	padding: 5px;
-	background-color: map-get($COLORS, whiteTheme);
-
-	@include tabletUp()
-	{
-		width: 30px;
-
-		left: calc(100% - 50px);
-	}
-
-	@include phoneOnly()
-	{
-		font-size: map-get($FONTS, tinyFontSize);
-
-		width: 15px;
-
-		left: calc(100% - 35px);
-	}
-}

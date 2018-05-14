@@ -27,7 +27,6 @@ var CONTROLLER_FOLDER = 'home',
 	{
 		ABOUT_US: 'aboutUs',
 		GALLERY_SECTION: 'gallerySection',
-		ORDER_SECTION: 'orderSection',
 		GALLERIA: 'galleria',
 		THANK_YOU_SECTION: 'thankYouSection'
 	};
@@ -45,11 +44,6 @@ _Handlebars.registerPartial('aboutUs', fileManager.fetchTemplateSync(CONTROLLER_
  * The template for the gallery section
  */
 _Handlebars.registerPartial('homeGallerySection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.GALLERY_SECTION));
-
-/**
- * The template for the order section
- */
-_Handlebars.registerPartial('homeOrderSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_SECTION));
 
 /**
  * The template for the thank you section
