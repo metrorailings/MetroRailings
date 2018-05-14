@@ -20,6 +20,7 @@
 
 $FONTS:
 (
+	
 	tinyFontSize: 12px,
 	smallFontSize: 16px,
 	regularFontSize: 18px,
@@ -197,6 +198,13 @@ $FONTS:
 	letter-spacing: 0.75px;
 }
 
+%tinyLogoText
+{
+	@include basicFontSettings($size: tinyFontSize, $family: Raleway, $color: logoBlueTheme);
+
+	letter-spacing: 0.1em;
+}
+
 %topMenuText
 {
 	@include basicFontSettings($size: smallFontSize, $family: Raleway, $color: darkGreyTheme);
@@ -205,7 +213,7 @@ $FONTS:
 
 %footerText
 {
-	@include basicFontSettings($size: largeFontSize, $family: Palatino Linotype, $color: whiteTheme);
+	@include basicFontSettings($size: regularPlusTextSize, $family: Palatino Linotype, $color: whiteTheme);
 	letter-spacing: 0.2em;
 
 	@media only screen and (max-device-width: 727px)
@@ -258,6 +266,13 @@ $FONTS:
 }
 
 /* --- Button stylings --- */
+%tinyButtonText
+{
+	@include basicFontSettings($weight: 400, $size: tinyFontSize, $family: Muli, $color: whiteTheme);
+
+	text-shadow: 0.5px 0.5px map-get($COLORS, blackTheme);
+}
+
 %smallButtonText
 {
 	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: Muli, $color: whiteTheme);

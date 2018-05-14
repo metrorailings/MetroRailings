@@ -1,20 +1,26 @@
 <div id='topMenu'>
+
+	<div id='desktopMenuLinks'>
+		<a class='topMenuLink' href='/contactUs'>TALK WITH US</a>
+		<a class='topMenuLink' href='/faqs'>FAQS</a>
+	</div>
+
 	<span id='topMenuLogoContainer'>
 		<img id='topMenuLogo' src='client/images/logo/png/color_logo_transparent_background_small.png' onclick='window.location.href="/"'/>
+		<span id='topMenuPhoneNumber'>{{ contactNumber }}</span>
 	</span>
 
 	<div id='desktopMenuLinks'>
-		<a class='topMenuLink' href='/createOrder'>START DESIGNING</a>
-		<a class='topMenuLink' href='/contactUs'>TALK WITH US</a>
-		<a class='topMenuLink' href='/checkOrder'>CHECK ON YOUR ORDER</a>
-		<a class='topMenuLink' href='/faqs'>FAQS</a>
 		<a class='topMenuLink' href='/gallery'>GALLERY</a>
+		<a class='topMenuLink' href='/checkOrder'>CHECK ON YOUR ORDER</a>
 	</div>
 
-	<i id='topMenuExpander' class='fa fa-bars' tabindex='1'></i>
+	<span id='topMenuExpander' class='topMenuLink' tabindex='1'>
+		<i class='fa fa-bars'></i>
+		MENU
+	</span>
 
 	<div id='mobileTopMenuLinks'>
-		<a class='topMenuLink' href='/createOrder'>START DESIGNING</a>
 		<a class='topMenuLink' href='/contactUs'>TALK WITH US</a>
 		<a class='topMenuLink' href='/checkOrder'>CHECK ON YOUR ORDER</a>
 		<a class='topMenuLink' href='/faqs'>FAQS</a>
