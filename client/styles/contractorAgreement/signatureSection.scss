@@ -67,4 +67,9 @@
 #signatureCustomerName
 {
 	width: 250px;
+
+	@include printOnly()
+	{
+		text-align: center;
+	}
 }
