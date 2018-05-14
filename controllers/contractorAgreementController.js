@@ -84,6 +84,9 @@ module.exports =
 		pageData.currentDate = dateUtility.FULL_MONTHS[currentDate.getMonth()] + ' ' + currentDate.getDate() +
 			dateUtility.findOrdinalSuffix(currentDate.getDate()) + ', ' + currentDate.getFullYear();
 
+		// Format the descriptive text
+		pageData.order.notes.order = pageData.order.notes.order.split('<br />').join('\n').split('\t').join('');
+
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
