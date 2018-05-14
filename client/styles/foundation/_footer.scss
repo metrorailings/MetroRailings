@@ -9,34 +9,131 @@
 
 footer
 {
-	@extend %footerText;
-
-	width: 100%;
-
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
 
 	background-color: map-get($COLORS, blackTheme);
+	z-index: 500;
+
+	position: fixed;
+	left: 0px;
+	bottom: 0px;
+
+	width: 100%;
+	height: 50px;
 
 	@include printOnly()
 	{
 		display: none;
 	}
 
-	@include tabletUp()
+	@include desktopOnly()
+	{
+		opacity: 0.75;
+	}
+
+	@include mobileOnly()
+	{
+		border-top:
+		{
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+
+		opacity: 1.0;
+	}
+}
+
+.footerElement
+{
+	display: flex;
+	align-items: center;
+
+	flex: 1;
+}
+
+#desktopContactNumberLister
+{
+	@extend %footerText;
+
+	text-align: left;
+
+	flex: 1;
+	margin-left: 25px;
+}
+
+#desktopCopyrightLister
+{
+	@extend %footerText;
+
+	text-align: right;
+
+	flex: 1;
+	margin-right: 25px;
+}
+
+#mobileContactUsNavigator
+{
+	@extend %smallButtonText;
+
+	text-decoration: none;
+	background-color: map-get($COLORS, indianRedTheme);
+
+	flex: 1;
+	height: 50px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include phoneOnly()
+	{
+		font-size: map-get($FONTS, tinyFontSize);
+	}
+
+	& > i
+	{
+		margin-right: 5px;
+	}
+}
+
+#mobileCallUsNavigator
+{
+	@extend %smallButtonText;
+
+	text-decoration: none;
+	background-color: map-get($COLORS, cadetBlueTheme);
+
+	flex: 1;
+	height: 50px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include phoneOnly()
+	{
+		font-size: map-get($FONTS, tinyFontSize);
+	}
+
+	& > i
+	{
+		margin-right: 5px;
+	}
+}
+
+#footerSpace
+{
+	display: block;
+
+	@include desktopOnly()
 	{
 		height: 50px;
 	}
 
-	@include phoneOnly()
+	@include mobileOnly()
 	{
-		height: 40px;
-	}
-
-	// Copyright text
-	& > span
-	{
-		margin-right: 40px;
+		height: 30px;
 	}
 }

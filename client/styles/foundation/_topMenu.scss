@@ -78,12 +78,21 @@
 {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	flex-direction: column;
 
-	flex: 1;
+	@include desktopOnly()
+	{
+		flex: 1;
+		flex-direction: column;
+		justify-content: center;
+	}
 
-	margin-left: 10px;
+	@include mobileOnly()
+	{
+		flex: 2;
+		justify-content: flex-start;
+
+		margin-left: 5px;
+	}
 }
 
 #topMenuLogo
@@ -92,14 +101,34 @@
 
 	@include desktopOnly()
 	{
-		width: 176px;
-		height: 90px;
+		width: 137px;
+		height: 70px;
 	}
 
 	@include mobileOnly()
 	{
 		width: 118px;
 		height: 60px;
+	}
+}
+
+#topMenuPhoneNumber
+{
+	@extend %tinyLogoText;
+
+	@include mobileOnly()
+	{
+		display: none;
+	}
+
+	&::before
+	{
+		content: '-- ';
+	}
+
+	&::after
+	{
+		content: ' --';
 	}
 }
 
@@ -112,16 +141,29 @@
 
 	@include mobileOnly()
 	{
-		flex: 10;
-		margin-right: 40px;
-		text-align: right;
+		margin:
+		{
+			top: 0px;
+			bottom: 0px;
+			left: 0px;
+			right: 15px;
+		}
 
-		font-size: 24px;
+		flex: 1;
+
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
 
 		&:focus + #mobileTopMenuLinks
 		{
 			max-height: 1000px;
 		}
+	}
+
+	& > i
+	{
+		margin-right: 4px;
 	}
 }
 
@@ -139,7 +181,7 @@
 		justify-content: flex-start;
 		flex-wrap: wrap;
 
-		flex: 10;
+		flex: 2;
 	}
 }
 

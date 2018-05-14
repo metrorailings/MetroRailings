@@ -29,7 +29,8 @@ var BASE_TEMPLATE_FILE = 'base',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
 	HBARS_IS_PROD_FLAG = 'isProd',
 	HBARS_IS_ADMIN_PAGE = 'isAdmin',
-	HBARS_CURRENT_YEAR = 'currentYear';
+	HBARS_CURRENT_YEAR = 'currentYear',
+	HBARS_CONTACT_NUMBER = 'contactNumber';
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
@@ -94,6 +95,9 @@ module.exports =
 
 		// Set a flag indicating whether we are operating in a production environment
 		data[HBARS_IS_PROD_FLAG] = config.IS_PROD;
+
+		// Set the main phone number as well
+		data[HBARS_CONTACT_NUMBER] = config.SUPPORT_PHONE_NUMBER;
 
 		// Render the template
 		response = await templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);
