@@ -1,0 +1,34 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#languageSelection
+{
+	display: none;
+}
+
+#submissionButtonContainer
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	text-align: center;
+}
+
+#customInvoiceSubmit, #custominvoiceSave
+{
+	@include button($bgColor: darkBlueTheme);
+
+	width: 300px;
+
+	& > i
+	{
+		margin-left: 5px;
+	}
+}

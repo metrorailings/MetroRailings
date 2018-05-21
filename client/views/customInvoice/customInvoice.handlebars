@@ -1,0 +1,20 @@
+<div class='pageHeader'>
+	<h3>Create A Custom Invoice</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<p id='instructionText'>
+	Use this form to send customers an itemized invoice.
+</p>
+
+{{> customInvoiceForm }}
+
+{{> customInvoiceItemTable }}
+
+<div id='submissionButtonContainer'>
+	{{#unless isModifyingInvoice}}
+		<button id='customInvoiceSubmit'>Send Invoice<i class='fa fa-send'></i></button>
+	{{else}}
+		<button id='customInvoiceSave'>Save Changes<i class='fa fa-edit'></i></button>
+	{{/unless}}
+</div>

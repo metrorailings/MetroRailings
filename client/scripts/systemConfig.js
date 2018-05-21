@@ -32,6 +32,7 @@ SystemJS.config({
 		createProspect: '/client/scripts/createProspect/main.js',
 		createInvoice: '/client/scripts/createInvoice/main.js',
 		paperOrder: '/client/scripts/paperOrder/main.js',
+		customInvoice: '/client/scripts/customInvoice/main.js',
 
 		conventionContact: '/client/scripts/conventionContact/main.js',
 		conventionGallery: '/client/scripts/conventionGallery/main.js',

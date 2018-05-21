@@ -94,12 +94,12 @@
 		{{#if order.pricing.tax}}
 			<div>
 				<span class='orderFooterHeader'>Tax ({{taxRate}}%): </span>
-			<span class='orderFooterValue'>${{#to_fixed order.pricing.tax 2}}{{/to_fixed}}</span>
+				<span class='orderFooterValue'>${{#to_fixed order.pricing.tax 2}}{{/to_fixed}}</span>
 			</div>
 		{{/if}}
 		<div id='orderTotalRow'>
 			<span class='orderFooterHeader'>Order Total: </span>
-		<span class='orderFooterValue'>${{#to_fixed order.pricing.orderTotal 2}}{{/to_fixed}}</span>
+			<span class='orderFooterValue'>${{#to_fixed order.pricing.orderTotal 2}}{{/to_fixed}}</span>
 		</div>
 	</div>
 

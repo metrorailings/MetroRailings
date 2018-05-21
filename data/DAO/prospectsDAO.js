@@ -118,7 +118,7 @@ var prospectsModule =
 	/**
 	 * Function responsible for registering a new prospect into the database
 	 *
-	 * @param {Object} order - a new prospect to save into our system
+	 * @param {Object} prospect - a new prospect to save into our system
 	 * @param {Object} username - the admin registering this prospect
 	 * @param {String} prospectCreationMethod - an enumerated string indicating how this prospect came to be
 	 * 		recorded into the system

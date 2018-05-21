@@ -1,0 +1,37 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/form';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#customInvoiceFormSection
+{
+	border:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+
+		left: none;
+		right: none;
+	}
+
+	padding:
+	{
+		top: 25px;
+		bottom: 25px;
+		left: 15px;
+	}
+}
+
+.controlGrouping
+{
+	margin:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
+
+	justify-content: center;
+}

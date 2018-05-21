@@ -307,6 +307,16 @@ _Handlebars.registerHelper('is_string', function(val)
 	return (typeof val === 'string');
 });
 
+/**
+ * Handlebars helper function designed to return an empty string should the passed value be undefined
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('transform_value_if_undefined', function(val)
+{
+	return ((val || val === 0) ? val : '');
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =

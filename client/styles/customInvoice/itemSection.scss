@@ -1,0 +1,332 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#customInvoiceItemsTable
+{
+	margin:
+	{
+		top: 25px;
+		bottom: 25px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+		width: 1px;
+		radius: 20px;
+	}
+
+	width: 90%;
+}
+
+#invoiceHeader
+{
+	border:
+	{
+		top-left-radius: 20px;
+		top-right-radius: 20px;
+
+		bottom:
+		{
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+			style: solid;
+		}
+	}
+
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+
+	background-color: map-get($COLORS, lightBlueTheme);
+}
+
+#invoiceTitle
+{
+	@extend %specialSectionHeader;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border-bottom:
+	{
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+		width: 1px;
+	}
+
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+#invoiceColumnHeaders
+{
+	@extend %tabularHeaderText;
+
+	display: flex;
+	width: 100%;
+
+	& > span
+	{
+		padding:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		text-align: center;
+
+		&:nth-of-type(1)
+		{
+			border-right:
+			{
+				color: map-get($COLORS, blackTheme);
+				style: solid;
+				width: 0.5px;
+			}
+
+			flex: 6;
+		}
+
+		&:nth-of-type(2)
+		{
+			border-right:
+			{
+				color: map-get($COLORS, blackTheme);
+				style: solid;
+				width: 0.5px;
+			}
+
+			flex: 3;
+		}
+
+		&:nth-of-type(3)
+		{
+			flex: 1;
+		}
+	}
+}
+
+#itemsListing
+{
+	@extend %regularPlusText;
+
+	display: flex;
+	flex-direction: column;
+
+	& > div:nth-of-type(2n)
+	{
+		background-color: map-get($COLORS, duskTheme);
+	}
+}
+
+.itemRow
+{
+	display: flex;
+	width: 100%;
+}
+
+.itemDescription, .itemPrice, .itemRemove
+{
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.itemDescription
+{
+	border-right:
+	{
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+		width: 0.5px;
+	}
+
+	flex: 6;
+}
+
+.itemDescriptionField
+{
+	width: 90%;
+	line-height: 40px;
+}
+
+.itemPrice
+{
+	border-right:
+	{
+		color: map-get($COLORS, blackTheme);
+		style: solid;
+		width: 0.5px;
+	}
+
+	flex: 3;
+}
+
+.itemRemove
+{
+	flex: 1;
+
+	& > i
+	{
+		color: map-get($COLORS, indianRedTheme);
+
+		cursor: pointer;
+	}
+}
+
+.itemPriceField
+{
+	margin-left: 3px;
+}
+
+#tableActionsRow
+{
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+
+		left: none;
+		right: none;
+	}
+
+	text-align: center;
+
+	width: 100%;
+}
+
+#addNewItemLink
+{
+	@extend %regularLinkText;
+
+	cursor: pointer;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+
+	& > i
+	{
+		margin-right: 5px;
+	}
+}
+
+#invoiceFooter
+{
+	border:
+	{
+		top:
+		{
+			style: solid;
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		bottom-left-radius: 20px;
+		bottom-right-radius: 20px;
+	}
+
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	background-color: map-get($COLORS, lightBlueTheme);
+
+	& > div
+	{
+		border-bottom:
+		{
+			style: solid;
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		display: flex;
+
+		&:last-of-type
+		{
+			border-bottom: none;
+		}
+	}
+}
+
+.invoiceFooterHeader
+{
+	@extend %tabularSmallerHeaderText;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+		right: 20px;
+	}
+
+	border-right:
+	{
+		style: solid;
+		width: 0.5px;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	flex: 5;
+
+	text-align: right;
+}
+
+.invoiceFooterValue
+{
+	@extend %tabularSmallerHeaderText;
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+		left: 20px;
+	}
+
+	flex: 1;
+
+	text-align: left;
+}
+
+#waiveTaxSection
+{
+	@extend %tabularLabelText;
+
+	margin:
+	{
+		top: 10px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

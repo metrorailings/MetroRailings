@@ -1,0 +1,49 @@
+<div id='customInvoiceItemsTable'>
+
+	<div id='invoiceHeader'>
+		<div id='invoiceTitle'>Invoice</div>
+		<div id='invoiceColumnHeaders'>
+			<span>Item Description</span>
+			<span>Price</span>
+			<span></span>
+		</div>
+	</div>
+
+	<div id='itemsListing'>
+		{{#if invoice.items.length }}
+			{{#each invoice.items}}
+				{{> customInvoiceItemRow this }}
+			{{/each}}
+		{{else}}
+			{{> customInvoiceItemRow }}
+		{{/if}}
+	</div>
+	<div id='tableActionsRow'>
+		<a id='addNewItemLink'><i class='fa fa-plus-circle'></i>Add New Item</a>
+	</div>
+
+	<div id='invoiceFooter'>
+		<div>
+			<span class='invoiceFooterHeader'>Invoice Subtotal </span>
+			<span id='customInvoiceSubtotalDisplay' class='invoiceFooterValue'></span>
+		</div>
+		<div>
+			<span class='invoiceFooterHeader'>NJ State Tax ({{taxRate}}%) </span>
+			<span id='stateTaxDisplay' class='invoiceFooterValue'></span>
+		</div>
+		<div id='invoiceTotalRow'>
+			<span class='invoiceFooterHeader'>Invoice Total </span>
+			<span id='customInvoiceTotalDisplay' class='invoiceFooterValue'></span>
+		</div>
+	</div>
+
+</div>
+
+<div id='waiveTaxSection'>
+	<input type='checkbox' id='waiveTaxCheckbox' />
+	<label for='waiveTaxCheckbox'>Waive tax on this invoice</label>
+</div>
+
+<script id='itemRowTemplate' type='text/x-handlebars-template'>
+	{{{ itemRowTemplate }}}
+</script>

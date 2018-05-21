@@ -110,7 +110,9 @@
     </body>
 
 	<!-- Page Footer -->
-	<div id='footerSpace'></div>
+	{{#unless isAdmin}}
+		<div id='footerSpace'></div>
+	{{/unless}}
 	<footer class='{{#if isAdmin}} hideFooter {{/if}}'>
 		{{#unless isAdmin}}
 			<span class='footerElement'>
