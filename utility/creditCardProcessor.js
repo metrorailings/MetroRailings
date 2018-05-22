@@ -102,7 +102,7 @@ module.exports =
 	{
 		var chargeParams =
 			{
-				amount: orderTotal * 100,
+				amount: Math.floor(orderTotal * 100),
 				customer: customerID,
 				currency: ACCEPTABLE_CURRENCY,
 				metadata: { 'Order ID' : orderID },
