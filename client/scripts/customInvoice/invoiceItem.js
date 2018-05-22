@@ -86,9 +86,9 @@ function createNewModel(descriptionField, priceField)
 			var isValid = formValidator.isNumeric(value + '', '.');
 
 			rQueryClient.updateValidationOnField(!(isValid), priceField, ERROR.PRICE_INVALID, validationModel.validationSet);
-			rQueryClient.setField(priceField, value, validationModel.validationSet);
 			validationModel.__price = (isValid ? window.parseFloat(value) : 0);
 
+			rQueryClient.setField(priceField, value, validationModel.validationSet);
 			_validate(validationModel);
 		}
 	});
@@ -97,7 +97,7 @@ function createNewModel(descriptionField, priceField)
 	Object.defineProperty(validationModel, 'validItem',
 	{
 		configurable: false,
-		enumerable: true,
+		enumerable: false,
 
 		get: () =>
 		{
@@ -113,6 +113,7 @@ function createNewModel(descriptionField, priceField)
 	// Instantiate model properties
 	validationModel.description = '';
 	validationModel.price = 0;
+	validationModel.validItem = false;
 
 	return validationModel;
 }

@@ -148,6 +148,10 @@ module.exports =
 			mailHTML,
 			username;
 
+return {
+	statusCode: responseCodes.OK,
+};
+
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
 			username = cookieManager.retrieveAdminCookie(cookie)[0];

@@ -25,6 +25,8 @@
 {
 	@include button($bgColor: darkBlueTheme);
 
+	margin-bottom: 40px;
+
 	width: 300px;
 
 	& > i

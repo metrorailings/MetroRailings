@@ -262,13 +262,18 @@
 
 input[type=tel], input[type=text], input[type=email], input[type=password], textarea
 {
-	@extend %regularText;
+	@extend %smallText;
 	@include stylePlaceholder()
 	{
 		color: map-get($COLORS, darkGrayTheme);
 	}
 
-	padding-left: 3px;
+	padding:
+	{
+		top: 3px;
+		bottom: 3px;
+		left: 3px;
+	}
 	margin-right: 8px;
 
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
@@ -278,6 +283,11 @@ input[type=tel], input[type=text], input[type=email], input[type=password], text
 	{
 		background-color: map-get($COLORS, lightRedTheme);
 		border-color: map-get($COLORS, darkRedTheme);
+	}
+
+	&.optional
+	{
+		background-color: map-get($COLORS, lightBlueTheme);
 	}
 }
 

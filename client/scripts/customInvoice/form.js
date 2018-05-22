@@ -34,7 +34,7 @@ function setOrderID()
  */
 function setName()
 {
-	vm.recipient.name = _nameField.value;
+	vm.name = _nameField.value;
 }
 
 /**
@@ -44,15 +44,15 @@ function setName()
  */
 function setNewEmail()
 {
-	vm.recipient.email = _emailField.value;
+	vm.email = _emailField.value;
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Set up the view model listeners
-_orderIdField.addEventListener('change', setOrderID);
-_nameField.addEventListener('change', setName);
-_emailField.addEventListener('change', setNewEmail);
+_orderIdField.addEventListener('blur', setOrderID);
+_nameField.addEventListener('blur', setName);
+_emailField.addEventListener('blur', setNewEmail);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 

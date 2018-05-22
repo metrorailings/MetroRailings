@@ -208,7 +208,7 @@ var rQueryClient =
 				}
 
 				// Check whether the property in context has a falsy value that is not explicitly a boolean value
-				if ( !(viewModel[i]) && viewModel[i] !== false )
+				if ( !(viewModel[i]) && viewModel[i] !== false && viewModel[i] !== 0 )
 				{
 					return false;
 				}

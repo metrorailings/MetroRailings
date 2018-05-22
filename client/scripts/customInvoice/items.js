@@ -4,6 +4,7 @@ import vm from 'client/scripts/customInvoice/viewModel';
 import itemModel from 'client/scripts/customInvoice/invoiceItem';
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
+import tooltipManager from 'client/scripts/utility/tooltip';
 
 import formValidator from 'shared/formValidator';
 
@@ -56,6 +57,26 @@ function _updatePrices()
 	vm.subtotal = subtotal;
 	vm.tax = (vm.isTaxWaived ? 0 : vm.subtotal * (window.MetroRailings.taxRate / 100));
 	vm.totalPrice = subtotal + vm.tax;
+}
+
+/**
+ * Function responsible for setting IDs on the various price fields
+ *
+ * @author kinsho
+ */
+function _generateRandomPriceFieldIDs()
+{
+	for (let i = 0; i < _itemPrices.length; i++)
+	{
+		// Ensure that every price field inside the invoice has an ID so that we can track tooltips attached to
+		// those fields
+		if (!(_itemPrices[i].id))
+		{
+			// A nonzero chance exists that an ID may be split across two elements. Still, I am willing to take that
+			// chance as this will not fundamentally break the page
+			_itemPrices[i].id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+		}
+	}
 }
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
@@ -152,6 +173,9 @@ function addNewRow()
 	_itemDescriptions[_itemDescriptions.length - 1].addEventListener('change', setItemDescription);
 	_itemPrices[_itemPrices.length - 1].addEventListener('change', setItemPrice);
 	_itemDeleteIcons[_itemDeleteIcons.length - 1].addEventListener('click', removeItem);
+
+	// Attach an ID for the price field in the new row
+	_generateRandomPriceFieldIDs();
 }
 
 /**
@@ -187,6 +211,9 @@ function removeItem(event)
 		}
 	}
 
+	// Remove any tooltips that may be visible inside the row to be removed
+	tooltipManager.closeTooltip(itemRow.getElementsByClassName(ITEM_PRICE_CLASS)[0], true);
+
 	// Now remove the item from display
 	itemRow.parentNode.removeChild(itemRow);
 
@@ -208,8 +235,8 @@ _waiveTaxCheckbox.addEventListener('change', updateTaxOption);
 
 for (let i = 0; i < _itemPrices.length; i++)
 {
-	_itemDescriptions[i].addEventListener('change', setItemDescription);
-	_itemPrices[i].addEventListener('change', setItemPrice);
+	_itemDescriptions[i].addEventListener('blur', setItemDescription);
+	_itemPrices[i].addEventListener('blur', setItemPrice);
 	_itemDeleteIcons[i].addEventListener('click', removeItem);
 
 	// Generate an item record in our view model to reflect what is on screen on load
@@ -217,3 +244,4 @@ for (let i = 0; i < _itemPrices.length; i++)
 }
 
 updateTaxOption();
+_generateRandomPriceFieldIDs();

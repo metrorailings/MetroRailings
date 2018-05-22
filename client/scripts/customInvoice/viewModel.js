@@ -20,7 +20,9 @@ var ORDER_ID_TEXTFIELD = 'orderID',
 	STATE_TAX_DISPLAY = 'stateTaxDisplay',
 	TOTAL_DISPLAY = 'customInvoiceTotalDisplay',
 	CUSTOM_INVOICE_SUBMIT_BUTTON = 'customInvoiceSubmit',
-	
+
+	VALIDATE_VIEW_MODEL_LISTENER = 'validateCustomInvoiceVM',
+
 	SEARCH_FOR_ORDER_URL = 'customInvoice/searchForOrder',
 
 	ERROR =
@@ -34,10 +36,8 @@ var ORDER_ID_TEXTFIELD = 'orderID',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
-		EMPTY_FIELDS: 'At least one of the required fields above is empty. Fill out all fields that are marked with' +
-			' an asterik.',
-		INVALID_FIELDS: 'At least one of the fields above has an improper value. Please fix all erroneous values' +
-			' before submitting this form.'
+		CANNOT_SUBMIT: 'We cannot quite go forward here. Keep in mind that you need to give a valid name, a valid' +
+		' e-mail address, and put in a description and valid price for each item on the invoice. Then we can go forth.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -60,13 +60,33 @@ var _validationSet = new Set(),
 /**
  * Generic function for invoking the logic that briefly validates this view model
  *
- * @returns {boolean} - indicating whether this view model has been validated
- *
  * @author kinsho
  */
 function _validate()
 {
-	return rQueryClient.validateModel(viewModel, _validationSet);
+	// First, run through generic validation
+	if (rQueryClient.validateModel(viewModel, _validationSet))
+	{
+		// Then check to see if there's at least one item
+		if (viewModel.items.length)
+		{
+			// Now run through each item on the invoice to assure that it has been properly defined
+			for (let i = 0; i < viewModel.items.length; i++)
+			{
+				if (!(viewModel.items[i].validItem))
+				{
+					viewModel.isFormSubmissible = false;
+					return;
+				}
+			}
+
+			viewModel.isFormSubmissible = true;
+			return;
+		}
+	}
+
+	viewModel.isFormSubmissible = false;
+	return;
 }
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
@@ -86,21 +106,13 @@ Object.defineProperty(viewModel, 'orderId',
 
 	set: (value) =>
 	{
-		var validationStatus;
-
 		// Ensure that the value does not simply consist of spaces
 		value = (value.trim() ? window.parseInt(value, 10) : '');
-
-		validationStatus = formValidator.isNumeric(value + '', '');
-
+		rQueryClient.setField(_orderIdField, value, _validationSet);
 		viewModel.__orderId = value;
 
-		rQueryClient.updateValidationOnField(!validationStatus, _orderIdField, ERROR.ORDER_ID_INVALID, _validationSet);
-		rQueryClient.setField(_orderIdField, value, _validationSet);
-		viewModel.isFormSubmissible = _validate();
-
 		// If a valid order ID has been submitted, then see if a corresponding order can be found from the database
-		if (validationStatus && value)
+		if (value)
 		{
 			axios.post(SEARCH_FOR_ORDER_URL, { id : value }, true).then((results) =>
 			{
@@ -108,6 +120,8 @@ Object.defineProperty(viewModel, 'orderId',
 				viewModel.email = results.data.customer.email;
 			}, () =>
 			{
+				viewModel.__orderId = '';
+				rQueryClient.setField(_orderIdField, value, _validationSet);
 				notifier.showSpecializedServerError(ERROR.NO_ORDER_FOUND);
 			});
 		}
@@ -132,9 +146,6 @@ Object.defineProperty(viewModel, 'name',
 		viewModel.__name = value;
 
 		rQueryClient.setField(_nameField, value, _validationSet);
-
-		// Run through the validation logic, as this is a required field
-		viewModel.isFormSubmissible = _validate();
 	}
 });
 
@@ -158,7 +169,6 @@ Object.defineProperty(viewModel, 'email',
 		// Test whether the value qualifies as an e-mail address
 		rQueryClient.updateValidationOnField(!(formValidator.isEmail(value)), _emailField, ERROR.EMAIL_INVALID, _validationSet);
 		rQueryClient.setField(_emailField, value, _validationSet);
-		viewModel.isFormSubmissible = _validate();
 	}
 });
 
@@ -183,7 +193,7 @@ Object.defineProperty(viewModel, 'items',
 Object.defineProperty(viewModel, 'subtotal',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -219,7 +229,7 @@ Object.defineProperty(viewModel, 'isTaxWaived',
 Object.defineProperty(viewModel, 'tax',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -238,7 +248,7 @@ Object.defineProperty(viewModel, 'tax',
 Object.defineProperty(viewModel, 'totalPrice',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -271,7 +281,7 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 		if (!(value))
 		{
 			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_submitButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.INVALID_FIELDS : SUBMISSION_INSTRUCTIONS.EMPTY_FIELDS);
+			tooltipManager.setTooltip(_submitButton, SUBMISSION_INSTRUCTIONS.CANNOT_SUBMIT, true);
 		}
 		else
 		{
@@ -279,6 +289,11 @@ Object.defineProperty(viewModel, 'isFormSubmissible',
 		}
 	}
 });
+
+// ----------------- LISTENERS -----------------------------
+
+// Set up a listener that would allow us to trigger validation logic from within the item models
+document.addEventListener(VALIDATE_VIEW_MODEL_LISTENER, _validate);
 
 // ----------------- EXPORT -----------------------------
 
