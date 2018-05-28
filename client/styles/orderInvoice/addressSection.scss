@@ -4,39 +4,46 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#addressSection
+#addressRow
 {
-	@include printOnly
+	display: flex;
+
+	& > .controlGrouping
 	{
-		display: none;
+		@include desktopOnly()
+		{
+			flex: 1;
+		}
 	}
 }
 
-#addressRow > .controlGrouping
+#cityStateRow
 {
-	@include desktopOnly()
+	display: flex;
+
+	@include mobileOnly()
 	{
-		width: 50%;
+		flex-direction: column;
 	}
-}
 
-#cityStateRow > .controlGrouping
-{
-	@include desktopOnly()
+	& > .controlGrouping
 	{
-		&:nth-of-type(1)
+		@include desktopOnly()
 		{
-			width: 40%;
-		}
+			&:nth-of-type(1)
+			{
+				flex: 4;
+			}
 
-		&:nth-of-type(2)
-		{
-			width: 30%;
-		}
+			&:nth-of-type(2)
+			{
+				flex: 3;
+			}
 
-		&:nth-of-type(3)
-		{
-			width: 30%;
+			&:nth-of-type(3)
+			{
+				flex: 3;
+			}
 		}
 	}
 }
@@ -58,6 +65,11 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }
 
@@ -76,6 +88,11 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }
 
@@ -94,6 +111,11 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }
 
@@ -112,6 +134,11 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }
 
@@ -130,5 +157,10 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }

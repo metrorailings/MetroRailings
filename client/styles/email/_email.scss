@@ -1,6 +1,7 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import '../foundation/colors';
+@import '../foundation/responsive';
 
 /* ----------------------- GENERIC STYLES ----------------------------- */
 
@@ -88,12 +89,6 @@ table
 	background-color: map-get($COLORS, logoBlueTheme);
 
 	text-align: center;
-
-	& > img
-	{
-		max-width: 225px;
-		max-height: 225px;
-	}
 }
 
 #emailContent
@@ -169,7 +164,7 @@ table
 			padding-left: 20px;
 
 			text-align: left;
-			font-size: 16px;
+			font-size: 12px;
 		}
 
 		&:last-of-type
@@ -178,7 +173,7 @@ table
 			padding-right: 20px;
 
 			text-align: right;
-			font-size: 14px;
+			font-size: 9px;
 
 			& > a:not(.telLink)
 			{

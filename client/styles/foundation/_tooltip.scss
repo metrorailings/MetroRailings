@@ -16,6 +16,11 @@
 	&.tooltip-after-open
 	{
 		opacity: 1.0;
+
+		@include printOnly()
+		{
+			opacity: 0.0 !important;
+		}
 	}
 }
 
