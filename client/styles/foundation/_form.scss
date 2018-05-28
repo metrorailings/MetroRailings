@@ -159,6 +159,18 @@
 			margin-right: 10px;
 		}
 
+		@include printOnly()
+		{
+			margin-right: 10px;
+
+			&::after
+			{
+				content: ':';
+
+				margin-left: 3px;
+			}
+		}
+
 		@include mobileOnly()
 		{
 			margin-bottom: 10px;
@@ -170,6 +182,11 @@
 			content: '*';
 
 			margin-left: 3px;
+
+			@include printOnly()
+			{
+				content: ':';
+			}
 		}
 	}
 }
@@ -456,12 +473,17 @@ textarea
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
 }
 
-// Generic disabled look
+// Generic styling across all input fields
 input, select, textarea
 {
 	&:disabled
 	{
 		opacity: 0.4;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }
 

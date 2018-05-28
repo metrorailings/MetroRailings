@@ -289,6 +289,24 @@
 }
 
 /*
+ * Mix-in designed to rotate elements on a two-dimensional plane
+ *
+ * @param $degrees - the amount of rotation to apply to the element
+ * @param [$x] - the horizontal magnitude of the shift
+ * @param [$y] - the vertical magnitude of the shift
+ *
+ * @author kinsho
+ */
+@mixin rotateAndShiftTransition($degrees, $x: 0%, $y: 0%)
+{
+	transform:translate($x, $y) rotate($degrees);
+	-webkit-transform:translate($x, $y) rotate($degrees);
+	-moz-transform:translate($x, $y) rotate($degrees);
+	-ms-transform:translate($x, $y) rotate($degrees);
+	-o-transform:translate($x, $y) rotate($degrees);
+}
+
+/*
  * Mix-in designed to rotate elements on a three-dimensional plane
  *
  * @param $degrees - the amount of rotation to apply to the element

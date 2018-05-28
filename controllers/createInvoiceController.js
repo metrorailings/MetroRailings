@@ -25,7 +25,7 @@ var _Handlebars = require('handlebars'),
 var CONTROLLER_FOLDER = 'createInvoice',
 
 	CUSTOM_ORDER_EMAIL = 'customerInvoice',
-	CUSTOM_ORDER_SUBJECT_HEADER = 'Your Railings Order (Order ID #::orderId)',
+	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
 	ADMIN_LOG_IN_URL = '/admin',

@@ -36,6 +36,9 @@
 
     <body>
 
+		<!-- A corner fold used to help the user navigate to some spot should the top menu not be visible -->
+		<a id='upperLeftCornerHomeLink' href='/'><i class='fa fa-home'></i>Home</a>
+
 		{{#unless isAdmin}}
 			<!-- The navigation menu at the top of the page -->
 			{{> topMenu }}
