@@ -38,6 +38,7 @@ var CONTROLLER_FOLDER = 'orderInvoice',
 
 	PARTIALS =
 	{
+		HEADER_SECTION: 'headerSection',
 		INVOICE_SECTION: 'invoiceSection',
 		AGREEMENT_SECTION: 'agreement',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
@@ -47,6 +48,11 @@ var CONTROLLER_FOLDER = 'orderInvoice',
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
+
+/**
+ * The template for the quote header that also features all our contact information
+ */
+_Handlebars.registerPartial('orderInvoiceHeader', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.HEADER_SECTION));
 
 /**
  * The template for the invoice that lists out all the aspects of the order for which the user will be charged
@@ -127,6 +133,9 @@ module.exports =
 
 		// Convert the agreement text from Markdown format into HTML that can then be pasted into place
 		pageData.order.agreement = _showdownConverter.makeHtml(pageData.order.agreement.join('\n\n'));
+
+		// Fetch the locations of each of our shops
+		pageData.companyInfo = config.COMPANY_INFO;
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

@@ -28,7 +28,7 @@ var DETAILS =
 	var htmlText;
 
 	// Generate the e-mail
-	htmlText = await mailer.generateFullEmail('customOrder', DETAILS, 'customOrder');
+	htmlText = await mailer.generateFullEmail('customerInvoice', DETAILS, 'customerInvoice');
 
 	// Log out the e-mail
 	console.log(htmlText);

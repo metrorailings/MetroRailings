@@ -7,14 +7,14 @@
 
 #personalInfoSection
 {
-	@include printOnly()
+	& > .formRow
 	{
-		display: none;
-	}
+		display: flex;
 
-	& > .formRow >.controlGrouping
-	{
-		width: 100%;
+		& > .controlGrouping
+		{
+			flex: 1;
+		}
 	}
 }
 
@@ -34,6 +34,11 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }
 
@@ -66,9 +71,19 @@
 			font-size: 14px;
 		}
 
+		@include printOnly()
+		{
+			width: 35px;
+		}
+
 		&:disabled
 		{
 			opacity: 0.9;
+
+			@include printOnly()
+			{
+				opacity: 1.0;
+			}
 		}
 	}
 
@@ -76,6 +91,12 @@
 	{
 		margin-top: 10px;
 		width: 90%;
+
+
+		@include printOnly()
+		{
+			display: none;
+		}
 	}
 }
 
@@ -94,5 +115,10 @@
 	&:disabled
 	{
 		opacity: 0.9;
+
+		@include printOnly()
+		{
+			opacity: 1.0;
+		}
 	}
 }

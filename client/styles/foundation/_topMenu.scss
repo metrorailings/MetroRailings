@@ -263,3 +263,44 @@
 		display: block;
 	}
 }
+
+#upperLeftCornerHomeLink
+{
+	@extend %smallButtonText;
+	@include rotateAndShiftTransition($degrees: -45deg, $x: -50%, $y: -50%);
+
+	border:
+	{
+		style: solid;
+		width: 1.5px;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	width: 250px;
+	height: 130px;
+
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	padding-bottom: 5px;
+
+	background-color: map-get($COLORS, indianRedTheme);
+	cursor: pointer;
+	text-decoration: none;
+
+	display: none;
+
+	@include printOnly()
+	{
+		display: none !important;
+	}
+
+	& > i
+	{
+		margin-right: 2px;
+	}
+}

@@ -1,20 +1,19 @@
 <table id='header'>
 	<tr>
-		<th>Your Personalized Order</th>
+		<th>Your Personalized Quote</th>
 	</tr>
 </table>
 
 <table id='personalizedOrder'>
 	<tr>
 		<td>
-			One of our representatives has put an order in the system for you. In order for us to start on that order
-			though, we need your approval!
+			One of our representatives has set up a new quote in the system for you. Click the button below to see 
+			the quote.
 		</td>
 	</tr>
 	<tr>
-		<td>Please click on the link below to go see the order and approve it.</td>
-	</tr>
-	<tr>
-		{{ orderInvoiceLink }}
+		<td>
+			<a id='quoteButton' href='{{ orderInvoiceLink }}'>See Quote</a>
+		</td>
 	</tr>
 </table>
