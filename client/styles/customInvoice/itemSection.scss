@@ -46,7 +46,7 @@
 	display: flex;
 	flex-direction: column;
 
-	background-color: map-get($COLORS, lightBlueTheme);
+	background-color: map-get($COLORS, smokeWhiteTheme);
 }
 
 #invoiceTitle
@@ -257,7 +257,7 @@
 	flex-direction: column;
 	width: 100%;
 
-	background-color: map-get($COLORS, lightBlueTheme);
+	background-color: map-get($COLORS, smokeWhiteTheme);
 
 	& > div
 	{

@@ -148,10 +148,6 @@ module.exports =
 			mailHTML,
 			username;
 
-return {
-	statusCode: responseCodes.OK,
-};
-
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
 			username = cookieManager.retrieveAdminCookie(cookie)[0];
@@ -170,11 +166,12 @@ return {
 				};
 			}
 
-			// Generate the link that will be sent to the customer so that he can approve and pay for the order
+			// Generate the link that will be sent to the customer so that he can pay the invoice
 			invoiceLink = config.BASE_URL + INVOICE_URL.replace(INVOICE_ID_PLACEHOLDER, processedInvoice._id);
 
+			// Send out an e-mail alerting the consumer that an invoice is ready to be paid
 			mailHTML = await mailer.generateFullEmail(CUSTOM_INVOICE_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_INVOICE_EMAIL);
-			await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_INVOICE_SUBJECT_HEADER.replace(CUSTOM_INVOICE_SUBJECT_HEADER, processedInvoice._id), config.SUPPORT_MAILBOX);
+			await mailer.sendMail(mailHTML, '', params.email, CUSTOM_INVOICE_SUBJECT_HEADER.replace(CUSTOM_INVOICE_SUBJECT_HEADER, processedInvoice._id), config.SUPPORT_MAILBOX);
 		}
 
 		return {

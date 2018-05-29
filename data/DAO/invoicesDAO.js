@@ -6,7 +6,7 @@ var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var INVOICES_COLLECTION = 'admins',
+var INVOICES_COLLECTION = 'invoices',
 	COUNTERS_COLLECTION = 'counters',
 
 	UNPAID_STATUS = 'unpaid',
@@ -87,16 +87,16 @@ module.exports =
 				_id: INVOICES_COLLECTION
 			});
 
+		// Attach a new ID to this invoice
+		invoice._id = counterRecord.seq;
+
 		// Apply an initial status of unpaid to the invoice
 		invoice.status = UNPAID_STATUS;
 
 		// Apply and initialize properties to indicate when this invoice was initially founded
 		_applyModificationUpdates(invoice, username);
 
-		// Attach a new ID to this invoice
-		invoice._id = counterRecord.seq;
-
-		// Now save the order
+		// Now save the invoice
 		try
 		{
 			await mongo.bulkWrite(INVOICES_COLLECTION, true, mongo.formInsertSingleQuery(invoice));
