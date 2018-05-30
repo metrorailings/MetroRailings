@@ -1,20 +1,13 @@
-<table id='header'>
-	<tr>
-		<th>A New Invoice has been Generated for You</th>
-	</tr>
-</table>
-
-<table id='personalizedOrder'>
+<table id='personalizedInvoice'>
 	<tr>
 		<td>
-			We've drawn up an invoice for you detailing charges for services that we have or eventually will
-			render for you.
+			We've drawn up an invoice detailing charges for services that we may have already provided for you. 
+			Please click the link below to access the invoice.
 		</td>
 	</tr>
 	<tr>
-		<td>Please click on the link below to go see the invoice and approve it.</td>
-	</tr>
-	<tr>
-		{{ orderInvoiceLink }}
+		<td>
+			<a id='invoiceButton' href='{{ orderInvoiceLink }}'>See Invoice</a>
+		</td>
 	</tr>
 </table>

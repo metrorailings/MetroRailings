@@ -26,7 +26,7 @@ var _Handlebars = require('handlebars'),
 var CONTROLLER_FOLDER = 'customInvoice',
 
 	CUSTOM_INVOICE_EMAIL = 'customInvoice',
-	CUSTOM_INVOICE_SUBJECT_HEADER = 'Metro Railings - Invoice (::invoiceId)',
+	CUSTOM_INVOICE_SUBJECT_HEADER = 'Metro Railings - Invoice #::invoiceId',
 
 	INVOICE_URL = '/specializedInvoice?id=::invoiceId',
 	INVOICE_ID_PLACEHOLDER = '::invoiceId',

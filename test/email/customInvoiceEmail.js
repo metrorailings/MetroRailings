@@ -18,7 +18,7 @@ var DETAILS =
 
 	RECIPIENT_ADDRESS = 'kinsho@gmail.com',
 	SENDER_NAME = 'support@metrorailings.com',
-	CUSTOM_INVOICE_SUBJECT_HEADER = 'Metro Railings - Invoice (::invoiceId)';
+	CUSTOM_INVOICE_SUBJECT_HEADER = 'Metro Railings - Invoice #4244';
 
 // ----------------- INITIALIZATION --------------------------
 
