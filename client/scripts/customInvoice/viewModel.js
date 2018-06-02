@@ -16,6 +16,9 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 var ORDER_ID_TEXTFIELD = 'orderID',
 	CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	EMAIL_TEXTFIELD = 'customerEmail',
+	ADDRESS_TEXTFIELD = 'customerAddress',
+	CITY_TEXTFIELD = 'customerCity',
+	STATE_SELECT = 'customerState',
 	SUBTOTAL_DISPLAY = 'customInvoiceSubtotalDisplay',
 	STATE_TAX_DISPLAY = 'stateTaxDisplay',
 	TOTAL_DISPLAY = 'customInvoiceTotalDisplay',
@@ -48,6 +51,9 @@ var _validationSet = new Set(),
 	_orderIdField = document.getElementById(ORDER_ID_TEXTFIELD),
 	_nameField = document.getElementById(CUSTOMER_NAME_TEXTFIELD),
 	_emailField = document.getElementById(EMAIL_TEXTFIELD),
+	_addressField = document.getElementById(ADDRESS_TEXTFIELD),
+	_cityField = document.getElementById(CITY_TEXTFIELD),
+	_stateField = document.getElementById(STATE_SELECT),
 
 	_subtotalDisplay = document.getElementById(SUBTOTAL_DISPLAY),
 	_taxDisplay = document.getElementById(STATE_TAX_DISPLAY),
@@ -169,6 +175,69 @@ Object.defineProperty(viewModel, 'email',
 		// Test whether the value qualifies as an e-mail address
 		rQueryClient.updateValidationOnField(!(formValidator.isEmail(value)), _emailField, ERROR.EMAIL_INVALID, _validationSet);
 		rQueryClient.setField(_emailField, value, _validationSet);
+	}
+});
+
+// Customer's address
+Object.defineProperty(viewModel, 'address',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__address;
+	},
+
+	set: (value) =>
+	{
+		// Ensure that the value does not simply consist of spaces
+		value = (value.trim() ? value : '');
+		viewModel.__address = value;
+
+		rQueryClient.setField(_addressField, value, _validationSet);
+	}
+});
+
+// Customer's city
+Object.defineProperty(viewModel, 'city',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__city;
+	},
+
+	set: (value) =>
+	{
+		// Ensure that the value does not simply consist of spaces
+		value = (value.trim() ? value : '');
+		viewModel.__city = value;
+
+		rQueryClient.setField(_cityField, value, _validationSet);
+	}
+});
+
+// Customer's e-mail address
+Object.defineProperty(viewModel, 'state',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__state;
+	},
+
+	set: (value) =>
+	{
+		// Ensure that the value does not simply consist of spaces
+		value = (value.trim() ? value : '');
+		viewModel.__state = value;
+
+		rQueryClient.setField(_stateField, value, _validationSet);
 	}
 });
 

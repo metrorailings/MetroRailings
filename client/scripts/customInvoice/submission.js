@@ -48,6 +48,9 @@ function submitInvoice()
 			orderId: vm.orderId,
 			name: vm.name,
 			email: vm.email,
+			address: vm.address,
+			city: vm.city,
+			state: vm.state,
 			items: vm.items,
 			subtotal: vm.subtotal,
 			isTaxWaived: vm.isTaxWaived,
@@ -58,7 +61,6 @@ function submitInvoice()
 		// Save the data
 		axios.post(CREATE_INVOICE_URL, data, true).then(() =>
 		{
-return;
 			// Prevent the button from being clicked again
 			_submitButton.disabled = true;
 
