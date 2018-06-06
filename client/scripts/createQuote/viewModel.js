@@ -32,10 +32,20 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
 	DEDUCTIONS_TEXTFIELD = 'deductions',
 
+	ORDER_SUBTOTAL_DISPLAY = 'orderSubtotalDisplay',
+	ORDER_TAX_DISPLAY = 'orderTaxDisplay',
+	ORDER_TARIFF_DISPLAY = 'orderTariffDisplay',
+	APPLY_TAXES_BUTTONSET = 'applyTaxesButtonSet',
+	APPLY_TARIFF_BUTTONSET = 'applyTariffButtonSet',
+
 	TIME_LIMIT_TEXTFIELD = 'timeLimit',
 
 	SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
 	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
+
+	DISABLED_CLASS = 'disabled',
+
+	STATE_NJ_VALUE = 'NJ',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
@@ -86,6 +96,12 @@ var _validationSet = new Set(),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 
+	_subtotalDisplay = document.getElementById(ORDER_SUBTOTAL_DISPLAY),
+	_taxDisplay = document.getElementById(ORDER_TAX_DISPLAY),
+	_tariffDisplay = document.getElementById(ORDER_TARIFF_DISPLAY),
+	_chargeTaxButtons = document.getElementById(APPLY_TAXES_BUTTONSET).getElementsByTagName('input'),
+	_chargeTariffButtons = document.getElementById(APPLY_TARIFF_BUTTONSET).getElementsByTagName('input'),
+
 	_timeLimitField = document.getElementById(TIME_LIMIT_TEXTFIELD),
 
 	_saveAndContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
@@ -117,6 +133,31 @@ function _isProperDesign()
 	return (viewModel.design.post &&
 			viewModel.design.handrailing &&
 			viewModel.design.color);
+}
+
+/**
+ * Function meant to calculate the subtotal
+ *
+ * @author kinsho
+ */
+function _calculateSubTotal()
+{
+	var subTotal = 0;
+
+	if (viewModel.length && viewModel.pricePerFoot)
+	{
+		subTotal = window.parseInt(viewModel.length, 10) * window.parseFloat(viewModel.pricePerFoot);
+	}
+	if (viewModel.additionalPrice)
+	{
+		subTotal += window.parseFloat(viewModel.additionalPrice);
+	}
+	if (viewModel.deductions)
+	{
+		subTotal -= window.parseFloat(viewModel.deductions);
+	}
+
+	viewModel.subtotal = formValidator.isNumeric(subTotal + '') ? subTotal : 0;
 }
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
@@ -317,22 +358,33 @@ Object.defineProperty(viewModel, 'city',
 
 // State
 Object.defineProperty(viewModel, 'state',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
 	{
-		configurable: false,
-		enumerable: true,
+		return viewModel.__state;
+	},
 
-		get: () =>
+	set: (value) =>
+	{
+		viewModel.__state = value;
+
+		rQueryClient.setField(_stateField, value);
+
+		// For all orders outside the state, there is no need to charge tax
+		if (value !== STATE_NJ_VALUE)
 		{
-			return viewModel.__state;
-		},
-
-		set: (value) =>
-		{
-			viewModel.__state = value;
-
-			rQueryClient.setField(_stateField, value);
+			viewModel.applyTaxes = false;
 		}
-	});
+		else
+		{
+			// Set to true in case an idiot salesman forgets to reset taxes here
+			viewModel.applyTaxes = true;
+		}
+	}
+});
 
 // Zip Code
 Object.defineProperty(viewModel, 'zipCode',
@@ -443,6 +495,7 @@ Object.defineProperty(viewModel, 'length',
 		rQueryClient.setField(_orderLengthField, value);
 
 		_validate();
+		_calculateSubTotal();
 	}
 });
 
@@ -496,6 +549,7 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 		rQueryClient.setField(_pricePerFootField, value);
 
 		_validate();
+		_calculateSubTotal();
 	}
 });
 
@@ -544,6 +598,7 @@ Object.defineProperty(viewModel, 'additionalPrice',
 		rQueryClient.setField(_additionalPriceField, value);
 
 		_validate();
+		_calculateSubTotal();
 	}
 });
 
@@ -588,6 +643,94 @@ Object.defineProperty(viewModel, 'deductions',
 		rQueryClient.setField(_deductionsField, value);
 
 		_validate();
+		_calculateSubTotal();
+	}
+});
+
+// Order Subtotal
+Object.defineProperty(viewModel, 'subtotal',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__subtotal;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__subtotal = value;
+
+		_subtotalDisplay.innerHTML = '$' + value.toFixed(2);
+	}
+});
+
+// Taxes Flag
+Object.defineProperty(viewModel, 'applyTaxes',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__applyTaxes;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__applyTaxes = value;
+
+		if (value)
+		{
+			_chargeTaxButtons[0].checked = true;
+			_taxDisplay.innerHTML = '$' + ;
+		}
+		else
+		{
+			_chargeTaxButtons[1].checked = true;
+			_taxDisplay.innerHTML = '$0.00';
+		}
+
+		// Disable the inputs entirely if the project takes place outside of New Jersey
+		if (viewModel.state !== STATE_NJ_VALUE)
+		{
+			_chargeTaxButtons[0].disabled = true;
+			_chargeTaxButtons[1].disabled = true;
+			_chargeTaxButtons[0].parentNode.classList.add(DISABLED_CLASS);
+		}
+		else
+		{
+			_chargeTaxButtons[0].disabled = false;
+			_chargeTaxButtons[1].disabled = false;
+			_chargeTaxButtons[0].parentNode.classList.remove(DISABLED_CLASS);
+		}
+	}
+});
+
+// Taxes Flag
+Object.defineProperty(viewModel, 'applyTariffs',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__applyTariffs;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__applyTariffs = value;
+
+		if (value)
+		{
+			_chargeTariffButtons[0].checked = true;
+		}
+		else
+		{
+			_chargeTariffButtons[1].checked = true;
+		}
 	}
 });
 

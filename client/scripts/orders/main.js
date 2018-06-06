@@ -12,7 +12,7 @@ import translate from 'client/scripts/utility/translate';
 var ORDER_CREATION_BUTTON = 'orderCreationButton',
 	PROSPECT_CREATION_BUTTON = 'prospectCreationButton',
 
-	CREATE_INVOICE_URL = '/createInvoice',
+	CREATE_INVOICE_URL = '/createQuote',
 	PROSPECT_CREATION_URL = '/createProspect';
 
 // ----------------- PRIVATE VARIABLES ---------------------------

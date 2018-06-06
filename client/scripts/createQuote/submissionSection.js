@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import vm from 'client/scripts/createInvoice/viewModel';
+import vm from 'client/scripts/createQuote/viewModel';
 
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
@@ -69,7 +69,9 @@ function submit(event)
 			{
 				pricePerFoot: window.parseFloat(vm.pricePerFoot),
 				additionalPrice: window.parseFloat(vm.additionalPrice) || 0,
-				deductions: window.parseFloat(vm.deductions) || 0
+				deductions: window.parseFloat(vm.deductions) || 0,
+				isTaxApplied: vm.applyTaxes,
+				isTariffApplied: vm.applyTariffs
 			},
 
 			customer:

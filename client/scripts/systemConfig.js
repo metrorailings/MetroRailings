@@ -30,7 +30,7 @@ SystemJS.config({
 		orderDetails: '/client/scripts/orderDetails/main.js',
 		prospectDetails: '/client/scripts/prospectDetails/main.js',
 		createProspect: '/client/scripts/createProspect/main.js',
-		createInvoice: '/client/scripts/createInvoice/main.js',
+		createQuote: '/client/scripts/createQuote/main.js',
 		paperOrder: '/client/scripts/paperOrder/main.js',
 
 		conventionContact: '/client/scripts/conventionContact/main.js',
