@@ -70,32 +70,6 @@
 	}
 }
 
-.staticValue
-{
-	@extend %regularPlusText;
-
-	display: flex;
-	align-items: center;
-	align-self: baseline;
-
-	& > i
-	{
-		@extend %significantIcons;
-
-		margin-left: 10px;
-
-		&.fa-bank
-		{
-			color: map-get($COLORS, mahoganyTheme);
-		}
-
-		&.fa-credit-card
-		{
-			color: map-get($COLORS, darkBlueTheme);
-		}
-	}
-}
-
 .specializedLabel
 {
 	@extend %formLabelText;
