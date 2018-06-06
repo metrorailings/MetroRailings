@@ -1,5 +1,5 @@
 /**
- * @module createInvoiceController
+ * @module createQuoteController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -12,6 +12,7 @@ var _Handlebars = require('handlebars'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 
+	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
 	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
@@ -22,7 +23,7 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'createInvoice',
+var CONTROLLER_FOLDER = 'createQuote',
 
 	CUSTOM_ORDER_EMAIL = 'customerInvoice',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
@@ -39,6 +40,7 @@ var CONTROLLER_FOLDER = 'createInvoice',
 		CUSTOMER: 'customerSection',
 		LOCATION: 'locationSection',
 		RAILINGS: 'railingsSection',
+		EXTERNAL_CHARGES: 'externalCharges',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection'
 	};
@@ -61,6 +63,11 @@ _Handlebars.registerPartial('createInvoiceLocationSection', fileManager.fetchTem
 _Handlebars.registerPartial('createInvoiceRailingsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.RAILINGS));
 
 /**
+ * The template for the external charges section
+ */
+_Handlebars.registerPartial('createInvoiceExternalChargesSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.EXTERNAL_CHARGES));
+
+/**
  * The template for the agreement section
  */
 _Handlebars.registerPartial('createInvoiceAgreementSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
@@ -71,6 +78,7 @@ _Handlebars.registerPartial('createInvoiceAgreementSection', fileManager.fetchTe
 _Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_BUTTON));
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -103,7 +111,9 @@ module.exports =
 		{
 			prospect: prospect,
 			agreement: agreementText,
-			defaultTimeLimit: config.DEFAULT_TIME_LIMIT
+			defaultTimeLimit: config.DEFAULT_TIME_LIMIT,
+			taxRate: (pricingData.NJ_SALES_TAX_RATE * 100).toFixed(2),
+			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2)
 		};
 
 		// Now render the page template
