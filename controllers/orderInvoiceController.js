@@ -131,6 +131,9 @@ module.exports =
 		// If any taxes are being charged, set the tax rate so that it can be shown on the page
 		pageData.taxRate = pricing.NJ_SALES_TAX_RATE * 100;
 
+		// If any tariffs are being charged, set the tariff rate so that it can be shown on the page
+		pageData.tariffRate = pricing.TARIFF_RATE * 100;
+
 		// Convert the agreement text from Markdown format into HTML that can then be pasted into place
 		pageData.order.agreement = _showdownConverter.makeHtml(pageData.order.agreement.join('\n\n'));
 

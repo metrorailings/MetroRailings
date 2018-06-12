@@ -10,6 +10,8 @@ var LENGTH_FIELD = 'orderLength',
 	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
 	ADDITIONAL_PRICE_FIELD = 'additionalPrice',
 	DEDUCTIONS_FIELD = 'deductions',
+	APPLY_TAX_BUTTONSET = 'applyTaxesButtonSet',
+	APPLY_TARIFFS_BUTTONSET = 'applyTariffsButtonSet',
 	REST_BY_CHECK_BUTTONS = 'restByCheck',
 	TOTAL_PRICE_MODIFICATIONS_FIELD = 'priceModifications';
 
@@ -21,6 +23,8 @@ var _lengthField = document.getElementById(LENGTH_FIELD),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA) || { value: '', addEventListener: () => {} },
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_FIELD) || { value: '', addEventListener: () => {} },
 	_deductionsField = document.getElementById(DEDUCTIONS_FIELD) || { value: '', addEventListener: () => {} },
+	_applyTaxButtons = document.getElementById(APPLY_TAX_BUTTONSET).getElementsByTagName('input'),
+	_applyTariffButtons = document.getElementById(APPLY_TARIFFS_BUTTONSET).getElementsByTagName('input'),
 	_restByCheckButtons = document.getElementsByName(REST_BY_CHECK_BUTTONS),
 	_priceModificationsField = document.getElementById(TOTAL_PRICE_MODIFICATIONS_FIELD) || { value: '', addEventListener: () => {} };
 
@@ -108,6 +112,30 @@ function setModifiedPrice()
 	vm.pricingModifications = _priceModificationsField.value;
 }
 
+/**
+ * Listener responsible for setting a flag indicating whether tax is to be applied to the order
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function setTaxFlag(event)
+{
+	vm.applyTax = !!(event.currentTarget.value);
+}
+
+/**
+ * Listener responsible for setting a flag indicating whether a tariff is to be applied to the order
+ *
+ * @param {Event} event - the event associated with the firing of this listener
+ *
+ * @author kinsho
+ */
+function setTariffFlag(event)
+{
+	vm.applyTariff = !!(event.currentTarget.value);
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _lengthField.addEventListener('change', setLength);
@@ -117,6 +145,11 @@ _additionalFeaturesField.addEventListener('change', setAdditionalFeatures);
 _additionalPriceField.addEventListener('change', setAdditionalPrice);
 _deductionsField.addEventListener('change', setDeductions);
 _priceModificationsField.addEventListener('change', setModifiedPrice);
+
+_applyTaxButtons[0].addEventListener('click', setTaxFlag);
+_applyTaxButtons[1].addEventListener('click', setTaxFlag);
+_applyTariffButtons[0].addEventListener('click', setTariffFlag);
+_applyTariffButtons[1].addEventListener('click', setTariffFlag);
 
 if (_restByCheckButtons.length)
 {

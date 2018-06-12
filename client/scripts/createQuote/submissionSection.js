@@ -15,7 +15,7 @@ var SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
 
 	ORDERS_PAGE_URL = '/orders',
 	ORDER_INVOICE_URL = '/orderInvoice?id=::orderId',
-	SAVE_ORDER_URL = 'createInvoice/saveNewOrder',
+	SAVE_ORDER_URL = 'createQuote/saveNewOrder',
 
 	ORDER_ID_PLACEHOLDER = '::orderId';
 
