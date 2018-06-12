@@ -114,6 +114,17 @@ p
 	{
 		@extend %regularLinkText;
 	}
+
+	&.highlightedText
+	{
+		padding:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
+		background-color: map-get($COLORS, slateGrayTheme);
+	}
 }
 
 // Generic list stylings

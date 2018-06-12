@@ -300,3 +300,13 @@
 {
 	@extend %tabularHeaderText;
 }
+
+#tariffWhatIsThis
+{
+	@extend %normalizedLinkText;
+
+	font-size: map-get($FONTS, tinyFontSize);
+
+	height: 30px;
+	margin-right: 5px;
+}

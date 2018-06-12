@@ -85,6 +85,40 @@
 	</div>
 
 	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			<i class='fa fa-tag fa-rotate-180'></i>
+			<span class='translate'>Is Tax Applied?</span>
+		</span>
+		<span id='applyTaxesButtonSet' class='buttonSet {{#unless_cond status 'pending'}} disabled {{/unless_cond}}'>
+			<input type='radio' id='applyTaxYes' name='applyTax' value='true' 
+					{{#unless_cond status "pending"}}disabled{{/unless_cond}}
+					{{#if pricing.isTaxApplied}}checked{{/if}} />
+			<label for='applyTaxYes'>Yes</label>
+			<input type='radio' id='applyTaxNo' name='applyTax' value=''
+					{{#unless_cond status "pending"}}disabled{{/unless_cond}}
+					{{#unless pricing.isTaxApplied}}checked{{/unless}} />
+			<label for='applyTaxNo'>No</label>
+		</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel translate'>
+			<i class='fa fa-tag fa-rotate-180'></i>
+			<span class='translate'>Is Tariff Applied?</span>
+		</span>
+		<span id='applyTariffsButtonSet' class='buttonSet {{#unless_cond status 'pending'}} disabled {{/unless_cond}}'>
+			<input type='radio' id='applyTariffYes' name='applyTariff' value='true'
+					{{#unless_cond status "pending"}}disabled{{/unless_cond}}
+					{{#if pricing.isTariffApplied}}checked{{/if}} />
+			<label for='applyTariffYes'>Yes</label>
+			<input type='radio' id='applyTariffNo' name='applyTariff' value=''
+					{{#unless_cond status "pending"}} disabled {{/unless_cond}} />
+					{{#unless pricing.isTariffApplied}}checked{{/unless}}
+			<label for='applyTariffNo'>No</label>
+		</span>
+	</div>
+
+	<div class='dataGrouping'>
 		<span class='specializedLabel translate'>Balance Remaining</span>
 		<span id='balanceRemaining' class='staticValue'>
 			{{#if pricing.balanceRemaining}}
