@@ -562,6 +562,8 @@ input, select, textarea
 	align-items: center;
 	align-self: baseline;
 
+	margin-left: 10px;
+
 	& > i
 	{
 		@extend %significantIcons;

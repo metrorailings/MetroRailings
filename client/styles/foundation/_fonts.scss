@@ -13,8 +13,9 @@
  * Dancing Script (Signatures)
  * Sorts Mill Goudy
  * Julius Sans One
+ * Comfortaa
  */
-@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy|Julius+Sans+One);
+@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy|Julius+Sans+One+Comfortaa);
 
 /* ----------------------- LOCAL CONSTANTS ----------------------------- */
 
@@ -229,6 +230,14 @@ $FONTS:
 	text-decoration: none;
 }
 
+%normalizedLinkText
+{
+	@include basicFontSettings($weight: 700, $size: smallFontSize, $color: darkerBlueTheme);
+
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 %loaderText
 {
 	@include basicFontSettings($weight: 700, $size: giganticFontSize, $family: Helvetica, $color: darkBlueTheme);
@@ -393,4 +402,13 @@ $FONTS:
 %signatureFont
 {
 	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: 'Dancing Script');
+}
+
+%seriousText
+{
+	@include basicFontSettings($weight: 200, $size: largeFontSize, $family: Comfortaa);
+
+	letter-spacing: 0.4px;
+
+	line-height: map-get($FONTS, giganticFontSize);
 }
