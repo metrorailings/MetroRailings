@@ -127,6 +127,20 @@ var pricingModule =
 	},
 
 	/**
+	 * Function calculates the overall total charge after factoring any tariffs, taxes, and/or fees into the subtotal
+	 *
+	 * @param {Object} order - the order from which we will gather information to calculate the total price
+	 *
+	 * @returns {Number} - the total price of the order
+	 *
+	 * @author kinsho
+	 */
+	calculateTotal: function(order)
+	{
+		return order.pricing.subTotal + order.pricing.tax + order.pricing.tariff;
+	},
+
+	/**
 	 * Function that returns pricing metadata for a particular design
 	 *
 	 * @param {String} designCode - the design code associated with the design that we're looking for

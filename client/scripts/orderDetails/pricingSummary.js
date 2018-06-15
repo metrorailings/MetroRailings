@@ -121,7 +121,7 @@ function setModifiedPrice()
  */
 function setTaxFlag(event)
 {
-	vm.applyTax = !!(event.currentTarget.value);
+	vm.isTaxApplied = !!(event.currentTarget.value);
 }
 
 /**
@@ -133,7 +133,7 @@ function setTaxFlag(event)
  */
 function setTariffFlag(event)
 {
-	vm.applyTariff = !!(event.currentTarget.value);
+	vm.isTariffApplied = !!(event.currentTarget.value);
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------

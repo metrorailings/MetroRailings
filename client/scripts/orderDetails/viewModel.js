@@ -135,7 +135,7 @@ var _validationSet = new Set(),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 	_applyTaxButtonSet = document.getElementById(APPLY_TAX_BUTTON_SET),
-	_applyTariffButtonSet = document.getElementByID(APPLY_TARIFFS_BUTTON_SET),
+	_applyTariffButtonSet = document.getElementById(APPLY_TARIFFS_BUTTON_SET),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
 	_additionalTaxDisplay = document.getElementById(ADDITIONAL_TAX_DISPLAY),
@@ -252,8 +252,8 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__additionalFeatures = value.additionalFeatures;
 		viewModel.__additionalPrice = value.pricing.additionalPrice;
 		viewModel.__deductions = value.pricing.deductions;
-		viewModel.__applyTaxes = value.pricing.isTaxApplied;
-		viewModel.__applyTariffs = value.pricing.isTariffApplied;
+		viewModel.__isTaxApplied = value.pricing.isTaxApplied || !!(value.pricing.tax) || false;
+		viewModel.__isTariffApplied = value.pricing.isTariffApplied || false;
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 
