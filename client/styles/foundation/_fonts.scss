@@ -412,3 +412,12 @@ $FONTS:
 
 	line-height: map-get($FONTS, giganticFontSize);
 }
+
+%seriousTextWithEmphasis
+{
+	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Comfortaa);
+
+	letter-spacing: 0.3px;
+
+	line-height: map-get($FONTS, giganticFontSize);
+}

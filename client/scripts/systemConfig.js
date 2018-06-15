@@ -32,6 +32,7 @@ SystemJS.config({
 		createProspect: '/client/scripts/createProspect/main.js',
 		createQuote: '/client/scripts/createQuote/main.js',
 		paperOrder: '/client/scripts/paperOrder/main.js',
+		tariffInfo: '/client/scripts/tariffInfo/main.js',
 
 		conventionContact: '/client/scripts/conventionContact/main.js',
 		conventionGallery: '/client/scripts/conventionGallery/main.js',

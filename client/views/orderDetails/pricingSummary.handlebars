@@ -112,8 +112,8 @@
 					{{#if pricing.isTariffApplied}}checked{{/if}} />
 			<label for='applyTariffYes'>Yes</label>
 			<input type='radio' id='applyTariffNo' name='applyTariff' value=''
-					{{#unless_cond status "pending"}} disabled {{/unless_cond}} />
-					{{#unless pricing.isTariffApplied}}checked{{/unless}}
+					{{#unless_cond status "pending"}}disabled{{/unless_cond}}
+					{{#unless pricing.isTariffApplied}}checked{{/unless}} />
 			<label for='applyTariffNo'>No</label>
 		</span>
 	</div>

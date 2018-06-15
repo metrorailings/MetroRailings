@@ -85,12 +85,12 @@
 	</div>
 
 	<div id='invoiceFooter'>
-		{{#if order.pricing.tax}}
+		{{#if_or order.pricing.tax order.pricing.tariff}}
 			<div>
 				<span class='orderFooterHeader'>Order Subtotal</span>
 				<span class='orderFooterValue'>${{#to_fixed order.pricing.subTotal 2}}{{/to_fixed}}</span>
 			</div>
-		{{/if}}
+		{{/if_or}}
 		{{#if order.pricing.tax}}
 			<div>
 				<span class='orderFooterHeader'>Tax ({{taxRate}}%)</span>

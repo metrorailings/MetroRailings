@@ -5,11 +5,15 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var PRINT_ICON = 'pagePrintIcon',
-	PRINT_MESSAGE = 'Print this invoice';
+	TARIFF_LINK = 'tariffWhatIsThis',
+	PRINT_MESSAGE = 'Print this invoice',
+
+	TARIFF_URL = '/tariffInfo';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _printIcon = document.getElementById(PRINT_ICON);
+var _printIcon = document.getElementById(PRINT_ICON),
+	_tariffLink = document.getElementById(TARIFF_LINK);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -23,10 +27,21 @@ function printPage()
 	window.print();
 }
 
+/**
+ * A listener to help us navigate to the tariff page
+ *
+ * @author kinsho
+ */
+function navigateToTariffPage()
+{
+	window.open(TARIFF_URL);
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Bind all invoice listeners to their respective JavaScript functions
 _printIcon.addEventListener('click', printPage);
+_tariffLink.addEventListener('click', navigateToTariffPage);
 
 // ----------------- PAGE INITIALIZATION -----------------------------
 

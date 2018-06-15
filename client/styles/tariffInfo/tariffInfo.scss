@@ -5,6 +5,16 @@
 @import '../foundation/fonts';
 @import '../foundation/responsive';
 
+/* ----------------------- OVERRIDES ----------------------------- */
+
+footer, #footerSpace
+{
+	@include mobileOnly()
+	{
+		display: none !important;
+	}
+}
+
 /* ----------------------- STYLES ----------------------------- */
 
 #tariffPage
@@ -13,9 +23,23 @@
 	{
 		@extend %seriousText;
 
-		&.highlightedText
+		margin:
 		{
-			color: map-get($COLORS, whiteTheme);
+			left: 0px;
+			right: 0px;
+		}
+
+		padding:
+		{
+			top: 15px;
+			bottom: 15px;
+			left: 25px;
+			right: 25px;
+		}
+
+		&.highlightedParagraph
+		{
+			background-color: map-get($COLORS, lightBlueTheme);
 		}
 	}
 }
@@ -33,8 +57,11 @@
 	justify-content: center;
 	flex-direction: column;
 
-	width: 50%;
-	
+	@include desktopOnly()
+	{
+		width: 50%;
+	}
+
 	& > img
 	{
 		max-width: 100%;
@@ -72,11 +99,21 @@
 		flex-direction: column;
 	}
 
-	& > p
+	& > span
 	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
 		@include desktopOnly()
 		{
 			width: 50%;
 		}
 	}
+}
+
+#tariffLink
+{
+	@extend %seriousText;
 }
