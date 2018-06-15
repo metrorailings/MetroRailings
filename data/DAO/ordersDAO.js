@@ -294,7 +294,7 @@ var ordersModule =
 		order.pricing.subTotal = pricingCalculator.calculateOrderTotal(order);
 		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal, order);
 		order.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subTotal, order);
-		order.pricing.orderTotal = order.pricing.subTotal + order.pricing.tax + order.pricing.tariff;
+		order.pricing.orderTotal = pricingCalculator.calculateTotal(order);
 
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
 		order.pricing.balanceRemaining = order.pricing.orderTotal;
@@ -505,7 +505,8 @@ var ordersModule =
 		// Recalculate the total price of the order
 		orderModifications.pricing.subTotal = pricingCalculator.calculateOrderTotal(orderModifications);
 		orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subTotal, orderModifications);
-		orderModifications.pricing.orderTotal = orderModifications.pricing.subTotal + orderModifications.pricing.tax;
+		orderModifications.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subTotal, orderModifications);
+		orderModifications.pricing.orderTotal = pricingCalculator.calculateTotal(orderModifications);
 
 		// If the order is still pending finalization, reset the balance remaining
 		if (order.status === PENDING_STATUS)
@@ -591,8 +592,11 @@ var ordersModule =
 			'pricing.deductions': orderModifications.pricing.deductions,
 			'pricing.modification': orderModifications.pricing.modification,
 			'pricing.subTotal': orderModifications.pricing.subTotal,
+			'pricing.isTaxApplied': orderModifications.pricing.isTaxApplied,
+			'pricing.isTariffApplied': orderModifications.pricing.isTariffApplied,
 			'pricing.orderTotal': orderModifications.pricing.orderTotal,
 			'pricing.tax': orderModifications.pricing.tax,
+			'pricing.tariff': orderModifications.pricing.tariff,
 			'pricing.taxRemaining': order.pricing.taxRemaining || 0,
 			'pricing.balanceRemaining': orderModifications.pricing.balanceRemaining,
 

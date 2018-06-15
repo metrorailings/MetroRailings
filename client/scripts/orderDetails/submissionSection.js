@@ -110,6 +110,8 @@ function _submitChanges()
 			pricePerFoot: vm.pricePerFoot,
 			additionalPrice: vm.additionalPrice,
 			deductions: vm.deductions,
+			isTaxApplied: vm.isTaxApplied,
+			isTariffApplied: vm.isTariffApplied,
 			restByCheck: vm.restByCheck,
 			modification: vm.pricingModifications
 		}

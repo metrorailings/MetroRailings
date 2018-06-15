@@ -119,8 +119,10 @@ p
 	{
 		padding:
 		{
-			top: 15px;
-			bottom: 15px;
+			top: 5px;
+			bottom: 5px;
+			left: 10px;
+			right: 10px;
 		}
 
 		background-color: map-get($COLORS, slateGrayTheme);
