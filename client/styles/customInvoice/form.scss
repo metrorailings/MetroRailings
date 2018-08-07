@@ -7,21 +7,23 @@
 
 #customInvoiceFormSection
 {
-	border:
+	border-top:
 	{
-		width: 2px;
+		width: 0.5px;
 		style: solid;
-		color: map-get($COLORS, blackTheme);
+		color: map-get($COLORS, grayTheme);
+	}
 
-		left: none;
-		right: none;
+	margin:
+	{
+		left: 15px;
+		right: 15px;
 	}
 
 	padding:
 	{
 		top: 10px;
 		bottom: 10px;
-		left: 15px;
 	}
 }
 
@@ -36,7 +38,73 @@
 	justify-content: center;
 }
 
+.inputGrouping
+{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+#orderID
+{
+	width: 100px;
+}
+
+#customerName, #customerEmail
+{
+	width: 200px;
+}
+
 #customerAddress
 {
 	width: 250px;
+}
+
+#memoSection
+{
+	border:
+	{
+		width: 0.5px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+
+		left: none;
+		right: none;
+	}
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+		left: 0px;
+		right: 0px;
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+#memoDescription
+{
+	width: 60%;
+	height: 100px;
+
+	padding-left: 10px;
+}
+
+#memoHelpText
+{
+	@extend %noteText;
+
+	margin-top: 10px;
 }

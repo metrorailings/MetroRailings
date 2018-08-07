@@ -16,37 +16,14 @@
 		right: auto;
 	}
 
-	border:
-	{
-		color: map-get($COLORS, blackTheme);
-		style: solid;
-		width: 1px;
-		radius: 20px;
-	}
-
 	width: 90%;
 }
 
 #invoiceHeader
 {
-	border:
-	{
-		top-left-radius: 20px;
-		top-right-radius: 20px;
-
-		bottom:
-		{
-			width: 1px;
-			color: map-get($COLORS, blackTheme);
-			style: solid;
-		}
-	}
-
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-
-	background-color: map-get($COLORS, smokeWhiteTheme);
 }
 
 #invoiceTitle
@@ -59,12 +36,17 @@
 		bottom: 10px;
 	}
 
-	border-bottom:
+	border:
 	{
-		color: map-get($COLORS, blackTheme);
+		top-left-radius: 20px;
+		top-right-radius: 20px;
+
+		color: map-get($COLORS, grayTheme);
 		style: solid;
-		width: 1px;
+		width: 0.5px;
 	}
+
+	background-color: map-get($COLORS, duskTheme);
 
 	letter-spacing: 4px;
 	text-transform: uppercase;
@@ -74,6 +56,16 @@
 #invoiceColumnHeaders
 {
 	@extend %tabularHeaderText;
+
+	border:
+	{
+		color: map-get($COLORS, grayTheme);
+		style: solid;
+		width: 0.5px;
+
+		top: none;
+		bottom: none;
+	}
 
 	display: flex;
 	width: 100%;
@@ -90,25 +82,11 @@
 
 		&:nth-of-type(1)
 		{
-			border-right:
-			{
-				color: map-get($COLORS, blackTheme);
-				style: solid;
-				width: 0.5px;
-			}
-
 			flex: 6;
 		}
 
 		&:nth-of-type(2)
 		{
-			border-right:
-			{
-				color: map-get($COLORS, blackTheme);
-				style: solid;
-				width: 0.5px;
-			}
-
 			flex: 3;
 		}
 
@@ -123,13 +101,18 @@
 {
 	@extend %regularPlusText;
 
+	border:
+	{
+		color: map-get($COLORS, grayTheme);
+		style: solid;
+		width: 0.5px;
+
+		top: none;
+		bottom: none;
+	}
+
 	display: flex;
 	flex-direction: column;
-
-	& > div:nth-of-type(2n)
-	{
-		background-color: map-get($COLORS, duskTheme);
-	}
 }
 
 .itemRow
@@ -153,13 +136,6 @@
 
 .itemDescription
 {
-	border-right:
-	{
-		color: map-get($COLORS, blackTheme);
-		style: solid;
-		width: 0.5px;
-	}
-
 	flex: 6;
 }
 
@@ -171,13 +147,6 @@
 
 .itemPrice
 {
-	border-right:
-	{
-		color: map-get($COLORS, blackTheme);
-		style: solid;
-		width: 0.5px;
-	}
-
 	flex: 3;
 }
 
@@ -208,12 +177,12 @@
 
 	border:
 	{
-		width: 1px;
+		color: map-get($COLORS, grayTheme);
 		style: solid;
-		color: map-get($COLORS, blackTheme);
+		width: 0.5px;
 
-		left: none;
-		right: none;
+		top: none;
+		bottom: none;
 	}
 
 	text-align: center;
@@ -242,12 +211,9 @@
 {
 	border:
 	{
-		top:
-		{
-			style: solid;
-			width: 1px;
-			color: map-get($COLORS, blackTheme);
-		}
+		color: map-get($COLORS, grayTheme);
+		style: solid;
+		width: 0.5px;
 
 		bottom-left-radius: 20px;
 		bottom-right-radius: 20px;
@@ -257,17 +223,10 @@
 	flex-direction: column;
 	width: 100%;
 
-	background-color: map-get($COLORS, smokeWhiteTheme);
+	background-color: map-get($COLORS, duskTheme);
 
 	& > div
 	{
-		border-bottom:
-		{
-			style: solid;
-			width: 1px;
-			color: map-get($COLORS, blackTheme);
-		}
-
 		display: flex;
 
 		&:last-of-type
@@ -286,13 +245,6 @@
 		top: 10px;
 		bottom: 10px;
 		right: 20px;
-	}
-
-	border-right:
-	{
-		style: solid;
-		width: 0.5px;
-		color: map-get($COLORS, blackTheme);
 	}
 
 	flex: 5;

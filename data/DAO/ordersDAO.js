@@ -119,7 +119,7 @@ var ordersModule =
 	/**
 	 * Function responsible for fetching an existing order from the database using its ID
 	 *
-	 * @param {Object} orderNumber - the order identification number
+	 * @param {Number} orderNumber - the order identification number
 	 *
 	 * @returns {Object} - the order itself, in its entirety
 	 *
@@ -138,7 +138,7 @@ var ordersModule =
 		}
 		catch(error)
 		{
-			console.log('Ran into an error fetching an existing order using its ID...');
+			console.log('Ran into an error fetching existing order #' + orderNumber);
 			console.log(error);
 
 			return false;

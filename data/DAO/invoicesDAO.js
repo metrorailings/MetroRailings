@@ -1,12 +1,14 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
+	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 
 	dateUtility = global.OwlStakes.require('shared/dateUtility');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var INVOICES_COLLECTION = 'invoices',
+	ORDERS_COLLECTION = 'orders',
 	COUNTERS_COLLECTION = 'counters',
 
 	UNPAID_STATUS = 'unpaid',
@@ -70,6 +72,35 @@ function _generateUserFriendlyDate(date)
 module.exports =
 {
 	/**
+	 * Function responsible for fetching an existing invoice from the database using its ID
+	 *
+	 * @param {Number} invoiceNumber - the invoice identification number
+	 *
+	 * @returns {Object} - the invoice itself, in its entirety
+	 *
+	 * @author kinsho
+	 */
+	searchInvoiceById: async function (invoiceNumber)
+	{
+		try
+		{
+			var dbResults = await mongo.read(INVOICES_COLLECTION,
+				{
+					_id: invoiceNumber
+				});
+
+			return dbResults[0];
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching existing invoice #' + invoiceNumber);
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for registering a new invoice into the system
 	 *
 	 * @param {Object} prospect - a new invoice to save into our system
@@ -93,6 +124,9 @@ module.exports =
 		// Apply an initial status of unpaid to the invoice
 		invoice.status = UNPAID_STATUS;
 
+		// Note the date and time this invoice was created
+		invoice.createDateTime = new Date();
+
 		// Apply and initialize properties to indicate when this invoice was initially founded
 		_applyModificationUpdates(invoice, username);
 
@@ -100,6 +134,8 @@ module.exports =
 		try
 		{
 			await mongo.bulkWrite(INVOICES_COLLECTION, true, mongo.formInsertSingleQuery(invoice));
+
+			return invoice;
 		}
 		catch(error)
 		{
@@ -107,6 +143,36 @@ module.exports =
 			console.log(error);
 
 			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for noting that an invoice is associated with a particular order 
+	 *
+	 * @param {Number} invoiceID - the ID of the invoice
+	 * @param {Number} orderID - the ID of the order
+	 *
+	 * @author kinsho
+	 */
+	associateInvoiceWithOrder: async function (invoiceID, orderID)
+	{
+		var order = await ordersDAO.searchOrderById(orderID),
+			updateRecord;
+
+		if (order)
+		{
+			// If the order has no invoices collection, create one
+			order.invoices = order.invoices || [];
+
+			// Link this invoice to the order
+			order.invoices.push(invoiceID);
+
+			updateRecord = mongo.formUpdateOneQuery(
+			{
+				_id: orderID
+			}, order, false);
+
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
 		}
 	}
 };

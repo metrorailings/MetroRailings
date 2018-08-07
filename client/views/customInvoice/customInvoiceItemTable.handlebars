@@ -40,7 +40,7 @@
 </div>
 
 <div id='waiveTaxSection'>
-	<input type='checkbox' id='waiveTaxCheckbox' />
+	<input type='checkbox' id='waiveTaxCheckbox' {{#if invoice.isTaxWaived}}checked{{/if}}/>
 	<label for='waiveTaxCheckbox'>Waive tax on this invoice</label>
 </div>
 

@@ -35,6 +35,19 @@
 	}
 }
 
+#memoCell
+{
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+		left: 10px;
+		right: 10px;
+	}
+
+	background-color: map-get($COLORS, lightBlueTheme);
+}
+
 #invoiceButton
 {
 	border:

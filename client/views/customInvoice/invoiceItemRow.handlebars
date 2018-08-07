@@ -1,9 +1,9 @@
 <div class='itemRow'>
 	<span class='itemDescription'>
-		<input type='text' class='itemDescriptionField' val='{{#transform_value_if_undefined itemDescription}}{{/transform_value_if_undefined}}' />
+		<input type='text' class='itemDescriptionField' value='{{#transform_value_if_undefined description}}{{/transform_value_if_undefined}}' />
 	</span>
 	<span class='itemPrice'>
-		$<input type='tel' class='itemPriceField' value='{{#transform_value_if_undefined itemValue}}{{/transform_value_if_undefined}}'/>
+		$<input type='tel' class='itemPriceField' value='{{#transform_value_if_undefined price}}{{/transform_value_if_undefined}}'/>
 	</span>
 	<span class='itemRemove'>
 		<i class='fa fa-times-circle itemRemoveIcon'></i>

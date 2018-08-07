@@ -26,6 +26,25 @@ var VALIDATE_VIEW_MODEL_LISTENER = 'validateCustomInvoiceVM',
 var _submitButton = document.getElementById(SUBMIT_BUTTON),
 	_saveButton = document.getElementById(SAVE_BUTTON);
 
+// ----------------- PRIVATE METHODS ---------------------------
+
+/**
+ * Function meant to cull properties from an invoice item that do not need to be stored
+ *
+ * @param {Object} itemObject - the invoice item
+ *
+ * @returns {Object} - a cleaner item construct
+ *
+ * @author kinsho
+ */
+function _packageItem(itemObject)
+{
+	return {
+		description: itemObject.description,
+		price: itemObject.price
+	};
+}
+
 // ----------------- LISTENERS ---------------------------
 
 /**
@@ -42,6 +61,11 @@ function submitInvoice()
 
 	if (vm.isFormSubmissible)
 	{
+		for (let i = 0; i < vm.items.length; i++)
+		{
+			vm.items[i] = _packageItem(vm.items[i]);
+		}
+
 		// Organize the data that will need to be sent over the wire
 		data =
 		{
@@ -51,6 +75,7 @@ function submitInvoice()
 			address: vm.address,
 			city: vm.city,
 			state: vm.state,
+			memo: vm.memo,
 			items: vm.items,
 			subtotal: vm.subtotal,
 			isTaxWaived: vm.isTaxWaived,

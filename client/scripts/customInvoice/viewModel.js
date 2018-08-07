@@ -4,9 +4,6 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-import axios from 'client/scripts/utility/axios';
-import notifier from 'client/scripts/utility/notifications';
-
 import formValidator from 'shared/formValidator';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import tooltipManager from 'client/scripts/utility/tooltip';
@@ -19,14 +16,13 @@ var ORDER_ID_TEXTFIELD = 'orderID',
 	ADDRESS_TEXTFIELD = 'customerAddress',
 	CITY_TEXTFIELD = 'customerCity',
 	STATE_SELECT = 'customerState',
+	MEMO_TEXTAREA = 'memoDescription',
 	SUBTOTAL_DISPLAY = 'customInvoiceSubtotalDisplay',
 	STATE_TAX_DISPLAY = 'stateTaxDisplay',
 	TOTAL_DISPLAY = 'customInvoiceTotalDisplay',
 	CUSTOM_INVOICE_SUBMIT_BUTTON = 'customInvoiceSubmit',
 
 	VALIDATE_VIEW_MODEL_LISTENER = 'validateCustomInvoiceVM',
-
-	SEARCH_FOR_ORDER_URL = 'customInvoice/searchForOrder',
 
 	ERROR =
 	{
@@ -39,8 +35,9 @@ var ORDER_ID_TEXTFIELD = 'orderID',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
-		CANNOT_SUBMIT: 'We cannot quite go forward here. Keep in mind that you need to give a valid name, a valid' +
-		' e-mail address, and put in a description and valid price for each item on the invoice. Then we can go forth.'
+		CANNOT_SUBMIT: 'We cannot quite go forward here. Keep in mind that you need to give a name, a valid' +
+		' e-mail address, a memo, and a description / price for each item on the invoice. Then we can' +
+		' go forth.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -54,6 +51,7 @@ var _validationSet = new Set(),
 	_addressField = document.getElementById(ADDRESS_TEXTFIELD),
 	_cityField = document.getElementById(CITY_TEXTFIELD),
 	_stateField = document.getElementById(STATE_SELECT),
+	_memoField = document.getElementById(MEMO_TEXTAREA),
 
 	_subtotalDisplay = document.getElementById(SUBTOTAL_DISPLAY),
 	_taxDisplay = document.getElementById(STATE_TAX_DISPLAY),
@@ -113,24 +111,10 @@ Object.defineProperty(viewModel, 'orderId',
 	set: (value) =>
 	{
 		// Ensure that the value does not simply consist of spaces
-		value = (value.trim() ? window.parseInt(value, 10) : '');
-		rQueryClient.setField(_orderIdField, value, _validationSet);
+		value = (value ? window.parseInt((value + '').trim(), 10) : '');
 		viewModel.__orderId = value;
 
-		// If a valid order ID has been submitted, then see if a corresponding order can be found from the database
-		if (value)
-		{
-			axios.post(SEARCH_FOR_ORDER_URL, { id : value }, true).then((results) =>
-			{
-				viewModel.name = results.data.customer.name;
-				viewModel.email = results.data.customer.email;
-			}, () =>
-			{
-				viewModel.__orderId = '';
-				rQueryClient.setField(_orderIdField, value, _validationSet);
-				notifier.showSpecializedServerError(ERROR.NO_ORDER_FOUND);
-			});
-		}
+		rQueryClient.setField(_orderIdField, value, _validationSet);
 	}
 });
 
@@ -148,7 +132,7 @@ Object.defineProperty(viewModel, 'name',
 	set: (value) =>
 	{
 		// Ensure that the value does not simply consist of spaces
-		value = (value.trim() ? value : '');
+		value = (value ? value.trim() : '');
 		viewModel.__name = value;
 
 		rQueryClient.setField(_nameField, value, _validationSet);
@@ -238,6 +222,27 @@ Object.defineProperty(viewModel, 'state',
 		viewModel.__state = value;
 
 		rQueryClient.setField(_stateField, value, _validationSet);
+	}
+});
+
+// Invoice memo
+Object.defineProperty(viewModel, 'memo',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__memo;
+	},
+
+	set: (value) =>
+	{
+		// Ensure that the value does not simply consist of spaces
+		value = (value.trim() ? value : '');
+		viewModel.__memo = value;
+
+		rQueryClient.setField(_memoField, value);
 	}
 });
 

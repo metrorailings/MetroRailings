@@ -394,3 +394,8 @@ $FONTS:
 {
 	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: 'Dancing Script');
 }
+
+%noteText
+{
+	@include basicFontSettings($weight: 400, $size: smallFontSize, $family: Sorts Mill Goudy, $style: italic);
+}

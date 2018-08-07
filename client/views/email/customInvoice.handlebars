@@ -1,8 +1,29 @@
 <table id='personalizedInvoice'>
 	<tr>
 		<td>
-			We've drawn up an invoice detailing charges for services that we may have already provided for you. 
-			Please click the link below to access the invoice.
+			We've drawn up an invoice detailing charges for the following:
+		</td>
+	</tr>
+	<tr>
+		<td id='memoCell'>
+			{{ memo }}
+			{{#if address}}
+				<br /><br />
+				<b>Service Address</b>
+				<br />
+				{{ address }}
+				{{#if city}}
+					{{#if state}}
+						<br />
+						{{ city }}, {{ state }}
+					{{/if}}
+				{{/if}}
+			{{/if}}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Please click the button below to access the invoice.
 		</td>
 	</tr>
 	<tr>

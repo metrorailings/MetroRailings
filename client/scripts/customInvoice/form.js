@@ -9,7 +9,8 @@ var ORDER_ID_TEXTFIELD = 'orderID',
 	EMAIL_TEXTFIELD = 'customerEmail',
 	ADDRESS_TEXTFIELD = 'customerAddress',
 	CITY_TEXTFIELD = 'customerCity',
-	STATE_DROPDOWN = 'customerState';
+	STATE_DROPDOWN = 'customerState',
+	MEMO_TEXTAREA = 'memoDescription';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -19,7 +20,8 @@ var _orderIdField = document.getElementById(ORDER_ID_TEXTFIELD),
 	_emailField = document.getElementById(EMAIL_TEXTFIELD),
 	_addressField = document.getElementById(ADDRESS_TEXTFIELD),
 	_cityField = document.getElementById(CITY_TEXTFIELD),
-	_stateField = document.getElementById(STATE_DROPDOWN);
+	_stateField = document.getElementById(STATE_DROPDOWN),
+	_memoField = document.getElementById(MEMO_TEXTAREA);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -83,6 +85,16 @@ function setState()
 	vm.state = _stateField.value;
 }
 
+/**
+ * Listener responsible for setting the memo into the view model
+ *
+ * @author kinsho
+ */
+function setMemo()
+{
+	vm.memo = _memoField.value;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Set up the view model listeners
@@ -92,12 +104,40 @@ _emailField.addEventListener('blur', setEmail);
 _addressField.addEventListener('blur', setAddress);
 _cityField.addEventListener('blur', setCity);
 _stateField.addEventListener('change', setState);
+_memoField.addEventListener('blur', setMemo);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-vm.orderId = window.MetroRailings.order ? window.MetroRailings.order._id : '';
-vm.name = window.MetroRailings.order ? window.MetroRailings.order.customer.name : '';
-vm.email = window.MetroRailings.order ? window.MetroRailings.order.customer.email : '';
-vm.address = window.MetroRailings.order ? window.MetroRailings.order.customer.address : '';
-vm.city = window.MetroRailings.order ? window.MetroRailings.order.customer.city : '';
-vm.state = window.MetroRailings.order ? window.MetroRailings.order.customer.state : '';;
+if (window.MetroRailings.invoice)
+{
+	vm.orderId = window.MetroRailings.invoice.orderId;
+	vm.name = window.MetroRailings.invoice.name;
+	vm.email = window.MetroRailings.invoice.email;
+	vm.address = window.MetroRailings.invoice.address;
+	vm.city = window.MetroRailings.invoice.city;
+	vm.state = window.MetroRailings.invoice.state;
+
+	_orderIdField.value = window.MetroRailings.invoice.orderId;
+}
+else if (window.MetroRailings.order)
+{
+	vm.orderId = window.MetroRailings.order._id;
+	vm.name = window.MetroRailings.order.customer.name;
+	vm.email = window.MetroRailings.order.customer.email;
+	vm.address = window.MetroRailings.order.customer.address;
+	vm.city = window.MetroRailings.order.customer.city;
+	vm.state = window.MetroRailings.order.customer.state;
+
+	_orderIdField.value = window.MetroRailings.order._id;
+}
+else
+{
+	vm.orderId = '';
+	vm.name = '';
+	vm.email = '';
+	vm.address = '';
+	vm.city = '';
+	vm.state = '';
+}
+
+vm.memo = (window.MetroRailings.invoice ? window.MetroRailings.invoice.memo : '');

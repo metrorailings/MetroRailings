@@ -86,17 +86,17 @@ module.exports =
 		pageData.itemRowTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.ITEM_ROW);
 
 		// Grab order and/or invoice data if necessary
-		if (params.orderId)
+		if (params.invoiceId)
+		{
+			invoice = await invoicesDAO.searchInvoiceById(parseInt(params.invoiceId, 10));
+			pageData.invoice = invoice;
+		}
+		else if (params.orderId)
 		{
 			order = await ordersDAO.searchOrderById(parseInt(params.orderId, 10));
-		}
-		else if (params.invoiceId)
-		{
-			invoice = await invoicesDAO.searchInvoiceById(parseInt(params.invoiceId), 10);
+			pageData.order = order;
 		}
 
-		pageData.order = order;
-		pageData.invoice = invoice;
 		// If any taxes are being charged, set the tax rate so that it can be shown on the page
 		pageData.taxRate = pricing.NJ_SALES_TAX_RATE * 100;
 
@@ -104,36 +104,6 @@ module.exports =
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true, true);
-	},
-
-	/**
-	 * Function responsible for searching for a particular order given its ID
-	 *
-	 * @author kinsho
-	 */
-	searchForOrder: async function(params, cookie, request)
-	{
-		var order;
-
-		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
-		{
-			order = await ordersDAO.searchOrderById(params.id);
-		}
-
-		if (order)
-		{
-			return {
-				statusCode: responseCodes.OK,
-				data: order
-			};
-		}
-		else
-		{
-			return {
-				statusCode: responseCodes.NOT_FOUND
-			};
-		}
-
 	},
 
 	/**
@@ -146,6 +116,7 @@ module.exports =
 		var processedInvoice,
 			invoiceLink,
 			mailHTML,
+			mailData,
 			username;
 
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
@@ -156,8 +127,14 @@ module.exports =
 
 			try
 			{
-				// Convert an existing prospect into an order
+				// Save the invoice into the database
 				processedInvoice = await invoicesDAO.saveInvoice(params, username);
+			
+				// If an order ID was passed, link this invoice to the corresponding order
+				if (params.orderId)
+				{
+					await invoicesDAO.associateInvoiceWithOrder(params.orderId, processedInvoice._id);
+				}
 			}
 			catch (error)
 			{
@@ -170,7 +147,15 @@ module.exports =
 			invoiceLink = config.BASE_URL + INVOICE_URL.replace(INVOICE_ID_PLACEHOLDER, processedInvoice._id);
 
 			// Send out an e-mail alerting the consumer that an invoice is ready to be paid
-			mailHTML = await mailer.generateFullEmail(CUSTOM_INVOICE_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_INVOICE_EMAIL);
+			mailData =
+			{
+				orderInvoiceLink: invoiceLink,
+				memo: params.memo,
+				address: params.address,
+				city: params.city,
+				state: params.state
+			};
+			mailHTML = await mailer.generateFullEmail(CUSTOM_INVOICE_EMAIL, mailData, CUSTOM_INVOICE_EMAIL);
 			await mailer.sendMail(mailHTML, '', params.email, CUSTOM_INVOICE_SUBJECT_HEADER.replace(CUSTOM_INVOICE_SUBJECT_HEADER, processedInvoice._id), config.SUPPORT_MAILBOX);
 		}
 

@@ -13,7 +13,12 @@ var mailer = global.OwlStakes.require('utility/mailer');
 
 var DETAILS =
 	{
-		orderInvoiceLink: 'http://localhost/specializedInvoice?id=4335'
+		orderInvoiceLink: 'http://localhost/specializedInvoice?id=4335',
+		memo: 'abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd' +
+		' abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd abxd ',
+		address2: '22B Chatham St',
+		city: 'North Plainfield',
+		state: 'NJ'
 	},
 
 	RECIPIENT_ADDRESS = 'kinsho@gmail.com',

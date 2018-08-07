@@ -110,10 +110,10 @@ function createNewModel(descriptionField, priceField)
 		}
 	});
 
-	// Instantiate model properties
-	validationModel.description = '';
-	validationModel.price = 0;
-	validationModel.validItem = false;
+	// Instantiate model properties with either preset values or empty values
+	validationModel.description = descriptionField.value || '';
+	validationModel.price = priceField.value || 0;
+	_validate(validationModel);
 
 	return validationModel;
 }

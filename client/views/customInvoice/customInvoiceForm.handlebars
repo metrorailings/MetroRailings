@@ -23,24 +23,30 @@
 
 		<div class='inputGrouping'>
 			<label for='customerAddress'>Service Address</label>
-			<input type='text' id='customerAddress' />
+			<input type='text' id='customerAddress' class='optional' />
 		</div>
 
 		<div class='inputGrouping'>
 			<label for='customerCity'>City</label>
-			<input type='text' id='customerCity' />
+			<input type='text' id='customerCity' class='optional' />
 		</div>
 
 		<div class='inputGrouping'>
 			<label for='customerState'>State</label>
-			<select id='customerState'>
-				<option val='' selected='selected' disabled>Select a state...</option>
-				<option val='NJ'>New Jersey</option>
-				<option val='NY'>New York</option>
-				<option val='PA'>Pennsylvania</option>
+			<select id='customerState' class='optional'>
+				<option value='' selected='selected' disabled>Select a state...</option>
+				<option value='NJ'>New Jersey</option>
+				<option value='NY'>New York</option>
+				<option value='PA'>Pennsylvania</option>
 			</select>
 		</div>
 
+	</div>
+
+	<div id='memoSection' class='controlGrouping'>
+		<label for='memoDescription' class='required'>Memo</label>
+		<textarea id='memoDescription'></textarea>
+		<span id='memoHelpText'>Use this field to inform the customer as to what this invoice is about</span>
 	</div>
 
 </div>
