@@ -20,13 +20,13 @@ var LOADING_VEIL = 'baseLoaderOverlay',
 	TRANSLATE_TO_SPANISH_LINK = 'spanishLanguageTranslator',
 
 	TRANSLATE_TO_ENGLISH_URL = 'utility/translateTextToEnglish',
-	TRANSLATE_TO_SPANISH_URL = 'utility/translateTextToSpanish',
-
-	DEFAULT_LANGUAGE_KEY = 'defaultLanguage';
+	TRANSLATE_TO_SPANISH_URL = 'utility/translateTextToSpanish';
 
 // ----------------- PRIVATE MEMBERS --------------------------
 
-var _defaultLanguage;
+	// Variable that keeps track of the language currently selected
+	// Default language is always English
+var _selectedLanguage;
 
 // ----------------- ELEMENTS --------------------------
 
@@ -60,10 +60,13 @@ function _translatePage(languageCode, forceTranslate, rootNode)
 
 	// If the text on the page is already represented in the language being switched to, then just skip out of this
 	// function, unless the forceTranslate flag is set
-	if ( !(forceTranslate) && (languageCode === window.localStorage.getItem(DEFAULT_LANGUAGE_KEY)) )
+	if ( !(forceTranslate) && (languageCode === _selectedLanguage) )
 	{
 		return;
 	}
+
+	// Note the language which the text will be translated to
+	_selectedLanguage = languageCode;
 
 	// Figure out which URL to invoke in order to translate the text. Also update the page to indicate in which
 	// language the page is shown in. And lastly, update the browser cache to indicate in which language the user
@@ -73,16 +76,12 @@ function _translatePage(languageCode, forceTranslate, rootNode)
 		_englishLink.classList.add(SELECTED_CLASS);
 		_spanishLink.classList.remove(SELECTED_CLASS);
 
-		window.localStorage.setItem(DEFAULT_LANGUAGE_KEY, translateModule.ENGLISH_LANGUAGE_DESIGNATION);
-
 		translateURL = TRANSLATE_TO_ENGLISH_URL;
 	}
 	else if (languageCode === translateModule.SPANISH_LANGUAGE_DESIGNATION)
 	{
 		_englishLink.classList.remove(SELECTED_CLASS);
 		_spanishLink.classList.add(SELECTED_CLASS);
-
-		window.localStorage.setItem(DEFAULT_LANGUAGE_KEY, translateModule.SPANISH_LANGUAGE_DESIGNATION);
 
 		translateURL = TRANSLATE_TO_SPANISH_URL;
 	}
@@ -143,9 +142,9 @@ var translateModule =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			if (window.localStorage.getItem(DEFAULT_LANGUAGE_KEY) !== translateModule.ENGLISH_LANGUAGE_DESIGNATION)
+			// For the time being, we only need to translate the text into Spanish
+			if (_selectedLanguage === translateModule.SPANISH_LANGUAGE_DESIGNATION)
 			{
-				// For the time being, we only need to translate the text into Spanish
 				axios.post(TRANSLATE_TO_SPANISH_URL, { textToTranslate: text }, true).then((results) =>
 				{
 					resolve(results.data);
@@ -165,21 +164,19 @@ var translateModule =
 	},
 
 	/**
-	 * Function translates a section of page forcefully if the default language is anything other than English
+	 * Function translates a section of page forcefully
 	 *
+	 * @param {Enum} languageKey - the language to translate the text to
 	 * @param {HTMLElement} [rootNode] - if specified, only the DOM elements that fall under this rootNode will have its
 	 * 		text translated
 	 *
 	 * @author kinsho
 	 */
-	forceTranslatePage: function(rootNode)
+	forceTranslatePage: function(languageKey, rootNode)
 	{
 		rootNode = rootNode || document;
 
-		if (window.localStorage.getItem(DEFAULT_LANGUAGE_KEY) !== translateModule.ENGLISH_LANGUAGE_DESIGNATION)
-		{
-			_translatePage(window.localStorage.getItem(DEFAULT_LANGUAGE_KEY), true, rootNode);
-		}
+		_translatePage(languageKey, true, rootNode);
 	}
 };
 
@@ -195,21 +192,10 @@ _spanishLink.addEventListener('click', function()
 	_translatePage(translateModule.SPANISH_LANGUAGE_DESIGNATION);
 });
 
-// Track whatever the default language is for the user navigating the page
-_defaultLanguage = window.localStorage.getItem(DEFAULT_LANGUAGE_KEY);
+// Default language on the page will always be English
+_selectedLanguage = translateModule.ENGLISH_LANGUAGE_DESIGNATION;
 
-// If no default language is set, set the English language as the de facto default
-if ( !(_defaultLanguage) )
-{
-	window.localStorage.setItem(DEFAULT_LANGUAGE_KEY, translateModule.ENGLISH_LANGUAGE_DESIGNATION);
-	_defaultLanguage = translateModule.ENGLISH_LANGUAGE_DESIGNATION;
-}
-
-// If the default language is something other than English, translate the page into that default language
-if (_defaultLanguage !== translateModule.ENGLISH_LANGUAGE_DESIGNATION)
-{
-	_translatePage(_defaultLanguage, true);
-}
+// TODO: Set up caching on language preferences
 
 // ----------------- EXPORT -----------------------------
 

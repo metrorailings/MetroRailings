@@ -15,7 +15,8 @@
                 <span class='orderInfoSectionHeader translate'>Customer Info</span>
                 <span class='orderCell'>{{ customer.name }}</span>
                 <span class='orderCell'>
-					<span class='linkText addressLink' data-id='{{ this._id }}'>
+					<a class='linkText addressLink' target='_blank'
+					   href='{{#form_google_maps_url customer }}{{/form_google_maps_url}}'>
 						{{ customer.address }}
 						{{#if customer.aptSuiteNo}}
 							<br />
@@ -24,7 +25,7 @@
 						<br />
 						{{ customer.city }}, {{ customer.state }}{{#if customer.zipCode}}, {{ customer.zipCode }}{{/if}}
 						<i class='fa fa-map-marker'></i>
-					</span>
+					</a>
 				</span>
 				{{#if customer.email }}
 					<span class='orderCell'>{{ customer.email }}</span>
@@ -87,9 +88,9 @@
 				 pending or queued status -->
 			{{#if_cond_group this.status '["pending", "queued"]'}}
 				<span class='orderCell'>
-					<span class='contractorAgreementLink' data-id='{{ this._id }}'>
+					<a class='contractorAgreementLink' target='_blank' href='/contractorAgreement?id={{ this._id }}'>
 						<i class='fa fa-file-text'></i><span class='translate'>Print Contractor Agreement</span>
-					</span>
+					</a>
 				</span>
 			{{/if_cond_group}}
 
@@ -97,31 +98,31 @@
 			{{#unless_cond this.status 'prospect'}}
 				{{#unless_cond this.status 'pending'}}
 					<span class='orderCell'>
-						<span class='printLink' data-id='{{ this._id }}'>
+						<a class='printLink' target='_blank' href='/printOrderDetails?id={{ this._id }}'>
 							<i class='fa fa-print'></i><span class='translate'>Print Order</span>
-						</span>
+						</a>
 					</span>
 				{{/unless_cond}}
 				<span class='orderCell'>
-					<span class='invoiceLink' data-id='{{ this._id }}'>
+					<a class='invoiceLink' target='_blank' href='/orderInvoice?id={{ this._id }}'>
 						<i class='fa fa-file-text'></i><span class='translate'>View Invoice</span>
-					</span>
+					</a>
 				</span>
 				<span class='orderCell'>
-					<button class='detailsButton orderDetailsButton' data-id={{ this._id }}>
+					<a class='detailsButton' href='/orderDetails?orderNumber={{ this._id }}'>
 						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
-					</button>
+					</a>
 				</span>
 			{{else}}
 				<span class='orderCell'>
-					<span class='convertOrderLink' data-id='{{ this._id }}'>
+					<a class='convertOrderLink' href='/createQuote?id={{ this._id }}'>
 						<i class='fa fa-first-order'></i><span class='translate'>Convert to Order</span>
-					</span>
+					</a>
 				</span>
 				<span class='orderCell'>
-					<button class='detailsButton prospectDetailsButton' data-id={{ this._id }}>
+					<a class='detailsButton' href='/prospectDetails?orderNumber={{ this._id }}'>
 						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
-					</button>
+					</a>
 				</span>
 			{{/unless_cond}}
 		</div>

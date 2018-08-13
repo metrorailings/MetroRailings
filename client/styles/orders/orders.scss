@@ -27,6 +27,12 @@
 		width: 2px;
 		color: map-get($COLORS, blackTheme);
 	}
+
+	padding:
+	{
+		left: 10px;
+		right: 10px;
+	}
 }
 
 #orderCreationButton, #prospectCreationButton
@@ -41,13 +47,9 @@
 		right: 15px;
 	}
 
-	padding:
-	{
-		left: 10px;
-		right: 10px;
-	}
-
 	width: auto;
+
+	text-decoration: none;
 
 	& > i
 	{

@@ -512,6 +512,12 @@ var ordersModule =
 		if (order.status === PENDING_STATUS)
 		{
 			orderModifications.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
+			orderModifications.pricing.taxRemaining = orderModifications.pricing.tax;
+		}
+		else
+		{
+			orderModifications.pricing.balanceRemaining = order.pricing.balanceRemaining;
+			orderModifications.pricing.taxRemaining = order.pricing.taxRemaining;
 		}
 
 		if (order.timeLimit && order.timeLimit.original && order.finalizationDate)
