@@ -9,5 +9,3 @@ import translate from 'client/scripts/utility/translate';
 // ----------------- LISTENERS ---------------------------
 
 // ----------------- PAGE INITIALIZATION -----------------------------
-
-translate.forceTranslatePage(translate.SPANISH_LANGUAGE_DESIGNATION);
