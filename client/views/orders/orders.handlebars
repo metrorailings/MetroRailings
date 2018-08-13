@@ -3,17 +3,15 @@
 		Over here, we can look and inspect all the orders in our system as well as the tasks that need to be addressed.
 	</p>
 
-	{{> officeTasks }}
-
 	<div id='buttonSection'>
-		<button id='prospectCreationButton' class='navButton'>
+		<a id='prospectCreationButton' class='navButton' href='/createProspect'>
 			<span class='translate'>Set Up New Prospect</span>
 			<i class='fa fa-user-circle-o'></i>
-		</button>
-		<button id='orderCreationButton' class='navButton'>
-			<span class='translate'>Create Invoice</span>
+		</a>
+		<a id='orderCreationButton' class='navButton' href='/createQuote'>
+			<span class='translate'>Create Quote</span>
 			<i class='fa fa-shopping-cart'></i>
-		</button>
+		</a>
 	</div>
 
     {{> orderFilter }}

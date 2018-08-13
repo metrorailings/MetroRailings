@@ -10,7 +10,6 @@ var _Handlebars = require('handlebars'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
-	upwave = global.OwlStakes.require('utility/upwave'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
@@ -28,8 +27,6 @@ var CONTROLLER_FOLDER = 'orders',
 
 	PARTIALS =
 	{
-		TASKS: 'officeTasks',
-		TASKS_LISTING: 'officeTasksListing',
 		FILTER: 'orderFilter',
 		LISTING: 'orderListing',
 		PICTURES: 'orderPictures',
@@ -38,11 +35,6 @@ var CONTROLLER_FOLDER = 'orders',
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
-
-/**
- * The template for the office tasks section
- */
-_Handlebars.registerPartial('officeTasks', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TASKS));
 
 /**
  * The template for the order filter section
@@ -75,9 +67,6 @@ module.exports =
 
 		console.log('Loading the orders page...');
 
-		// Grab the raw HTML for the office tasks template
-		pageData.officeTasksListingTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.TASKS_LISTING);
-
 		// Grab the raw HTML of the order listing template
 		pageData.orderListingTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.LISTING);
 
@@ -89,9 +78,6 @@ module.exports =
 
 		// Grab the raw HTML of the template we'll use to print out all the notes for any order
 		pageData.orderNotesTemplate = await fileManager.fetchTemplate(UTILITY_FOLDER, PARTIALS.NOTES);
-
-		// Grab all tasks that have yet to be completed from UpWave
-		pageData.upwaveCards = await upwave.getCards();
 
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

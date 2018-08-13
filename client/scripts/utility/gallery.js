@@ -175,6 +175,18 @@ function goToPrevPhoto()
 }
 
 /**
+ * Function will open a new tab that will allow us to load the image to its original size
+ *
+ * @param {Event} event - the event object associated with this listener
+ *
+ * @author kinsho
+ */
+function displayImageInFull(event)
+{
+	window.open(event.currentTarget.src, '_blank');
+}
+
+/**
  * Function will detect whether the right or left arrow keys were pressed and will slide the gallery accordingly
  *
  * @param {Event} event - the event object associated with this listener
@@ -253,6 +265,10 @@ document.addEventListener('keydown', detectArrowKeys);
 
 // Put up the listeners to allow the user to exit the gallery
 _galleryExitIcon.addEventListener('click', exitGallery);
+
+// Allow the user to blow up the image to its original size on a separate tab
+_galleryPicture.addEventListener('click', displayImageInFull);
+	
 
 // Allow the user to exit the gallery when he clicks outside the confines of the gallery or any of its upper components
 _galleryPictureViewer.addEventListener('click', (event) =>
