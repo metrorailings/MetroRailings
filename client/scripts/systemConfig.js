@@ -31,6 +31,7 @@ SystemJS.config({
 		prospectDetails: '/client/scripts/prospectDetails/main.js',
 		createProspect: '/client/scripts/createProspect/main.js',
 		createQuote: '/client/scripts/createQuote/main.js',
+		printOrderDetails: '/client/scripts/printOrderDetails/main.js',
 		paperOrder: '/client/scripts/paperOrder/main.js',
 		tariffInfo: '/client/scripts/tariffInfo/main.js',
 
