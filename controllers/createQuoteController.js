@@ -160,7 +160,7 @@ module.exports =
 				};
 			}
 
-			// Send out an e-mail to the customer if an e-mail address was provided
+			// Send out an e-mail to the customer if at least one e-mail address was provided
 			if (params.customer.email)
 			{
 				// Generate the link that will be sent to the customer so that he can approve and pay for the order

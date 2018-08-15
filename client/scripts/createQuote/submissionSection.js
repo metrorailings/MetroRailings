@@ -77,6 +77,7 @@ function submit(event)
 			customer:
 			{
 				name: vm.name,
+				company: vm.company || '',
 				email: vm.email || '',
 				areaCode: vm.areaCode,
 				phoneOne: vm.phoneOne,

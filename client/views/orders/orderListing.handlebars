@@ -28,7 +28,7 @@
 					</a>
 				</span>
 				{{#if customer.email }}
-					<span class='orderCell'>{{ customer.email }}</span>
+					<span class='orderCell'>{{#format_multiple_emails customer.email }}{{/format_multiple_emails}}</span>
 				{{/if}}
                 <span class='orderCell'>
 					<a class='linkText' href='tel:{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>

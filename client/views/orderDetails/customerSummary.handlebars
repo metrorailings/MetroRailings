@@ -12,6 +12,9 @@
 		</span>
         <input id='customerEmail' type='email' class='optionalField' value='{{ customer.email }}' {{#if_cond status 'closed'}} disabled {{/if_cond}}/>
 		<span class='hint hint--right hint--always' data-hint=''></span>
+		<div class='subtleHeadsUp'>
+			If you need to include multiple e-mail addresses here, just separate out each e-mail address with a comma
+		</div>
 	</div>
 
 	<div class='dataGrouping {{#if_cond status 'closed'}} disabled {{/if_cond}}'>
