@@ -5,6 +5,7 @@ import vm from 'client/scripts/createProspect/viewModel';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var CUSTOMER_NAME = 'customerName',
+	COMPANY_NAME = 'companyName',
 	EMAIL_ADDRESS = 'customerEmail',
 	AREA_CODE = 'areaCode',
 	PHONE_ONE = 'phoneOne',
@@ -13,6 +14,7 @@ var CUSTOMER_NAME = 'customerName',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 var _nameField = document.getElementById(CUSTOMER_NAME),
+	_companyField = document.getElementById(COMPANY_NAME),
 	_emailField = document.getElementById(EMAIL_ADDRESS),
 	_areaCodeField = document.getElementById(AREA_CODE),
 	_phoneOneField = document.getElementById(PHONE_ONE),
@@ -28,6 +30,16 @@ var _nameField = document.getElementById(CUSTOMER_NAME),
 function setName()
 {
 	vm.name = _nameField.value;
+}
+
+/**
+ * Listener responsible for updating the view model with the name of the company buying our product
+ *
+ * @author kinsho
+ */
+function setCompany()
+{
+	vm.company = _companyField.value;
 }
 
 /**
@@ -73,6 +85,7 @@ function setPhoneTwo()
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _nameField.addEventListener('change', setName);
+_companyField.addEventListener('change', setCompany);
 _emailField.addEventListener('change', setEmail);
 _areaCodeField.addEventListener('change', setAreaCode);
 _phoneOneField.addEventListener('change', setPhoneOne);
@@ -81,6 +94,7 @@ _phoneTwoField.addEventListener('change', setPhoneTwo);
 // ----------------- DATA INITIALIZATION -----------------------------
 
 setName();
+setCompany();
 setEmail();
 setAreaCode();
 setPhoneOne();
