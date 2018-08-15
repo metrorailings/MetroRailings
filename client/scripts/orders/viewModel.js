@@ -270,6 +270,37 @@ Handlebars.registerHelper('form_google_maps_url', function(customer)
 	return GOOGLE_MAPS_SEARCH_URL.replace(PARAMS_PLACEHOLDER, params);
 });
 
+/**
+ * Handlebars helper function designed to split multiple e-mail addresses across different lines so that it looks
+ * better in display
+ *
+ * @params {String} email - the email(s) to split across multiple lines, should more than one e-mail be present here
+ *
+ * @author kinsho
+ */
+
+Handlebars.registerHelper('format_multiple_emails', function(email)
+{
+	var blockToInsert = '';
+
+	if (email)
+	{
+		email = email.split(',');
+
+		for (let i = 0; i < email.length; i++)
+		{
+			if (i - 1 >= 0)
+			{
+				blockToInsert += '<br />';
+			}
+
+			blockToInsert += email[i];
+		}
+	}
+
+	return blockToInsert;
+});
+
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**

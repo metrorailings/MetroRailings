@@ -98,12 +98,13 @@ module.exports =
 	 *
 	 * @param {String} htmlText - the HTML that comprises the e-mail
 	 * @param {String} plainText - the unicode text that will show instead should the user's mail client not support HTML e-mails
-	 * @param {String} email - the e-mail address to which to send this e-mail
+	 * @param {String} email - the e-mail address(es) to which to send this e-mail
 	 * @param {String} subject - the subject to append to the e-mail
 	 * @param {String} [replyTo] - an e-mail address to reply back to should the recipient want to e-mail the sender
 	 * @param {String} [fromEntity] - the address that will be used to identify the sender
 	 *
-	 * @return {boolean} - a flag indicating whether the e-mail was sent successfully or rejected
+	 * @return {boolean} - a flag indicating whether the e-mail was sent successfully to all e-mail addresses or
+	 * 		rejected by any one of them
 	 *
 	 * @author kinsho
 	 */
@@ -111,21 +112,31 @@ module.exports =
 	{
 		console.log('Sending e-mail to ' + email);
 
-		var mail;
+		var mail,
+			// Multiple e-mail addresses may have been provided
+			addresses = email.split(',');
 
 		try
 		{
-			mail = await _sendMail(
+			for (let i = 0; i < addresses.length; i++)
 			{
-				from: fromEntity,
-				to: email,
-				subject: subject,
-				text: plainText,
-				html: htmlText,
-				replyTo: replyTo || config.SUPPORT_MAILBOX
-			});
+				mail = await _sendMail(
+					{
+						from: fromEntity,
+						to: email,
+						subject: subject,
+						text: plainText,
+						html: htmlText,
+						replyTo: replyTo || config.SUPPORT_MAILBOX
+					});
 
-			return !!(mail.accepted.length);
+				if (mail.accepted.length)
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 		catch(error)
 		{

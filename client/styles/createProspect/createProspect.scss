@@ -39,6 +39,7 @@
 
 	display: flex;
 	align-items: center;
+	flex-flow: wrap;
 
 	&.hide
 	{
@@ -52,13 +53,24 @@
 
 		text-align: left;
 	}
+
+	& > .subtleHeadsUp
+	{
+		margin:
+		{
+			left: calc(15%);
+			top: 10px;
+		}
+
+		width: 100%;
+	}
 }
 
 .specializedLabel
 {
 	@extend %formLabelText;
 
-	width: 20%;
+	width: 15%;
 	margin-right: 20px;
 	text-align: right;
 }

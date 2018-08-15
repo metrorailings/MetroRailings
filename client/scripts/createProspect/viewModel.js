@@ -11,8 +11,7 @@ import formValidator from 'shared/formValidator';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CUSTOMER_NAME_TEXTFIELD = 'customerName',
-	CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
+var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	AREA_CODE_TEXTFIELD = 'areaCode',
 	PHONE_ONE_TEXTFIELD = 'phoneOne',
 	PHONE_TWO_TEXTFIELD = 'phoneTwo',
@@ -34,8 +33,7 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 
 	ERROR =
 	{
-		NAME_INVALID: 'Please enter a a valid name consisting only of alphabetical characters, apostrophes, spaces, and dashes.',
-		EMAIL_ADDRESS_INVALID: 'Please enter a valid e-mail address here.',
+		EMAIL_ADDRESS_INVALID: 'Please enter only valid e-mail addresses here.',
 		AREA_CODE_INVALID: 'Please enter a valid three-digit area code here.',
 		PHONE_ONE_INVALID: 'Please enter exactly three digits here.',
 		PHONE_TWO_INVALID: 'Please enter exactly four digits here.',
@@ -51,7 +49,6 @@ var CUSTOMER_NAME_TEXTFIELD = 'customerName',
 var _validationSet = new Set(),
 
 	// Elements
-	_nameField = document.getElementById(CUSTOMER_NAME_TEXTFIELD),
 	_emailField = document.getElementById(CUSTOMER_EMAIL_TEXTFIELD),
 	_areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
 	_phoneOneField = document.getElementById(PHONE_ONE_TEXTFIELD),
@@ -98,17 +95,28 @@ Object.defineProperty(viewModel, 'name',
 	{
 		viewModel.__name = value;
 
-		// Test whether the value qualifies as a valid name
-		var isInvalid = (value.length && !(formValidator.isAlphabetical(value, ' \'-')) );
-
-		rQueryClient.updateValidationOnField(isInvalid, _nameField, ERROR.NAME_INVALID, _validationSet);
-		rQueryClient.setField(_nameField, value, _validationSet);
-
 		_validate();
 	}
 });
 
-// Customer Email
+// Company Name
+Object.defineProperty(viewModel, 'company',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__company;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__company = value;
+	}
+});
+
+// Customer Email(s)
 Object.defineProperty(viewModel, 'email',
 {
 	configurable: false,
@@ -121,13 +129,33 @@ Object.defineProperty(viewModel, 'email',
 
 	set: (value) =>
 	{
-		viewModel.__email = value;
+		// Keep in mind that there may be multiple e-mail addresses inside, split by commas
+		var emailAddresses = (value ? value.split(',') : []),
+			isValid;
 
-		// Test whether the value qualifies as an e-mail address
-		var isInvalid = (value.length && !(formValidator.isEmail(value)) );
+		for (let i = 0; i < emailAddresses.length; i++)
+		{
+			// Trim out any extraneous spaces around the e-mail address being tested
+			emailAddresses[i] = emailAddresses[i].trim();
 
-		rQueryClient.updateValidationOnField(isInvalid, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+			// Test whether the e-mail address is valid
+			isValid = formValidator.isEmail(emailAddresses[i]);
+
+			// Toggle the field's appearance depending on whether we have an invalid e-mail address present
+			rQueryClient.updateValidationOnField( !(isValid), _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+
+			// If an invalid value is present, just exit the processing logic
+			if ( !(isValid) )
+			{
+				break;
+			}
+		}
+
+		// Recompose the values now that extraneous spaces have been trimmed
+		value = emailAddresses.join(',');
+
 		rQueryClient.setField(_emailField, value, _validationSet);
+		viewModel.__email = value;
 
 		_validate();
 	}
