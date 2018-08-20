@@ -14,6 +14,11 @@ var _Handlebars = require('handlebars'),
 
 	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+	posts = global.OwlStakes.require('shared/designs/postDesigns'),
+	handrailings = global.OwlStakes.require('shared/designs/handrailingDesigns'),
+	pickets = global.OwlStakes.require('shared/designs/picketSizes'),
+	postEnds = global.OwlStakes.require('shared/designs/postEndDesigns'),
+	postCaps = global.OwlStakes.require('shared/designs/postCapDesigns'),
 
 	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
@@ -91,7 +96,8 @@ module.exports =
 		var populatedPageTemplate,
 			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
 			prospect = {},
-			pageData;
+			pageData,
+			designData;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -107,13 +113,24 @@ module.exports =
 			prospect = await prospectsDAO.searchProspectById(parseInt(params.id, 10));
 		}
 
+		// Gather all the design options that we can apply to the order
+		designData =
+		{
+			posts: posts.options,
+			handrailings: handrailings.options,
+			picketSizes: pickets.options,
+			postEnds: postEnds.options,
+			postCaps: postCaps.options
+		};
+
 		pageData =
 		{
 			prospect: prospect,
 			agreement: agreementText,
 			defaultTimeLimit: config.DEFAULT_TIME_LIMIT,
 			taxRate: (pricingData.NJ_SALES_TAX_RATE * 100).toFixed(2),
-			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2)
+			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2),
+			designs: designData
 		};
 
 		// Now render the page template

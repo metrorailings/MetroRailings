@@ -51,8 +51,7 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 
 	ERROR =
 	{
-		NAME_INVALID: 'Please enter your name here. We only tolerate alphabetical characters, spaces, dashes, and apostrophes here.',
-		EMAIL_ADDRESS_INVALID: 'Please enter a valid e-mail address here.',
+		EMAIL_ADDRESS_INVALID: 'Please make sure the e-mail address(es) here is valid.',
 		AREA_CODE_INVALID: 'Please enter a valid three-digit area code here.',
 		PHONE_ONE_INVALID: 'Please enter exactly three digits here.',
 		PHONE_TWO_INVALID: 'Please enter exactly four digits here.',
@@ -173,10 +172,9 @@ Object.defineProperty(viewModel, 'customerName',
 	set: (value) =>
 	{
 		// Ensure that the value does not simply consist of spaces
-		value = (value.trim() ? value : '');
+		value = value.trim();
 		viewModel.__customerName = value;
 
-		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, ' \'-')), _nameField, ERROR.NAME_INVALID, _validationSet);
 		rQueryClient.setField(_nameField, value, _validationSet);
 		_validate();
 	}
@@ -267,11 +265,34 @@ Object.defineProperty(viewModel, 'customerEmail',
 
 	set: (value) =>
 	{
+		// Keep in mind that there may be multiple e-mail addresses inside, split by commas
+		var emailAddresses = (value ? value.split(',') : []),
+			isValid;
+
+		for (let i = 0; i < emailAddresses.length; i++)
+		{
+			// Trim out any extraneous spaces around the e-mail address being tested
+			emailAddresses[i] = emailAddresses[i].trim();
+
+			// Test whether the e-mail address is valid
+			isValid = formValidator.isEmail(emailAddresses[i]);
+
+			// Toggle the field's appearance depending on whether we have an invalid e-mail address present
+			rQueryClient.updateValidationOnField( !(isValid), _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+
+			// If an invalid value is present, just exit the processing logic
+			if ( !(isValid) )
+			{
+				break;
+			}
+		}
+
+		// Recompose the values now that extraneous spaces have been trimmed
+		value = emailAddresses.join(',');
+
+		rQueryClient.setField(_emailField, value, _validationSet);
 		viewModel.__customerEmail = value;
 
-		// Test whether the value qualifies as an e-mail address
-		rQueryClient.updateValidationOnField(!(formValidator.isEmail(value)), _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
-		rQueryClient.setField(_emailField, value, _validationSet);
 		_validate();
 	}
 });

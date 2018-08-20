@@ -108,7 +108,8 @@ var _validationSet = new Set(),
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
 /**
- * Generic function for invoking the logic that briefly validates this view model
+ * Slightly specialized function for invoking the logic that validates this view model
+ * Function is specialized in that it checks to see whether certain designs were specified as well
  *
  * @returns {boolean} - indicating whether this view model has been validated
  *
@@ -116,7 +117,9 @@ var _validationSet = new Set(),
  */
 function _validate()
 {
-	viewModel.isFormValid = (rQueryClient.validateModel(viewModel, _validationSet));
+	var designsSelected = !!(viewModel.design.post);
+
+	viewModel.isFormValid = rQueryClient.validateModel(viewModel, _validationSet) && designsSelected;
 }
 
 /**
