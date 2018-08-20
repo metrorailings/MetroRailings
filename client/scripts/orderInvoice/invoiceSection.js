@@ -41,7 +41,10 @@ function navigateToTariffPage()
 
 // Bind all invoice listeners to their respective JavaScript functions
 _printIcon.addEventListener('click', printPage);
-_tariffLink.addEventListener('click', navigateToTariffPage);
+if (_tariffLink)
+{
+	_tariffLink.addEventListener('click', navigateToTariffPage);
+}
 
 // ----------------- PAGE INITIALIZATION -----------------------------
 
