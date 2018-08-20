@@ -31,16 +31,9 @@ var POST_DESIGN_SELECT = 'orderPost',
 	DEDUCTIONS_TEXTFIELD = 'deductions',
 
 	OTHER_VALUE_FIELD_CLASS = 'otherTextfield',
-	HIDE_CLASS = 'hide',
 	SHOW_CLASS = 'show',
 
-	OTHER_SELECTION = 'OTHER',
-
-	POST_DESIGNS =
-	{
-		COLONIAL_BIG_POST: 'P-BPC',
-		STANDARD_SMALL_POST: 'P-SP'
-	};
+	OTHER_SELECTION = 'OTHER';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -71,39 +64,6 @@ var _orderPostDesignField = document.getElementById(POST_DESIGN_SELECT),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD);
 
 // ----------------- PRIVATE METHODS ---------------------------
-
-/**
- * Function meant to reset and/or disable certain design dropdowns depending on the selections
- * made in other design-related dropdowns
- *
- * @author kinsho
- */
-function _resetDesignDropdowns()
-{
-	// Figure out whether to show post ends or post caps depending on the post design currently selected
-	if (vm.design.post === POST_DESIGNS.COLONIAL_BIG_POST)
-	{
-		_orderPostEndField.parentNode.classList.add(HIDE_CLASS);
-		_orderPostCapField.parentNode.classList.remove(HIDE_CLASS);
-
-		_orderPostEndField.value = '';
-	}
-	else if (vm.design.post === POST_DESIGNS.STANDARD_SMALL_POST)
-	{
-		_orderPostEndField.parentNode.classList.remove(HIDE_CLASS);
-		_orderPostCapField.parentNode.classList.add(HIDE_CLASS);
-
-		_orderPostCapField.value = '';
-	}
-	else
-	{
-		_orderPostEndField.parentNode.classList.remove(HIDE_CLASS);
-		_orderPostCapField.parentNode.classList.remove(HIDE_CLASS);
-
-		_orderPostEndField.value = '';
-		_orderPostCapField.value = '';
-	}
-}
 
 /**
  * Function meant to show the 'Other' field to allow the user to put in unlisted values for any design option
@@ -145,20 +105,9 @@ function setPostDesign(event)
 		isOtherSelected = (element.value === OTHER_SELECTION);
 
 	vm.design.post = (isOtherSelected ? _otherPostDesignField.value : element.value);
-
 	vm.validate();
-	_resetDesignDropdowns();
-	_toggleOtherFieldVisibility(_orderPostDesignField);
 
-	// Clear away certain design selections that may have been made prior to this field changing value
-	if (vm.design.post === POST_DESIGNS.COLONIAL_BIG_POST)
-	{
-		vm.design.postEnd = '';
-	}
-	else if (vm.design.post === POST_DESIGNS.STANDARD_SMALL_POST)
-	{
-		vm.design.postCap = '';
-	}
+	_toggleOtherFieldVisibility(_orderPostDesignField);
 }
 
 /**
@@ -172,8 +121,8 @@ function setHandrailing(event)
 		isOtherSelected = (element.value === OTHER_SELECTION);
 
 	vm.design.handrailing = (isOtherSelected ? _otherHandrailingField.value : element.value);
-
 	vm.validate();
+
 	_toggleOtherFieldVisibility(_orderHandrailingField);
 }
 

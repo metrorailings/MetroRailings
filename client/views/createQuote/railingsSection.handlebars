@@ -6,8 +6,9 @@
 		</span>
 		<select id='orderPost'>
 			<option value='' disabled>Select...</option>
-			<option value='P-BPC'>2.5"</option>
-			<option value='P-SP'>1.5"</option>
+			{{#each designs.posts}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
 			<option value='OTHER'>- Other -</option>
 		</select>
 
@@ -20,8 +21,9 @@
 		</span>
 		<select id='orderHandrailing'>
 			<option value='' disabled>Select...</option>
-			<option value='H-COL'>Colonial</option>
-			<option value='H-STD'>Standard</option>
+			{{#each designs.handrailings}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
 			<option value='OTHER'>- Other -</option>
 		</select>
 
@@ -34,11 +36,9 @@
 		</span>
 		<select id='orderPicketSize'>
 			<option value='' disabled>Select...</option>
-			<option value=''>None</option>
-			<option value='PCKT-1/2'>1/2"</option>
-			<option value='PCKT-5/8'>5/8"</option>
-			<option value='PCKT-3/4'>3/4"</option>
-			<option value='PCKT-1'>1"</option>
+			{{#each designs.picketSizes}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
 		</select>
 	</div>
 
@@ -47,11 +47,10 @@
 		    Post End Design
 		</span>
 		<select id='orderPostEnd'>
-			<option value=''>None</option>
-			<option value='PE-VOL'>Volute</option>
-			<option value='PE-LT'>Lamb's Tongue</option>
-			<option value='PE-SCRL'>Scroll</option>
-			<option value='OTHER'>- Other -</option>
+			<option value='' disabled>Select...</option>
+			{{#each designs.postEnds}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
 		</select>
 
 		<input id='otherPostEnd' type='text' class='otherTextfield'/>
@@ -62,10 +61,10 @@
 		    Post Cap Design
 		</span>
 		<select id='orderPostCap'>
-			<option value=''>None</option>
-			<option value='PC-BALL'>Ball</option>
-			<option value='PC-SQ'>Square</option>
-			<option value='OTHER'>- Other -</option>
+			<option value='' disabled>Select...</option>
+			{{#each designs.postCaps}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
 		</select>
 
 		<input id='otherPostCap' type='text' class='otherTextfield' />
