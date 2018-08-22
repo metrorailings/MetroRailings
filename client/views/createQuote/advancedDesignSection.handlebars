@@ -1,0 +1,66 @@
+<div id='advancedDesignSection'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Picket Styling
+		</span>
+		<select id='orderPicketStyle'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.picketStyles}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	
+		<input id='picketStyleNotes' type='text' class='noteTextfield' placeholder='Leave here any notes on the way the pickets need to be styled...'/>
+	</div>
+	
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Center Design
+		</span>
+		<select id='orderCenterDesign'>
+			{{#each designs.centerDesigns}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+			<option value='OTHER'>- Other -</option>
+		</select>
+	
+		<input id='otherCenterDesign' type='text' class='otherTextfield' />
+	</div>
+	
+	
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Collars
+		</span>
+		<select id='orderCollars'>
+			{{#each designs.collars}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+	
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Baskets
+		</span>
+		<select id='orderBaskets'>
+			{{#each designs.baskets}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Valence
+		</span>
+		<select id='orderValence'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.valences}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+</div>
