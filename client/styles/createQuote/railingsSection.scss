@@ -1,3 +1,7 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+
 /* ----------------------- STYLES ----------------------------- */
 
 #pricePerFoot, #additionalPrice, #deductions
@@ -19,7 +23,20 @@
 	}
 }
 
-#notes
+#picketStyleNotes
+{
+	margin-left: 15px;
+	width: 500px;
+
+	display: none;
+
+	&.show
+	{
+		display: inline-block;
+	}
+}
+
+#description
 {
 	height: 200px;
 }

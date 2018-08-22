@@ -14,11 +14,18 @@ var _Handlebars = require('handlebars'),
 
 	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+
+	types = global.OwlStakes.require('shared/designs/types'),
 	posts = global.OwlStakes.require('shared/designs/postDesigns'),
 	handrailings = global.OwlStakes.require('shared/designs/handrailingDesigns'),
-	pickets = global.OwlStakes.require('shared/designs/picketSizes'),
+	picketSizes = global.OwlStakes.require('shared/designs/picketSizes'),
+	picketStyles = global.OwlStakes.require('shared/designs/picketStyles'),
 	postEnds = global.OwlStakes.require('shared/designs/postEndDesigns'),
 	postCaps = global.OwlStakes.require('shared/designs/postCapDesigns'),
+	centerDesigns = global.OwlStakes.require('shared/designs/centerDesigns'),
+	collars = global.OwlStakes.require('shared/designs/collarDesigns'),
+	baskets = global.OwlStakes.require('shared/designs/basketDesigns'),
+	valences = global.OwlStakes.require('shared/designs/valenceDesigns'),
 
 	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
@@ -44,7 +51,9 @@ var CONTROLLER_FOLDER = 'createQuote',
 	{
 		CUSTOMER: 'customerSection',
 		LOCATION: 'locationSection',
-		RAILINGS: 'railingsSection',
+		BASE_DESIGN: 'baseDesignSection',
+		ADVANCED_DESIGN: 'advancedDesignSection',
+		LOGISTICS: 'logisticsSection',
 		EXTERNAL_CHARGES: 'externalCharges',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection'
@@ -55,27 +64,37 @@ var CONTROLLER_FOLDER = 'createQuote',
 /**
  * The template for the customer section
  */
-_Handlebars.registerPartial('createInvoiceCustomerSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOMER));
+_Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOMER));
 
 /**
  * The template for the location section
  */
-_Handlebars.registerPartial('createInvoiceLocationSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION));
+_Handlebars.registerPartial('createQuoteLocation', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION));
 
 /**
- * The template for the railings section
+ * The template for the base design section
  */
-_Handlebars.registerPartial('createInvoiceRailingsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.RAILINGS));
+_Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.BASE_DESIGN));
+
+/**
+ * The template for the base design section
+ */
+_Handlebars.registerPartial('createQuoteAdvancedDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADVANCED_DESIGN));
+
+/**
+ * The template for the railings logistics section
+ */
+_Handlebars.registerPartial('createQuoteLogistics', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOGISTICS));
 
 /**
  * The template for the external charges section
  */
-_Handlebars.registerPartial('createInvoiceExternalChargesSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.EXTERNAL_CHARGES));
+_Handlebars.registerPartial('createQuoteExternalCharges', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.EXTERNAL_CHARGES));
 
 /**
  * The template for the agreement section
  */
-_Handlebars.registerPartial('createInvoiceAgreementSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
+_Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
 
 /**
  * The template for the submission button
@@ -116,11 +135,17 @@ module.exports =
 		// Gather all the design options that we can apply to the order
 		designData =
 		{
+			types: types.options,
 			posts: posts.options,
 			handrailings: handrailings.options,
-			picketSizes: pickets.options,
+			picketSizes: picketSizes.options,
+			picketStyles: picketStyles.options,
 			postEnds: postEnds.options,
-			postCaps: postCaps.options
+			postCaps: postCaps.options,
+			centerDesigns: centerDesigns.options,
+			collars: collars.options,
+			baskets: baskets.options,
+			valences: valences.options
 		};
 
 		pageData =
