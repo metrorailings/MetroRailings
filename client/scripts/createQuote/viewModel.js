@@ -117,7 +117,7 @@ var _validationSet = new Set(),
  */
 function _validate()
 {
-	var designsSelected = !!(viewModel.design.post);
+	var designsSelected = !!(viewModel.design && viewModel.design.post);
 
 	viewModel.isFormValid = rQueryClient.validateModel(viewModel, _validationSet) && designsSelected;
 }
@@ -841,8 +841,10 @@ Object.defineProperty(viewModel, 'isFormValid',
 	}
 });
 
-// Publicly expose the validate method
-viewModel.validate = _validate;
+// Initialize some of the values
+viewModel.design = { notes: {} };
+viewModel.installation = {};
+viewModel.notes = {};
 
 // ----------------- EXPORT -----------------------------
 
