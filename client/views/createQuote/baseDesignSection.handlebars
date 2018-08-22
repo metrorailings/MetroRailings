@@ -1,0 +1,103 @@
+<div id='baseDesignSection'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Type
+		</span>
+		<select id='orderType'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.types}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+	<div class='separator'></div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Post Design
+		</span>
+		<select id='orderPost'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.posts}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+			<option value='OTHER'>- Other -</option>
+		</select>
+
+		<input id='otherPost' type='text' class='otherTextfield' />
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Handrailing
+		</span>
+		<select id='orderHandrailing'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.handrailings}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+			<option value='OTHER'>- Other -</option>
+		</select>
+
+		<input id='otherHandrailing' type='text' class='otherTextfield' />
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Picket Size
+		</span>
+		<select id='orderPicketSize'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.picketSizes}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Post End Design
+		</span>
+		<select id='orderPostEnd'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.postEnds}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+
+		<input id='otherPostEnd' type='text' class='otherTextfield'/>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Post Cap Design
+		</span>
+		<select id='orderPostCap'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.postCaps}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+
+		<input id='otherPostCap' type='text' class='otherTextfield' />
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Color
+		</span>
+		<select id='orderColor'>
+			<option value='' disabled>Select a color...</option>
+			<option value='white'>White</option>
+			<option value='black'>Black</option>
+			<option value='silver'>Silver</option>
+			<option value='bronze'>Bronze</option>
+			<option value='OTHER'>- Other -</option>
+		</select>
+
+		<input id='otherColor' type='text' class='otherTextfield' />
+	</div>
+
+</div>
