@@ -64,7 +64,9 @@ var valenceDesigns =
 			spanishLabel: 'Diamante'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Valence Designs',
+	spanishLabel: 'Diseños del Valencias'
 };
 
 // ----------------- EXPORT --------------------------

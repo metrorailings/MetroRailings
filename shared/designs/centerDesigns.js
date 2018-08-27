@@ -52,7 +52,9 @@ var centerDesigns =
 				spanishLabel: 'Desplazamiento y Collar'
 			}
 		],
-		designMetadata: []
+		designMetadata: [],
+		technicalLabel: 'Center Designs',
+		spanishLabel: 'Diseños del Centro'
 	};
 
 // ----------------- EXPORT --------------------------

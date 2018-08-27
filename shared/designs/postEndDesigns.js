@@ -45,7 +45,9 @@ var postEndDesigns =
 			spanishLabel: 'Extensión'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Post End',
+	spanishLabel: 'Poste Final'
 };
 
 // ----------------- EXPORT --------------------------

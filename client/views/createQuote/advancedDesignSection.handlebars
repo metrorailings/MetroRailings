@@ -1,18 +1,4 @@
 <div id='advancedDesignSection'>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-			Picket Styling
-		</span>
-		<select id='orderPicketStyle'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.picketStyles}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-	
-		<input id='picketStyleNotes' type='text' class='noteTextfield' placeholder='Leave here any notes on the way the pickets need to be styled...'/>
-	</div>
 	
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
@@ -22,10 +8,7 @@
 			{{#each designs.centerDesigns}}
 				<option value='{{ this.id }}'>{{ this.label }}</option>
 			{{/each}}
-			<option value='OTHER'>- Other -</option>
 		</select>
-	
-		<input id='otherCenterDesign' type='text' class='otherTextfield' />
 	</div>
 	
 	

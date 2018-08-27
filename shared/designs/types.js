@@ -59,9 +59,10 @@ var types =
 			technicalLabel: 'Miscellaneous',
 			spanishLabel: 'Diverso'
 		}
-
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Product Type',
+	spanishLabel: 'Tipo de Producto'
 };
 
 // ----------------- EXPORT --------------------------

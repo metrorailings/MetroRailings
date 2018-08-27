@@ -26,6 +26,11 @@ var _Handlebars = require('handlebars'),
 	collars = global.OwlStakes.require('shared/designs/collarDesigns'),
 	baskets = global.OwlStakes.require('shared/designs/basketDesigns'),
 	valences = global.OwlStakes.require('shared/designs/valenceDesigns'),
+	colors = global.OwlStakes.require('shared/designs/colors'),
+	cableSizes = global.OwlStakes.require('shared/designs/cableSizes'),
+	cableCaps = global.OwlStakes.require('shared/designs/cableCaps'),
+	glassTypes = global.OwlStakes.require('shared/designs/glassTypes'),
+	glassBuilds = global.OwlStakes.require('shared/designs/glassBuilds'),
 
 	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
@@ -51,8 +56,11 @@ var CONTROLLER_FOLDER = 'createQuote',
 	{
 		CUSTOMER: 'customerSection',
 		LOCATION: 'locationSection',
+		TYPE: 'typeSection',
 		BASE_DESIGN: 'baseDesignSection',
 		ADVANCED_DESIGN: 'advancedDesignSection',
+		CABLE_DESIGN: 'cableDesignSection',
+		GLASS_DESIGN: 'glassDesignSection',
 		LOGISTICS: 'logisticsSection',
 		EXTERNAL_CHARGES: 'externalCharges',
 		AGREEMENT: 'agreementSection',
@@ -72,14 +80,29 @@ _Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync
 _Handlebars.registerPartial('createQuoteLocation', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION));
 
 /**
+ * The template for the type section
+ */
+_Handlebars.registerPartial('createQuoteType', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TYPE));
+
+/**
  * The template for the base design section
  */
 _Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.BASE_DESIGN));
 
 /**
- * The template for the base design section
+ * The template for the advanced design section
  */
 _Handlebars.registerPartial('createQuoteAdvancedDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADVANCED_DESIGN));
+
+/**
+ * The template for the cable design section
+ */
+_Handlebars.registerPartial('createQuoteCableDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CABLE_DESIGN));
+
+/**
+ * The template for the glass design section
+ */
+_Handlebars.registerPartial('createQuoteGlassDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.GLASS_DESIGN));
 
 /**
  * The template for the railings logistics section
@@ -145,7 +168,12 @@ module.exports =
 			centerDesigns: centerDesigns.options,
 			collars: collars.options,
 			baskets: baskets.options,
-			valences: valences.options
+			valences: valences.options,
+			colors: colors.options,
+			cableSizes: cableSizes.options,
+			cableCaps: cableCaps.options,
+			glassTypes: glassTypes.options,
+			glassBuilds: glassBuilds.options
 		};
 
 		pageData =

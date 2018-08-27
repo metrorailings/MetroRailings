@@ -15,6 +15,12 @@ var handrailingDesigns =
 	options:
 	[
 		{
+			id: 'H-NONE',
+			label: 'N/A',
+			technicalLabel: 'N/A',
+			spanishLabel: 'N/A'
+		},
+		{
 			id: 'H-S',
 			label: 'Standard',
 			technicalLabel: 'Standard',
@@ -57,7 +63,9 @@ var handrailingDesigns =
 			spanishLabel: 'Semicírculo'
 		},
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Handrailing',
+	spanishLabel: 'Maldura'
 };
 
 // ----------------- EXPORT --------------------------
