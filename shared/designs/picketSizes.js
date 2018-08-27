@@ -60,7 +60,9 @@ var picketSizes =
 		}
 
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Picket Size',
+	spanishLabel: 'Tamaño de Piquete'
 };
 
 // ----------------- EXPORT --------------------------

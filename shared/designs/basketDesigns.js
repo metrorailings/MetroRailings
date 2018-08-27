@@ -40,7 +40,9 @@ var basketDesigns =
 			spanishLabel: '1-2 Patrón de Cesta'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Baskets',
+	spanishLabel: 'Cestas'
 };
 
 // ----------------- EXPORT --------------------------

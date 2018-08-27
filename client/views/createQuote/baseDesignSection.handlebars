@@ -2,20 +2,6 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
-		    Type
-		</span>
-		<select id='orderType'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.types}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-	</div>
-
-	<div class='separator'></div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
 		    Post Design
 		</span>
 		<select id='orderPost'>
@@ -23,10 +9,7 @@
 			{{#each designs.posts}}
 				<option value='{{ this.id }}'>{{ this.label }}</option>
 			{{/each}}
-			<option value='OTHER'>- Other -</option>
 		</select>
-
-		<input id='otherPost' type='text' class='otherTextfield' />
 	</div>
 
 	<div class='dataGrouping'>
@@ -36,21 +19,6 @@
 		<select id='orderHandrailing'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.handrailings}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
-			{{/each}}
-			<option value='OTHER'>- Other -</option>
-		</select>
-
-		<input id='otherHandrailing' type='text' class='otherTextfield' />
-	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-		    Picket Size
-		</span>
-		<select id='orderPicketSize'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.picketSizes}}
 				<option value='{{ this.id }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
@@ -66,8 +34,6 @@
 				<option value='{{ this.id }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
-
-		<input id='otherPostEnd' type='text' class='otherTextfield'/>
 	</div>
 
 	<div class='dataGrouping'>
@@ -80,8 +46,6 @@
 				<option value='{{ this.id }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
-
-		<input id='otherPostCap' type='text' class='otherTextfield' />
 	</div>
 
 	<div class='dataGrouping'>
@@ -90,10 +54,9 @@
 		</span>
 		<select id='orderColor'>
 			<option value='' disabled>Select a color...</option>
-			<option value='white'>White</option>
-			<option value='black'>Black</option>
-			<option value='silver'>Silver</option>
-			<option value='bronze'>Bronze</option>
+			{{#each designs.colors}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
 			<option value='OTHER'>- Other -</option>
 		</select>
 

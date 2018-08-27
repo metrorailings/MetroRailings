@@ -1,0 +1,27 @@
+<div id='glassDesignSection'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Glass Type
+		</span>
+		<select id='orderGlassType'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.glassTypes}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Glass Build
+		</span>
+		<select id='orderGlassBuild'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.glassBuilds}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+</div>

@@ -7,7 +7,6 @@ import vm from 'client/scripts/createQuote/viewModel';
 var TYPE_SELECT = 'orderType',
 	POST_DESIGN_SELECT = 'orderPost',
 	HANDRAILING_SELECT = 'orderHandrailing',
-	PICKET_SIZE_SELECT = 'orderPicketSize',
 	POST_END_SELECT = 'orderPostEnd',
 	POST_CAP_SELECT = 'orderPostCap',
 	COLOR_SELECT = 'orderColor',
@@ -24,7 +23,6 @@ var TYPE_SELECT = 'orderType',
 var _orderTypeField = document.getElementById(TYPE_SELECT),
 	_orderPostDesignField = document.getElementById(POST_DESIGN_SELECT),
 	_orderHandrailingField = document.getElementById(HANDRAILING_SELECT),
-	_orderPicketField = document.getElementById(PICKET_SIZE_SELECT),
 	_orderPostEndField = document.getElementById(POST_END_SELECT),
 	_orderPostCapField = document.getElementById(POST_CAP_SELECT),
 	_orderColorField = document.getElementById(COLOR_SELECT),
@@ -93,16 +91,6 @@ function setHandrailing()
 }
 
 /**
- * Listener responsible for setting the picket size into the view model
- *
- * @author kinsho
- */
-function setPicketSize()
-{
-	vm.design.picket = _orderPicketField.value;
-}
-
-/**
  * Listener responsible for setting the post end design into the view model
  *
  * @author kinsho
@@ -142,7 +130,6 @@ function setColor(event)
 _orderTypeField.addEventListener('change', setType);
 _orderPostDesignField.addEventListener('change', setPostDesign);
 _orderHandrailingField.addEventListener('change', setHandrailing);
-_orderPicketField.addEventListener('change', setPicketSize);
 _orderPostEndField.addEventListener('change', setPostEnd);
 _orderPostCapField.addEventListener('change', setPostCap);
 _orderColorField.addEventListener('change', setColor);
@@ -154,7 +141,6 @@ _otherColorField.addEventListener('change', setColor);
 setType({ currentTarget: _orderTypeField });
 setPostDesign({ currentTarget: _orderPostDesignField });
 setHandrailing({ currentTarget: _orderHandrailingField });
-setPicketSize({ currentTarget: _orderPicketField });
 setPostEnd({ currentTarget: _orderPostEndField });
 setPostCap({ currentTarget: _orderPostCapField });
 
