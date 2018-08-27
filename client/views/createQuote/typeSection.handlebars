@@ -1,0 +1,15 @@
+<div id='typeSection'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Type
+		</span>
+		<select id='orderType'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.types}}
+				<option value='{{ this.id }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+	</div>
+
+</div>

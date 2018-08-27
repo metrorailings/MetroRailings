@@ -40,7 +40,9 @@ var collarDesigns =
 			spanishLabel: '1-2 Patrón de Cuello'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Collars',
+	spanishLabel: 'Collares'
 };
 
 // ----------------- EXPORT --------------------------

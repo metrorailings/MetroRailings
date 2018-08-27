@@ -9,7 +9,8 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#orderSummary, #customerSummary, #locationSummary, #baseDesignSection, #advancedDesignSection, #logisticsSection, #externalChargesSection, #agreementSection, #submissionSection
+#orderSummary, #customerSummary, #locationSummary, #typeSection, #baseDesignSection, #cableDesignSection, #glassDesignSection,
+#advancedDesignSection, #logisticsSection, #externalChargesSection, #agreementSection, #submissionSection
 {
 	padding:
 	{
@@ -22,6 +23,17 @@
 		style: solid;
 		width: 2px;
 		color: map-get($COLORS, blackTheme);
+	}
+}
+
+#cableDesignSection, #glassDesignSection, #baseDesignSection, #advancedDesignSection
+{
+	display: block;
+	background-color: map-get($COLORS, lightMoccasinTheme);
+
+	&.hide
+	{
+		display: none;
 	}
 }
 

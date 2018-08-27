@@ -45,7 +45,9 @@ var postCapDesigns =
 			spanishLabel: 'Regio'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Post Cap',
+	spanishLabel: 'Tapa de Poste'
 };
 
 // ----------------- EXPORT --------------------------

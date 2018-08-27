@@ -15,6 +15,12 @@ var postDesigns =
 	options:
 	[
 		{
+			id: 'P-NONE',
+			label: 'N/A',
+			technicalLabel: 'N/A',
+			spanishLabel: 'N/A'
+		},
+		{
 			id: 'P-SP',
 			label: 'Standard Post (1.5")',
 			technicalLabel: '1.5"',
@@ -39,7 +45,9 @@ var postDesigns =
 			spanishLabel: '3"'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Post Type',
+	spanishLabel: 'Tipo de Poste'
 };
 
 // ----------------- EXPORT --------------------------

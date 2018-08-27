@@ -34,7 +34,9 @@ var picketStyles =
 			spanishLabel: 'Arco'
 		}
 	],
-	designMetadata: []
+	designMetadata: [],
+	technicalLabel: 'Picket Style',
+	spanishLabel: 'Estilo de Piquete'
 };
 
 // ----------------- EXPORT --------------------------

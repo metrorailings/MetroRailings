@@ -4,57 +4,19 @@ import vm from 'client/scripts/createQuote/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var PICKET_STYLE_SELECT = 'orderPicketStyle',
-	CENTER_DESIGN_SELECT = 'orderCenterDesign',
+var CENTER_DESIGN_SELECT = 'orderCenterDesign',
 	COLLARS_SELECT = 'orderCollars',
 	BASKETS_SELECT = 'orderBaskets',
-	VALENCES_SELECT = 'orderValence',
-
-	PICKET_STYLE_NOTES = 'picketStyleNotes',
-
-	SHOW_CLASS = 'show',
-	PLAIN_PICKET_STYLING_SELECTION = 'PCKT-STY-PLAIN';
+	VALENCES_SELECT = 'orderValence';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _orderPicketStyleField = document.getElementById(PICKET_STYLE_SELECT),
-	_orderCenterDesignField = document.getElementById(CENTER_DESIGN_SELECT),
+var _orderCenterDesignField = document.getElementById(CENTER_DESIGN_SELECT),
 	_orderCollarsField = document.getElementById(COLLARS_SELECT),
 	_orderBasketsField = document.getElementById(BASKETS_SELECT),
-	_orderValenceField = document.getElementById(VALENCES_SELECT),
-
-	_orderPicketStyleNotes = document.getElementById(PICKET_STYLE_NOTES);
+	_orderValenceField = document.getElementById(VALENCES_SELECT);
 
 // ----------------- LISTENERS ---------------------------
-
-/**
- * Listener responsible for setting the picket style into the view model
- *
- * @author kinsho
- */
-function setPicketStyle()
-{
-	vm.design.picketStyle = _orderPicketStyleField.value;
-
-	if (_orderPicketStyleField.value === PLAIN_PICKET_STYLING_SELECTION)
-	{
-		_orderPicketStyleNotes.classList.remove(SHOW_CLASS);
-	}
-	else
-	{
-		_orderPicketStyleNotes.classList.add(SHOW_CLASS);
-	}
-}
-
-/**
- * Listener responsible for setting notes about the picket styling into the view model
- *
- * @author kinsho
- */
-function setPicketStyleNotes()
-{
-	vm.design.notes.picketStyle = _orderPicketStyleNotes.value;
-}
 
 /**
  * Listener responsible for setting the center design into the view model
@@ -98,15 +60,12 @@ function setValence()
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-_orderPicketStyleField.addEventListener('change', setPicketStyle);
-_orderPicketStyleNotes.addEventListener('change', setPicketStyleNotes);
 _orderCenterDesignField.addEventListener('change', setCenterDesign);
 _orderCollarsField.addEventListener('change', setCollars);
 _orderBasketsField.addEventListener('change', setBaskets);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setPicketStyle({ currentTarget: _orderPicketStyleField });
 setCenterDesign({ currentTarget: _orderCenterDesignField });
 setCollars({ currentTarget: _orderCollarsField });
 setBaskets({ currentTarget: _orderBasketsField });
