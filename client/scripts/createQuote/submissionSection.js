@@ -4,11 +4,15 @@ import vm from 'client/scripts/createQuote/viewModel';
 
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
+import rQuery from 'client/scripts/utility/rQueryClient';
+
+import designValidation from 'shared/designs/designValidation';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
-	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
+var SAVE_BUTTON = 'saveButton',
+	DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
+	DESIGN_ERRORS_TEMPLATE = 'designErrorsTemplate',
 
 	SUCCESS_MESSAGE = 'Success! A new order has been created and the client has been e-mailed the link to approve' +
 		' the order. The system will automatically take you back to the orders listings in a few moments.',
@@ -22,8 +26,15 @@ var SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-var _saveContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
-	_saveExitButton = document.getElementById(SAVE_AND_EXIT_BUTTON);
+var _saveButton = document.getElementById(SAVE_BUTTON),
+	_designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER);
+
+// ----------------- HANDLEBAR TEMPLATES ---------------------------
+
+/**
+ * The partial to render design-validation errors on page 
+ */
+var designErrorsTemplate = Handlebars.compile(document.getElementById(DESIGN_ERRORS_TEMPLATE).innerHTML);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -32,13 +43,25 @@ var _saveContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
  *
  * @author kinsho
  */
-function submit(event)
+function submit()
 {
 	var data = {},
-		button = event.currentTarget.id;
+		designErrorMessages = [],
+		designObject = rQuery.copyObject(vm.design, true);
 
-	// Organize the data that will be sent over the wire as long as the form is valid
-	if (vm.isFormValid)
+	// First check to see if the design selections made are valid
+	designErrorMessages = designErrorMessages.concat(designValidation.testRequirements(designObject));
+	designErrorMessages = designErrorMessages.concat(designValidation.testPrerequisites(designObject));
+
+	// If the design selections are not valid, display all the reasons why the design choices is considered invalid
+	_designErrorsContainer.innerHTML = designErrorsTemplate({ errors: designErrorMessages });
+	if (designErrorMessages.length)
+	{
+		_designErrorsContainer.scrollIntoView({ behavior: 'smooth' });
+	}
+
+	// Organize the data that will be sent over the wire as long as the entire form is valid
+	if (vm.isFormValid && designErrorMessages.length === 0)
 	{
 		data =
 		{
@@ -89,48 +112,33 @@ function submit(event)
 				zipCode: vm.zipCode || ''
 			},
 
-			design:
-			{
-				post: vm.design.post,
-				handrailing: vm.design.handrailing,
-				picket: vm.design.picket,
-				postEnd: vm.design.postEnd,
-				postCap: vm.design.postCap,
-				center: vm.design.center,
-				color: vm.design.color
-			}
+			design: designObject,
 		};
 
 		// Disable the button to ensure the order is not accidentally sent multiple times
-		_saveContinueButton.disabled = true;
-		_saveExitButton.disabled = true;
+		_saveButton.disabled = true;
 
-		axios.post(SAVE_ORDER_URL, data, true).then((response) =>
+		axios.post(SAVE_ORDER_URL, data, true).then(() =>
 		{
-			if (button === SAVE_AND_EXIT_BUTTON)
-			{
-				notifier.showSuccessMessage(SUCCESS_MESSAGE);
+			// In the main tab, show a message indicating success and navigate the user back to the main admin page
+			notifier.showSuccessMessage(SUCCESS_MESSAGE);
 
-				window.setTimeout(function()
-				{
-					window.location.href = ORDERS_PAGE_URL;
-				}, 2000);
-			}
-			else
+			window.setTimeout(function()
 			{
-				window.location.href = ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, response.data.id);
-			}
+				window.location.href = ORDERS_PAGE_URL;
+			}, 2000);
+
+			// Open the newly-generated invoice in a new tab
+			window.open(ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER), '_blank');
 		}, () =>
 		{
 			notifier.showGenericServerError();
 
-			_saveContinueButton.disabled = false;
-			_saveExitButton.disabled = false;
+			_saveButton.disabled = false;
 		});
 	}
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-_saveContinueButton.addEventListener('click', submit);
-_saveExitButton.addEventListener('click', submit);
+_saveButton.addEventListener('click', submit);

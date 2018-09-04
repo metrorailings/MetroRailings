@@ -7,6 +7,7 @@ import vm from 'client/scripts/createQuote/viewModel';
 var TYPE_SELECT = 'orderType',
 	BASE_DESIGN_SECTION = 'baseDesignSection',
 	ADVANCED_DESIGN_SECTION = 'advancedDesignSection',
+	PICKET_SECTION = 'picketSection',
 	CABLE_DESIGN_SECTION = 'cableDesignSection',
 	GLASS_DESIGN_SECTION = 'glassDesignSection',
 
@@ -30,6 +31,7 @@ var _orderTypeField = document.getElementById(TYPE_SELECT),
 
 	_baseDesignSection = document.getElementById(BASE_DESIGN_SECTION),
 	_advancedDesignSection = document.getElementById(ADVANCED_DESIGN_SECTION),
+	_picketSection = document.getElementById(PICKET_SECTION),
 	_cableDesignSection = document.getElementById(CABLE_DESIGN_SECTION),
 	_glassDesignSection = document.getElementById(GLASS_DESIGN_SECTION);
 
@@ -50,11 +52,13 @@ function setType()
 	_advancedDesignSection.classList.add(HIDE_CLASS);
 	_cableDesignSection.classList.add(HIDE_CLASS);
 	_glassDesignSection.classList.add(HIDE_CLASS);
+	_picketSection.classList.add(HIDE_CLASS);
 
 	// Show the right design sections that pertain to the type of product being purchased
 	if (RAIL_TYPES[_orderTypeField.value])
 	{
 		_baseDesignSection.classList.remove(HIDE_CLASS);
+		_picketSection.classList.remove(HIDE_CLASS);
 		_advancedDesignSection.classList.remove(HIDE_CLASS);
 	}
 	else if (_orderTypeField.value === CABLE_TYPE)

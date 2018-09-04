@@ -15,7 +15,7 @@ var postDesigns =
 	options:
 	[
 		{
-			id: 'P-NONE',
+			id: '',
 			label: 'N/A',
 			technicalLabel: 'N/A',
 			spanishLabel: 'N/A'

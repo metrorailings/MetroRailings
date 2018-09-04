@@ -10,7 +10,7 @@
 /* ----------------------- STYLES ----------------------------- */
 
 #orderSummary, #customerSummary, #locationSummary, #typeSection, #baseDesignSection, #cableDesignSection, #glassDesignSection,
-#advancedDesignSection, #logisticsSection, #externalChargesSection, #agreementSection, #submissionSection
+#advancedDesignSection, #picketSection, #logisticsSection, #externalChargesSection, #agreementSection, #submissionSection
 {
 	padding:
 	{
@@ -26,7 +26,7 @@
 	}
 }
 
-#cableDesignSection, #glassDesignSection, #baseDesignSection, #advancedDesignSection
+#cableDesignSection, #glassDesignSection, #baseDesignSection, #advancedDesignSection, #picketSection
 {
 	display: block;
 	background-color: map-get($COLORS, lightMoccasinTheme);

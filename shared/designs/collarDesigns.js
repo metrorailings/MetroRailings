@@ -16,7 +16,7 @@ var collarDesigns =
 	options:
 	[
 		{
-			id: 'CLLR-NONE',
+			id: '',
 			label: 'No',
 			technicalLabel: 'No',
 			spanishLabel: 'No'

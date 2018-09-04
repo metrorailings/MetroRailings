@@ -38,10 +38,7 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	APPLY_TAXES_BUTTONSET = 'applyTaxesButtonSet',
 	APPLY_TARIFF_BUTTONSET = 'applyTariffButtonSet',
 
-	TIME_LIMIT_TEXTFIELD = 'timeLimit',
-
-	SAVE_AND_CONTINUE_BUTTON = 'saveAndContinue',
-	SAVE_AND_EXIT_BUTTON = 'saveAndExit',
+	SAVE_BUTTON = 'saveButton',
 
 	DISABLED_CLASS = 'disabled',
 
@@ -64,9 +61,7 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
 		WHOLE_NUMBER_INVALID: 'Please enter a non-zero number here.',
-		TOTAL_INVALID: 'Please enter a valid dollar amount here.',
-		TIME_LIMIT_INVALID: 'Please enter a non-zero number here. Keep in mind you can only assign a time limit up' +
-		' to 100 days. If you need to assign a higher time limit, just leave the field blank.'
+		TOTAL_INVALID: 'Please enter a valid dollar amount here.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -100,10 +95,7 @@ var _validationSet = new Set(),
 	_chargeTaxButtons = document.getElementById(APPLY_TAXES_BUTTONSET),
 	_chargeTariffButtons = document.getElementById(APPLY_TARIFF_BUTTONSET),
 
-	_timeLimitField = document.getElementById(TIME_LIMIT_TEXTFIELD),
-
-	_saveAndContinueButton = document.getElementById(SAVE_AND_CONTINUE_BUTTON),
-	_saveAndExitButton = document.getElementById(SAVE_AND_EXIT_BUTTON);
+	_saveButton = document.getElementById(SAVE_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -766,33 +758,6 @@ Object.defineProperty(viewModel, 'applyTariffs',
 	}
 });
 
-// Order Time Limit
-Object.defineProperty(viewModel, 'timeLimit',
-{
-	configurable: false,
-	enumerable: false,
-
-	get: () =>
-	{
-		return viewModel.__timeLimit;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__timeLimit = value;
-
-		// Make sure a valid integer is being set here
-		var isInvalid = !(formValidator.isNumeric(value)) ||
-			(value.length && !(window.parseInt(value, 10))) ||
-			(window.parseInt(value, 10) > 100);
-
-		rQueryClient.updateValidationOnField(isInvalid, _timeLimitField, ERROR.TIME_LIMIT_INVALID, _validationSet);
-		rQueryClient.setField(_timeLimitField, value);
-
-		_validate();
-	}
-});
-
 // Agreement Text
 Object.defineProperty(viewModel, 'agreement',
 {
@@ -830,13 +795,11 @@ Object.defineProperty(viewModel, 'isFormValid',
 		if (!(value))
 		{
 			// Set up a tooltip indicating why the buttons are disabled
-			tooltipManager.setTooltip(_saveAndContinueButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
-			tooltipManager.setTooltip(_saveAndExitButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+			tooltipManager.setTooltip(_saveButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
 		}
 		else
 		{
-			tooltipManager.closeTooltip(_saveAndContinueButton, true);
-			tooltipManager.closeTooltip(_saveAndExitButton, true);
+			tooltipManager.closeTooltip(_saveButton, true);
 		}
 	}
 });
