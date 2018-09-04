@@ -13,10 +13,11 @@
 
 var basketDesigns =
 {
+	label: 'basket',
 	options:
 	[
 		{
-			id: 'BSKT-NONE',
+			id: '',
 			label: 'No',
 			technicalLabel: 'No',
 			spanishLabel: 'No'

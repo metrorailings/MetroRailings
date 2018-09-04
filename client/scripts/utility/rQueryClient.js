@@ -290,7 +290,43 @@ var rQueryClient =
 		isObject: function(val)
 		{
 			return (val === Object(val));
-		}
+		},
+
+		/**
+		 * Function that returns a disparate copy of an object
+		 *
+		 * @param {Object} obj - the object to copy
+		 * @param {boolean} pruneFalsy - a flag indicating whether to strip all falsy properties from the object
+		 *
+		 * @returns {Object} a memory-distinct duplicate of the passed object
+		 *
+		 * @author kinsho
+		 */
+		copyObject: function (obj, pruneFalsy)
+		{
+			var keys = Object.keys(obj || {}),
+				cloneObj = {},
+				i;
+
+			for (i = 0; i < keys.length; i++)
+			{
+				// If the property is itself an object, run this function recursively on that property
+				if ((typeof obj[keys[i]] === 'object') && (obj[keys[i]] !== null))
+				{
+					cloneObj[keys[i]] = this.copyObject(obj[keys[i]]);
+				}
+				else if ( pruneFalsy && !(obj[keys[i]]) )
+				{
+					continue;
+				}
+				else
+				{
+					cloneObj[keys[i]] = obj[keys[i]];
+				}
+			}
+
+			return cloneObj;
+		},
 	};
 
 // ----------------- EXPORT -----------------------------

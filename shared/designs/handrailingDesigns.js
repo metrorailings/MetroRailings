@@ -15,7 +15,7 @@ var handrailingDesigns =
 	options:
 	[
 		{
-			id: 'H-NONE',
+			id: '',
 			label: 'N/A',
 			technicalLabel: 'N/A',
 			spanishLabel: 'N/A'

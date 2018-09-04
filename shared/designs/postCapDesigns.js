@@ -15,7 +15,7 @@ var postCapDesigns =
 	options:
 	[
 		{
-			id: 'PC-NONE',
+			id: '',
 			label: 'N/A',
 			technicalLabel: 'N/A',
 			spanishLabel: 'N/A'

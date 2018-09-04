@@ -10,8 +10,7 @@ var PICKET_SIZE_SELECT = 'orderPicketSize',
 
 	SHOW_CLASS = 'show',
 
-	PLAIN_PICKET_STYLING_SELECTION = 'PCKT-STY-PLAIN',
-	NO_PICKETS_SELECTION = 'PCKT-NONE';
+	PLAIN_PICKET_STYLING_SELECTION = 'PCKT-STY-PLAIN';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -29,18 +28,24 @@ var _orderPicketField = document.getElementById(PICKET_SIZE_SELECT),
  */
 function setPicketSize()
 {
-	vm.design.picket = _orderPicketField.value;
+	vm.design.picketSize = _orderPicketField.value;
 
 	// Disable the picket styling fields should this order not need any pickets
-	if (_orderPicketField.value === NO_PICKETS_SELECTION)
+	if (_orderPicketField.value === '')
 	{
 		_orderPicketStyleField.disabled = true;
 		_orderPicketStyleNotes.disabled = true;
+
+		_orderPicketStyleField.value = '';
+		setPicketStyle({ currentTarget: _orderPicketStyleField });		
 	}
 	else
 	{
 		_orderPicketStyleField.disabled = false;
 		_orderPicketStyleNotes.disabled = false;
+
+		_orderPicketStyleField.value = PLAIN_PICKET_STYLING_SELECTION;
+		setPicketStyle({ currentTarget: _orderPicketStyleField });
 	}
 }
 
@@ -55,7 +60,7 @@ function setPicketStyle()
 
 	// Determine whether to show a description field that would provide further light into the way the pickets need
 	// to be styled
-	if (_orderPicketStyleField.value === PLAIN_PICKET_STYLING_SELECTION)
+	if (!(_orderPicketStyleField.value) || _orderPicketStyleField.value === PLAIN_PICKET_STYLING_SELECTION)
 	{
 		_orderPicketStyleNotes.classList.remove(SHOW_CLASS);
 	}

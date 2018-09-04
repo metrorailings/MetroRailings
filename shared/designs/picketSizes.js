@@ -15,7 +15,7 @@ var picketSizes =
 	options:
 	[
 		{
-			id: 'PCKT-NONE',
+			id: '',
 			label: 'N/A',
 			technicalLabel: 'N/A',
 			spanishLabel: 'N/A'
