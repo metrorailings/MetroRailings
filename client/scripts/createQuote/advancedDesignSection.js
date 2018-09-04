@@ -25,7 +25,7 @@ var _orderCenterDesignField = document.getElementById(CENTER_DESIGN_SELECT),
  */
 function setCenterDesign()
 {
-	vm.design.center = _orderCenterDesignField.value;
+	vm.design.centerDesign = _orderCenterDesignField.value;
 }
 
 /**

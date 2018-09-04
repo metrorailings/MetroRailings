@@ -16,7 +16,7 @@ var centerDesigns =
 		options:
 		[
 			{
-				id: 'CD-NONE',
+				id: '',
 				label: 'N/A',
 				technicalLabel: 'N/A',
 				spanishLabel: 'N/A'

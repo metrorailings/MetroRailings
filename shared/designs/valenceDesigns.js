@@ -16,7 +16,7 @@ var valenceDesigns =
 	options:
 	[
 		{
-			id: 'VAL-NONE',
+			id: '',
 			label: 'No',
 			technicalLabel: 'No',
 			spanishLabel: 'No'

@@ -15,7 +15,7 @@ var postEndDesigns =
 	options:
 	[
 		{
-			id: 'PE-NONE',
+			id: '',
 			label: 'N/A',
 			technicalLabel: 'N/A',
 			spanishLabel: 'N/A'

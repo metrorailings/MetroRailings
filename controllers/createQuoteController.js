@@ -58,13 +58,15 @@ var CONTROLLER_FOLDER = 'createQuote',
 		LOCATION: 'locationSection',
 		TYPE: 'typeSection',
 		BASE_DESIGN: 'baseDesignSection',
+		PICKET_DESIGN: 'picketSection',
 		ADVANCED_DESIGN: 'advancedDesignSection',
 		CABLE_DESIGN: 'cableDesignSection',
 		GLASS_DESIGN: 'glassDesignSection',
 		LOGISTICS: 'logisticsSection',
 		EXTERNAL_CHARGES: 'externalCharges',
 		AGREEMENT: 'agreementSection',
-		SUBMISSION_BUTTON: 'submissionSection'
+		SUBMISSION_BUTTON: 'submissionSection',
+		DESIGN_ERRORS: 'designErrors'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -88,6 +90,11 @@ _Handlebars.registerPartial('createQuoteType', fileManager.fetchTemplateSync(CON
  * The template for the base design section
  */
 _Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.BASE_DESIGN));
+
+/**
+ * The template for the picket section
+ */
+_Handlebars.registerPartial('createQuotePicketDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PICKET_DESIGN));
 
 /**
  * The template for the advanced design section
@@ -137,6 +144,7 @@ module.exports =
 	{
 		var populatedPageTemplate,
 			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
+			designErrorsTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.DESIGN_ERRORS),
 			prospect = {},
 			pageData,
 			designData;
@@ -183,7 +191,8 @@ module.exports =
 			defaultTimeLimit: config.DEFAULT_TIME_LIMIT,
 			taxRate: (pricingData.NJ_SALES_TAX_RATE * 100).toFixed(2),
 			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2),
-			designs: designData
+			designs: designData,
+			designErrorsTemplate: designErrorsTemplate
 		};
 
 		// Now render the page template

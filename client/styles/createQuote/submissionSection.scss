@@ -1,3 +1,8 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
 /* ----------------------- STYLES ----------------------------- */
 
 #submissionSection
@@ -13,13 +18,39 @@
 	justify-content: center;
 }
 
-#saveAndContinue, #saveAndExit
+#saveButton
 {
-	margin:
+	width: 300px;
+}
+
+#designErrorsSection
+{
+	border:
 	{
-		left: 20px;
-		right: 20px;
+		width: 0.75px;
+		style: solid;
+		color: map-get($COLORS, redTheme);
+		radius: 10px;
 	}
 
-	width: 300px;
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 80%;
+
+	& > li
+	{
+		@extend %errorText;
+
+		margin:
+		{
+			top: 10px;
+			bottom: 10px;
+		}
+
+		text-align: left;
+	}
 }
