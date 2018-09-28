@@ -9,7 +9,6 @@ import orderUtility from 'client/scripts/orders/orderUtility';
 import axios from 'client/scripts/utility/axios';
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import notifier from 'client/scripts/utility/notifications';
-import translator from 'client/scripts/utility/translate';
 
 import statuses from 'shared/orderStatus';
 import designTranslator from 'shared/designs/translator';
@@ -36,6 +35,8 @@ var STATUS_FILTER_CLASS = 'statusFilter',
 	},
 
 	SEARCH_ORDERS_URL = 'orders/searchOrders',
+	GOOGLE_MAPS_SEARCH_URL = 'https://www.google.com/maps/search/?api=1&query=::params',
+	PARAMS_PLACEHOLDER = '::params',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
@@ -251,6 +252,24 @@ Handlebars.registerHelper('format_time', function(date)
 	return readableHour + ':' + readableMinute + ':' + readableSecond + ' ' + useAMorPM;
 });
 
+/**
+ * Handlebars helper function designed to generate a Google Maps URL for an address
+ *
+ * @params {Object} customer - the customer construct that contains information about the location to map
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('form_google_maps_url', function(customer)
+{
+	var params = '' + customer.address.trim().split(' ').join('+') + '+' + customer.city.trim().split(' ').join('+') + '+' + customer.state;
+	if (customer.zipCode)
+	{
+		params += customer.zipCode;
+	}
+
+	return GOOGLE_MAPS_SEARCH_URL.replace(PARAMS_PLACEHOLDER, params);
+});
+
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
@@ -308,9 +327,6 @@ function _displayListings(orders)
 	{
 		_orderListing.innerHTML = orderListingTemplate({ orders: orders });
 
-		// If English is not the default language, then translate the newly listed orders
-		translator.forceTranslatePage(_orderListing);
-
 		// Trigger the following custom event so that we can trigger logic to attach event listeners to the status links
 		document.dispatchEvent(new Event(LISTENER_INIT_EVENT));
 	}
@@ -344,9 +360,6 @@ function _displayListingsWithDelay(orders)
 
 			window.setTimeout(() =>
 			{
-				// If English is not the default language, then translate the newly listed orders
-				translator.forceTranslatePage(_orderListing);
-
 				_orderListing.classList.add(REVEAL_CLASS);
 			}, 500);
 		}, 500);

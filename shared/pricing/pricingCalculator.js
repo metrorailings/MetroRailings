@@ -89,8 +89,9 @@ var pricingModule =
 	 */
 	calculateTax: function(amount, order)
 	{
-		// Only calculate taxes for orders where the installation address is within the state of New Jersey
-		if (amount && (order.customer.state === NJ_STATE_CODE))
+		// Only calculate taxes for orders that permit taxes to be charged for orders based in
+		// the state of New Jersey
+		if (amount && order.pricing.isTaxApplied && (order.customer.state === NJ_STATE_CODE))
 		{
 			// Let's not forget to do some floor rounding in the event that we have more than two numbers to the
 			// right of the decimal point
@@ -98,6 +99,45 @@ var pricingModule =
 		}
 
 		return 0.00;
+	},
+
+	/**
+	 * Function calculates the tariffs to charge on a given value
+	 *
+	 * @param {Number} amount - the given dollar amount for which to calculate tax
+	 * @param {Object} order - the order, should we need to analyze details about the order itself to properly
+	 * 		assess tariffs
+	 *
+	 * @returns {Number} - the tariffs for the given dollar amount
+	 *
+	 * @author kinsho
+	 */
+	calculateTariffs: function(amount, order)
+	{
+		// Only calculate taxes for orders that permit taxes to be charged for orders based in
+		// the state of New Jersey
+		if (amount && order.pricing.isTariffApplied)
+		{
+			// Let's not forget to do some floor rounding in the event that we have more than two numbers to the
+			// right of the decimal point
+			return Math.floor(amount * pricing.TARIFF_RATE * 100) / 100;
+		}
+
+		return 0.00;
+	},
+
+	/**
+	 * Function calculates the overall total charge after factoring any tariffs, taxes, and/or fees into the subtotal
+	 *
+	 * @param {Object} order - the order from which we will gather information to calculate the total price
+	 *
+	 * @returns {Number} - the total price of the order
+	 *
+	 * @author kinsho
+	 */
+	calculateTotal: function(order)
+	{
+		return order.pricing.subTotal + order.pricing.tax + order.pricing.tariff;
 	},
 
 	/**

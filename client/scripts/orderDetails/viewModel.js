@@ -51,6 +51,8 @@ var STATUS_RADIO_SUFFIX = 'Status',
 	ADDITIONAL_FEATURES_TEXT_AREA = 'additionalFeatures',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
 	DEDUCTIONS_TEXTFIELD = 'deductions',
+	APPLY_TAX_BUTTON_SET = 'applyTaxesButtonSet',
+	APPLY_TARIFFS_BUTTON_SET = 'applyTariffsButtonSet',
 	REST_BY_CHECK_BUTTON_SET = 'restByCheckButtonSet',
 	PRICING_MODIFICATIONS_TEXTFIELD = 'priceModifications',
 	ADDITIONAL_TAX_DISPLAY = 'additionalTax',
@@ -132,6 +134,8 @@ var _validationSet = new Set(),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXT_AREA),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
 	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
+	_applyTaxButtonSet = document.getElementById(APPLY_TAX_BUTTON_SET),
+	_applyTariffButtonSet = document.getElementById(APPLY_TARIFFS_BUTTON_SET),
 	_restByCheckButtonSet = document.getElementById(REST_BY_CHECK_BUTTON_SET),
 	_pricingModificationsField = document.getElementById(PRICING_MODIFICATIONS_TEXTFIELD),
 	_additionalTaxDisplay = document.getElementById(ADDITIONAL_TAX_DISPLAY),
@@ -248,6 +252,8 @@ Object.defineProperty(viewModel, 'originalOrder',
 		viewModel.__additionalFeatures = value.additionalFeatures;
 		viewModel.__additionalPrice = value.pricing.additionalPrice;
 		viewModel.__deductions = value.pricing.deductions;
+		viewModel.__isTaxApplied = value.pricing.isTaxApplied || !!(value.pricing.tax) || false;
+		viewModel.__isTariffApplied = value.pricing.isTariffApplied || false;
 		viewModel.__restByCheck = !!(value.pricing.restByCheck);
 		viewModel.__pricingModifications = value.pricing.modification;
 
@@ -965,6 +971,46 @@ Object.defineProperty(viewModel, 'deductions',
 		_markAsModified( (viewModel.__deductions === viewModel.originalOrder.pricing.deductions), _deductionsField);
 
 		_validate();
+	}
+});
+
+// Tax Flag
+Object.defineProperty(viewModel, 'isTaxApplied',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__isTaxApplied;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__isTaxApplied = value;
+
+		rQueryClient.setToggleField(_applyTaxButtonSet.getElementsByTagName('input'), value);
+		_markAsModified(( !!(value) === !!(viewModel.originalOrder.pricing.isTaxApplied)), _applyTaxButtonSet);
+	}
+});
+
+// Tariff Flag
+Object.defineProperty(viewModel, 'isTariffApplied',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__isTariffApplied;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__isTariffApplied = value;
+
+		rQueryClient.setToggleField(_applyTariffButtonSet.getElementsByTagName('input'), value);
+		_markAsModified(( !!(value) === !!(viewModel.originalOrder.pricing.isTariffApplied)), _applyTariffButtonSet);
 	}
 });
 

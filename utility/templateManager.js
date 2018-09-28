@@ -120,6 +120,16 @@ _Handlebars.registerHelper('unless_cond', function(val1, val2, block)
 });
 
 /**
+ * Helper designed to execute certain blocks of code depending on whether at least one of two conditions are true
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('if_or', function(val1, val2, block)
+{
+	return ((val1 || val2) ? block.fn(this) : block.inverse(this));	
+});
+
+/**
  * Helper designed to help us test whether a value already exists within a set of given values. We execute opposite
  * blocks of code depending on the results of that test
  *

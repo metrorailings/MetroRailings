@@ -1,0 +1,119 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/responsive';
+
+/* ----------------------- OVERRIDES ----------------------------- */
+
+footer, #footerSpace
+{
+	@include mobileOnly()
+	{
+		display: none !important;
+	}
+}
+
+/* ----------------------- STYLES ----------------------------- */
+
+#tariffPage
+{
+	p
+	{
+		@extend %seriousText;
+
+		margin:
+		{
+			left: 0px;
+			right: 0px;
+		}
+
+		padding:
+		{
+			top: 15px;
+			bottom: 15px;
+			left: 25px;
+			right: 25px;
+		}
+
+		&.highlightedParagraph
+		{
+			background-color: map-get($COLORS, lightBlueTheme);
+		}
+	}
+}
+
+#aluminumPriceChartSection
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 30px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	@include desktopOnly()
+	{
+		width: 50%;
+	}
+
+	& > img
+	{
+		max-width: 100%;
+		max-height: 400px;
+	}
+
+	& > span
+	{
+		@extend %smallText;
+
+		margin:
+		{
+			top: 10px;
+			left: 25px;
+			right: 25px;
+		}
+
+		font-style: italic;
+	}
+}
+
+#twoColumnSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include desktopOnly()
+	{
+		flex-direction: row-reverse;
+	}
+
+	@include mobileOnly()
+	{
+		flex-direction: column;
+	}
+
+	& > span
+	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		@include desktopOnly()
+		{
+			width: 50%;
+		}
+	}
+}
+
+#tariffLink
+{
+	@extend %seriousText;
+}

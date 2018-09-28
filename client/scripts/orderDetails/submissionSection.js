@@ -5,8 +5,6 @@ import vm from 'client/scripts/orderDetails/viewModel';
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 import confirmationModal from 'client/scripts/utility/confirmationModal';
-import translator from 'client/scripts/utility/translate';
-
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
@@ -110,6 +108,8 @@ function _submitChanges()
 			pricePerFoot: vm.pricePerFoot,
 			additionalPrice: vm.additionalPrice,
 			deductions: vm.deductions,
+			isTaxApplied: vm.isTaxApplied,
+			isTariffApplied: vm.isTariffApplied,
 			restByCheck: vm.restByCheck,
 			modification: vm.pricingModifications
 		}
@@ -170,10 +170,7 @@ function submit()
 
 		if (confirmationMessages.length)
 		{
-			translator.translateText(confirmationMessages).then((translatedMessage) =>
-			{
-				confirmationModal.open(translatedMessage, _submitChanges, () => {});
-			}, () => {});
+			confirmationModal.open(confirmationMessages, _submitChanges, () => {});
 		}
 		else
 		{

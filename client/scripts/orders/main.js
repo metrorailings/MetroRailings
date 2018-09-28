@@ -1,6 +1,5 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import officeTasks from 'client/scripts/orders/officeTasks';
 import orderFilter from 'client/scripts/orders/orderFilter';
 import orderListing from 'client/scripts/orders/orderListing';
 import vm from 'client/scripts/orders/viewModel';
@@ -9,16 +8,7 @@ import translate from 'client/scripts/utility/translate';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var ORDER_CREATION_BUTTON = 'orderCreationButton',
-	PROSPECT_CREATION_BUTTON = 'prospectCreationButton',
-
-	CREATE_INVOICE_URL = '/createInvoice',
-	PROSPECT_CREATION_URL = '/createProspect';
-
 // ----------------- PRIVATE VARIABLES ---------------------------
-
-var _customOrderButton = document.getElementById(ORDER_CREATION_BUTTON),
-	_prospectCreationButton = document.getElementById(PROSPECT_CREATION_BUTTON);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -32,30 +22,7 @@ function triggerPing()
 	vm.pingTheServer = true;
 }
 
-/**
- * Listener responsible for taking us to the custom order page
- *
- * @author kinsho
- */
-function createNewCustomOrder()
-{
-	window.location.href = CREATE_INVOICE_URL;
-}
-
-/**
- * Listener responsible for taking us to the paper order page
- *
- * @author kinsho
- */
-function navigateToProspectCreation()
-{
-	window.location.href = PROSPECT_CREATION_URL;
-}
-
 // ----------------- LISTENER INITIALIZATION -----------------------------
-
-_customOrderButton.addEventListener('click', createNewCustomOrder);
-_prospectCreationButton.addEventListener('click', navigateToProspectCreation);
 
 /**
  * Set up a listener to check for when the hash changes

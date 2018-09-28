@@ -178,6 +178,32 @@ var rQueryClient =
 		},
 
 		/**
+		 * Function properly disables a toggle switch
+		 *
+		 * @param {DOMElement} element - the toggle switch radio buttons that need to be disabled
+		 *
+		 * @author kinsho
+		 */
+		disableToggleField: function(toggleSet)
+		{
+			toggleSet[0].disabled = true;
+			toggleSet[1].disabled = true;
+		},
+
+		/**
+		 * Function properly enables a toggle switch
+		 *
+		 * @param {DOMElement} element - the toggle switch radio buttons that need to be enabled
+		 *
+		 * @author kinsho
+		 */
+		enableToggleField: function(toggleSet)
+		{
+			toggleSet[0].disabled = false;
+			toggleSet[1].disabled = false;
+		},
+
+		/**
 		 * Function takes a view model object and ensures that every one of its enumerable properties is populated
 		 * with some value
 		 *

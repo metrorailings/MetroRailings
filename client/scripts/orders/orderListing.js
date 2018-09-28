@@ -15,22 +15,14 @@ import translator from 'client/scripts/utility/translate';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
-	ORDER_PRINT_TEMPLATE = 'orderPrintTemplate',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
 	ORDER_BLOCK_PREFIX = 'order-',
 
-	ADDRESS_TEXT_LINK = 'addressLink',
 	STATUS_LINK_CLASS = 'nextStatusLink',
 	REMOVE_ORDER_CLASS = 'trashLink',
-	PRINT_LINK_CLASS = 'printLink',
 	LOAD_PICTURES_LINK_CLASS = 'loadPicturesLink',
-	CONVERT_ORDER_LINK_CLASS = 'convertOrderLink',
-	INVOICE_LINK_CLASS = 'invoiceLink',
-	DETAILS_BUTTON_CLASS = 'detailsButton',
-	ORDER_DETAILS_BUTTON_CLASS = 'orderDetailsButton',
-	CONTRACTOR_AGREEMENT_CLASS = 'contractorAgreementLink',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
 	HIDE_CLASS = 'hide',
 
@@ -42,16 +34,9 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 
 	UPDATE_STATUS_URL = 'orders/updateStatus',
 	DELETE_ORDER_URL = 'orders/removeOrder',
-	ORDER_DETAILS_URL = '/orderDetails?orderNumber=::orderID',
-	PROSPECT_DETAILS_URL = '/prospectDetails?orderNumber=::orderID',
-	CREATE_INVOICE_URL = '/createInvoice?id=::orderID',
-	ORDER_INVOICE_URL = '/orderInvoice?id=::orderID',
-	CONTRACTOR_AGREEMENT_URL = '/contractorAgreement?id=::orderID',
-	GOOGLE_MAPS_SEARCH_URL = 'https://www.google.com/maps/search/?api=1&query=::params',
 
 	ORDER_ID_PLACEHOLDER = '::orderID',
-	NEXT_STATUS_PLACEHOLDER = '::nextStatus',
-	PARAMS_PLACEHOLDER = '::params';
+	NEXT_STATUS_PLACEHOLDER = '::nextStatus';
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -59,11 +44,6 @@ var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
  * The partial to render all pictures associated with a particular order
  */
 var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
-
-/**
- * The partial to render the HTML containing the vital order details that will need to be print out for shop purposes
- */
-var orderPrintTemplate = Handlebars.compile(document.getElementById(ORDER_PRINT_TEMPLATE).innerHTML);
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -85,23 +65,6 @@ function _attachStatusLinkListeners()
 }
 
 /**
- * Function meant to dynamically attach listeners to all print links
- * Needed so that we can reattach listeners every time orders are re-rendered onto screen
- *
- * @author kinsho
- */
-function _attachPrintListeners()
-{
-	var printLinks = document.getElementsByClassName(PRINT_LINK_CLASS),
-		i;
-
-	for (i = printLinks.length - 1; i >= 0; i--)
-	{
-		printLinks[i].addEventListener('click', printOrder);
-	}
-}
-
-/**
  * Function meant to dynamically attach listeners to all picture loader links
  * Needed so that we can reattach listeners every time orders are re-rendered onto screen
  *
@@ -115,62 +78,6 @@ function _attachPictureLoadListeners()
 	for (i = pictureLinks.length - 1; i >= 0; i--)
 	{
 		pictureLinks[i].addEventListener('click', loadPictures);
-	}
-}
-
-/**
- * Function meant to dynamically attach listeners to all Edit buttons
- * Needed so that we can reattach listeners every time orders are re-rendered onto screen
- *
- * @author kinsho
- */
-function _attachNavigationListeners()
-{
-	var editButtons = document.getElementsByClassName(DETAILS_BUTTON_CLASS),
-		contractorFormButtons = document.getElementsByClassName(CONTRACTOR_AGREEMENT_CLASS),
-		i;
-
-	for (i = editButtons.length - 1; i >= 0; i--)
-	{
-		editButtons[i].addEventListener('click', navigateToDetailsPage);
-		if (contractorFormButtons[i])
-		{
-			contractorFormButtons[i].addEventListener('click', navigateToContractorAgreementPage);
-		}
-	}
-}
-
-/**
- * Function meant to dynamically attach listeners to all 'Convert to Order' links
- * Needed so that we can reattach listeners every time orders are re-rendered onto screen
- *
- * @author kinsho
- */
-function _attachOrderConversionListeners()
-{
-	var conversionButtons = document.getElementsByClassName(CONVERT_ORDER_LINK_CLASS),
-		i;
-
-	for (i = conversionButtons.length - 1; i >= 0; i--)
-	{
-		conversionButtons[i].addEventListener('click', navigateToCreateInvoicePage);
-	}
-}
-
-/**
- * Function meant to dynamically attach listeners to all 'View Invoice' links
- * Needed so that we can reattach listeners every time orders are re-rendered onto screen
- *
- * @author kinsho
- */
-function _attachInvoiceLinkListeners()
-{
-	var invoiceLinks = document.getElementsByClassName(INVOICE_LINK_CLASS),
-		i;
-
-	for (i = invoiceLinks.length - 1; i >= 0; i--)
-	{
-		invoiceLinks[i].addEventListener('click', navigateToInvoicePage);
 	}
 }
 
@@ -191,51 +98,7 @@ function _attachOrderRemovalListeners()
 	}
 }
 
-/**
- * Function meant to dynamically attach listeners to all addresses so that we can map them immediately via Google Maps
- * Needed so that we can reattach listeners every time orders are re-rendered onto screen
- *
- * @author kinsho
- */
-function _attachGoogleMapListeners()
-{
-	var addressLinks = document.getElementsByClassName(ADDRESS_TEXT_LINK),
-		i;
-
-	for (i = addressLinks.length - 1; i >= 0; i--)
-	{
-		addressLinks[i].addEventListener('click', navigateToGoogleMaps);
-	}
-}
-
 // ----------------- LISTENERS ---------------------------
-
-/**
- * Listener meant to print out the details of an order
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-async function printOrder()
-{
-	var currentTarget = event.currentTarget,
-		orderID = window.parseInt(currentTarget.dataset.id, 10),
-		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
-		order = vm.orders[orderIndex],
-		printWindow = window.open('', '', 'left=360,top=10,width=1,height=1,toolbar=0,scrollbars=1,status=0');
-
-	// Use the newly initialized window to print out details relating to the order
-	printWindow.document.write(orderPrintTemplate({order: order}));
-	printWindow.document.close();
-	printWindow.focus();
-
-	printWindow.addEventListener('load', () =>
-	{
-		printWindow.print();
-		printWindow.close();
-	});
-}
 
 /**
  * Listener meant to pull and display any pictures associated with an order
@@ -384,105 +247,11 @@ function removeOrder(event)
 	}, () => {});
 }
 
-/**
- * Listener meant to take the user to the details page for a particular prospect/order
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-function navigateToDetailsPage(event)
-{
-	var targetElement = event.currentTarget,
-		orderID = targetElement.dataset.id,
-		navigatingToOrderDetails = targetElement.classList.contains(ORDER_DETAILS_BUTTON_CLASS),
-		navigateToURL = (navigatingToOrderDetails ? ORDER_DETAILS_URL.replace(ORDER_ID_PLACEHOLDER, orderID) : PROSPECT_DETAILS_URL.replace(ORDER_ID_PLACEHOLDER, orderID));
-
-	window.location.href = navigateToURL;
-}
-
-/**
- * Listener meant to take the user to the invoice creation page to convert an estimate into a full order
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-function navigateToCreateInvoicePage(event)
-{
-	var targetElement = event.currentTarget,
-		orderID = targetElement.dataset.id,
-		invoiceURL = CREATE_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
-
-	window.location.href = invoiceURL;
-}
-
-/**
- * Listener meant to take the user to the contractor agreement form for a particular order
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-function navigateToContractorAgreementPage(event)
-{
-	var targetElement = event.currentTarget,
-		orderID = targetElement.dataset.id,
-		agreementURL = CONTRACTOR_AGREEMENT_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
-
-	window.location.href = agreementURL;
-}
-
-/**
- * Listener meant to take the user to the customer-facing invoice for a particular order
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-function navigateToInvoicePage(event)
-{
-	var targetElement = event.currentTarget,
-		orderID = targetElement.dataset.id,
-		invoiceURL = ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, orderID);
-
-	window.location.href = invoiceURL;
-}
-
-/**
- * Listener meant to take the user to Google Maps in order to locate a given address
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-function navigateToGoogleMaps(event)
-{
-	var targetElement = event.currentTarget,
-		orderID = window.parseInt(targetElement.dataset.id, 10),
-		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
-		order = vm.orders[orderIndex],
-		params = '';
-
-	params += order.customer.address.trim().split(' ').join('+') + '+' + order.customer.city.trim().split(' ').join('+') + '+' + order.customer.state;
-	if (order.customer.zipCode)
-	{
-		params += order.customer.zipCode;
-	}
-
-	window.open(GOOGLE_MAPS_SEARCH_URL.replace(PARAMS_PLACEHOLDER, params), 'tab');
-}
-
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 document.addEventListener(LISTENER_INIT_EVENT, () =>
 {
 	_attachStatusLinkListeners();
-	_attachPrintListeners();
 	_attachPictureLoadListeners();
-	_attachNavigationListeners();
-	_attachOrderConversionListeners();
-	_attachInvoiceLinkListeners();
 	_attachOrderRemovalListeners();
-	_attachGoogleMapListeners();
 });

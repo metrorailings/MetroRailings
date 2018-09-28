@@ -1,0 +1,151 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+@import '../foundation/modal';
+@import '../foundation/adminOnly';
+@import '../foundation/animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#logoContainer
+{
+	width: 100%;
+
+	text-align: center;
+}
+
+#companyLogo
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 20px;
+		left: auto;
+		right: auto;
+	}
+
+	max-width: 150px;
+}
+
+#orderDetails
+{
+	@extend %significantText;
+}
+
+#generalSection, #designSection
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	padding:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	border:
+	{
+		width: 1.5px;
+		color: black;
+		style: solid;
+	}
+
+	width: 90%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	& > span
+	{
+		padding:
+		{
+			top: 7px;
+			bottom: 7px;
+		}
+	}
+}
+
+#designSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	& > span
+	{
+		width: 50%;
+	}
+}
+
+.printSectionHeader
+{
+	@extend %specialSectionHeader;
+
+	padding: 10px;
+	width: 100%;
+
+	text-align: center;
+}
+
+.orderLabel
+{
+	margin:
+	{
+		left: 8px;
+		right: 8px;
+	}
+
+	font-weight: 700;
+}
+
+.orderPicture
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+		left: auto;
+		right: auto;
+	}
+
+	max-width: 550px;
+	max-height: 550px;
+
+	display: block;
+
+	page-break-inside: avoid;
+	page-break-after: auto;
+	page-break-before: auto;
+}
+
+.footer
+{
+	@extend %tabularSlimHeaderText;
+
+	border-top:
+	{
+		width: 2px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	padding-top: 5px;
+	text-align: center;
+
+	width: 100%;
+	height: 50px;
+
+	position: fixed;
+	top: calc(100% - 60px);
+}

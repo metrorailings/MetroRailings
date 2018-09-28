@@ -62,6 +62,17 @@
 		</div>
 
 		<div>
+			<span class='invoiceSectionHeader'>- Description -</span>
+			<span class='invoiceCell descriptionField'>
+				{{#if order.notes.order}}
+					{{{order.notes.order}}}
+				{{else}}
+					N/A
+				{{/if}}
+			</span>
+		</div>
+
+		<div>
 			<span class='invoiceSectionHeader'>- Additional Features -</span>
 			<span class='invoiceCell {{#if order.additionalFeatures}} descriptionField {{/if}}'>
 				{{#if order.additionalFeatures}}
@@ -71,34 +82,32 @@
 				{{/if}}
 			</span>
 		</div>
-
-		<div>
-			<span class='invoiceSectionHeader'>- Notes -</span>
-			<span class='invoiceCell descriptionField'>
-				{{#if order.notes.order}}
-					{{{order.notes.order}}}
-				{{else}}
-					N/A
-				{{/if}}
-			</span>
-		</div>
 	</div>
 
 	<div id='invoiceFooter'>
-		{{#if order.pricing.tax}}
+		{{#if_or order.pricing.tax order.pricing.tariff}}
 			<div>
-				<span class='orderFooterHeader'>Order Subtotal: </span>
+				<span class='orderFooterHeader'>Order Subtotal</span>
 				<span class='orderFooterValue'>${{#to_fixed order.pricing.subTotal 2}}{{/to_fixed}}</span>
 			</div>
-		{{/if}}
+		{{/if_or}}
 		{{#if order.pricing.tax}}
 			<div>
-				<span class='orderFooterHeader'>Tax ({{taxRate}}%): </span>
+				<span class='orderFooterHeader'>Tax ({{taxRate}}%)</span>
 				<span class='orderFooterValue'>${{#to_fixed order.pricing.tax 2}}{{/to_fixed}}</span>
 			</div>
 		{{/if}}
+		{{#if order.pricing.tariff}}
+			<div>
+				<span class='orderFooterHeader'>
+					<sup id='tariffWhatIsThis'>What is this?</sup>
+					Tariff ({{#to_fixed tariffRate 2}}{{/to_fixed}}%)
+				</span>
+				<span class='orderFooterValue'>${{#to_fixed order.pricing.tariff 2}}{{/to_fixed}}</span>
+			</div>
+		{{/if}}
 		<div id='orderTotalRow'>
-			<span class='orderFooterHeader'>Order Total: </span>
+			<span class='orderFooterHeader'>Order Total</span>
 			<span class='orderFooterValue'>${{#to_fixed order.pricing.orderTotal 2}}{{/to_fixed}}</span>
 		</div>
 	</div>

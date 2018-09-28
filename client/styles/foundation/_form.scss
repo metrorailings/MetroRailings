@@ -51,8 +51,9 @@
 	}
 
 	width: 100%;
-
 	padding: 10px;
+	display: inline-block;
+
 	top: 0px;
 
 	cursor: pointer;
@@ -92,8 +93,9 @@
 	}
 
 	width: 100%;
-
+	display: inline-block;
 	padding: 7.5px;
+
 	top: 0px;
 
 	cursor: pointer;
@@ -508,6 +510,11 @@ input, select, textarea
 // Styling for customized button sets
 .buttonSet
 {
+	&.disabled
+	{
+		opacity: 0.4;
+	}
+
 	& > label
 	{
 		@include transitionSettings($property: all, $duration: 0.5s);
@@ -563,6 +570,34 @@ input, select, textarea
 		&:disabled + label
 		{
 			cursor: default;
+		}
+	}
+}
+
+.staticValue
+{
+	@extend %regularPlusText;
+
+	display: flex;
+	align-items: center;
+	align-self: baseline;
+
+	margin-left: 10px;
+
+	& > i
+	{
+		@extend %significantIcons;
+
+		margin-left: 10px;
+
+		&.fa-bank
+		{
+			color: map-get($COLORS, mahoganyTheme);
+		}
+
+		&.fa-credit-card
+		{
+			color: map-get($COLORS, darkBlueTheme);
 		}
 	}
 }
