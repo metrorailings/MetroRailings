@@ -424,5 +424,5 @@ $FONTS:
 
 %errorText
 {
-	@include basicFontSettings($size: regularFontSize, $family: Cardo, $color: darkRedTheme);
+	@include basicFontSettings($size: regularFontSize, $family: Muli, $color: darkRedTheme);
 }
