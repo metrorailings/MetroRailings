@@ -14,10 +14,12 @@
 
 		<div id='railingDesignSection'>
 			<span class='invoiceSectionHeader'>- Post Design -</span>
-			<span class='invoiceCell'>
-				<span class='invoiceLabel'>Post Type:</span>
-				{{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}
-			</span>
+			{{#if order.design.post}}
+				<span class='invoiceCell'>
+					<span class='invoiceLabel'>Post Type:</span>
+					{{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}
+				</span>
+			{{/if}}
 			{{#if order.design.postEnd}}
 				<span class='invoiceCell'>
 					<span class='invoiceLabel'>Post End:</span>
