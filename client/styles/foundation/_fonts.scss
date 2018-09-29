@@ -14,6 +14,7 @@
  * Sorts Mill Goudy
  * Julius Sans One
  * Comfortaa
+ * Roboto Mono
  */
 @import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy|Julius+Sans+One+Comfortaa);
 
@@ -425,4 +426,9 @@ $FONTS:
 	letter-spacing: 0.3px;
 
 	line-height: map-get($FONTS, giganticFontSize);
+}
+
+%numberText
+{
+	@include basicFontSettings($size: regularFontSize, $family: Roboto Mono, $weight: 200);
 }

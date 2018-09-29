@@ -254,7 +254,7 @@
 
 .invoiceFooterValue
 {
-	@extend %tabularSmallerHeaderText;
+	@extend %numberText;
 
 	padding:
 	{
