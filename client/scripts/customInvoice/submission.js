@@ -14,7 +14,7 @@ var VALIDATE_VIEW_MODEL_LISTENER = 'validateCustomInvoiceVM',
 
 	CREATE_INVOICE_URL = 'customInvoice/saveNewInvoice',
 	SAVE_INVOICE_URL = 'customInvoice/saveChangesToInvoice',
-	INVOICES_URL = '/allInvoices',
+	INVOICES_URL = '/orders',
 
 	CREATE_SUCCESS_MESSAGE = 'Success! We sent an e-mail to the customer to point them to this invoice. Taking you' +
 		' back to the main screen in a few moments...',

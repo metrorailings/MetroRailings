@@ -1,0 +1,82 @@
+<div id='printMessage'><i class='fa fa-print'></i>Print this Invoice</div>
+
+<div id='specializedInvoice'>
+
+	<div id='invoiceHeader'>
+		Invoice #{{ invoice._id }} - {{ invoice.name }}
+		<span id='invoicePrintIcon'><i class='fa fa-print'></i></span>
+	</div>
+
+	<div id='backgroundInfo'>
+		<div class='invoiceRow'>
+			<span class='invoiceLabel'>Sent to: </span>
+			<span id='emailList' class='invoiceDetail'>
+				{{#each invoice.email}}
+					{{ this }}{{#unless @last}}&nbsp;|&nbsp;{{/unless}}
+				{{/each}}
+			</span>
+		</div>
+
+		<div class='invoiceRow'>
+			<div class='infoBlock'>
+				<div>
+					<span class='invoiceLabel'>Invoice Date:</span>
+					<span class='invoiceDetail'>{{#format_date invoice.createDateTime }}{{/format_date}}</span>
+				</div>
+				{{#if invoice.address }}
+					<div>
+						<span class='invoiceLabel'>Service Address:</span>
+						<span class='invoiceDetail'>{{ invoice.address }}</span>
+					</div>
+				{{/if}}
+			</div>
+			{{#if_cond invoice.status 'paid'}}
+				<div id='paidLabel'>Paid</div>
+			{{/if_cond}}
+		</div>
+
+	</div>
+
+	<div id='memoSection'>
+		<div id='memoText'>
+			{{ invoice.memo }}
+		</div>
+		{{#if invoice.orderId }}
+			<div id='orderLinker'>
+				This invoice relates to <a href='/orderInvoice?id={{ invoice.orderId }}' target='_blank'></a>Order #{{ invoice.orderId }}
+			</div>
+		{{/if}}
+	</div>
+
+	<div id='invoiceItemsTable'>
+
+		<div id='invoiceColumnHeaders'>
+			<span>Item Description</span>
+			<span>Price</span>
+		</div>
+
+		<div id='itemsListing'>
+			{{#each invoice.items}}
+				<div class='itemRow'>
+					<span class='itemDescription'>
+						{{ description }}
+					</span>
+					<span class='itemPrice'>
+						${{#normalize_dollar_amount price}}{{/normalize_dollar_amount}}
+					</span>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+
+	<div id='invoiceFooter'>
+		<div class='footerRow'>
+			<span class='footerLabel'>Tax</span>
+			<span class='footerValue'>${{#normalize_dollar_amount invoice.tax}}{{/normalize_dollar_amount}}</span>
+		</div>
+		<div class='footerRow'>
+			<span class='footerLabel'>Total</span>
+			<span class='footerValue'>${{#normalize_dollar_amount invoice.totalPrice}}{{/normalize_dollar_amount}}</span>
+		</div>
+	</div>
+</div>

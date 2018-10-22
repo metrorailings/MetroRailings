@@ -117,6 +117,7 @@ module.exports =
 			invoiceLink,
 			mailHTML,
 			mailData,
+			emailAddresses = params.email.split(','),
 			username;
 
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
@@ -156,7 +157,11 @@ module.exports =
 				state: params.state
 			};
 			mailHTML = await mailer.generateFullEmail(CUSTOM_INVOICE_EMAIL, mailData, CUSTOM_INVOICE_EMAIL);
-			await mailer.sendMail(mailHTML, '', params.email, CUSTOM_INVOICE_SUBJECT_HEADER.replace(CUSTOM_INVOICE_SUBJECT_HEADER, processedInvoice._id), config.SUPPORT_MAILBOX);
+			// Keep in mind that we may have multiple e-mail addresses, so we need to send an e-mail to each address listed
+			for (let i = 0; i < emailAddresses.length; i += 1)
+			{
+				await mailer.sendMail(mailHTML, '', emailAddresses[i], CUSTOM_INVOICE_SUBJECT_HEADER.replace(CUSTOM_INVOICE_SUBJECT_HEADER, processedInvoice._id), config.SUPPORT_MAILBOX);
+			}
 		}
 
 		return {

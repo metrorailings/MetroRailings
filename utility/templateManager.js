@@ -228,6 +228,33 @@ _Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
 });
 
 /**
+ * Handlebars helper function designed to normalize any dollar amount
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('normalize_dollar_amount', function(dollarAmount)
+{
+	var amountParts = dollarAmount.toFixed(2).split('.'),
+		commaIndex = ((amountParts[0].length) % 3) || 3,
+		formattedDollarAmount = '';
+
+	for (let i = 0; i < amountParts[0].length; i += 1)
+	{
+		formattedDollarAmount += amountParts[0][i];
+
+		// Insert a comma where a comma is needed
+		commaIndex -= 1;
+		if ((commaIndex === 0) && (i !== amountParts[0].length - 1))
+		{
+			formattedDollarAmount += ',';
+		}
+	}
+
+	// Return the fully constructed number, formatted for easy understanding
+	return formattedDollarAmount + '.' + amountParts[1];
+});
+
+/**
  * Handlebars helper function designed to test whether two values equal one another
  *
  * @author kinsho

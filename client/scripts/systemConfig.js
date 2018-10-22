@@ -14,6 +14,7 @@ SystemJS.config({
 
 		orderInvoice: '/client/scripts/orderInvoice/main.js',
 		orderConfirmation: '/client/scripts/orderConfirmation/main.js',
+		specializedInvoice: '/client/scripts/specializedInvoice/main.js',
 
 		estimateLocation: '/client/scripts/estimateLocation/main.js',
 		estimateBooking: '/client/scripts/estimateBooking/main.js',

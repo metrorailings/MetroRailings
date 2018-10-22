@@ -34,7 +34,7 @@ function printPage()
  */
 function navigateToTariffPage()
 {
-	window.open(TARIFF_URL);
+	window.open(TARIFF_URL, '_blank');
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------

@@ -35,7 +35,7 @@
 	}
 }
 
-#orderCreationButton, #prospectCreationButton
+#orderCreationButton, #prospectCreationButton, #generateInvoiceButton
 {
 	@include button($bgColor: darkGreenTheme);
 
@@ -57,7 +57,17 @@
 	}
 }
 
+#orderCreationButton
+{
+	background-color: map-get($COLORS, darkGreenTheme);
+}
+
 #prospectCreationButton
 {
 	background-color: map-get($COLORS, darkBlueTheme);
+}
+
+#generateInvoiceButton
+{
+	background-color: map-get($COLORS, indianRedTheme);
 }

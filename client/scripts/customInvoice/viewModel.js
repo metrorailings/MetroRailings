@@ -27,7 +27,7 @@ var ORDER_ID_TEXTFIELD = 'orderID',
 	ERROR =
 	{
 		ORDER_ID_INVALID: 'Please enter only numbers here.',
-		EMAIL_INVALID: 'Please enter a valid e-mail address here.',
+		EMAIL_INVALID: 'All e-mail addresses you put here have to be valid.',
 
 		NO_ORDER_FOUND: 'No order was found that matched the ID you put in. Either change the order ID or leave the' +
 		' field empty.'
@@ -152,13 +152,33 @@ Object.defineProperty(viewModel, 'email',
 
 	set: (value) =>
 	{
-		// Ensure that the value does not simply consist of spaces
-		value = (value.trim() ? value : '');
-		viewModel.__email = value;
+		// Keep in mind that there may be multiple e-mail addresses inside, split by commas
+		var emailAddresses = (value ? value.split(',') : []),
+			isValid;
 
-		// Test whether the value qualifies as an e-mail address
-		rQueryClient.updateValidationOnField(!(formValidator.isEmail(value)), _emailField, ERROR.EMAIL_INVALID, _validationSet);
+		for (let i = 0; i < emailAddresses.length; i++)
+		{
+			// Trim out any extraneous spaces around the e-mail address being tested
+			emailAddresses[i] = emailAddresses[i].trim();
+
+			// Test whether the e-mail address is valid
+			isValid = formValidator.isEmail(emailAddresses[i]);
+
+			// Toggle the field's appearance depending on whether we have an invalid e-mail address present
+			rQueryClient.updateValidationOnField( !(isValid), _emailField, ERROR.EMAIL_INVALID, _validationSet);
+
+			// If an invalid value is present, just exit the processing logic
+			if ( !(isValid) )
+			{
+				break;
+			}
+		}
+
+		// Recompose the values now that extraneous spaces have been trimmed
+		value = emailAddresses.join(',');
+
 		rQueryClient.setField(_emailField, value, _validationSet);
+		viewModel.__email = value;
 	}
 });
 

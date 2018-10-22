@@ -1,0 +1,58 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import 'colors';
+@import 'fonts';
+@import 'responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#orderInvoiceHeader
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	& > div
+	{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+#companyLogo
+{
+	max-width: 200px;
+	max-height: 200px;
+
+	margin-bottom: 15px;
+}
+
+.headerInfoBlock
+{
+	@extend %tinyText;
+
+	line-height: 18px;
+
+	flex: 1;
+
+	@include printOnly()
+	{
+		font-size: map-get($FONTS, regularFontSize);
+		line-height: 24px;
+	}
+	& > b
+	{
+		text-decoration: underline;
+	}
+
+	&:first-of-type, &:last-of-type
+	{
+		@include phoneOnly()
+		{
+			display: none;
+		}
+	}
+}

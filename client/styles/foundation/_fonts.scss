@@ -253,6 +253,11 @@ $FONTS:
 	@include basicFontSettings($weight: 200, $size: largeFontSize, $family: Muli);
 }
 
+%smallerDescriptiveText
+{
+	@include basicFontSettings($weight: 400, $size: smallFontSize, $family: Cardo);
+}
+
 %formDescriptiveText
 {
 	@include basicFontSettings($weight: 400, $size: regularFontSize, $family: Cardo);
@@ -421,9 +426,9 @@ $FONTS:
 
 %seriousTextWithEmphasis
 {
-	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Comfortaa);
+	@include basicFontSettings($weight: 700, $size: largePlusFontSize, $family: Comfortaa);
 
-	letter-spacing: 0.3px;
+	letter-spacing: 1.0px;
 
 	line-height: map-get($FONTS, giganticFontSize);
 }

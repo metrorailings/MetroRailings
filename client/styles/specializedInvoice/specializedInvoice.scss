@@ -1,0 +1,113 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/invoiceHeader';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#printMessage
+{
+	@extend %regularLinkText;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+	cursor: pointer;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+
+	& > i
+	{
+		margin-right: 5px;
+	}
+}
+
+#specializedInvoice
+{
+	border:
+	{
+		width: 1px;
+		color: map-get($COLORS, slateGrayTheme);
+		radius: 15px;
+		style: solid;
+	}
+
+	margin:
+	{
+		top: 25px;
+		bottom: 25px;
+		left: auto;
+		right: auto;
+	}
+
+	width: 95%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	& > div
+	{
+		width: 100%;
+	}
+}
+
+#invoiceHeader
+{
+	@extend %tabularHeaderText;
+
+	border:
+	{
+		bottom:
+		{
+			style: solid;
+			width: 1.5px;
+			color: map-get($COLORS, slateGrayTheme);
+		}
+
+		top-left-radius: 15px;
+		top-right-radius: 15px;
+	}
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	background-color: map-get($COLORS, duskTheme);
+
+	position: relative;
+}
+
+#invoicePrintIcon
+{
+	@include shiftTransition($x: -150%, $y: -50%);
+
+	position: absolute;
+	left: 100%;
+	top: 50%;
+
+	cursor: pointer;
+
+	@include phoneOnly()
+	{
+		display: none;
+	}
+
+	@include printOnly()
+	{
+		display: none;
+	}
+}
+
+#topMenu, #topMenuSpace, footer, #footerSpace
+{
+	display: none !important;
+}

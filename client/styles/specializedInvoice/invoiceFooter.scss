@@ -1,0 +1,63 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/form';
+@import '../foundation/fonts';
+@import '../foundation/colors';
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#invoiceFooter
+{
+	border:
+	{
+		top:
+		{
+			width: 1px;
+			color: map-get($COLORS, slateGrayTheme);
+			style: solid;
+		}
+
+		bottom-left-radius: 15px;
+		bottom-right-radius: 15px;
+	}
+
+	background-color: map-get($COLORS, duskTheme);
+
+	display: flex;
+	flex-direction: column;
+}
+
+.footerRow
+{
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	display: flex;
+}
+
+.footerLabel
+{
+	@extend %tabularLabelText;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex: 3;
+
+	margin-right: 15px;
+}
+
+.footerValue
+{
+	@extend %numberText;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	flex: 1;
+}

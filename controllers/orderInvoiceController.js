@@ -24,6 +24,7 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'orderInvoice',
+	UTILITY_FOLDER = 'utility',
 
 	ORDER_RECEIPT_EMAIL = 'orderReceipt',
 	ADMIN_ORDER_CONFIRMATION_EMAIL = 'adminOrderConfirmed',
@@ -38,7 +39,7 @@ var CONTROLLER_FOLDER = 'orderInvoice',
 
 	PARTIALS =
 	{
-		HEADER_SECTION: 'headerSection',
+		HEADER_SECTION: 'invoiceHeader',
 		INVOICE_SECTION: 'invoiceSection',
 		AGREEMENT_SECTION: 'agreement',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
@@ -52,7 +53,7 @@ var CONTROLLER_FOLDER = 'orderInvoice',
 /**
  * The template for the quote header that also features all our contact information
  */
-_Handlebars.registerPartial('orderInvoiceHeader', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.HEADER_SECTION));
+_Handlebars.registerPartial('invoiceHeader', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.HEADER_SECTION));
 
 /**
  * The template for the invoice that lists out all the aspects of the order for which the user will be charged
