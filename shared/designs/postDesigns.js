@@ -24,25 +24,36 @@ var postDesigns =
 			id: 'P-SP',
 			label: 'Standard Post (1.5")',
 			technicalLabel: '1.5"',
-			spanishLabel: '1.5"'
+			spanishLabel: '1.5"',
+			description: 'All posts will be 1.5" square.'
 		},
 		{
 			id: 'P-2P',
 			label: 'Laguna Post (2")',
 			technicalLabel: '2"',
-			spanishLabel: '2"'
+			spanishLabel: '2"',
+			description: 'All posts will be 2" square.'
 		},
 		{
 			id: 'P-BPC',
 			label: 'Colonial Post (2.5")',
 			technicalLabel: '2.5"',
-			spanishLabel: '2.5"'
+			spanishLabel: '2.5"',
+			description: 'All posts will be 2.5" square.'
 		},
 		{
 			id: 'P-3P',
 			label: 'Pillar Post (3")',
 			technicalLabel: '3"',
-			spanishLabel: '3"'
+			spanishLabel: '3"',
+			description: 'All posts will be 3.0" square.'
+		},
+		{
+			id: 'P-MIX',
+			label: 'Mixed Posts',
+			technicalLabel: 'Mixed',
+			spanishLabel: 'Mezclado',
+			description: 'Post sizes will vary among certain points at the railing.'
 		}
 	],
 	designMetadata: [],
