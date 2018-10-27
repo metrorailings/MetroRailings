@@ -25,31 +25,25 @@ var centerDesigns =
 				id: 'CD-S',
 				label: 'S Scrolls',
 				technicalLabel: 'S Scrolls',
-				spanishLabel: 'S Scrolls'
+				spanishLabel: 'S Scrolls',
+				description: 'S-shaped scrolls will be integrated gracefully at various points along the middle of' +
+					' each railing.'
 			},
 			{
 				id: 'CD-SC',
 				label: 'S/C Scrolls',
 				technicalLabel: 'S/C Scrolls',
-				spanishLabel: 'S/C Scrolls'
+				spanishLabel: 'S/C Scrolls',
+				description: 'S-shaped and C-shaped scrolls will be integrated gracefully at various' +
+					' points along the middle of each railing.'
 			},
 			{
 				id: 'CD-GALE',
 				label: 'Gale',
 				technicalLabel: 'Gale',
-				spanishLabel: 'Vendaval'
-			},
-			{
-				id: 'CD-DHRT',
-				label: 'Double Heart',
-				technicalLabel: 'Double Heart',
-				spanishLabel: 'Doble Corazón'
-			},
-			{
-				id: 'CD-SNC',
-				label: 'Scroll & Collar',
-				technicalLabel: 'Scroll & Collar',
-				spanishLabel: 'Desplazamiento y Collar'
+				spanishLabel: 'Vendaval',
+				description: 'Scrolls shaped like wind swirls will be integrated gracefully at various' +
+					' points along the middle of each railing.'
 			}
 		],
 		designMetadata: [],

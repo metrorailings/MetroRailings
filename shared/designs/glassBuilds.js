@@ -18,13 +18,19 @@ var glassBuilds =
 			id: 'GLASS-DESIGN-STND',
 			label: '1/2" Tempered',
 			technicalLabel: '1/2" Tempered',
-			spanishLabel: '1/2" Templado'
+			spanishLabel: '1/2" Templado',
+			description: 'All panels of glass used in this project will be 1/2" thick and strengthened through' +
+				' heat-treating.'
 		},
 		{
 			id: 'GLASS-DESIGN-ENHNCED',
 			label: '1/2" Tempered-Laminated',
 			technicalLabel: '1/2" Tempered-Laminated',
-			spanishLabel: '1/2" Templado-Laminado'
+			spanishLabel: '1/2" Templado-Laminado',
+			description: 'All panels of glass used in this project will be 1/2" thick. Each panel of glass' +
+				' will actually be constructed from two sheets of glass that will be bound together with' +
+				' specialized plastic resin. All sheets of glass will be heat-treated as well for additional' +
+				' durability.'
 		},
 	],
 	designMetadata: [],

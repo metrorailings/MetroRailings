@@ -18,19 +18,22 @@ var cableCaps =
 			id: 'CBL-CAP-GREY',
 			label: 'Grey Caps',
 			technicalLabel: 'Grey',
-			spanishLabel: 'Gris'
+			spanishLabel: 'Gris',
+			description: 'The metallic fixtured on the ends of each cable will be covered with a grey cap.'
 		},
 		{
 			id: 'CBL-CAP-BLACK',
 			label: 'Black Caps',
 			technicalLabel: 'Black',
-			spanishLabel: 'Negro'
+			spanishLabel: 'Negro',
+			description: 'The metallic fixtured on the ends of each cable will be covered with a black cap.'
 		},
 		{
 			id: 'CBL-CAP-WHITE',
 			label: 'White Caps',
 			technicalLabel: 'White',
-			spanishLabel: 'Blanco'
+			spanishLabel: 'Blanco',
+			description: 'The metallic fixtured on the ends of each cable will be covered with a white cap.'
 		}
 	],
 	designMetadata: [],

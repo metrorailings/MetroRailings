@@ -19,19 +19,29 @@ var picketStyles =
 			id: 'PCKT-STY-PLAIN',
 			label: 'Plain Pickets',
 			technicalLabel: 'Plain',
-			spanishLabel: 'Simple'
+			spanishLabel: 'Simple',
+			description: 'All pickets will be square in appearance.'
+		},
+		{
+			id: 'PCKT-STY-PIPE',
+			label: 'Pipe Pickets',
+			technicalLabel: 'Pipe',
+			spanishLabel: 'Tubo',
+			description: 'All pickets will be cylindrical in appearance, with a diameter of 1.5".'
 		},
 		{
 			id: 'PCKT-STY-TWST',
 			label: 'Twisted Pickets',
 			technicalLabel: 'Twisted',
-			spanishLabel: 'Retorcido'
+			spanishLabel: 'Retorcido',
+			description: 'At least some pickets will be twisted along the shaft for decorative effect.'
 		},
 		{
 			id: 'PCKT-STY-BOW',
 			label: 'Bowed Pickets',
 			technicalLabel: 'Bowed',
-			spanishLabel: 'Arco'
+			spanishLabel: 'Arco',
+			description: 'All pickets will curve outward like a bow.'
 		}
 	],
 	designMetadata: [],

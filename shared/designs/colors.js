@@ -41,14 +41,14 @@ var colors =
 		},
 		{
 			id: 'C-SS',
-			label: 'Stainless Steel',
+			label: 'Stainless Steel (Glossy)',
 			supplier: 'ProTech',
 			technicalLabel: 'PM211S76',
 			spanishLabel: 'Acero Inoxidable'
 		},
 		{
 			id: 'C-MG',
-			label: 'Metallic Silver',
+			label: 'Metallic Silver (Matte)',
 			supplier: 'Tiger Drylac',
 			technicalLabel: '038/91020',
 			spanishLabel: 'Plata Metálica'
