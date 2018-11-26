@@ -6,9 +6,7 @@ import vm from 'client/scripts/createQuote/viewModel';
 
 var PICKET_SIZE_SELECT = 'orderPicketSize',
 	PICKET_STYLE_SELECT = 'orderPicketStyle',
-	PICKET_STYLE_NOTES = 'picketStyleNotes',
-
-	SHOW_CLASS = 'show',
+	PICKET_STYLE_DESCRIPTION_FIELD = 'descriptiveText',
 
 	PLAIN_PICKET_STYLING_SELECTION = 'PCKT-STY-PLAIN';
 
@@ -17,7 +15,8 @@ var PICKET_SIZE_SELECT = 'orderPicketSize',
 var _orderPicketField = document.getElementById(PICKET_SIZE_SELECT),
 	_orderPicketStyleField = document.getElementById(PICKET_STYLE_SELECT),
 
-	_orderPicketStyleNotes = document.getElementById(PICKET_STYLE_NOTES);
+	// Also tab a reference to the description field that will be sidling the picket style dropdown
+	_orderPicketStyleDescription = _orderPicketStyleField.parentElement.getElementsByClassName(PICKET_STYLE_DESCRIPTION_FIELD)[0];
 
 // ----------------- LISTENERS ---------------------------
 
@@ -34,18 +33,25 @@ function setPicketSize()
 	if (_orderPicketField.value === '')
 	{
 		_orderPicketStyleField.disabled = true;
-		_orderPicketStyleNotes.disabled = true;
+		_orderPicketStyleDescription.disabled = true;
 
 		_orderPicketStyleField.value = '';
-		setPicketStyle({ currentTarget: _orderPicketStyleField });		
+		_orderPicketStyleDescription.value = '';
+
+		// Trigger the event on the picket style field here, as we need to invoke multiple functions attached to
+		// that field
+		_orderPicketStyleField.dispatchEvent(new Event('change'));
 	}
-	else
+	else if (_orderPicketStyleField.disabled)
 	{
 		_orderPicketStyleField.disabled = false;
-		_orderPicketStyleNotes.disabled = false;
+		_orderPicketStyleDescription.disabled = false;
 
 		_orderPicketStyleField.value = PLAIN_PICKET_STYLING_SELECTION;
-		setPicketStyle({ currentTarget: _orderPicketStyleField });
+
+		// Trigger the event on the picket style field here, as we need to invoke multiple functions attached to
+		// that field
+		_orderPicketStyleField.dispatchEvent(new Event('change'));
 	}
 }
 
@@ -57,37 +63,14 @@ function setPicketSize()
 function setPicketStyle()
 {
 	vm.design.picketStyle = _orderPicketStyleField.value;
-
-	// Determine whether to show a description field that would provide further light into the way the pickets need
-	// to be styled
-	if (!(_orderPicketStyleField.value) || _orderPicketStyleField.value === PLAIN_PICKET_STYLING_SELECTION)
-	{
-		_orderPicketStyleNotes.classList.remove(SHOW_CLASS);
-	}
-	else
-	{
-		_orderPicketStyleNotes.classList.add(SHOW_CLASS);
-	}
-}
-
-/**
- * Listener responsible for setting notes regarding the picket styling into the view model
- *
- * @author kinsho
- */
-function setPicketStyleNotes()
-{
-	vm.design.notes.picketStyle = _orderPicketStyleNotes.value;
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _orderPicketField.addEventListener('change', setPicketSize);
 _orderPicketStyleField.addEventListener('change', setPicketStyle);
-_orderPicketStyleNotes.addEventListener('change', setPicketStyleNotes);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
 setPicketSize({ currentTarget: _orderPicketField });
 setPicketStyle({ currentTarget: _orderPicketStyleField });
-setPicketStyleNotes({ currentTarget: _orderPicketStyleNotes });

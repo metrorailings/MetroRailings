@@ -10,9 +10,7 @@ var COVER_PLATES_RADIO_BUTTONS = 'coverPlates',
 	ORDER_LENGTH_TEXTFIELD = 'orderLength',
 	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
-	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
-	DESCRIPTION_TEXTAREA = 'description',
-	DEDUCTIONS_TEXTFIELD = 'deductions';
+	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -23,9 +21,7 @@ var _coverPlateButtons = document.getElementsByName(COVER_PLATES_RADIO_BUTTONS),
 	_finishedHeightField = document.getElementById(FINISHED_HEIGHT_TEXTFIELD),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA),
-	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
-	_orderDescriptionField = document.getElementById(DESCRIPTION_TEXTAREA),
-	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD);
+	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -101,26 +97,6 @@ function setAdditionalPrice()
 	vm.additionalPrice = _additionalPriceField.value;
 }
 
-/**
- * Listener responsible for setting order-specific notes into the view model
- *
- * @author kinsho
- */
-function setOrderDescription()
-{
-	vm.notes.order = _orderDescriptionField.value;
-}
-
-/**
- * Listener responsible for setting any discounts on this order into the view model
- *
- * @author kinsho
- */
-function setDeductions()
-{
-	vm.deductions = _deductionsField.value;
-}
-
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _coverPlateButtons[0].addEventListener('change', setCoverPlates);
@@ -132,8 +108,6 @@ _finishedHeightField.addEventListener('change', setFinishedHeight);
 _pricePerFootField.addEventListener('change', setPricePerFoot);
 _additionalFeaturesField.addEventListener('change', setAdditionalFeatures);
 _additionalPriceField.addEventListener('change', setAdditionalPrice);
-_orderDescriptionField.addEventListener('change', setOrderDescription);
-_deductionsField.addEventListener('change', setDeductions);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
@@ -145,5 +119,3 @@ setFinishedHeight();
 setPricePerFoot();
 setAdditionalFeatures();
 setAdditionalPrice();
-setOrderDescription();
-setDeductions();

@@ -29,7 +29,7 @@
 #cableDesignSection, #glassDesignSection, #baseDesignSection, #advancedDesignSection, #picketSection
 {
 	display: block;
-	background-color: map-get($COLORS, lightMoccasinTheme);
+	background-color: map-get($COLORS, smokeWhiteTheme);
 
 	&.hide
 	{
@@ -80,6 +80,23 @@
 		}
 
 		width: 100%;
+	}
+}
+
+.dataDescriptionGrouping
+{
+	@extend .dataGrouping;
+
+	justify-content: flex-start;
+
+	& > .specializedLabel
+	{
+		flex: 1;
+	}
+
+	& > select, & > input, & > textarea
+	{
+		flex: 2;
 	}
 }
 

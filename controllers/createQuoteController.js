@@ -66,7 +66,8 @@ var CONTROLLER_FOLDER = 'createQuote',
 		EXTERNAL_CHARGES: 'externalCharges',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection',
-		DESIGN_ERRORS: 'designErrors'
+		DESIGN_ERRORS: 'designErrors',
+		DESIGN_DESCRIPTOR: 'designDescriptor'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -125,6 +126,11 @@ _Handlebars.registerPartial('createQuoteExternalCharges', fileManager.fetchTempl
  * The template for the agreement section
  */
 _Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
+
+/**
+ * The template for the design descriptor partial
+ */
+_Handlebars.registerPartial('designDescriptor', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.DESIGN_DESCRIPTOR));
 
 /**
  * The template for the submission button
@@ -198,7 +204,11 @@ module.exports =
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, { prospectId: prospect._id }, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,
+		{
+			prospectId: prospect._id,
+			designData: designData
+		}, true, true);
 	},
 
 	/**

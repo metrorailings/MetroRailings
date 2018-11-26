@@ -16,12 +16,13 @@
 		<span class='specializedLabel'>
 		    Cable Caps
 		</span>
-		<select id='orderCableCap'>
+		<select id='orderCableCap' data-field-name='cableCap'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.cableCaps}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor designs.cableCaps.[0] }}
 	</div>
 
 </div>

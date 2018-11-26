@@ -47,7 +47,7 @@ var postCapDesigns =
 			label: 'Bishop',
 			technicalLabel: 'Bishop',
 			spanishLabel: 'Obispo',
-			description: 'All posts will be topped off with prominent caps that have a look that can best be ' +
+			description: 'All posts will be topped off with prominent caps that have a look that can best be' +
 				' compared to that of a westernised religious mitre.'
 		}
 	],
