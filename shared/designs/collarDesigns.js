@@ -41,7 +41,7 @@ var collarDesigns =
 			technicalLabel: '1-2 Collar Pattern',
 			spanishLabel: '1-2 Patrón de Cuello',
 			description: 'Collars will be fitted along every picket in a patterned fashion - every even picket will' +
-				' have a collar fitted along its center point while every odd picket will have two collar, one' +
+				' have a collar fitted along its center point while every odd picket will have two collars, one' +
 				' placed low and and one placed high on the picket.'
 		}
 	],

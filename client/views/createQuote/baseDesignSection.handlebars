@@ -1,51 +1,55 @@
 <div id='baseDesignSection'>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 		    Post Design
 		</span>
-		<select id='orderPost'>
+		<select id='orderPost' data-field-name='post'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.posts}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 		    Handrailing
 		</span>
-		<select id='orderHandrailing'>
+		<select id='orderHandrailing' data-field-name='handrailing'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.handrailings}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 		    Post End Design
 		</span>
-		<select id='orderPostEnd'>
+		<select id='orderPostEnd' data-field-name='postEnd'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.postEnds}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 		    Post Cap Design
 		</span>
-		<select id='orderPostCap'>
+		<select id='orderPostCap' data-field-name='postCap'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.postCaps}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 
 	<div class='dataGrouping'>

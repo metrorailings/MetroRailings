@@ -12,18 +12,18 @@
 		</select>
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 			Picket Styling
 		</span>
-		<select id='orderPicketStyle'>
+		<select id='orderPicketStyle' data-field-name='picketStyle'>
 			<option value='' disabled selected>Select...</option>
 			{{#each designs.picketStyles}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
 
-		<input id='picketStyleNotes' type='text' class='noteTextfield' placeholder='Leave here any notes on the way the pickets need to be styled...'/>
+		{{> designDescriptor }}
 	</div>
 
 </div>

@@ -77,7 +77,7 @@ function setType()
  */
 function setPostDesign()
 {
-	vm.design.post = _orderPostDesignField;
+	vm.design.post = _orderPostDesignField.value;
 }
 
 /**
@@ -115,12 +115,9 @@ function setPostCap()
  *
  * @author kinsho
  */
-function setColor(event)
+function setColor()
 {
-	var element = event.currentTarget,
-		isOtherSelected = (element.value === OTHER_SELECTION);
-
-	vm.design.color = (isOtherSelected ? _otherColorField.value : element.value);
+	vm.design.color = (_orderColorField.value === OTHER_SELECTION ? _otherColorField.value : _orderColorField.value);
 
 	_toggleOtherFieldVisibility(_orderColorField);
 }

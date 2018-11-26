@@ -10,6 +10,8 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 import formValidator from 'shared/formValidator';
 import pricing from 'shared/pricing/pricingData';
 
+import designModel from 'client/scripts/createQuote/designViewModel';
+
 // ----------------- ENUM/CONSTANTS -----------------------------
 
 var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
@@ -30,7 +32,6 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 	ADDITIONAL_FEATURES_TEXTAREA = 'additionalFeatures',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
-	DEDUCTIONS_TEXTFIELD = 'deductions',
 
 	ORDER_SUBTOTAL_DISPLAY = 'orderSubtotalDisplay',
 	ORDER_TAX_DISPLAY = 'orderTaxDisplay',
@@ -87,7 +88,6 @@ var _validationSet = new Set(),
 	_additionalFeaturesField = document.getElementById(ADDITIONAL_FEATURES_TEXTAREA),
 	_pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
-	_deductionsField = document.getElementById(DEDUCTIONS_TEXTFIELD),
 
 	_subtotalDisplay = document.getElementById(ORDER_SUBTOTAL_DISPLAY),
 	_taxDisplay = document.getElementById(ORDER_TAX_DISPLAY),
@@ -656,34 +656,6 @@ Object.defineProperty(viewModel, 'notes',
 	}
 });
 
-// Deductions
-Object.defineProperty(viewModel, 'deductions',
-{
-	configurable: false,
-	enumerable: false,
-
-	get: () =>
-	{
-		return viewModel.__deductions;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__deductions = value;
-
-		// Make sure a valid total price is being set here
-		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
-			(value.length && !(window.parseFloat(value, 10)) ) ||
-			(value.length && value.split('.').length > 2);
-
-		rQueryClient.updateValidationOnField(isInvalid, _deductionsField, ERROR.TOTAL_INVALID, _validationSet);
-		rQueryClient.setField(_deductionsField, value);
-
-		_validate();
-		_calculateSubTotal();
-	}
-});
-
 // Order Subtotal
 Object.defineProperty(viewModel, 'subtotal',
 {
@@ -805,7 +777,8 @@ Object.defineProperty(viewModel, 'isFormValid',
 });
 
 // Initialize some of the values
-viewModel.design = { notes: {} };
+viewModel.design = new designModel();
+viewModel.designDescriptions = new designModel();
 viewModel.installation = {};
 viewModel.notes = {};
 

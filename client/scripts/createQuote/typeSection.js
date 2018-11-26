@@ -11,15 +11,18 @@ var TYPE_SELECT = 'orderType',
 	CABLE_DESIGN_SECTION = 'cableDesignSection',
 	GLASS_DESIGN_SECTION = 'glassDesignSection',
 
+	DATA_GROUPING_CLASS = 'dataGrouping',
+	DATA_DESCRIPTION_GROUPING_CLASS = 'dataDescriptionGrouping',
+
 	HIDE_CLASS = 'hide',
 
+	MODERN_TYPE = 'T-MOD',
 	CABLE_TYPE = 'T-CABLE',
 	GLASS_TYPE = 'T-GLASS',
 
 	RAIL_TYPES =
 	{
 		'T-TRA' : true,
-		'T-MOD' : true,
 		'T-IRON' : true,
 		'T-FENCE' : true,
 		'T-GATE' : true
@@ -34,6 +37,39 @@ var _orderTypeField = document.getElementById(TYPE_SELECT),
 	_picketSection = document.getElementById(PICKET_SECTION),
 	_cableDesignSection = document.getElementById(CABLE_DESIGN_SECTION),
 	_glassDesignSection = document.getElementById(GLASS_DESIGN_SECTION);
+
+// ----------------- PRIVATE FUNCTIONS ---------------------------
+
+/**
+ * Function responsible for nullifying all selections for a design section that will need to be hidden
+ *
+ * @param {HTMLElement} section - the section from which we need to negate any selections that may have been made
+ *
+ * @author kinsho
+ */
+function _nullifySection(section)
+{
+	var dataGroups = [...section.getElementsByClassName(DATA_DESCRIPTION_GROUPING_CLASS), ...section.getElementsByClassName(DATA_GROUPING_CLASS)],
+		inputs;
+
+	for (let i = 0; i < dataGroups.length; i += 1)
+	{
+		inputs = [...dataGroups[i].getElementsByTagName('select'),
+			...dataGroups[i].getElementsByTagName('input'),
+			...dataGroups[i].getElementsByTagName('textarea')];
+
+		for (let j = 0; j < inputs.length; j += 1)
+		{
+			// For all inputs, nullify the values as well as any descriptive text
+			// Ensure that the view model is updated as well
+			if ( !(inputs[j].disabled) )
+			{
+				inputs[j].value = '';
+				inputs[j].dispatchEvent(new Event('change'));
+			}
+		}
+	}
+}
 
 // ----------------- LISTENERS ---------------------------
 
@@ -60,16 +96,36 @@ function setType()
 		_baseDesignSection.classList.remove(HIDE_CLASS);
 		_picketSection.classList.remove(HIDE_CLASS);
 		_advancedDesignSection.classList.remove(HIDE_CLASS);
+
+		_nullifySection(_cableDesignSection);
+		_nullifySection(_glassDesignSection);
+	}
+	else if (_orderTypeField.value === MODERN_TYPE)
+	{
+		_baseDesignSection.classList.remove(HIDE_CLASS);
+		_picketSection.classList.remove(HIDE_CLASS);
+
+		_nullifySection(_advancedDesignSection);
+		_nullifySection(_cableDesignSection);
+		_nullifySection(_glassDesignSection);
 	}
 	else if (_orderTypeField.value === CABLE_TYPE)
 	{
 		_baseDesignSection.classList.remove(HIDE_CLASS);
 		_cableDesignSection.classList.remove(HIDE_CLASS);
+
+		_nullifySection(_advancedDesignSection);
+		_nullifySection(_picketSection);
+		_nullifySection(_glassDesignSection);
 	}
 	else if (_orderTypeField.value === GLASS_TYPE)
 	{
 		_baseDesignSection.classList.remove(HIDE_CLASS);
 		_glassDesignSection.classList.remove(HIDE_CLASS);
+
+		_nullifySection(_advancedDesignSection);
+		_nullifySection(_cableDesignSection);
+		_nullifySection(_picketSection);
 	}
 }
 

@@ -1,0 +1,44 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.descriptiveSection
+{
+	margin:
+	{
+		left: 35px;
+	}
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	flex: 4;
+
+	&.disabled
+	{
+		opacity: 0.4;
+	}
+
+	& > span
+	{
+		@extend %smallHeadlineText;
+
+		margin:
+		{
+			bottom: 10px;
+		}
+	}
+}
+
+.descriptiveText
+{
+	height: 5em;
+	width: 500px;
+
+	padding: 5px;
+}

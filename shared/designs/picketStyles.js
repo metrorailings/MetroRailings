@@ -27,7 +27,7 @@ var picketStyles =
 			label: 'Pipe Pickets',
 			technicalLabel: 'Pipe',
 			spanishLabel: 'Tubo',
-			description: 'All pickets will be cylindrical in appearance, with a diameter of 1.5".'
+			description: 'All pickets will be cylindrical in appearance.'
 		},
 		{
 			id: 'PCKT-STY-TWST',

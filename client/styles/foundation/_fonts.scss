@@ -426,3 +426,9 @@ $FONTS:
 {
 	@include basicFontSettings($size: regularFontSize, $family: Muli, $color: darkRedTheme);
 }
+
+/* --- Smaller font stylings --- */
+%smallHeadlineText
+{
+	@include basicFontSettings($size: smallFontSize, $family: Raleway);
+}

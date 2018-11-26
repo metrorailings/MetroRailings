@@ -1,49 +1,53 @@
 <div id='advancedDesignSection'>
 	
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 			Center Design
 		</span>
-		<select id='orderCenterDesign'>
+		<select id='orderCenterDesign' data-field-name='centerDesign'>
 			{{#each designs.centerDesigns}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 	
-	
-	<div class='dataGrouping'>
+
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 			Collars
 		</span>
-		<select id='orderCollars'>
+		<select id='orderCollars' data-field-name='collars'>
 			{{#each designs.collars}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 	
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 			Baskets
 		</span>
-		<select id='orderBaskets'>
+		<select id='orderBaskets' data-field-name='baskets'>
 			{{#each designs.baskets}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 			Valence
 		</span>
-		<select id='orderValence'>
+		<select id='orderValence' data-field-name='valence'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.valences}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor }}
 	</div>
 
 </div>

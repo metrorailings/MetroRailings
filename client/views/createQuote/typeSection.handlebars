@@ -1,15 +1,16 @@
 <div id='typeSection'>
 
-	<div class='dataGrouping'>
+	<div class='dataDescriptionGrouping'>
 		<span class='specializedLabel'>
 		    Type
 		</span>
-		<select id='orderType'>
+		<select id='orderType' data-field-name='type'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.types}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor designs.types.[0] }}
 	</div>
 
 </div>

@@ -25,15 +25,15 @@ var postEndDesigns =
 			label: 'Volute',
 			technicalLabel: 'Volute',
 			spanishLabel: 'Voluta',
-			description: 'Given that the handrailings will be placed over the top of the posts, all handrailings' +
-				' will have their ends folded downward into a circular finish.'
+			description: 'Given that the handrailing will be placed over the top of the posts, all' +
+				' handrailings will have their ends folded downward into a circular finish.'
 		},
 		{
 			id: 'PE-LT',
 			label: 'Lamb\'s Tongue',
 			technicalLabel: 'Regular Lamb\'s Tongue',
 			spanishLabel: 'Lengua de cordero regular',
-			description: 'Given that the handrailings will be placed over the top of the posts, all handrailings' +
+			description: 'Given that the handrailing will be placed over the top of the posts, all handrailings' +
 				' will have their ends curled downward gracefully.'
 		},
 		{

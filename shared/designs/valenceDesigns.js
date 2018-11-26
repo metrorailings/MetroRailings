@@ -26,7 +26,7 @@ var valenceDesigns =
 			label: 'Rings',
 			technicalLabel: 'Rings',
 			spanishLabel: 'Anillos',
-			description: 'A top channel will be designed into the railing. The upper channel will feature aluminum' +
+			description: 'A top channel will be designed into the railing. The upper channel will feature' +
 				' rings that will be lined up against one another along the length of the channel.'
 		},
 		{
@@ -50,8 +50,8 @@ var valenceDesigns =
 			label: 'Antique',
 			technicalLabel: 'Antique',
 			spanishLabel: 'Antiguo',
-			description: 'A top channel will be designed into the railing. The upper channel will feature a' +
-				' grapevine pattern running horizontally in a sinusoidal fashion.'
+			description: 'A top channel will be designed into the railing. The upper channel will feature an' +
+				' elegant metal vine that runs along the length of the railing in a sinusoidal fashion.'
 		},
 		{
 			id: 'VAL-VINE',
@@ -66,7 +66,7 @@ var valenceDesigns =
 			label: 'Wave',
 			technicalLabel: 'Wave',
 			spanishLabel: 'Ola',
-			description: 'A top channel will be designed into the railing. The upper channel will feature swirl-like ' +
+			description: 'A top channel will be designed into the railing. The upper channel will feature swirl-like' +
 				' patterns that resemble ocean waves.'
 		},
 		{
