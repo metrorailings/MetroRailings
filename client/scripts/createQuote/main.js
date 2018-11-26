@@ -12,3 +12,4 @@ import logisticsSection from 'client/scripts/createQuote/logisticsSection';
 import externalCharges from 'client/scripts/createQuote/externalCharges';
 import agreementSection from 'client/scripts/createQuote/agreementSection';
 import submissionSection from 'client/scripts/createQuote/submissionSection';
+import descriptor from 'client/scripts/createQuote/designDescriptor';

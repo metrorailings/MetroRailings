@@ -46,14 +46,14 @@ var postDesigns =
 			label: 'Pillar Post (3")',
 			technicalLabel: '3"',
 			spanishLabel: '3"',
-			description: 'All posts will be 3.0" square.'
+			description: 'All posts will be 3" square.'
 		},
 		{
 			id: 'P-MIX',
 			label: 'Mixed Posts',
 			technicalLabel: 'Mixed',
 			spanishLabel: 'Mezclado',
-			description: 'Post sizes will vary among certain points at the railing.'
+			description: 'Post sizes will vary at certain points along the railings.'
 		}
 	],
 	designMetadata: [],

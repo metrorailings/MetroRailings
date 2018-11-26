@@ -17,7 +17,7 @@ var RESTRICTIONS =
 			{
 				fields: ['cableSize', 'cableCap'],
 				message: 'For cable products, you need to specify both the size of the cable needed as well as' +
-					' what type of caps you want covering the ends of the cable.'
+					' what type of caps you want covering the ends of the cable. Don\'t forget post size as well.'
 			},
 			'T-GLASS':
 			{
@@ -79,7 +79,7 @@ var RESTRICTIONS =
 			fields: ['picketSize'],
 			messages:
 			[
-				'Pickets are needed if you want to incorporate a center design'
+				'Pickets are needed if you want to incorporate a center design.'
 			]
 		}
 	},
@@ -90,7 +90,7 @@ var RESTRICTIONS =
 			fields: ['picketSize'],
 			messages:
 			[
-				'Pickets are needed if you want to include baskets'
+				'Pickets are needed if you want to include baskets.'
 			]
 		}
 	},
@@ -101,7 +101,7 @@ var RESTRICTIONS =
 			fields: ['picketSize'],
 			messages:
 			[
-				'Pickets are needed if you want to build a valence along the top of the railing'
+				'Pickets are needed if you want to build a valence along the top of the railing.'
 			]
 		}
 	},
@@ -112,7 +112,7 @@ var RESTRICTIONS =
 			fields: ['picketSize'],
 			messages:
 			[
-				'Pickets are needed if you want to include collars'
+				'Pickets are needed if you want to include collars.'
 			]
 		}
 	},
@@ -126,11 +126,7 @@ var RESTRICTIONS =
 				'Posts are needed in order to keep the cables in place.'
 			]
 		}
-	},
-	cableCap :
-	{
-	},
-
+	}
 };
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -150,7 +146,7 @@ module.exports =
 	 */
 	testRequirements: function(designObject)
 	{
-		var errorMessages = [],
+		var errorMessages = new Set(),
 			restrictions, requirements, propertyValue,
 			designProperties = Object.keys(designObject);
 
@@ -176,14 +172,14 @@ module.exports =
 						{
 							// If a required field has not been selected, relay the corresponding error message to
 							// the client
-							errorMessages.push(requirements.message);
+							errorMessages.add(requirements.message);
 						}
 					}
 				}
 			}
 		}
 
-		return errorMessages;
+		return Array.from(errorMessages);
 	},
 
 	/**
@@ -197,7 +193,7 @@ module.exports =
 	 */
 	testPrerequisites: function(designObject)
 	{
-		var errorMessages = [],
+		var errorMessages = new Set(),
 			restrictions, prerequisites,
 			designProperties = Object.keys(designObject);
 
@@ -218,12 +214,12 @@ module.exports =
 					{
 						// If a prerequisite has not been selected, find the corresponding error message and relay
 						// that back to the client
-						errorMessages.push(prerequisites.messages[j]);
+						errorMessages.add(prerequisites.messages[j]);
 					}
 				}
 			}
 		}
 
-		return errorMessages;
+		return Array.from(errorMessages);
 	}
 };

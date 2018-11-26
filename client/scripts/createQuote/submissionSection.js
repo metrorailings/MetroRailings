@@ -60,6 +60,7 @@ function submit()
 		_designErrorsContainer.scrollIntoView({ behavior: 'smooth' });
 	}
 
+	return;
 	// Organize the data that will be sent over the wire as long as the entire form is valid
 	if (vm.isFormValid && designErrorMessages.length === 0)
 	{

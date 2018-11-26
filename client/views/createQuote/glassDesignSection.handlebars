@@ -4,24 +4,26 @@
 		<span class='specializedLabel'>
 		    Glass Type
 		</span>
-		<select id='orderGlassType'>
+		<select id='orderGlassType' data-field-name='glassType'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.glassTypes}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor designs.glassTypes.[0]}}
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
 		    Glass Build
 		</span>
-		<select id='orderGlassBuild'>
+		<select id='orderGlassBuild' data-field-name='glassBuild'>
 			<option value='' disabled>Select...</option>
 			{{#each designs.glassBuilds}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
+		{{> designDescriptor designs.glassBuilds.[0]}}
 	</div>
 
 </div>

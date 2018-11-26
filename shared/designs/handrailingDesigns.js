@@ -26,7 +26,7 @@ var handrailingDesigns =
 			technicalLabel: 'Standard',
 			spanishLabel: 'Estándar',
 			description: 'All railings will be topped off with a sleek handrail that curves slightly upward along' +
-				' the centerline. Basically, these handrails resemble a shallow parabola.'
+				' its centerline. Basically, these handrails resemble a shallow parabola.'
 		},
 		{
 			id: 'H-C',
@@ -45,12 +45,20 @@ var handrailingDesigns =
 				' All pipe ends will be capped with a welded cross-section of metal.'
 		},
 		{
-			id: 'H-SW',
+			id: 'H-MS',
 			label: 'Modern Slim (2" x 1")',
 			technicalLabel: '2" x 1"',
 			spanishLabel: '2" x 1"',
 			description: 'All railings will be topped off with a hollow rectangular handrail. The width of the rail' +
 				' will be 2" while the height of the rail will be 1". '
+		},
+		{
+			id: 'H-MW',
+			label: 'Modern Wide (3" x 1")',
+			technicalLabel: '3" x 1"',
+			spanishLabel: '3" x 1"',
+			description: 'All railings will be topped off with a hollow rectangular handrail. The width of the rail' +
+				' will be 3" while the height of the rail will be 1". '
 		},
 		{
 			id: 'H-L',
