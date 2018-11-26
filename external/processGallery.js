@@ -48,6 +48,7 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 	await mongo.initialize();
 
 	var dropboxConnection = new _dropbox({ accessToken: config.GALLERY_TOKEN }), // Instantiate a new dropbox connection
+		testImage = (process.argv[2] ? process.argv[2] : ''),
 		indexRecord,
 		results,
 		files = [], fileBlob,
@@ -84,6 +85,13 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 	// Now index and process all the photos that have not been processed yet
 	for (i = 0; i < files.length; i++)
 	{
+		// If a image file name has been specified, we are in testing mode and are trying to test a particular image
+		// where this script happens to be failing
+		if (testImage && testImage !== files[i].path_lower)
+		{
+			continue;
+		}
+
 		indexRecord = await mongo.read(GALLERY_METADATA_COLLECTION, { _id: files[i].path_lower });
 		if ( !(indexRecord.length) )
 		{
@@ -95,12 +103,13 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 			try
 			{
 				console.log('Re-orienting an image - ' + files[i].path_lower);
-				fileBlob = await jpegRotate(fileBlob, {});
+				fileBlob = (await jpegRotate(fileBlob, {}))[0];
 			}
 			catch(error)
 			{
 				// Do nothing should there be an issue trying to orient the image
 				console.log('Unable to re-orient the image - ' + files[i].path_lower);
+				console.error('ERROR -----> ' + error);
 			}
 
 			// Let's also compress the image while we're at it
@@ -116,18 +125,28 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 			{
 				// Do nothing should there be an issue trying to minifiying the image
 				console.log('Unable to minify image - ' + files[i].path_lower);
+				console.error('ERROR -----> ' + error);
 			}
 
 			// Push the processed image back into Dropbox. Make sure to replace the old one.
-			console.log('Uploading a processed image - ' + files[i].path_lower);
-			await dropboxConnection.filesUpload(
+			try
 			{
-				contents: fileBlob,
-				path: files[i].path_lower,
-				mode: { '.tag' : 'overwrite' },
-				autorename: true,
-				mute: false
-			});
+				console.log('Uploading a processed image - ' + files[i].path_lower);
+				await dropboxConnection.filesUpload(
+				{
+					contents: fileBlob,
+					path: files[i].path_lower,
+					mode: {'.tag': 'overwrite'},
+					autorename: true,
+					mute: false
+				});
+			}
+			catch(error)
+			{
+				// Do nothing should there be an issue trying to minifiying the image
+				console.log('Unable to upload image - ' + files[i].path_lower);
+				console.error('ERROR -----> ' + error);
+			}
 
 			// Now generate a shareable link for that photo
 			console.log('Generating a shareable link - ' + files[i].path_lower);
