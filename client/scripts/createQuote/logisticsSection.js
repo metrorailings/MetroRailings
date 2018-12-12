@@ -82,9 +82,9 @@ function setPricePerFoot()
  *
  * @author kinsho
  */
-function setAdditionalFeatures()
+function setAdditionalDescription()
 {
-	vm.additionalFeatures = _additionalFeaturesField.value;
+	vm.additionalDescription = _additionalFeaturesField.value;
 }
 
 /**
@@ -106,7 +106,7 @@ _orderPlatformTypeField.addEventListener('change', setPlatformType);
 _orderLengthField.addEventListener('change', setLength);
 _finishedHeightField.addEventListener('change', setFinishedHeight);
 _pricePerFootField.addEventListener('change', setPricePerFoot);
-_additionalFeaturesField.addEventListener('change', setAdditionalFeatures);
+_additionalFeaturesField.addEventListener('change', setAdditionalDescription);
 _additionalPriceField.addEventListener('change', setAdditionalPrice);
 
 // ----------------- DATA INITIALIZATION -----------------------------
@@ -117,5 +117,5 @@ setPlatformType({ currentTarget: _orderPlatformTypeField });
 setLength();
 setFinishedHeight();
 setPricePerFoot();
-setAdditionalFeatures();
+setAdditionalDescription();
 setAdditionalPrice();

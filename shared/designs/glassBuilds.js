@@ -23,6 +23,14 @@ var glassBuilds =
 				' heat-treating.'
 		},
 		{
+			id: 'GLASS-DESIGN-LMNTD',
+			label: '1/2" Laminated',
+			technicalLabel: '1/2" Laminated',
+			spanishLabel: '1/2" Laminado',
+			description: 'All panels of glass used in this project will be 1/2" thick and laminated for further' +
+				' resiliency.'
+		},
+		{
 			id: 'GLASS-DESIGN-ENHNCED',
 			label: '1/2" Tempered-Laminated',
 			technicalLabel: '1/2" Tempered-Laminated',

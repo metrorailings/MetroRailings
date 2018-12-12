@@ -270,12 +270,29 @@ function generateViewModel()
 
 		get: () =>
 		{
-			return viewModel.__glassType;
+			return viewModel.__glassBuild;
 		},
 
 		set: (value) =>
 		{
-			viewModel.__glassType = value;
+			viewModel.__glassBuild = value;
+		}
+	});
+
+	// ADA Intermediate Handrail
+	Object.defineProperty(viewModel, 'ada',
+	{
+		configurable: true,
+		enumerable: true,
+
+		get: () =>
+		{
+			return viewModel.__ada;
+		},
+
+		set: (value) =>
+		{
+			viewModel.__ada = value;
 		}
 	});
 

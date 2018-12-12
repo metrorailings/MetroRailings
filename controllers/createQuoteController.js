@@ -31,6 +31,7 @@ var _Handlebars = require('handlebars'),
 	cableCaps = global.OwlStakes.require('shared/designs/cableCaps'),
 	glassTypes = global.OwlStakes.require('shared/designs/glassTypes'),
 	glassBuilds = global.OwlStakes.require('shared/designs/glassBuilds'),
+	ada = global.OwlStakes.require('shared/designs/ada'),
 
 	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
@@ -187,7 +188,8 @@ module.exports =
 			cableSizes: cableSizes.options,
 			cableCaps: cableCaps.options,
 			glassTypes: glassTypes.options,
-			glassBuilds: glassBuilds.options
+			glassBuilds: glassBuilds.options,
+			ada: ada.options
 		};
 
 		pageData =
@@ -227,20 +229,12 @@ module.exports =
 		{
 			username = cookieManager.retrieveAdminCookie(cookie)[0];
 
-			console.log('Saving a newly minted custom order into the system...');
+			console.log('Saving a newly minted order into the system...');
 
 			try
 			{
-				if (params._id)
-				{
-					// Convert an existing prospect into an order
-					processedOrder = await prospectsDAO.convertToOrder(params._id, params, username);
-				}
-				else
-				{
-					// Save a new order into the database
-					processedOrder = await ordersDAO.setUpNewOrder(params, username);
-				}
+				// Save a new order into the database
+				processedOrder = await ordersDAO.setUpNewOrder(params, username);
 			}
 			catch (error)
 			{
