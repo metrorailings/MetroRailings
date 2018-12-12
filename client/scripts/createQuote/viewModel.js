@@ -591,19 +591,19 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 });
 
 // Custom Features
-Object.defineProperty(viewModel, 'additionalFeatures',
+Object.defineProperty(viewModel, 'additionalDescription',
 {
 	configurable: false,
 	enumerable: false,
 
 	get: () =>
 	{
-		return viewModel.__additionalFeatures;
+		return viewModel.__additionalDescription;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__additionalFeatures = value;
+		viewModel.__additionalDescription = value;
 
 		rQueryClient.setField(_additionalFeaturesField, value);
 

@@ -17,6 +17,7 @@ var TYPE_SELECT = 'orderType',
 	HIDE_CLASS = 'hide',
 
 	MODERN_TYPE = 'T-MOD',
+	HANDRAILING_TYPE = 'T-HR',
 	CABLE_TYPE = 'T-CABLE',
 	GLASS_TYPE = 'T-GLASS',
 
@@ -106,6 +107,15 @@ function setType()
 		_picketSection.classList.remove(HIDE_CLASS);
 
 		_nullifySection(_advancedDesignSection);
+		_nullifySection(_cableDesignSection);
+		_nullifySection(_glassDesignSection);
+	}
+	else if (_orderTypeField.value === HANDRAILING_TYPE)
+	{
+		_baseDesignSection.classList.remove(HIDE_CLASS);
+
+		_nullifySection(_advancedDesignSection);
+		_nullifySection(_picketSection);
 		_nullifySection(_cableDesignSection);
 		_nullifySection(_glassDesignSection);
 	}

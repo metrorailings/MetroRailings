@@ -88,4 +88,10 @@ for (let i = 0; i < descriptionSections.length; i += 1)
 	{
 		setDescriptorText({ currentTarget: textarea });
 	}
+
+	// If the descriptive section has been tagged as disabled by default, just disable it upon page initialization
+	if (descriptionSections[i].dataset.disabled)
+	{
+		textarea.disabled = true;
+	}
 }

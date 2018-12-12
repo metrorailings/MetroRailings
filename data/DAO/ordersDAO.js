@@ -5,6 +5,7 @@ var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
+	prospectsModule = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
 	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 	statuses = global.OwlStakes.require('shared/orderStatus');
@@ -269,7 +270,14 @@ var ordersModule =
 	 */
 	setUpNewOrder: async function (order, username)
 	{
-		var counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION,
+		var counterRecord,
+			prospect,
+			databaseRecord;
+
+		// If the order is not a prospect being converted to an order, then assign a new ID to the order
+		if ( !(order._id) )
+		{
+			counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION,
 			{
 				$inc: { seq: 1 }
 			},
@@ -277,15 +285,27 @@ var ordersModule =
 				_id: ORDERS_COLLECTION
 			});
 
-		// Before saving the order into the database, set some system-default values into the order
+			// Attach a new ID to the order
+			order._id = counterRecord.seq;
+		}
+		else
+		{
+			prospect = await prospectsModule.searchProspectById(order._id);
+		}
+
+		// Set the status
 		order.status = PENDING_STATUS;
+
+		// Set the creation date of the order
 		order.createDate = new Date();
 
-		// Apply and initialize properties to indicate when this order was last modified
+		// Apply and/or initialize properties to indicate when this order was last modified
+		if (prospect)
+		{
+			order.lastModifiedDate = prospect.lastModifiedDate;
+			order.modHistory = prospect.modHistory;
+		}
 		_applyModificationUpdates(order, username);
-
-		// Attach a new ID to the order
-		order._id = counterRecord.seq;
 
 		// Figure out how we'll be referencing the customer
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
@@ -299,16 +319,22 @@ var ordersModule =
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
 		order.pricing.balanceRemaining = order.pricing.orderTotal;
 
+		// Generate a record to upsert all this order information into our database
+		databaseRecord = mongo.formUpdateOneQuery(
+		{
+			_id: order._id
+		}, order, true);
+
 		// Now save the order
 		try
 		{
-			await mongo.bulkWrite(ORDERS_COLLECTION, true, mongo.formInsertSingleQuery(order));
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, databaseRecord);
 
 			return order;
 		}
 		catch(error)
 		{
-			console.log('Ran into an error saving a new order!');
+			console.log('Ran into an error formalizing a new order!');
 			console.log(error);
 
 			throw error;
