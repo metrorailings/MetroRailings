@@ -10,7 +10,7 @@
 				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
-		{{> designDescriptor }}
+		{{> designDescriptor disabled=true }}
 	</div>
 
 	<div class='dataDescriptionGrouping'>
@@ -23,7 +23,7 @@
 				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
-		{{> designDescriptor }}
+		{{> designDescriptor disabled=true }}
 	</div>
 
 	<div class='dataDescriptionGrouping'>
@@ -36,7 +36,7 @@
 				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
-		{{> designDescriptor }}
+		{{> designDescriptor disabled=true }}
 	</div>
 
 	<div class='dataDescriptionGrouping'>
@@ -49,7 +49,20 @@
 				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
 			{{/each}}
 		</select>
-		{{> designDescriptor }}
+		{{> designDescriptor disabled=true }}
+	</div>
+
+	<div class='dataDescriptionGrouping'>
+		<span class='specializedLabel'>
+		    ADA Handrail
+		</span>
+		<select id='orderAda' data-field-name='ada'>
+			<option value='' disabled>Select...</option>
+			{{#each designs.ada}}
+				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
+			{{/each}}
+		</select>
+		{{> designDescriptor disabled=true }}
 	</div>
 
 	<div class='dataGrouping'>

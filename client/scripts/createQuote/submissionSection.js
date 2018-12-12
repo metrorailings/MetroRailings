@@ -47,11 +47,13 @@ function submit()
 {
 	var data = {},
 		designErrorMessages = [],
-		designObject = rQuery.copyObject(vm.design, true);
+		designObject = rQuery.copyObject(vm.design, true),
+		designDescriptionObject = rQuery.copyObject(vm.designDescriptions, true);
 
 	// First check to see if the design selections made are valid
 	designErrorMessages = designErrorMessages.concat(designValidation.testRequirements(designObject));
 	designErrorMessages = designErrorMessages.concat(designValidation.testPrerequisites(designObject));
+	designErrorMessages = designErrorMessages.concat(designValidation.testValues(designObject));
 
 	// If the design selections are not valid, display all the reasons why the design choices is considered invalid
 	_designErrorsContainer.innerHTML = designErrorsTemplate({ errors: designErrorMessages });
@@ -60,27 +62,24 @@ function submit()
 		_designErrorsContainer.scrollIntoView({ behavior: 'smooth' });
 	}
 
-	return;
 	// Organize the data that will be sent over the wire as long as the entire form is valid
 	if (vm.isFormValid && designErrorMessages.length === 0)
 	{
 		data =
 		{
 			_id: window.MetroRailings.prospectId || '', // Set an ID here in case we are transforming a prospect into an order
-			length: window.parseInt(vm.length, 10),
-			finishedHeight: window.parseInt(vm.finishedHeight, 10),
-			additionalFeatures: vm.additionalFeatures.split('\n\n').join('<br /><br />'),
-			agreement: vm.agreement,
 
-			timeLimit:
+			dimensions:
 			{
-				original: window.parseInt(vm.timeLimit, 10) || ''
+				length: window.parseInt(vm.length, 10),
+				finishedHeight: window.parseInt(vm.finishedHeight, 10)
 			},
 
-			notes:
+			text:
 			{
-				order: vm.notes.order.split('\n').join('<br />'),
-				internal: '',
+				agreement: vm.agreement,
+				additionalDescription: vm.additionalDescription ?
+					vm.additionalDescription.split('\n\n').join('<br' + ' /><br />') : ''
 			},
 
 			installation:
@@ -93,7 +92,6 @@ function submit()
 			{
 				pricePerFoot: window.parseFloat(vm.pricePerFoot),
 				additionalPrice: window.parseFloat(vm.additionalPrice) || 0,
-				deductions: window.parseFloat(vm.deductions) || 0,
 				isTaxApplied: vm.applyTaxes,
 				isTariffApplied: vm.applyTariffs
 			},
@@ -113,7 +111,8 @@ function submit()
 				zipCode: vm.zipCode || ''
 			},
 
-			design: designObject,
+			design: rQuery.prunePrivateMembers(designObject),
+			designDescription: rQuery.prunePrivateMembers(designDescriptionObject)
 		};
 
 		// Disable the button to ensure the order is not accidentally sent multiple times

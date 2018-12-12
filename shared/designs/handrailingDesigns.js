@@ -22,9 +22,9 @@ var handrailingDesigns =
 		},
 		{
 			id: 'H-S',
-			label: 'Standard',
-			technicalLabel: 'Standard',
-			spanishLabel: 'Estándar',
+			label: 'Dixie',
+			technicalLabel: 'Dixie',
+			spanishLabel: 'Dixie',
 			description: 'All railings will be topped off with a sleek handrail that curves slightly upward along' +
 				' its centerline. Basically, these handrails resemble a shallow parabola.'
 		},

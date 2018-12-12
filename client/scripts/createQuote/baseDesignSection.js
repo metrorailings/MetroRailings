@@ -9,6 +9,7 @@ var TYPE_SELECT = 'orderType',
 	HANDRAILING_SELECT = 'orderHandrailing',
 	POST_END_SELECT = 'orderPostEnd',
 	POST_CAP_SELECT = 'orderPostCap',
+	ADA_SELECT = 'orderAda',
 	COLOR_SELECT = 'orderColor',
 
 	OTHER_COLOR_TEXTFIELD = 'otherColor',
@@ -25,6 +26,7 @@ var _orderTypeField = document.getElementById(TYPE_SELECT),
 	_orderHandrailingField = document.getElementById(HANDRAILING_SELECT),
 	_orderPostEndField = document.getElementById(POST_END_SELECT),
 	_orderPostCapField = document.getElementById(POST_CAP_SELECT),
+	_orderAdaField = document.getElementById(ADA_SELECT),
 	_orderColorField = document.getElementById(COLOR_SELECT),
 
 	_otherColorField = document.getElementById(OTHER_COLOR_TEXTFIELD);
@@ -111,6 +113,16 @@ function setPostCap()
 }
 
 /**
+ * Listener responsible for setting the type of ADA handrail into the view model
+ *
+ * @author kinsho
+ */
+function setADA()
+{
+	vm.design.ada = _orderAdaField.value;
+}
+
+/**
  * Listener responsible for setting the order color into the view model
  *
  * @author kinsho
@@ -130,6 +142,7 @@ _orderHandrailingField.addEventListener('change', setHandrailing);
 _orderPostEndField.addEventListener('change', setPostEnd);
 _orderPostCapField.addEventListener('change', setPostCap);
 _orderColorField.addEventListener('change', setColor);
+_orderAdaField.addEventListener('change', setADA);
 
 _otherColorField.addEventListener('change', setColor);
 
@@ -140,5 +153,6 @@ setPostDesign({ currentTarget: _orderPostDesignField });
 setHandrailing({ currentTarget: _orderHandrailingField });
 setPostEnd({ currentTarget: _orderPostEndField });
 setPostCap({ currentTarget: _orderPostCapField });
+setADA({ currentTarget: _orderAdaField });
 
 setColor({ currentTarget: _orderColorField });

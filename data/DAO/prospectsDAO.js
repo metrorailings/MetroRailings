@@ -1,10 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
-
-	rQuery = global.OwlStakes.require('utility/rQuery'),
-
-	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator');
+var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -13,8 +9,7 @@ var ORDERS_COLLECTION = 'orders',
 
 	UNKNOWN_AUTHOR = 'Unknown',
 
-	PROSPECT_STATUS = 'prospect',
-	PENDING_STATUS = 'pending';
+	PROSPECT_STATUS = 'prospect';
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -339,78 +334,7 @@ var prospectsModule =
 
 			throw error;
 		}
-	},
-
-	/**
-	 * Function responsible for converting an existing prospect into an order
-	 *
-	 * @param {String} prospectID - the ID of the prospect being converted into an order
-	 * @param {Object} orderDetails - the various details of the order that's not already present in the prospect record
-	 * @param {String} username - the name of the admin making the changes
-	 *
-	 * @returns {Object} - the order, now in pending status
-	 *
-	 * @author kinsho
-	 */
-	convertToOrder: async function (prospectID, order, username)
-	{
-		var prospect = await prospectsModule.searchProspectById(prospectID),
-			updateRecord;
-
-		// Set the ID of the prospect into the order
-		order._id = parseInt(prospectID, 10);
-
-		// Set the status
-		order.status = PENDING_STATUS;
-
-		// Set the creation date of the order
-		order.createDate = new Date();
-
-		// Copy over the modification history from the prospect to the order
-		order.lastModifiedDate = prospect.lastModifiedDate;
-		order.modHistory = prospect.modHistory;
-		_applyModificationUpdates(order, username);
-
-		// Copy over any image uploads as well
-		order.pictures = prospect.pictures || [];
-
-		// Copy over any internal notes that were written on the prospect
-		order.notes.internal = prospect.notes.internal;
-
-		// Figure out how we'll be referencing the customer
-		order.customer.nickname = (prospect.customer.name.split(' ').length > 1 ? rQuery.capitalize(prospect.customer.name.split(' ')[0]) : prospect.customer.name);
-
-		// Calculate the amount to charge the customer
-		order.pricing.subTotal = pricingCalculator.calculateOrderTotal(order);
-		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal, order);
-		order.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subTotal, order);
-		order.pricing.orderTotal = pricingCalculator.calculateTotal(order);
-
-		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
-		order.pricing.balanceRemaining = order.pricing.orderTotal;
-
-		// Generate a record to push into the database
-		updateRecord = mongo.formUpdateOneQuery(
-		{
-			_id: order._id
-		}, order, false);
-
-		// Now save the order
-		try
-		{
-			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
-
-			return prospect;
-		}
-		catch(error)
-		{
-			console.log('Ran into an error saving a new order!');
-			console.log(error);
-
-			throw error;
-		}
 	}
-
 };
 
 // ----------------- EXPORT MODULE --------------------------

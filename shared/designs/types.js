@@ -28,6 +28,14 @@ var types =
 				' railing will travel horizontally.'
 		},
 		{
+			id: 'T-HR',
+			label: 'Handrailings',
+			technicalLabel: 'Handrailing',
+			spanishLabel: 'Moldure',
+			description: 'Instead of full-bodied railings, only basic handrailing(s) will be provided here. The' +
+				' handrailing may need posts as well if we cannot anchor it into any walls or siding.'
+		},
+		{
 			id: 'T-CABLE',
 			label: 'Stainless Steel Cable Railings',
 			technicalLabel: 'Cable',

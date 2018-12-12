@@ -1,4 +1,4 @@
-<div class='descriptiveSection {{#if this.description}}show{{/if}}'>
+<div class='descriptiveSection {{#if this.description}}show{{/if}}' {{#if this.disabled}}data-disabled='true'{{/if}}>
 	<span>Customer-facing Description</span>
 	<textarea class='descriptiveText'>{{ this.description }}</textarea>
 </div>

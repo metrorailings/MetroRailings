@@ -305,10 +305,9 @@ var rQueryClient =
 		copyObject: function (obj, pruneFalsy)
 		{
 			var keys = Object.keys(obj || {}),
-				cloneObj = {},
-				i;
+				cloneObj = {};
 
-			for (i = 0; i < keys.length; i++)
+			for (let i = 0; i < keys.length; i += 1)
 			{
 				// If the property is itself an object, run this function recursively on that property
 				if ((typeof obj[keys[i]] === 'object') && (obj[keys[i]] !== null))
@@ -327,6 +326,32 @@ var rQueryClient =
 
 			return cloneObj;
 		},
+
+		/**
+		 * Despite the sexual connotation, the function only removes any private properties an object may have
+		 *
+		 * @param {Object} obj - the object to modify
+		 *
+		 * @returns {Object} - the object in modified form, should there have been any private properties that
+		 * 		needed to be removed
+		 *
+		 * @author kinsho
+		 */
+		prunePrivateMembers: function (obj)
+		{
+			var keys = Object.keys(obj || {});
+
+			// Assume all private members have a reference name that starts with an underscore
+			for (let i = 0; i < keys.length; i += 1)
+			{
+				if (keys[i][0] === '_')
+				{
+					delete obj[keys[i]];
+				}
+			}
+
+			return obj;
+		}
 	};
 
 // ----------------- EXPORT -----------------------------
