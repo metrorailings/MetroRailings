@@ -1,0 +1,156 @@
+{{> bannerSection }}
+
+<div class='pageHeader'>
+	<h3>Bellari Pricing Guide</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<p>
+	Over here, you will get a great idea of the type of pricing that I've set out for you.
+</p>
+
+<p>
+	And since you guys insist that we don't charge you tax, I'm not going to charge tax.
+</p>
+
+{{#each deckOptions}}
+	<div class='railingTable'>
+
+		<span class='idSection'>
+			<div class='categoryCell'>
+				{{ label }}
+			</div>
+			<div class='previewImageCell'>
+				{{#each previewImage}}
+					<img src='{{ this }}' />
+				{{/each}}
+			</div>
+		</span>
+
+		<span class='pricingSection'>
+
+			<span class='priceColumn'>
+				<div class='priceHeader'>
+					Regular Price
+				</div>
+				<div class='priceCell'>
+					${{ regularPrice }} per foot
+				</div>
+			</span>
+
+			{{#if curves}}
+				<span class='priceColumn'>
+					<div class='priceHeader'>
+						Curve Pricing
+					</div>
+					<div class='priceCell curvePriceCell'>
+						<span>
+							<span class='boldText'>Flat Platforms:</span>
+							<span>Additional ${{ curves.flat }} per foot</span>
+						</span>
+						<span>
+							<span class='boldText'>Stairs:</span>
+							<span>Additional ${{ curves.stairs }} per foot</span>
+						</span>
+					</div>
+				</span>
+			{{/if}}
+		</span>
+
+		<span class='noteRow'>
+			<span>{{ note }}</span>
+		</span>
+
+	</div>
+{{/each}}
+
+<div class='separator'></div>
+
+<div id='faqSection'>
+
+	<p>
+		I know you have some questions. I tried to anticipate and answer them below..
+	</p>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			What about the pricing for the 4" post?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>
+				I was going to include separate pricing for 4" posts....until I looked at your deck
+				<a target='_blank' href='https://bellarinj.com/portfolio/?_sft_portfolio-types=decks'>gallery.</a> Your 
+				railings are simple. We have done similar styles of railing on dozens of other jobs. The only difference 
+				is that you alternate between baluster posts and 4" posts. While a questionable design choice in 
+				my opinion, that's not difficult for us to handle.
+			</p>
+			
+			<p>
+				So in the interest of simplicity, I kept pricing rates static on my railings, even for 4" posts.
+			</p>
+		</div>
+	</div>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			But what about the various options you offer, like different types of handrail?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>
+				Check out the brochure. We have six options. Generally, I recommend giving the customer only two or 
+				three options, unless you want to risk analysis paralysis.
+			</p>
+		</div>
+	</div>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			Does your pricing include installation?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>Yes.</p>
+		</div>
+	</div>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			How will your railings connect to the big 4" posts?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>The same way your railings currently do.</p>
+			<img src='client/images/miscellany/bellari.jpg' />
+			<p>Except the clips we'll be attaching to the railing will be more tactfully placed.</p>
+		</div>
+	</div>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			So do you have additional samples or color chips handy?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>Yes. I'll have several of them ready for you if you decide to visit us.</p>
+		</div>
+	</div>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			What about the scotch you were going to gift us?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>
+				I'll have some scotch ready if you come visit us. Let me know what scotch Frank likes. If he mentions 
+				anything but Glenfiddich 12, prepare him for disappointment.
+			</p>
+			<p>
+				And yes, I'll even have some sparkling water ready for David. Our tap water here in Hillside 
+				naturally sparkles thanks to the lead in the pipes.
+			</p>
+		</div>
+	</div>
+</div>
