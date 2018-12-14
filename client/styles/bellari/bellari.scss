@@ -1,0 +1,433 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/convention';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.railingTable
+{
+	margin:
+	{
+		top: 35px;
+		bottom: 35px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		radius: 15px;
+		width: 1.5px;
+		style: solid;
+		color: map-get($COLORS, slateGrayTheme);
+	}
+
+	width: 90%;
+
+	display: flex;
+	flex-wrap: wrap;
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
+
+	@include printOnly()
+	{
+		width: 95%;
+
+		page-break-inside: avoid;
+	}
+}
+
+.idSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	background-color: map-get($COLORS, cadetBlueTheme);
+
+	@include tabletUpAndPrint()
+	{
+		border:
+		{
+			right:
+			{
+				width: 1.5px;
+				style: solid;
+				color: map-get($COLORS, slateGrayTheme);
+			}
+
+			top-left-radius: 15px;
+		}
+
+		flex: 3;
+	}
+
+	@include phoneOnly()
+	{
+		border:
+		{
+			bottom:
+			{
+				width: 1.5px;
+				style: solid;
+				color: map-get($COLORS, slateGrayTheme);
+			}
+
+			top-left-radius: 15px;
+			top-right-radius: 15px;
+		}
+
+		width: 100%;
+	}
+}
+
+.categoryCell
+{
+	@extend %whiteCapitalHeader;
+
+	border:
+	{
+		bottom:
+		{
+			width: 1.5px;
+			style: solid;
+			color: map-get($COLORS, blackTheme);
+		}
+
+		top-left-radius: 15px;
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	width: 100%;
+	text-align: center;
+
+	@include phoneOnly()
+	{
+		border-top-right-radius: 15px;
+	}
+}
+
+.previewImageCell
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
+
+	@include printOnly()
+	{
+		padding:
+		{
+			left: 20px;
+			right: 20px;
+		}
+	}
+
+	& > img
+	{
+		margin: 10px;
+
+		@include tabletUp()
+		{
+			max-width: 320px;
+			max-height: 320px;
+		}
+
+		@include phoneOnly()
+		{
+			max-width: 225px;
+			max-height: 225px;
+		}
+
+		@include printOnly()
+		{
+			max-width: 140px;
+			max-height: 105px;
+		}
+	}
+}
+
+.pricingSection
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include tabletUpAndPrint()
+	{
+		flex: 2;
+	}
+
+	@include phoneOnly()
+	{
+		width: 100%;
+	}
+}
+
+.priceColumn
+{
+	flex: 1;
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	@include tabletUpAndPrint()
+	{
+		margin-top: 1px;
+
+		&:last-of-type
+		{
+			border-top-right-radius: 15px;
+		}
+	}
+
+	&:nth-of-type(2)
+	{
+		background-color: map-get($COLORS, lightGreenTheme);
+	}
+}
+
+.priceHeader
+{
+	@extend %littleSpecialSectionHeader;
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	border-bottom:
+	{
+		width: 0.75px;
+		style: solid;
+		color: map-get($COLORS, steelBlueTheme);
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+}
+
+.priceCell
+{
+	@extend %decorativeText;
+
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 100%;
+
+	@include tabletUpAndPrint()
+	{
+		flex: 3;
+	}
+
+	@include phoneOnly()
+	{
+		height: 120px;
+	}
+
+	& > span
+	{
+		margin: 10px;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+}
+
+.curvePriceCell
+{
+	@include phoneOnly()
+	{
+		font-size: 11px;
+	}
+}
+
+.boldText
+{
+	font-weight: 700;
+}
+
+.noteRow
+{
+	@extend %italicizedFormDescriptiveText;
+
+	padding:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	border-top:
+	{
+		style: solid;
+		width: 1.5px;
+		color: map-get($COLORS, slateGrayTheme);
+	}
+
+	width: 100%;
+
+	@include tabletUp()
+	{
+		font-size: 20px;
+	}
+
+	& > span
+	{
+		width: 90%;
+		text-align: center;
+		display: inline-block;
+	}
+}
+
+#faqSection
+{
+	padding:
+	{
+		top: 30px;
+		bottom: 40px;
+	}
+
+	& > p
+	{
+		font-size: 18px;
+	}
+}
+
+.faqBlock
+{
+	margin:
+	{
+		top: 30px;
+		bottom: 30px;
+	}
+}
+
+.faqQuestion
+{
+	@extend %majorText;
+
+	margin:
+	{
+		left: 10px;
+	}
+
+	padding:
+	{
+		left: 10px;
+	}
+
+	border:
+	{
+		left:
+		{
+			color: map-get($COLORS, darkGrayTheme);
+			width: 3px;
+			style: solid;
+		}
+
+		top-left-radius: 20px;
+	}
+
+	text-align: left;
+}
+
+.faqsQuestionUnderline
+{
+	display: inline-block;
+	width: 100%;
+	height: 2px;
+
+	text-align: left;
+
+	margin:
+	{
+		top: 2px;
+		bottom: 20px;
+	}
+
+	background: linear-gradient(to right, map-get($COLORS, darkGrayTheme) 0%, map-get($COLORS, whiteTheme) 100%);
+}
+
+.faqsAnswer
+{
+	@extend %italicizedFormDescriptiveText;
+
+	margin-left: 25px;
+	text-align: left;
+
+	& > p
+	{
+		font-size: 20px;
+		line-height: 34px;
+
+		& > a
+		{
+			padding:
+			{
+				left: 3px;
+				right: 3px;
+			}
+		}
+	}
+
+	& > img
+	{
+		display: block;
+
+		@include desktopOnly()
+		{
+			max-width: 60vw;
+			max-height: 60vh;
+		}
+
+		@include mobileOnly()
+		{
+			max-width: 80vw;
+			max-height: 80vh;
+		}
+	}
+}
