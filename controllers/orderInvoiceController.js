@@ -15,6 +15,7 @@ var _Handlebars = require('handlebars'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
+	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	pricing = global.OwlStakes.require('shared/pricing/pricingData'),
@@ -103,7 +104,7 @@ module.exports =
 		var populatedPageTemplate,
 			pageData = {},
 			// Use a nonsense order ID if one isn't provided, as that would eventually trigger logic to take the user back to the home page
-			orderNumber = params ? parseInt(params.id, 10) : 0,
+			orderNumber = params ? parseInt(rQuery.decryptNumbers(params.id), 10) : 0,
 			currentYear = new Date().getFullYear(),
 			expirationYears = [],
 			i;
@@ -135,7 +136,7 @@ module.exports =
 		pageData.tariffRate = pricing.TARIFF_RATE * 100;
 
 		// Convert the agreement text from Markdown format into HTML that can then be pasted into place
-		pageData.order.agreement = _showdownConverter.makeHtml(pageData.order.agreement.join('\n\n'));
+		pageData.order.text.agreement = _showdownConverter.makeHtml(pageData.order.text.agreement.join('\n\n'));
 
 		// Fetch the locations of each of our shops
 		pageData.companyInfo = config.COMPANY_INFO;

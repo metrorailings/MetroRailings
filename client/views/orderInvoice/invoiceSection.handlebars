@@ -7,83 +7,185 @@
 
 	<div id='invoiceBody'>
 
-		<div>
-			<span class='invoiceSectionHeader'>- Amount of Railing Needed -</span>
-			<span class='invoiceCell'>{{order.length}} linear feet of railing</span>
-		</div>
+		{{#if order.design.type}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Type of Product -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.type}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.type}}</div>
+			</div>
+		{{/if}}
 
-		<div id='railingDesignSection'>
-			<span class='invoiceSectionHeader'>- Post Design -</span>
-			{{#if order.design.post}}
-				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Post Type:</span>
+		{{#unless_cond order.design.type 'T-MISC'}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Amount of Product Needed -</div>
+				<div class='invoiceDescription'>
+					{{order.dimensions.length}} linear feet of
+					{{#map_design_code_to_full_name order.design.type true}}{{/map_design_code_to_full_name}}
+				</div>
+			</div>
+		{{/unless_cond}}
+
+		{{#if order.design.post}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Post Design -</div>
+				<div class='invoiceValue'>
 					{{#map_design_code_to_full_name order.design.post}}{{/map_design_code_to_full_name}}
-				</span>
-			{{/if}}
-			{{#if order.design.postEnd}}
-				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Post End:</span>
-					{{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}
-				</span>
-			{{/if}}
-			{{#if order.design.postCap}}
-				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Post Cap:</span>
-					{{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}
-				</span>
-			{{/if}}
-		</div>
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.post}}</div>
+			</div>
+		{{/if}}
 
-		<div id='railingDesignSection'>
-			<span class='invoiceSectionHeader'>- Railings Design -</span>
-
-				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Handrailing:</span>
+		{{#if order.design.handrailing}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Handrailing -</div>
+				<div class='invoiceValue'>
 					{{#map_design_code_to_full_name order.design.handrailing}}{{/map_design_code_to_full_name}}
-				</span>
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.handrailing}}</div>
+			</div>
+		{{/if}}
 
-				{{#if order.design.picket}}
-					<span class='invoiceCell'>
-						<span class='invoiceLabel'>Picket Type:</span>
-						{{#map_design_code_to_full_name order.design.picket}}{{/map_design_code_to_full_name}}
-					</span>
-				{{/if}}
+		{{#if order.design.postEnd}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Post End -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.postEnd}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.postEnd}}</div>
+			</div>
+		{{/if}}
 
-				{{#if order.design.center}}
-					<span class='invoiceCell'>
-						<span class='invoiceLabel'>Center Design:</span>
-						{{#map_design_code_to_full_name order.design.center}}{{/map_design_code_to_full_name}}
-					</span>
-				{{/if}}
+		{{#if order.design.postCap}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Post Cap -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.postCap}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.postCap}}</div>
+			</div>
+		{{/if}}
 
-				<span class='invoiceCell'>
-					<span class='invoiceLabel'>Color:</span>
+		{{#if order.design.centerDesign}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Center Design -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.centerDesign}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.centerDesign}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.collars}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Collars -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.collars}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.collars}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.baskets}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Baskets -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.baskets}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.baskets}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.valence}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Valence -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.valence}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.valence}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.picketSize}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Picket Size -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.picketSize}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.picketSize}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.picketStyle}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Picket Style -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.picketStyle}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.picketStyle}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.cableSize}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Cable Size -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.cableSize}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.cableSize}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.cableCap}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Cable End Caps -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.cableCap}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.cableCap}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.glassType}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Type of Glass Railing -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.glassType}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.glassType}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.glassBuild}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Glass Build -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.glassBuild}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.glassBuild}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.ada}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- ADA-Compliant Intermediate Handrail -</div>
+				<div class='invoiceValue'>
+					{{#map_design_code_to_full_name order.design.ada}}{{/map_design_code_to_full_name}}
+				</div>
+				<div class='invoiceDescription'>{{order.designDescription.ada}}</div>
+			</div>
+		{{/if}}
+
+		{{#if order.design.color}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>- Color/Finish -</div>
+				<div class='invoiceValue'>
 					{{#map_design_code_to_full_name order.design.color}}{{/map_design_code_to_full_name}}
-				</span>
+				</div>
+			</div>
+		{{/if}}
 
-		</div>
-
-		<div>
-			<span class='invoiceSectionHeader'>- Description -</span>
-			<span class='invoiceCell descriptionField'>
-				{{#if order.notes.order}}
-					{{{order.notes.order}}}
-				{{else}}
-					N/A
-				{{/if}}
-			</span>
-		</div>
-
-		<div>
-			<span class='invoiceSectionHeader'>- Additional Features -</span>
-			<span class='invoiceCell {{#if order.additionalFeatures}} descriptionField {{/if}}'>
-				{{#if order.additionalFeatures}}
-					{{{order.additionalFeatures}}}
-				{{else}}
-					N/A
-				{{/if}}
-			</span>
-		</div>
 	</div>
 
 	<div id='invoiceFooter'>

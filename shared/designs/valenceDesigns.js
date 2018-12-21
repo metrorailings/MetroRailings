@@ -16,12 +16,6 @@ var valenceDesigns =
 	options:
 	[
 		{
-			id: '',
-			label: 'No',
-			technicalLabel: 'No',
-			spanishLabel: 'No'
-		},
-		{
 			id: 'VAL-RINGS',
 			label: 'Rings',
 			technicalLabel: 'Rings',

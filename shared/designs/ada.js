@@ -17,12 +17,6 @@ var adaDesigns =
 	options:
 	[
 		{
-			id: '',
-			label: 'No',
-			technicalLabel: 'No',
-			spanishLabel: 'No'
-		},
-		{
 			id: 'ADA-P',
 			label: 'Pipe',
 			technicalLabel: 'Pipe',

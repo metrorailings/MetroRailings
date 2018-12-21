@@ -80,131 +80,83 @@
 	}
 }
 
-#invoiceBody
+.invoiceRow
 {
-	& > div
+	border-bottom:
 	{
-		border-bottom:
-		{
-			width: 1px;
-			style: solid;
-			color: map-get($COLORS, darkGrayTheme);
-		}
-
-		display: flex;
-		flex-wrap: wrap;
-
-		@include phoneOnly()
-		{
-			flex-direction: column;
-		}
-
-		&:nth-child(2n)
-		{
-			background-color: map-get($COLORS, lightBlueTheme);
-		}
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, darkGrayTheme);
 	}
-}
-
-.invoiceSectionHeader
-{
-	@extend %tabularSlimHeaderText;
 
 	padding:
 	{
-		top: 15px;
-		bottom: 15px;
+		top: 7px;
+		bottom: 7px;
 	}
-
-	width: 100%;
-
-	text-align: center;
-}
-
-.invoiceLabel
-{
-	@extend %tabularLabelText;
-
-	margin-right: 5px;
-}
-
-.invoiceCell
-{
-	@extend %tabularRegularText;
-
-	padding:
-	{
-		top: 15px;
-		left: 10px;
-		right: 10px;
-		bottom: 15px;
-	}
-
-	margin: 0px;
-
-	flex: 1;
-
-	min-width: 200px;
-	line-height: 32px;
 
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
+
+	&:nth-child(2n)
+	{
+		background-color: map-get($COLORS, lightBlueTheme);
+	}
+}
+
+.invoiceLabel
+{
+	@extend %tabularSlimHeaderText;
+
+	margin:
+	{
+		top: 15px;
+		bottom: 5px;
+	}
+
+	width: 100%;
+	text-align: center;
+}
+
+.invoiceValue
+{
+	@extend %tabularLabelText;
+
+	margin:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	padding: 10px;
+
+	border:
+	{
+		width: 0.5px;
+		style: solid;
+		color: map-get($COLORS, blackTheme);
+		radius: 12px;
+	}
+
+	text-align: center;
+}
+
+.invoiceDescription
+{
+	@extend %tabularRegularText;
+
+	padding: 10px;
+	line-height: 32px;
+	width: 95%;
+	text-align: center;
 
 	white-space: pre-wrap;
 
 	@include printOnly()
 	{
 		padding: 8px;
-	}
-
-	&:last-child
-	{
-		@include phoneOnly()
-		{
-			padding-bottom: 25px;
-		}
-	}
-
-	&.descriptionField
-	{
-		padding-left: 35px;
-
-		justify-content: flex-start;
-		text-align: left;
-	}
-}
-
-#railingDesignSection
-{
-	@include tabletUp()
-	{
-		.invoiceCell
-		{
-			padding:
-			{
-				left: 0px;
-				right: 0px;
-			}
-
-			flex: auto;
-			width: 50%;
-		}
-	}
-
-	@include printOnly()
-	{
-		.invoiceCell
-		{
-			padding:
-			{
-				left: 0px;
-				right: 0px;
-			}
-
-			flex: auto;
-			width: 50%;
-		}
 	}
 }
 

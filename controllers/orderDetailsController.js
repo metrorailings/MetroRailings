@@ -22,6 +22,8 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'orderDetails',
+	ORDER_SHARED_FOLDER = 'orderGeneral',
+
 	UTILITY_FOLDER = 'utility',
 
 	ADMIN_LOG_IN_URL = '/admin',

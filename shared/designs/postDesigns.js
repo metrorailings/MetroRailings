@@ -15,12 +15,6 @@ var postDesigns =
 	options:
 	[
 		{
-			id: '',
-			label: 'N/A',
-			technicalLabel: 'N/A',
-			spanishLabel: 'N/A'
-		},
-		{
 			id: 'P-SP',
 			label: 'Standard Post (1.5")',
 			technicalLabel: '1.5"',

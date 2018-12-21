@@ -15,12 +15,6 @@ var picketSizes =
 	options:
 	[
 		{
-			id: '',
-			label: 'N/A',
-			technicalLabel: 'N/A',
-			spanishLabel: 'N/A'
-		},
-		{
 			id: 'PCKT-1/2',
 			label: '1/2"',
 			technicalLabel: '1/2"',
@@ -44,21 +38,18 @@ var picketSizes =
 			technicalLaabel: '1"',
 			spanishLabel: '1"'
 		},
-
 		{
 			id: 'PCKT-1.5',
 			label: '1-1/2"',
 			technicalLabel: '1-1/2"',
 			spanishLabel: '1-1/2"'
 		},
-
 		{
 			id: 'PCKT-2',
 			label: '2"',
 			technicalLabel: '2"',
 			spanishLabel: '2"'
 		}
-
 	],
 	designMetadata: [],
 	technicalLabel: 'Picket Size',
