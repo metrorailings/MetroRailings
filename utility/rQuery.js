@@ -1,4 +1,28 @@
+/**
+ * @module rQuery
+ */
+
+// ----------------- EXTERNAL MODULES --------------------------
+
+var _randomstring = require('randomstring');
+
+// ----------------- ENUM/CONSTANTS -----------------------------
+
+var RANDOM_ALPHA_3 =
+	{
+		length: 3,
+		charset: 'alphabetic'
+	},
+	RANDOM_ALPHA_4 =
+	{
+		length: 4,
+		charset: 'alphabetic'
+	},
+
+	NUMBERS = '0123456789';
+
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -133,5 +157,66 @@ module.exports =
 		{
 			return false;
 		}
+	},
+
+	/**
+	 * Function that scrambles numerical data with alphabetical characters
+	 *
+	 * @param {String | Number} num - the number to veil
+	 *
+	 * @returns {String} - a string of seemingly jumbled text that contains the digits of the number we have to hide
+	 * 		(in order)
+	 *
+	 * @author kinsho
+	 */
+	obfuscateNumbers: function(num)
+	{
+		var numStr = num + '',
+			jumble = '';
+
+		for (let i = 0; i < numStr.length; i += 1)
+		{
+			// Figure out whether to insert 3 or 4 random characters into the mix depending on our position in this loop
+			if (i % 2)
+			{
+				jumble += _randomstring.generate(RANDOM_ALPHA_3);
+			}
+			else
+			{
+				jumble += _randomstring.generate(RANDOM_ALPHA_4);
+			}
+
+			jumble += numStr[i];
+		}
+
+		// Pad the jumbled-up text some more just for further obfuscation
+		jumble += _randomstring.generate(RANDOM_ALPHA_4);
+
+		return jumble;
+	},
+
+	/**
+	 * Function that unscrambles numerical data from a collection of random characters
+	 *
+	 * @param {String} str - the information to essentially decrypt
+	 *
+	 * @returns {String} - the number by itself
+	 *
+	 * @author kinsho
+	 */
+	decryptNumbers: function(str)
+	{
+		var num = '';
+
+		// Loop through each character in the string in order to parse out the digits from the alphabetical characters
+		for (let i = 0; i < str.length; i += 1)
+		{
+			if (NUMBERS.indexOf(str[i]) !== -1)
+			{
+				num += str[i];
+			}
+		}
+
+		return num;
 	}
 };

@@ -1,0 +1,196 @@
+Fetching the following file: /app/client/views/utility/gallery.handlebars
+Fetching the following file: /app/client/views/utility/confirmationModal.handlebars
+Fetching the following file: /app/client/views/utility/scrollDownLabel.handlebars
+Fetching the following file: /app/client/views/utility/optionsCarousel.handlebars
+Fetching the following file: /app/client/views/utility/notificationBar.handlebars
+Fetching the following file: /app/client/views/utility/successBar.handlebars
+Fetching the following file: /app/client/views/utility/topMenu.handlebars
+Connecting to the database using the following URL: mongodb://admin:DgIoMUhU1hHi9o7r@production-shard-00-00-3lvtw.mongodb.net:27017,production-shard-00-01-3lvtw.mongodb.net:27017,production-shard-00-02-3lvtw.mongodb.net:27017/MetroRailings?ssl=true&replicaSet=production-shard-0&authSource=admin
+Connected to Mongo!
+Fetching the following file: /app/.ssl/metrorailings.key
+Fetching the following file: /app/.ssl/metrorailings.crt
+Server started!
+Listening on ports 80 and 443...
+Fetching the following file: /app/client/views//redirect.handlebars
+Response ready to be returned from URL: //
+Response ready to be returned from URL: //
+Response ready to be returned from URL: //
+Response ready to be returned from URL: //
+Fetching the following file: /app/client/views/utility/gallery.handlebars
+Fetching the following file: /app/client/views/utility/confirmationModal.handlebars
+Fetching the following file: /app/client/views/utility/scrollDownLabel.handlebars
+Fetching the following file: /app/client/views/utility/optionsCarousel.handlebars
+Fetching the following file: /app/client/views/utility/notificationBar.handlebars
+Fetching the following file: /app/client/views/utility/successBar.handlebars
+Fetching the following file: /app/client/views/utility/topMenu.handlebars
+Connecting to the database using the following URL: mongodb://admin:DgIoMUhU1hHi9o7r@production-shard-00-00-3lvtw.mongodb.net:27017,production-shard-00-01-3lvtw.mongodb.net:27017,production-shard-00-02-3lvtw.mongodb.net:27017/MetroRailings?ssl=true&replicaSet=production-shard-0&authSource=admin
+Connected to Mongo!
+Fetching the following file: /app/.ssl/metrorailings.key
+Fetching the following file: /app/.ssl/metrorailings.crt
+Server started!
+Listening on ports 80 and 443...
+Fetching the following file: /app/client/views//redirect.handlebars
+Response ready to be returned from URL: //robots.txt
+Response ready to be returned from URL: //client/images/thankYou/handlebars-logo.png
+Errors were generated when trying to service the following URL: /client/images/thankYou/handlebars-logo.png
+Response ready to be returned from URL: //
+Response ready to be returned from URL: //
+Response ready to be returned from URL: //client/images/home/title-background-3.jpg
+Errors were generated when trying to service the following URL: /client/images/home/title-background-3.jpg
+Response ready to be returned from URL: //robots.txt
+Response ready to be returned from URL: //
+Connection made from URL: /
+Fetching the following file: /app/config/routes.json
+Fetching the following file: /app/client/views/home/aboutUs.handlebars
+Fetching the following file: /app/client/views/home/gallerySection.handlebars
+Fetching the following file: /app/client/views/home/thankYouSection.handlebars
+CONTROLLER: controllers/homeController
+ACTION: init
+Loading the home page...
+About to scoop up records from gallery
+Just read 70 records from the gallery collection
+Fetching the following file: /app/client/views/home/galleria.handlebars
+Fetching the following file: /app/client/views/home/galleria.handlebars
+Fetching the following file: /app/client/views/home/home.handlebars
+Fetching the following file: /app/client/views//base.handlebars
+Response ready to be returned from URL: //
+Connection made from URL: /client/styles/home/page.css
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/styles/home/page.css
+Connection made from URL: /client/images/logo/png/color_logo_transparent_background_small.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/logo/png/color_logo_transparent_background_small.png
+Response ready to be returned from URL: //client/images/logo/png/color_logo_transparent_background_small.png
+Response ready to be returned from URL: //client/styles/home/page.css
+Connection made from URL: /prod/thirdParty.css
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/thirdParty.css
+Connection made from URL: /prod/thirdParty.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/thirdParty.js
+Connection made from URL: /client/scripts/jspm_packages/system.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/jspm_packages/system.js
+Connection made from URL: /client/images/home/title-background-1.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/home/title-background-1.jpg
+Response ready to be returned from URL: //client/images/home/title-background-1.jpg
+Response ready to be returned from URL: //prod/thirdParty.css
+Response ready to be returned from URL: //prod/thirdParty.js
+Connection made from URL: /client/scripts/jspm_config.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/jspm_config.js
+Response ready to be returned from URL: //client/scripts/jspm_config.js
+Response ready to be returned from URL: //client/scripts/jspm_packages/system.js
+Connection made from URL: /client/scripts/systemConfig.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/systemConfig.js
+Response ready to be returned from URL: //client/scripts/systemConfig.js
+Connection made from URL: /prod/app.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/app.js
+Connection made from URL: /client/images/home/title-background-2.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/home/title-background-2.jpg
+Response ready to be returned from URL: //client/images/home/title-background-2.jpg
+Response ready to be returned from URL: //prod/app.js
+Connection made from URL: /client/images/home/title-background-3.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/home/title-background-3.jpg
+Response ready to be returned from URL: //client/images/home/title-background-3.jpg
+Connection made from URL: /client/images/gallery/desktop/3vMt5N1544811246387.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/gallery/desktop/3vMt5N1544811246387.jpg
+Response ready to be returned from URL: //client/images/gallery/desktop/3vMt5N1544811246387.jpg
+Connection made from URL: /client/images/gallery/desktop/Qm2teH1544811250103.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/gallery/desktop/Qm2teH1544811250103.jpg
+Response ready to be returned from URL: //client/images/gallery/desktop/Qm2teH1544811250103.jpg
+Connection made from URL: /client/images/gallery/desktop/JdIs2E1544811254494.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/gallery/desktop/JdIs2E1544811254494.jpg
+Response ready to be returned from URL: //client/images/gallery/desktop/JdIs2E1544811254494.jpg
+Connection made from URL: /client/images/gallery/desktop/zfa6p31544811258042.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/gallery/desktop/zfa6p31544811258042.jpg
+Response ready to be returned from URL: //client/images/gallery/desktop/zfa6p31544811258042.jpg
+Connection made from URL: /client/images/thankYou/desktop/docker-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/docker-logo.png
+Connection made from URL: /client/images/gallery/desktop/4Sd4g21544811261783.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/gallery/desktop/4Sd4g21544811261783.jpg
+Connection made from URL: /client/images/gallery/desktop/jZZYbF1544811265575.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/gallery/desktop/jZZYbF1544811265575.jpg
+Response ready to be returned from URL: //client/images/thankYou/desktop/docker-logo.png
+Response ready to be returned from URL: //client/images/gallery/desktop/4Sd4g21544811261783.jpg
+Response ready to be returned from URL: //client/images/gallery/desktop/jZZYbF1544811265575.jpg
+Connection made from URL: /client/images/thankYou/desktop/handlebars-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/handlebars-logo.png
+Connection made from URL: /client/images/thankYou/desktop/github-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/github-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/handlebars-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/github-logo.png
+Connection made from URL: /client/images/thankYou/desktop/hubspot-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/hubspot-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/hubspot-logo.png
+Connection made from URL: /client/images/thankYou/desktop/mongodb-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/mongodb-logo.png
+Connection made from URL: /client/images/thankYou/desktop/mdn-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/mdn-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/mongodb-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/mdn-logo.png
+Connection made from URL: /client/images/thankYou/desktop/stripe-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/stripe-logo.png
+Connection made from URL: /client/images/thankYou/desktop/nodejs-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/nodejs-logo.png
+Connection made from URL: /client/images/thankYou/desktop/sass-logo.svg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/sass-logo.svg
+Response ready to be returned from URL: //client/images/thankYou/desktop/stripe-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/nodejs-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/sass-logo.svg
+Connection made from URL: /client/images/thankYou/desktop/triton-logo.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/thankYou/desktop/triton-logo.png
+Response ready to be returned from URL: //client/images/thankYou/desktop/triton-logo.png
+Connection made from URL: /favicon.ico
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/favicon.ico
+Response ready to be returned from URL: //favicon.ico

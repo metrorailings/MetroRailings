@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import vm from 'client/scripts/createQuote/viewModel';
+import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 

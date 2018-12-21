@@ -16,12 +16,6 @@ var collarDesigns =
 	options:
 	[
 		{
-			id: '',
-			label: 'No',
-			technicalLabel: 'No',
-			spanishLabel: 'No'
-		},
-		{
 			id: 'CLLR-10',
 			label: '1-0 Collar Pattern',
 			technicalLabel: '1-0 Collar Pattern',

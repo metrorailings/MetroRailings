@@ -38,7 +38,9 @@ function _applyModificationUpdates(order, username)
 {
 	var modificationDate = new Date();
 
-	order.lastModifiedDate = modificationDate;
+	order.dates = order.dates || {};
+
+	order.dates.lastModified = modificationDate;
 	order.modHistory = order.modHistory || [];
 	order.modHistory.push(
 	{
@@ -297,12 +299,14 @@ var ordersModule =
 		order.status = PENDING_STATUS;
 
 		// Set the creation date of the order
-		order.createDate = new Date();
+		order.dates = order.dates || {};
+		order.dates.created = new Date();
 
 		// Apply and/or initialize properties to indicate when this order was last modified
 		if (prospect)
 		{
-			order.lastModifiedDate = prospect.lastModifiedDate;
+			// Note the conditional statement is needed for backwards compatability
+			order.dates.lastModified = prospect.lastModifiedDate || prospect.dates.lastModified;
 			order.modHistory = prospect.modHistory;
 		}
 		_applyModificationUpdates(order, username);

@@ -17,12 +17,6 @@ var basketDesigns =
 	options:
 	[
 		{
-			id: '',
-			label: 'No',
-			technicalLabel: 'No',
-			spanishLabel: 'No'
-		},
-		{
 			id: 'BSKT-10',
 			label: '1-0 Basket Pattern',
 			technicalLabel: '1-0 Basket Pattern',

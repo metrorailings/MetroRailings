@@ -242,9 +242,11 @@ _Handlebars.registerHelper('test_equality', function(val1, val2)
  *
  * @author kinsho
  */
-_Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
+_Handlebars.registerHelper('map_design_code_to_full_name', function(designCode, toLowerCase)
 {
-	return designTranslator.findDesignName(designCode);
+	return ( toLowerCase !== true ?
+			designTranslator.findDesignName(designCode) :
+			designTranslator.findDesignName(designCode).toLowerCase() );
 });
 
 /**

@@ -10,7 +10,7 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 import formValidator from 'shared/formValidator';
 import pricing from 'shared/pricing/pricingData';
 
-import designModel from 'client/scripts/createQuote/designViewModel';
+import designModel from 'client/scripts/orderGeneral/designViewModel';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
