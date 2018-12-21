@@ -64,6 +64,26 @@
 	</div>
 {{/each}}
 
+<div id='extrasTable' class='railingTable'>
+	<span class='idSection'>
+		<div class='categoryCell'>
+			Extras
+		</div>
+	</span>
+	<span class='pricingSection'>
+		{{#each extraOptions}}
+			<span class='priceColumn'>
+				<div class='priceHeader'>
+					{{ label }}
+				</div>
+				<div class='priceCell'>
+					${{ regularPrice }}{{ unit }}
+				</div>
+			</span>
+		{{/each}}
+	</span>
+</div>
+
 <div class='separator'></div>
 
 <div id='faqSection'>
@@ -71,26 +91,6 @@
 	<p>
 		I know you have some questions. I tried to anticipate and answer them below..
 	</p>
-
-	<div class='faqBlock'>
-		<div class='faqQuestion'>
-			What about the pricing for the 4" post?
-		</div>
-		<div class='faqsQuestionUnderline'></div>
-		<div class='faqsAnswer'>
-			<p>
-				I was going to include separate pricing for 4" posts....until I looked at your deck
-				<a target='_blank' href='https://bellarinj.com/portfolio/?_sft_portfolio-types=decks'>gallery.</a> Your 
-				railings are simple. We have done similar styles of railing on dozens of other jobs. The only difference 
-				is that you alternate between baluster posts and 4" posts. While a questionable design choice in 
-				my opinion, that's not difficult for us to handle.
-			</p>
-			
-			<p>
-				So in the interest of simplicity, I kept pricing rates static on my railings, even for 4" posts.
-			</p>
-		</div>
-	</div>
 
 	<div class='faqBlock'>
 		<div class='faqQuestion'>
