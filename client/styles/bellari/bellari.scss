@@ -45,6 +45,51 @@
 	}
 }
 
+#extrasTable
+{
+	.idSection
+	{
+		@include tabletUpAndPrint()
+		{
+			border:
+			{
+				bottom-left-radius: 15px;
+			}
+
+			flex: 2;
+		}
+	}
+
+	.categoryCell
+	{
+		border: none;
+	}
+
+	.priceColumn
+	{
+		@include tabletUpAndPrint()
+		{
+			&:last-of-type
+			{
+				border:
+				{
+					top-right-radius: 15px;
+					bottom-right-radius: 15px;
+				}
+			}
+		}
+	}
+
+	.priceCell
+	{
+		padding:
+		{
+			top: 25px;
+			bottom: 25px;
+		}
+	}
+}
+
 .idSection
 {
 	display: flex;
