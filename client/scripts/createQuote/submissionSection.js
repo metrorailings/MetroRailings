@@ -1,18 +1,16 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import vm from 'client/scripts/createQuote/viewModel';
+import vm from 'client/scripts/orderGeneral/viewModel';
 
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 import rQuery from 'client/scripts/utility/rQueryClient';
 
-import designValidation from 'shared/designs/designValidation';
+import orderSubmissionUtility from 'client/scripts/orderGeneral/submissionUtility';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var SAVE_BUTTON = 'saveButton',
-	DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
-	DESIGN_ERRORS_TEMPLATE = 'designErrorsTemplate',
 
 	SUCCESS_MESSAGE = 'Success! A new order has been created and the client has been e-mailed the link to approve' +
 		' the order. The system will automatically take you back to the orders listings in a few moments.',
@@ -26,15 +24,7 @@ var SAVE_BUTTON = 'saveButton',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-var _saveButton = document.getElementById(SAVE_BUTTON),
-	_designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER);
-
-// ----------------- HANDLEBAR TEMPLATES ---------------------------
-
-/**
- * The partial to render design-validation errors on page 
- */
-var designErrorsTemplate = Handlebars.compile(document.getElementById(DESIGN_ERRORS_TEMPLATE).innerHTML);
+var _saveButton = document.getElementById(SAVE_BUTTON);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -46,24 +36,12 @@ var designErrorsTemplate = Handlebars.compile(document.getElementById(DESIGN_ERR
 function submit()
 {
 	var data = {},
-		designErrorMessages = [],
+		isDesignValid = orderSubmissionUtility.validate(),
 		designObject = rQuery.copyObject(vm.design, true),
 		designDescriptionObject = rQuery.copyObject(vm.designDescriptions, true);
 
-	// First check to see if the design selections made are valid
-	designErrorMessages = designErrorMessages.concat(designValidation.testRequirements(designObject));
-	designErrorMessages = designErrorMessages.concat(designValidation.testPrerequisites(designObject));
-	designErrorMessages = designErrorMessages.concat(designValidation.testValues(designObject));
-
-	// If the design selections are not valid, display all the reasons why the design choices is considered invalid
-	_designErrorsContainer.innerHTML = designErrorsTemplate({ errors: designErrorMessages });
-	if (designErrorMessages.length)
-	{
-		_designErrorsContainer.scrollIntoView({ behavior: 'smooth' });
-	}
-
 	// Organize the data that will be sent over the wire as long as the entire form is valid
-	if (vm.isFormValid && designErrorMessages.length === 0)
+	if (vm.isFormValid && isDesignValid)
 	{
 		data =
 		{

@@ -11,7 +11,7 @@
 	margin:
 	{
 		top: 20px;
-		bottom: 20px;
+		bottom: 40px;
 	}
 
 	& > div
@@ -24,25 +24,19 @@
 
 #companyLogo
 {
-	max-width: 160px;
-	max-height: 160px;
+	max-width: 230px;
+	max-height: 230px;
 
 	margin-bottom: 15px;
 }
 
 .infoBlock
 {
-	@extend %tinyText;
+	@extend %regularText;
 
-	line-height: 18px;
-
+	line-height: 28px;
 	flex: 1;
 
-	@include printOnly()
-	{
-		font-size: map-get($FONTS, regularFontSize);
-		line-height: 24px;
-	}
 	& > b
 	{
 		text-decoration: underline;

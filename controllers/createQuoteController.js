@@ -11,6 +11,7 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
+	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
@@ -42,6 +43,7 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'createQuote',
+	ORDER_SHARED_FOLDER = 'orderGeneral',
 
 	CUSTOM_ORDER_EMAIL = 'customerInvoice',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
@@ -81,62 +83,62 @@ _Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync
 /**
  * The template for the location section
  */
-_Handlebars.registerPartial('createQuoteLocation', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION));
+_Handlebars.registerPartial('createQuoteLocation', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOCATION));
 
 /**
  * The template for the type section
  */
-_Handlebars.registerPartial('createQuoteType', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TYPE));
+_Handlebars.registerPartial('createQuoteType', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.TYPE));
 
 /**
  * The template for the base design section
  */
-_Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.BASE_DESIGN));
+_Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.BASE_DESIGN));
 
 /**
  * The template for the picket section
  */
-_Handlebars.registerPartial('createQuotePicketDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PICKET_DESIGN));
+_Handlebars.registerPartial('createQuotePicketDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICKET_DESIGN));
 
 /**
  * The template for the advanced design section
  */
-_Handlebars.registerPartial('createQuoteAdvancedDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ADVANCED_DESIGN));
+_Handlebars.registerPartial('createQuoteAdvancedDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.ADVANCED_DESIGN));
 
 /**
  * The template for the cable design section
  */
-_Handlebars.registerPartial('createQuoteCableDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CABLE_DESIGN));
+_Handlebars.registerPartial('createQuoteCableDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CABLE_DESIGN));
 
 /**
  * The template for the glass design section
  */
-_Handlebars.registerPartial('createQuoteGlassDesign', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.GLASS_DESIGN));
+_Handlebars.registerPartial('createQuoteGlassDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.GLASS_DESIGN));
 
 /**
  * The template for the railings logistics section
  */
-_Handlebars.registerPartial('createQuoteLogistics', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOGISTICS));
+_Handlebars.registerPartial('createQuoteLogistics', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOGISTICS));
 
 /**
  * The template for the external charges section
  */
-_Handlebars.registerPartial('createQuoteExternalCharges', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.EXTERNAL_CHARGES));
+_Handlebars.registerPartial('createQuoteExternalCharges', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.EXTERNAL_CHARGES));
 
 /**
  * The template for the agreement section
  */
-_Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.AGREEMENT));
+_Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.AGREEMENT));
 
 /**
  * The template for the design descriptor partial
  */
-_Handlebars.registerPartial('designDescriptor', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.DESIGN_DESCRIPTOR));
+_Handlebars.registerPartial('designDescriptor', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_DESCRIPTOR));
 
 /**
  * The template for the submission button
  */
-_Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_BUTTON));
+_Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.SUBMISSION_BUTTON));
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -247,7 +249,8 @@ module.exports =
 			if (params.customer.email)
 			{
 				// Generate the link that will be sent to the customer so that he can approve and pay for the order
-				invoiceLink = config.BASE_URL + INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, processedOrder._id);
+				// Ensure that the ID of the order is obfuscated in this URL
+				invoiceLink = config.BASE_URL + INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, rQuery.obfuscateNumbers(processedOrder._id));
 
 				mailHTML = await mailer.generateFullEmail(CUSTOM_ORDER_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_ORDER_EMAIL);
 				await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);

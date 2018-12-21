@@ -16,12 +16,6 @@ var centerDesigns =
 		options:
 		[
 			{
-				id: '',
-				label: 'N/A',
-				technicalLabel: 'N/A',
-				spanishLabel: 'N/A'
-			},
-			{
 				id: 'CD-S',
 				label: 'S Scrolls',
 				technicalLabel: 'S Scrolls',
