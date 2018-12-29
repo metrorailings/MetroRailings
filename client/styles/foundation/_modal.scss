@@ -77,7 +77,7 @@
 	}
 }
 
-#confirmationModal
+#confirmationModal, #actionModal
 {
 	@include transitionSettings($property: all, $duration: 0.35s);
 	@include shiftTransition($x: -50%, $y: -50%);
@@ -109,7 +109,7 @@
 	}
 }
 
-#confirmationModalBody
+#confirmationModalBody, #actionModalBody
 {
 	@extend %regularText;
 
@@ -157,7 +157,7 @@
 	}
 }
 
-#confirmationModalAnswerBar
+#confirmationModalAnswerBar, #actionModalAnswerBar
 {
 	border:
 	{
@@ -197,7 +197,12 @@
 	margin-left: 15px;
 }
 
-#confirmationModalYes, #confirmationModalNo
+#actionModalOk
+{
+	@include button($bgColor: blueTheme);
+}
+
+#confirmationModalYes, #confirmationModalNo, #actionModalOk
 {
 	width: 125px;
 	z-index: inherit;

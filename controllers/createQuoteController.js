@@ -70,7 +70,8 @@ var CONTROLLER_FOLDER = 'createQuote',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection',
 		DESIGN_ERRORS: 'designErrors',
-		DESIGN_DESCRIPTOR: 'designDescriptor'
+		DESIGN_DESCRIPTOR: 'designDescriptor',
+		DEPOSIT_MODAL: 'depositModal'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -78,7 +79,7 @@ var CONTROLLER_FOLDER = 'createQuote',
 /**
  * The template for the customer section
  */
-_Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOMER));
+_Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CUSTOMER));
 
 /**
  * The template for the location section
@@ -140,6 +141,11 @@ _Handlebars.registerPartial('designDescriptor', fileManager.fetchTemplateSync(OR
  */
 _Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.SUBMISSION_BUTTON));
 
+/**
+ * The template for the deposit modal
+ */
+_Handlebars.registerPartial('depositModal', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL));
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -153,7 +159,7 @@ module.exports =
 	{
 		var populatedPageTemplate,
 			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
-			designErrorsTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.DESIGN_ERRORS),
+			designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			prospect = {},
 			pageData,
 			designData;
@@ -165,7 +171,7 @@ module.exports =
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
-		console.log('Loading the create invoice page...');
+		console.log('Loading the create quote page...');
 
 		if (params.id)
 		{

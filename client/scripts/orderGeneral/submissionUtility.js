@@ -23,9 +23,9 @@ var _designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER);
  */
 var designErrorsTemplate = Handlebars.compile(document.getElementById(DESIGN_ERRORS_TEMPLATE).innerHTML);
 
-// ----------------- LISTENERS ---------------------------
+// ----------------- MODULE ---------------------------
 
-module.exports =
+var submitUtility =
 {
 	/**
 	 * Function responsible for validating that the design selections are valid when combined together. If not,
@@ -53,5 +53,20 @@ module.exports =
 		}
 
 		return (designErrorMessages.length === 0);
+	},
+
+	/**
+	 * Function responsible for determining whether a deposit amount needs to be specified. If so, it would trigger
+	 * the modal logic that ultimately asks the user what to charge for the deposit
+	 *
+	 * @author kinsho
+	 */
+	figureOutDeposit: function()
+	{
+		var 
 	}
 };
+
+// ------------- EXPORT ---------------------
+
+export default submitUtility;
