@@ -1,7 +1,7 @@
 /**
  * A module listing pricing that we target towards contractors
  *
- * @module deckPricing
+ * @module bellariPricing
  */
 // ----------------- EXTERNAL MODULES --------------------------
 
