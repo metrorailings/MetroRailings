@@ -10,6 +10,7 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 import formValidator from 'shared/formValidator';
 import pricing from 'shared/pricing/pricingData';
 
+import actionModal from 'client/scripts/utility/actionModal';
 import designModel from 'client/scripts/orderGeneral/designViewModel';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
@@ -36,8 +37,11 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	ORDER_SUBTOTAL_DISPLAY = 'orderSubtotalDisplay',
 	ORDER_TAX_DISPLAY = 'orderTaxDisplay',
 	ORDER_TARIFF_DISPLAY = 'orderTariffDisplay',
+	ORDER_TOTAL_DISPLAY = 'orderTotalDisplay',
 	APPLY_TAXES_BUTTONSET = 'applyTaxesButtonSet',
 	APPLY_TARIFF_BUTTONSET = 'applyTariffButtonSet',
+
+	DEPOSIT_PRICE_TEXTFIELD = 'depositPrice',
 
 	SAVE_BUTTON = 'saveButton',
 
@@ -69,6 +73,8 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 
 var _validationSet = new Set(),
 
+	_totalPrice = 0,
+
 	// Elements
 	_emailField = document.getElementById(CUSTOMER_EMAIL_TEXTFIELD),
 	_areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
@@ -94,6 +100,9 @@ var _validationSet = new Set(),
 	_tariffDisplay = document.getElementById(ORDER_TARIFF_DISPLAY),
 	_chargeTaxButtons = document.getElementById(APPLY_TAXES_BUTTONSET),
 	_chargeTariffButtons = document.getElementById(APPLY_TARIFF_BUTTONSET),
+	_totalDisplay = document.getElementById(ORDER_TOTAL_DISPLAY),
+
+	_depositPriceField = document.getElementById(DEPOSIT_PRICE_TEXTFIELD),
 
 	_saveButton = document.getElementById(SAVE_BUTTON);
 
@@ -163,6 +172,24 @@ function _updateTariffAndTaxDisplays()
 	{
 		_tariffDisplay.innerHTML = '$0.00';
 	}
+}
+
+function _calculateTotal()
+{
+	var totalPrice = viewModel.subtotal || 0;
+
+	// Take the subtotal and add in any taxes and additional fees
+	if (viewModel.applyTaxes && viewModel.state === STATE_NJ_VALUE)
+	{
+		totalPrice += (viewModel.subtotal * pricing.NJ_SALES_TAX_RATE);
+	}
+
+	if (viewModel.applyTariffs)
+	{
+		totalPrice += (viewModel.subtotal * pricing.TARIFF_RATE);
+	}
+
+	viewModel.orderTotal = totalPrice;
 }
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
@@ -420,6 +447,7 @@ Object.defineProperty(viewModel, 'state',
 		}
 
 		_updateTariffAndTaxDisplays();
+		_calculateTotal();
 	}
 });
 
@@ -570,12 +598,12 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 
 	get: () =>
 	{
-		return viewModel.__orderTotal;
+		return viewModel.__pricePerFoot;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__orderTotal = value;
+		viewModel.__pricePerFoot = value;
 
 		// Make sure a valid total price is being set here
 		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
@@ -674,6 +702,7 @@ Object.defineProperty(viewModel, 'subtotal',
 		_subtotalDisplay.innerHTML = '$' + value.toFixed(2);
 
 		_updateTariffAndTaxDisplays();
+		_calculateTotal();
 	}
 });
 
@@ -707,6 +736,7 @@ Object.defineProperty(viewModel, 'applyTaxes',
 		}
 
 		_updateTariffAndTaxDisplays();
+		_calculateTotal();
 	}
 });
 
@@ -726,7 +756,26 @@ Object.defineProperty(viewModel, 'applyTariffs',
 		viewModel.__applyTariffs = value;
 
 		rQueryClient.setToggleField(_chargeTariffButtons.getElementsByTagName('input'), value);
+
 		_updateTariffAndTaxDisplays();
+		_calculateTotal();
+	}
+});
+
+// Order Total
+Object.defineProperty(viewModel, 'orderTotal',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__orderTotal;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__orderTotal = value;
 	}
 });
 
@@ -746,6 +795,46 @@ Object.defineProperty(viewModel, 'agreement',
 		viewModel.__agreement = value;
 
 		_validate();
+	}
+});
+
+// Deposit Amount
+Object.defineProperty(viewModel, 'depositAmount',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__depositAmount;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__depositAmount = value;
+
+		// Make sure a valid amount is set here
+		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
+			(value.length && !(window.parseFloat(value, 10)) ) ||
+			(value.length && value.split('.').length > 2);
+
+		// If the deposit amount is less than zero or greater than the order total, we have an invalid amount
+		// Notice the use of conditional logic here to ensure that we're dealing with a number
+		isInvalid = isInvalid || window.parseFloat(value) < 0 || window.parseFloat(value) > _totalPrice;
+
+		rQueryClient.updateValidationOnField(isInvalid, _depositPriceField, ERROR.DEPOSIT_INVALID, _validationSet);
+		rQueryClient.setField(_depositPriceField, value);
+
+		// As the deposit amount only gets set in a modal, we have to prevent the user from going forward should an
+		// invalid deposit amount be placed into that field
+		if (isInvalid)
+		{
+			actionModal.disableOk();
+		}
+		else
+		{
+			actionModal.enableOk();
+		}
 	}
 });
 
