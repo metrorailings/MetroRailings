@@ -1,5 +1,5 @@
 /**
- * @module bellariController
+ * @module barrettController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -10,11 +10,11 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 
-	deckPricing = global.OwlStakes.require('shared/pricing/bellariPricing');
+	deckPricing = global.OwlStakes.require('shared/pricing/barrettPricing');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'bellari',
+var CONTROLLER_FOLDER = 'barrett',
 	UTILITY_FOLDER = 'utility',
 
 	PARTIALS =
@@ -42,11 +42,10 @@ module.exports =
 	{
 		var pageData =
 			{
-				deckOptions: deckPricing.options,
-				extraOptions: deckPricing.extra
+				deckOptions: deckPricing.options
 			};
 
-		console.log('Loading Bellari\'s page...');
+		console.log('Loading Barrett\'s page...');
 
 		// Render the page template
 		var populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
