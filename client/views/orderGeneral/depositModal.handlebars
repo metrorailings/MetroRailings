@@ -1,0 +1,20 @@
+<div id='depositModal'>
+
+	<div class='dataStack'>
+		<span>
+			Order Total
+		</span>
+		<span id='orderTotalDisplay' class='staticValue'>{{ orderTotal }}</span>
+	</div>
+
+	<div class='dataStack'>
+		<span>
+			What should the deposit amount be?
+		</span>
+		<span>
+			$<input type='tel' id='depositPrice' value='{{ defaultDeposit }}'/>
+			<span class='hint hint--right hint--always' data-hint=''></span>
+		</span>
+	</div>
+
+</div>

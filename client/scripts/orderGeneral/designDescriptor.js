@@ -24,7 +24,7 @@ function toggleDescriptor(event)
 	var designField = event.currentTarget,
 		descriptiveSection = designField.nextElementSibling,
 		selectedOption = designField.selectedOptions[0],
-		description = selectedOption.dataset.description || '',
+		description = (selectedOption ? selectedOption.dataset.description || '' : ''),
 		textarea = descriptiveSection.getElementsByClassName(TEXTAREA_CLASS)[0];
 
 	if (designField.value && description)

@@ -21,6 +21,7 @@ var UTILITY_FOLDER = 'utility',
 	{
 		GALLERY: 'gallery',
 		CONFIRMATION_MODAL: 'confirmationModal',
+		ACTION_MODAL: 'actionModal',
 		SCROLL_DOWN: 'scrollDownLabel',
 		OPTIONS_CAROUSEL: 'optionsCarousel',
 		NOTIFICATION_BAR: 'notificationBar',
@@ -51,6 +52,10 @@ _Handlebars.registerPartial('gallery', fileManager.fetchTemplateSync(UTILITY_FOL
  */
 _Handlebars.registerPartial('confirmationModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.CONFIRMATION_MODAL));
 
+/**
+ * The template for the action modal
+ */
+_Handlebars.registerPartial('actionModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ACTION_MODAL));
 /**
  * The template for the scroll down signifier
  */
