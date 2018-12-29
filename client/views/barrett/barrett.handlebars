@@ -1,0 +1,107 @@
+{{> bannerSection }}
+
+<div class='pageHeader'>
+	<h3>Barrett Pricing Guide</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<p>
+	Over here, you will get a great idea of the type of pricing that I've set out for you.
+</p>
+
+{{#each deckOptions}}
+	<div class='railingTable'>
+
+		<span class='idSection'>
+			<div class='categoryCell'>
+				{{ label }}
+			</div>
+			<div class='previewImageCell'>
+				{{#each previewImage}}
+					<img src='{{ this }}' />
+				{{/each}}
+			</div>
+		</span>
+
+		<span class='pricingSection'>
+
+			<span class='priceColumn'>
+				<div class='priceHeader'>
+					Regular Price
+				</div>
+				<div class='priceCell'>
+					${{ regularPrice }} per foot
+				</div>
+			</span>
+
+			{{#if curves}}
+				<span class='priceColumn'>
+					<div class='priceHeader'>
+						Curve Pricing
+					</div>
+					<div class='priceCell curvePriceCell'>
+						<span>
+							<span class='boldText'>Flat Platforms:</span>
+							<span>Additional ${{ curves.flat }} per foot</span>
+						</span>
+						<span>
+							<span class='boldText'>Stairs:</span>
+							<span>Additional ${{ curves.stairs }} per foot</span>
+						</span>
+					</div>
+				</span>
+			{{/if}}
+
+			{{#if extras}}
+				<span class='priceColumn'>
+					<div class='priceHeader'>
+						Extras
+					</div>
+					<div class='priceCell extrasCell'>
+						{{#each extras}}
+							<span>{{ this }}</span>
+						{{/each}}
+					</div>
+				</span>
+			{{/if}}
+		</span>
+
+		<span class='noteRow'>
+			<span>{{ note }}</span>
+		</span>
+
+	</div>
+{{/each}}
+
+<div class='separator'></div>
+
+<div id='faqSection'>
+
+	<p>
+		I know you have some questions. I tried to anticipate and answer them below..
+	</p>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			Does your pricing include installation?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>Yes.</p>
+		</div>
+	</div>
+
+	<div class='faqBlock'>
+		<div class='faqQuestion'>
+			What is the smallest curve you can engineer?
+		</div>
+		<div class='faqsQuestionUnderline'></div>
+		<div class='faqsAnswer'>
+			<p>
+				I wish I can provide a numeric answer for you, but I cannot. That being said, we should be able to 
+				handle any realistic curve, including rounded 90-degree curves.
+			</p>
+		</div>
+	</div>
+
+</div>

@@ -39,6 +39,8 @@ SystemJS.config({
 		conventionGallery: '/client/scripts/conventionGallery/main.js',
 		contractorPricing: '/client/scripts/contractorPricing/main.js',
 		contractorAgreement: '/client/scripts/contractorAgreement/main.js',
+
+		barrett: '/client/scripts/barrett/main.js',
 		bellari: '/client/scripts/bellari/main.js',
 		restricted: '/client/scripts/restricted/main.js'
 	},
