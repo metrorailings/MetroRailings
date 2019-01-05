@@ -12,5 +12,6 @@ import logisticsSection from 'client/scripts/orderGeneral/logisticsSection';
 import externalCharges from 'client/scripts/orderGeneral/externalCharges';
 import agreementSection from 'client/scripts/orderGeneral/agreementSection';
 import descriptor from 'client/scripts/orderGeneral/designDescriptor';
+import depositModal from 'client/scripts/orderGeneral/depositModal';
 
 import submissionSection from 'client/scripts/createQuote/submissionSection';
