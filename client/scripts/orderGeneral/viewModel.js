@@ -37,7 +37,6 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	ORDER_SUBTOTAL_DISPLAY = 'orderSubtotalDisplay',
 	ORDER_TAX_DISPLAY = 'orderTaxDisplay',
 	ORDER_TARIFF_DISPLAY = 'orderTariffDisplay',
-	ORDER_TOTAL_DISPLAY = 'orderTotalDisplay',
 	APPLY_TAXES_BUTTONSET = 'applyTaxesButtonSet',
 	APPLY_TARIFF_BUTTONSET = 'applyTariffButtonSet',
 
@@ -100,7 +99,6 @@ var _validationSet = new Set(),
 	_tariffDisplay = document.getElementById(ORDER_TARIFF_DISPLAY),
 	_chargeTaxButtons = document.getElementById(APPLY_TAXES_BUTTONSET),
 	_chargeTariffButtons = document.getElementById(APPLY_TARIFF_BUTTONSET),
-	_totalDisplay = document.getElementById(ORDER_TOTAL_DISPLAY),
 
 	_depositPriceField = document.getElementById(DEPOSIT_PRICE_TEXTFIELD),
 

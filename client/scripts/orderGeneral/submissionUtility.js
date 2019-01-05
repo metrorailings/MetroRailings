@@ -3,13 +3,17 @@
 import vm from 'client/scripts/orderGeneral/viewModel';
 
 import rQuery from 'client/scripts/utility/rQueryClient';
+import actionModal from 'client/scripts/utility/actionModal';
 
 import designValidation from 'shared/designs/designValidation';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
-	DESIGN_ERRORS_TEMPLATE = 'designErrorsTemplate';
+	DESIGN_ERRORS_TEMPLATE = 'designErrorsTemplate',
+	DEPOSIT_MODAL_TEMPLATE = 'depositModalTemplate',
+
+	PENDING_KEYWORD = 'pending';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -59,11 +63,23 @@ var submitUtility =
 	 * Function responsible for determining whether a deposit amount needs to be specified. If so, it would trigger
 	 * the modal logic that ultimately asks the user what to charge for the deposit
 	 *
+	 * @param {Function} submissionFunction - the function to execute after the action modal has been executed
+	 *
 	 * @author kinsho
 	 */
-	figureOutDeposit: function()
+	figureOutDeposit: function(submissionFunction)
 	{
-		var 
+		var modalData = { orderTotal : vm.orderTotal, defaultDeposit : vm.orderTotal / 2 };
+
+		// Only pop out the deposit modal for orders that have not been confirmed yet
+		if ( !(vm.status) || (vm.status === PENDING_KEYWORD) )
+		{
+			actionModal.open(document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML, modalData, submissionFunction);
+		}
+		else
+		{
+			submissionFunction();
+		}
 	}
 };
 
