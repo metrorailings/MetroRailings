@@ -4,35 +4,15 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('handlebars'),
-
-	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
-	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
-
-	types = global.OwlStakes.require('shared/designs/types'),
-	posts = global.OwlStakes.require('shared/designs/postDesigns'),
-	handrailings = global.OwlStakes.require('shared/designs/handrailingDesigns'),
-	picketSizes = global.OwlStakes.require('shared/designs/picketSizes'),
-	picketStyles = global.OwlStakes.require('shared/designs/picketStyles'),
-	postEnds = global.OwlStakes.require('shared/designs/postEndDesigns'),
-	postCaps = global.OwlStakes.require('shared/designs/postCapDesigns'),
-	centerDesigns = global.OwlStakes.require('shared/designs/centerDesigns'),
-	collars = global.OwlStakes.require('shared/designs/collarDesigns'),
-	baskets = global.OwlStakes.require('shared/designs/basketDesigns'),
-	valences = global.OwlStakes.require('shared/designs/valenceDesigns'),
-	colors = global.OwlStakes.require('shared/designs/colors'),
-	cableSizes = global.OwlStakes.require('shared/designs/cableSizes'),
-	cableCaps = global.OwlStakes.require('shared/designs/cableCaps'),
-	glassTypes = global.OwlStakes.require('shared/designs/glassTypes'),
-	glassBuilds = global.OwlStakes.require('shared/designs/glassBuilds'),
-	ada = global.OwlStakes.require('shared/designs/ada'),
 
 	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
@@ -43,7 +23,6 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'createQuote',
-	ORDER_SHARED_FOLDER = 'orderGeneral',
 
 	CUSTOM_ORDER_EMAIL = 'customerInvoice',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
@@ -53,98 +32,7 @@ var CONTROLLER_FOLDER = 'createQuote',
 	INVOICE_URL = '/orderInvoice?id=::orderId',
 
 	VIEWS_DIRECTORY = '/client/views/',
-	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt',
-
-	PARTIALS =
-	{
-		CUSTOMER: 'customerSection',
-		LOCATION: 'locationSection',
-		TYPE: 'typeSection',
-		BASE_DESIGN: 'baseDesignSection',
-		PICKET_DESIGN: 'picketSection',
-		ADVANCED_DESIGN: 'advancedDesignSection',
-		CABLE_DESIGN: 'cableDesignSection',
-		GLASS_DESIGN: 'glassDesignSection',
-		LOGISTICS: 'logisticsSection',
-		EXTERNAL_CHARGES: 'externalCharges',
-		AGREEMENT: 'agreementSection',
-		SUBMISSION_BUTTON: 'submissionSection',
-		DESIGN_ERRORS: 'designErrors',
-		DESIGN_DESCRIPTOR: 'designDescriptor',
-		DEPOSIT_MODAL: 'depositModal'
-	};
-
-// ----------------- PARTIAL TEMPLATES --------------------------
-
-/**
- * The template for the customer section
- */
-_Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CUSTOMER));
-
-/**
- * The template for the location section
- */
-_Handlebars.registerPartial('createQuoteLocation', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOCATION));
-
-/**
- * The template for the type section
- */
-_Handlebars.registerPartial('createQuoteType', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.TYPE));
-
-/**
- * The template for the base design section
- */
-_Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.BASE_DESIGN));
-
-/**
- * The template for the picket section
- */
-_Handlebars.registerPartial('createQuotePicketDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICKET_DESIGN));
-
-/**
- * The template for the advanced design section
- */
-_Handlebars.registerPartial('createQuoteAdvancedDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.ADVANCED_DESIGN));
-
-/**
- * The template for the cable design section
- */
-_Handlebars.registerPartial('createQuoteCableDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CABLE_DESIGN));
-
-/**
- * The template for the glass design section
- */
-_Handlebars.registerPartial('createQuoteGlassDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.GLASS_DESIGN));
-
-/**
- * The template for the railings logistics section
- */
-_Handlebars.registerPartial('createQuoteLogistics', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOGISTICS));
-
-/**
- * The template for the external charges section
- */
-_Handlebars.registerPartial('createQuoteExternalCharges', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.EXTERNAL_CHARGES));
-
-/**
- * The template for the agreement section
- */
-_Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.AGREEMENT));
-
-/**
- * The template for the design descriptor partial
- */
-_Handlebars.registerPartial('designDescriptor', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_DESCRIPTOR));
-
-/**
- * The template for the submission button
- */
-_Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.SUBMISSION_BUTTON));
-
-/**
- * The template for the deposit modal
- */
-_Handlebars.registerPartial('depositModal', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL));
+	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt';
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -159,10 +47,8 @@ module.exports =
 	{
 		var populatedPageTemplate,
 			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
-			designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			prospect = {},
-			pageData,
-			designData;
+			allData, pageData, designData;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -178,38 +64,12 @@ module.exports =
 			prospect = await prospectsDAO.searchProspectById(parseInt(params.id, 10));
 		}
 
-		// Gather all the design options that we can apply to the order
-		designData =
-		{
-			types: types.options,
-			posts: posts.options,
-			handrailings: handrailings.options,
-			picketSizes: picketSizes.options,
-			picketStyles: picketStyles.options,
-			postEnds: postEnds.options,
-			postCaps: postCaps.options,
-			centerDesigns: centerDesigns.options,
-			collars: collars.options,
-			baskets: baskets.options,
-			valences: valences.options,
-			colors: colors.options,
-			cableSizes: cableSizes.options,
-			cableCaps: cableCaps.options,
-			glassTypes: glassTypes.options,
-			glassBuilds: glassBuilds.options,
-			ada: ada.options
-		};
-
-		pageData =
-		{
-			prospect: prospect,
-			agreement: agreementText,
-			defaultTimeLimit: config.DEFAULT_TIME_LIMIT,
-			taxRate: (pricingData.NJ_SALES_TAX_RATE * 100).toFixed(2),
-			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2),
-			designs: designData,
-			designErrorsTemplate: designErrorsTemplate
-		};
+		// Gather the data we'll need to properly render the page
+		allData = orderGeneralUtility.basicInit();
+		designData = allData.designData;
+		pageData = allData.pageData;
+		pageData.prospect = prospect;
+		pageData.agreement = agreementText;
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
