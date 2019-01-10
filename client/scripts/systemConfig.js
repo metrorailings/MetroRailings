@@ -40,6 +40,7 @@ SystemJS.config({
 		contractorPricing: '/client/scripts/contractorPricing/main.js',
 		contractorAgreement: '/client/scripts/contractorAgreement/main.js',
 
+		createPriceChart: '/client/scripts/createPriceChart/main.js',
 		barrett: '/client/scripts/barrett/main.js',
 		bellari: '/client/scripts/bellari/main.js',
 		restricted: '/client/scripts/restricted/main.js'

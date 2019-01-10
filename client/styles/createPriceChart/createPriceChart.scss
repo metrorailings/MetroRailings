@@ -1,0 +1,25 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/convention';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#chartInstructionText
+{
+	display: block;
+	width: 100%;
+
+	text-align: center;
+}
+
+#companyInfo
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

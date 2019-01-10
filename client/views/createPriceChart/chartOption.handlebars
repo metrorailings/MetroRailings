@@ -1,0 +1,71 @@
+<div class='chartOptionGroup'>
+
+	<div class='chartOptionHeaders'>
+		<span class='genericChartSpacing'>Name</span>
+		<span class='genericChartSpacing'>Regular Pricing</span>
+		<span class='genericChartSpacing'>Curve Pricing</span>
+	</div>
+
+	<div class='chartOptionGeneralInfo'>
+		<span class='genericChartSpacing'>
+			<input type='text' class='optionName' value='{{ label }}'>
+		</span>
+		<span>
+			<span>
+				$<input type='text' class='optionRegularPrice' value='{{ regularPrice }}'> per foot
+				<span class='hint hint--right hint--always' data-hint=''></span>
+			</span>
+		</span>
+		<span>
+			<span>
+				<label class='optionLabel'>Flat Curves:</label>
+				$<input type='text' class='optionFlatCurvePrice'{{#if curves}} value='{{ curves.flat }} {{/if}}'> more per foot
+				<span class='hint hint--right hint--always' data-hint=''></span>
+			</span>
+			<span>
+				<label class='optionLabel'>Stair Curves:</label>
+				$<input type='text' class='optionStairCurvePrice'{{#if curves}} value='{{ curves.stairs }} {{/if}}'> more per foot
+				<span class='hint hint--right hint--always' data-hint=''></span>
+			</span>
+		</span>
+	</div>
+
+	<div class='chartOptionExtras'>
+		<div class='chartOptionHeaders'>
+			<span class='genericChartSpacing'>Extras</span>
+		</div>
+		<div class='chartOptionExtrasContainer'>
+			{{#each extras}}
+				{{> chartOptionExtra this }}
+			{{/each}}
+		</div>
+		<div class='rowAdder'>
+			<span class='linkText addOptionLink'>Add an Extra Option</span>
+		</div>
+	</div>
+
+	<div class='chartOptionDescription'>
+		<div class='chartOptionHeaders'>
+			<span class='genericChartSpacing'>Description</span>
+		</div>
+		<textarea class='chartOptionDescriptionField' value='{{ note }}'></textarea>
+	</div>
+
+	<div class='chartOptionImages'>
+		<div class='chartOptionHeaders'>
+			<span class='genericChartSpacing'>Images</span>
+		</div>
+		<div class='chartImageContainer'>
+			{{#each previewImage}}
+				<span class='imageWrapper'>
+					<img class='chartImage' src='{{ this }}' />
+					<i class='fa fa-times-circle'></i>
+				</span>
+			{{/each}}
+		</div>
+		<div class='rowAdder'>
+			<span class='linkText addImageLink'>Add An Image</span>
+		</div>
+	</div>
+
+</div>

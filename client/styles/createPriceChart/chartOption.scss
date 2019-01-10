@@ -1,0 +1,215 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/convention';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+
+/* ----------------------- COMMONPLACE STYLING ----------------------------- */
+
+.chartOptionsGroup, .chartOptionHeaders, .chartOptionGeneralInfo, .chartOptionExtras, .chartOptionDescription
+.chartOptionImages, .chartImageContainer
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.chartOptionsGroup, .chartOptionExtras, .chartOptionDescription, .chartOptionImages
+{
+	flex-direction: column;
+}
+
+.genericChartSpacing
+{
+	padding: 15px;
+
+	&:not(:first-of-type)
+	{
+		border-left:
+		{
+			style: solid;
+			width: 1px;
+			color: map-get($COLORS, blackTheme);
+		}
+	}
+}
+
+.rowAdder
+{
+	margin:
+	{
+		top: 20px;
+		left: auto;
+		right: auto;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ----------------------- STYLES ----------------------------- */
+
+.chartOptionGroup
+{
+	margin:
+	{
+		top: 100px;
+		bottom: 100px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		radius: 15px;
+		width: 1.5px;
+		style: solid;
+		color: map-get($COLORS, slateGrayTheme);
+	}
+
+	width: 85%;
+
+	& > .chartOptionHeaders
+	{
+		margin-top: 0px;
+
+		border:
+		{
+			top-left-radius: 15px;
+			top-right-radius: 15px;
+		}
+	}
+
+	&:first-of-type
+	{
+		margin:
+		{
+			top: 50px;
+		}
+	}
+}
+
+.chartOptionHeaders
+{
+	@extend %littleSpecialSectionHeader;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	background-color: map-get($COLORS, lightBlueTheme);
+	width: 100%;
+
+	& > span
+	{
+		flex: 1;
+		padding: 10px;
+
+		text-align: center;
+	}
+}
+
+.chartOptionGeneralInfo
+{
+	@extend %regularText;
+
+	& > span
+	{
+		padding: 20px;
+
+		flex: 1;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+}
+
+.optionLabel
+{
+	margin:
+	{
+		right: 5px;
+	}
+
+	font-weight: 700;
+}
+
+.optionName
+{
+	width: 250px;
+}
+
+.optionRegularPrice, .optionFlatCurvePrice, .optionStairCurvePrice
+{
+	margin: 5px;
+
+	width: 35px;
+}
+
+.chartOptionExtras
+{
+	@extend %regularText;
+}
+
+.optionExtra
+{
+	width: 750px;
+}
+
+.linkText
+{
+	@extend %regularLinkText;
+
+	cursor: pointer;
+
+	&:hover
+	{
+		text-decoration: underline;
+	}
+}
+
+.chartOptionDescriptionField
+{
+	width: 90%;
+	height: 50px;
+}
+
+.imageWrapper
+{
+	margin:
+	{
+		left: 25px;
+		right: 25px;
+	}
+
+	position: relative;
+
+	& > .fa-times-circle
+	{
+		color: map-get($COLORS, redTheme);
+		font-size: map-get($FONTS, largeFontSize);
+
+		position: absolute;
+		top: -5%;
+		left: 99%;
+
+		cursor: pointer;
+	}
+}
+
+.chartImage
+{
+	max-width: 300px;
+	max-height: 300px;
+
+	cursor: pointer;
+}

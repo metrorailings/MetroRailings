@@ -1,0 +1,29 @@
+<div class='pageHeader'>
+	<h3>Create a Pricing Chart</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<p id='chartInstructionText'>
+	Use this form to generate a pricing chart that you can send over to prospective institutional clients.
+</p>
+
+<div id='companyInfo' class='controlGrouping'>
+	<label>Company Name</label>
+	<input type='text' id='companyName' value='{{ company }}'/>
+	<span class='hint hint--right hint--always' data-hint=''></span>
+</div>
+
+<div id='priceChartOptionsListing'>
+	{{#each defaultOptions}}
+		{{> chartOption this}}
+	{{/each}}
+	<div id='addNewProductOptionLink' class='linkText'><i class='fa fa-plus-circle'></i>Add A New Product</div>
+</div>
+
+<script id='optionTemplate' type='text/x-handlebars-template'>
+	{{{ chartOptionTemplate }}}
+</script>
+
+<script id='extraTemplate' type='text/x-handlebars-template'>
+	{{{ chartOptionExtra }}}
+</script>

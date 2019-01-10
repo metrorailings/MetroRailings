@@ -35,7 +35,7 @@
 	}
 }
 
-#orderCreationButton, #prospectCreationButton
+#orderCreationButton, #prospectCreationButton, #priceChartCreationButton
 {
 	@include button($bgColor: darkGreenTheme);
 
@@ -60,4 +60,9 @@
 #prospectCreationButton
 {
 	background-color: map-get($COLORS, darkBlueTheme);
+}
+
+#priceChartCreationButton
+{
+	background-color: map-get($COLORS, indianRedTheme);
 }
