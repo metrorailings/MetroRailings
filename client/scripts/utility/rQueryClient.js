@@ -290,6 +290,30 @@ var rQueryClient =
 		isObject: function(val)
 		{
 			return (val === Object(val));
+		},
+
+		/**
+		 * Function that determines where a node rests inside a node collection.
+		 *
+		 * @param {Node} targetNode - the node that we're looking for inside the collection
+		 * @param {Array<Nodes>} collection - the collection of nodes to search
+		 *
+		 * @returns {Number} - the index (location) of the node within the collection
+		 *
+		 * @author kinsho
+		 */
+		findNodeIndexInCollection: function(targetNode, collection)
+		{
+			// Find the node within the collection
+			for (var i = collection.length - 1; i >= 0; i -= 1)
+			{
+				if (collection[i].isSameNode(targetNode))
+				{
+					break;
+				}
+			}
+
+			return i;
 		}
 	};
 

@@ -5,6 +5,7 @@ import optionVM from 'client/scripts/createPriceChart/optionViewModel';
 
 import rQueryClient from 'client/scripts/utility/rQueryClient';
 import tooltipManager from 'client/scripts/utility/tooltip';
+import confirmationModal from 'client/scripts/utility/confirmationModal';
 
 import formValidator from 'shared/formValidator';
 
@@ -12,6 +13,8 @@ import formValidator from 'shared/formValidator';
 
 var COMPANY_NAME_TEXTFIELD = 'companyName',
 	ADD_NEW_PRODUCT_OPTION_LINK = 'addNewProductOptionLink',
+
+	OPTION_GROUP = 'chartOptionGroup',
 
 	OPTION_NAME_FIELD = 'optionName',
 	REGULAR_PRICE_FIELD = 'optionRegularPrice',
@@ -22,7 +25,13 @@ var COMPANY_NAME_TEXTFIELD = 'companyName',
 	OPTION_EXTRA_FIELDS = 'optionExtra',
 
 	OPTION_TEMPLATE = 'optionTemplate',
-	OPTION_EXTRA_TEMPLATE = 'chartOptionExtra';
+	OPTION_EXTRA_TEMPLATE = 'chartOptionExtra',
+
+	OPTION_EXIT_BUTTON = 'chartOptionExitButton',
+
+	FADE_OUT_CLASS = 'fadeOut',
+	HEIGHT_ZERO_CLASS = 'heightZero',
+	REMOVE_OPTION_CONFIRMATION = 'Are you sure you want to remove ::name as a product offering on this price chart?';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -30,12 +39,14 @@ var COMPANY_NAME_TEXTFIELD = 'companyName',
 var _companyNameField = document.getElementById(COMPANY_NAME_TEXTFIELD),
 	_addNewOptionLink = document.getElementById(ADD_NEW_PRODUCT_OPTION_LINK),
 
+	_options = document.getElementsByClassName(OPTION_GROUP),
 	_optionNames = document.getElementsByClassName(OPTION_NAME_FIELD),
 	_regularPriceFields = document.getElementsByClassName(REGULAR_PRICE_FIELD),
 	_flatCurvePriceFields = document.getElementsByClassName(FLAT_CURVE_PRICE_FIELD),
 	_stairCurvePriceFields = document.getElementsByClassName(STAIR_CURVE_PRICE_FIELD),
 	_optionDescriptions = document.getElementsByClassName(OPTION_DESCRIPTION_FIELD),
 
+	_optionExitButtons = document.getElementsByClassName(OPTION_EXIT_BUTTON),
 	_optionExtras = document.getElementsByClassName(OPTION_EXTRA_FIELDS);
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
@@ -107,18 +118,12 @@ function setCompanyName()
  */
 function setOptionName(event)
 {
-	var nameField = event.currentTarget;
+	var nameField = event.currentTarget,
+		// Find which option needs to have its data updated inside the view model
+		index = rQueryClient.findNodeIndexInCollection(nameField, _optionNames);
 
-	// Find which option needs to have its data updated inside the view model
-	for (var i = 0; i < _optionNames.length; i++)
-	{
-		if (_optionNames[i].isSameNode(nameField))
-		{
-			break;
-		}
-	}
 
-	vm.options[i].name = nameField.value;
+	vm.options[index].name = nameField.value;
 }
 
 /**
@@ -130,18 +135,11 @@ function setOptionName(event)
  */
 function setOptionRegularPrice(event)
 {
-	var priceField = event.currentTarget;
+	var priceField = event.currentTarget,
+		// Find which option needs to have its data updated inside the view model
+		index = rQueryClient.findNodeIndexInCollection(priceField, _regularPriceFields);
 
-	// Find which option needs to have its data updated inside the view model
-	for (var i = 0; i < _regularPriceFields.length; i++)
-	{
-		if (_regularPriceFields[i].isSameNode(priceField))
-		{
-			break;
-		}
-	}
-
-	vm.options[i].regularPrice = priceField.value;
+	vm.options[index].regularPrice = priceField.value;
 }
 
 /**
@@ -153,18 +151,11 @@ function setOptionRegularPrice(event)
  */
 function setOptionFlatCurvePrice(event)
 {
-	var priceField = event.currentTarget;
+	var priceField = event.currentTarget,
+		// Find which option needs to have its data updated inside the view model
+		index = rQueryClient.findNodeIndexInCollection(priceField, _flatCurvePriceFields);
 
-	// Find which option needs to have its data updated inside the view model
-	for (var i = 0; i < _flatCurvePriceFields.length; i++)
-	{
-		if (_flatCurvePriceFields[i].isSameNode(priceField))
-		{
-			break;
-		}
-	}
-
-	vm.options[i].flatCurvePrice = priceField.value;
+	vm.options[index].flatCurvePrice = priceField.value;
 }
 
 /**
@@ -176,18 +167,11 @@ function setOptionFlatCurvePrice(event)
  */
 function setOptionStairCurvePrice(event)
 {
-	var priceField = event.currentTarget;
+	var priceField = event.currentTarget,
+		// Find which option needs to have its data updated inside the view model
+		index = rQueryClient.findNodeIndexInCollection(priceField, _stairCurvePriceFields);
 
-	// Find which option needs to have its data updated inside the view model
-	for (var i = 0; i < _stairCurvePriceFields.length; i++)
-	{
-		if (_stairCurvePriceFields[i].isSameNode(priceField))
-		{
-			break;
-		}
-	}
-
-	vm.options[i].stairCurvePrice = priceField.value;
+	vm.options[index].stairCurvePrice = priceField.value;
 }
 
 /**
@@ -199,18 +183,11 @@ function setOptionStairCurvePrice(event)
  */
 function setOptionDescription(event)
 {
-	var descField = event.currentTarget;
+	var descField = event.currentTarget,
+		// Find which option needs to have its data updated inside the view model
+		index = rQueryClient.findNodeIndexInCollection(descField, _optionDescriptions);
 
-	// Find which option needs to have its data updated inside the view model
-	for (var i = 0; i < _optionDescriptions.length; i++)
-	{
-		if (_optionDescriptions[i].isSameNode(descField))
-		{
-			break;
-		}
-	}
-
-	vm.options[i].description = descField.value;
+	vm.options[index].description = descField.value;
 }
 
 /**
@@ -220,10 +197,9 @@ function setOptionDescription(event)
  *
  * @author kinsho
  */
-function addNewOption(event)
+function addNewOptionExtraHTML(event)
 {
 	var extrasContainer = event.currentTarget.previousElement,
-		newDescriptionField,
 		templateElement = document.createElement('template');
 
 	// Update the HTML with a new item listing
@@ -231,41 +207,84 @@ function addNewOption(event)
 	extrasContainer.appendChild(templateElement.content);
 
 	// Attach a listener to this textfield to keep track of changes made to the new field
-	extrasContainer.lastElementChild.addEventListener('change', setOptionExtra);
+	extrasContainer.lastElementChild.addEventListener('change', addOptionExtra);
 }
 
-
 /**
- * Listener responsible for removing items from the invoice
+ * Listener responsible for setting the extra features associated with a new option into the view model
  *
  * @param {Event} event - the event responsible for triggering the calling of this function
  *
  * @author kinsho
  */
-function removeItem(event)
+function addOptionExtra(event)
 {
-	var itemRow = rQueryClient.closestElementByClass(event.currentTarget, ITEM_ROW_CLASS);
+	var extrasField = event.currentTarget,
+		allOptionExtras = extrasField.parentNode.childNodes,
+		optionGrouping = rQueryClient.closestElementByClass(OPTION_GROUP),
+		// Find which extra is being changed here
+		extrasIndex = rQueryClient.findNodeIndexInCollection(extrasField, allOptionExtras),
+		// Find which option needs to have its data updated inside the view model
+		optionIndex = rQueryClient.findNodeIndexInCollection(optionGrouping, _options);
 
-	// Find the index of the item which we need to remove
-	for (var i = 0; i < _itemRows.length; i++)
-	{
-		if (itemRow.isSameNode(_itemRows[i]))
+	vm.options[optionIndex].extras[extrasIndex] = extrasField.value;
+}
+
+/**
+ * Listener responsible for removing options from the custom price chart
+ *
+ * @param {Event} event - the event responsible for triggering the calling of this function
+ *
+ * @author kinsho
+ */
+function removeOption(event)
+{
+	var optionListing = event.currentTarget.parentNode,
+		index = rQueryClient.findNodeIndexInCollection(optionListing, _options),
+		callbackFunction = function()
 		{
-			break;
+			// Remove the option from the view model
+			vm.options.splice(index, 1);
+
+			// Even trickier, remove the option from view by fading out the option first
+			optionListing.addEventListener('transitionend', () =>
+			{
+				optionListing.addEventListener('transitionend', () =>
+				{
+					optionListing.parentNode.removeChild(optionListing);
+				});
+
+				optionListing.classList.add(HEIGHT_ZERO_CLASS);
+			});
+
+			optionListing.classList.add(FADE_OUT_CLASS);
 		}
+
+	// If data has been set inside the option, generate a confirmation modal to ensure that we want to do this
+	if (vm.options[i].name)
+	{
+		confirmationModal.open(REMOVE_OPTION_CONFIRMATION, callbackFunction);
 	}
+	else
+	{
+		callbackFunction();
+	}
+}
 
-	// Remove any tooltips that may be visible inside the row to be removed
-	tooltipManager.closeTooltip(itemRow.getElementsByClassName(ITEM_PRICE_CLASS)[0], true);
+/**
+ * Listener responsible for adding an empty option to the custom price chart
+ *
+ * @param {Event} event - the event responsible for triggering the calling of this function
+ *
+ * @author kinsho
+ */
+function addOptionHTML()
+{
+	var templateElement = document.createElement('template');
 
-	// Now remove the item from display
-	itemRow.parentNode.removeChild(itemRow);
-
-	// Remove the item from our internal memory as well
-	vm.items.splice(i, 1);
-
-	// Update the dynamic pricing
-	_updatePrices();
+	// Update the HTML with a new item listing
+	templateElement.innerHTML = productOptionTemplate({});
+	extrasContainer.appendChild(templateElement.content);
 }
 
 // ----------------- DATA INITIALIZATION -----------------------------

@@ -6,7 +6,7 @@
 @import '../foundation/form';
 @import '../foundation/responsive';
 @import '../foundation/colors';
-
+@import '../foundation/animations';
 
 /* ----------------------- COMMONPLACE STYLING ----------------------------- */
 
@@ -56,6 +56,8 @@
 
 .chartOptionGroup
 {
+	@include transitionSettings($property: all, $duration: 0.5s);
+
 	margin:
 	{
 		top: 100px;
@@ -73,6 +75,7 @@
 	}
 
 	width: 85%;
+	opacity: 1.0;
 
 	& > .chartOptionHeaders
 	{
@@ -91,6 +94,16 @@
 		{
 			top: 50px;
 		}
+	}
+
+	&.fadeOut
+	{
+		opacity: 0.0;
+	}
+
+	&:heightZero
+	{
+		height: 0px;
 	}
 }
 
