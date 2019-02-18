@@ -145,4 +145,4 @@ _orderTypeField.addEventListener('change', setType);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setType({ currentTarget: _orderTypeField });
+setType();

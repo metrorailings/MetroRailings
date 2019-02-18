@@ -41,5 +41,5 @@ _orderCableCapField.addEventListener('change', setCableCap);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setCableSize({ currentTarget: _orderCableSizeField });
-setCableCap({ currentTarget: _orderCableCapField });
+setCableSize();
+setCableCap();

@@ -1,44 +1,46 @@
 <div class='pageHeader'>
-	<h3 class='translate'>Order Details</h3>
+	<h3>Modify an Order</h3>
 	<div class='headerUnderline'></div>
 </div>
 
-<p id='instructionText' class='translate'>
-    You can modify any part of the order on this page. Please be aware that all fields marked blue are not required to
-    be filled out. Also, any change you make will be marked with a green tag next to the field label.
+<p id='instructionText'>
+	Use this form to modify order properties at any given stage.
 </p>
 
-<!-- Display a heads-up message here indicating that the order cannot be modified now that it has been closed -->
-{{#if_cond order.status 'closed'}}
-	<div id='closedCannotModifyMessage' class='specialMessageSection'>
-		<span>
-			<i class='fa fa-exclamation-circle'></i>
-		</span>
-		<p class='translate'>
-			The order can no longer be modified now that it has been closed. However, you're free to attach more
-			pictures to the order, if you want.
-		</p>
-	</div>
-{{/if_cond}}
+{{> orderId }}
 
-{{> orderSummary order }}
+{{> orderCustomer }}
 
-{{> customerSummary order }}
+{{> orderPictures }}
 
-{{> locationSummary order }}
+{{> orderLocation }}
 
-{{> orderSpecifics order }}
+{{> orderType }}
 
-{{> installationSection order }}
+{{> orderBaseDesign }}
 
-{{> pricingSummary order }}
+{{> orderPicketDesign }}
 
-{{> termsSection order }}
+{{> orderAdvancedDesign }}
 
-{{> saveOrderChangesButton order }}
+{{> orderCableDesign }}
+
+{{> orderGlassDesign }}
+
+{{> orderLogistics }}
+
+{{> orderMoney }}
+
+{{> orderAgreement }}
+
+{{> saveOrderButton }}
+
+{{> actionModal }}
 
 {{> confirmationModal }}
 
-<script id='orderPicturesTemplate' type='text/x-handlebars-template'>
-    {{{ picturesTemplate }}}
+{{> gallery }}
+
+<script id='depositModalTemplate' type='text/x-handlebars-template'>
+	{{{ depositModal }}}
 </script>

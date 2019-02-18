@@ -1,29 +1,4 @@
 <div id='picketSection'>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-		    Picket Size
-		</span>
-		<select id='orderPicketSize'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.picketSizes}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-	</div>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-			Picket Styling
-		</span>
-		<select id='orderPicketStyle' data-field-name='picketStyle'>
-			<option value='' disabled selected>Select...</option>
-			{{#each designs.picketStyles}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-
-		{{> designDescriptor }}
-	</div>
-
+	{{> designCategory categoryName='Picket Size' fieldId='orderPicketSize' modelName='picketSize' designOptionName='picketSizes' disableDefault=false }}
+	{{> designCategory categoryName='Picket Styling' fieldId='orderPicketStyle' modelName='picketStyle' designOptionName='picketStyles' disableDefault=false }}
 </div>

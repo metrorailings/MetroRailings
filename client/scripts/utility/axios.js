@@ -62,122 +62,122 @@ function _toggleLoadingVeil()
 // ----------------- MODULE ---------------------------
 
 var axiosModule =
+{
+	/**
+	 * Generic function to leverage when making POST requests from the client
+	 *
+	 * @param {String} url - the URL towards which to direct the request
+	 * @param {Object} payload - a hashmap of data to send over the wire
+	 * @param {boolean} [showLoader] - a flag indicating whether a loading animation should be shown to the user
+	 * 		until the AJAX request returns back with data from the server
+	 * @param {Object} [requestHeaders] - request headers that modify the nature of this connection
+	 * @param {Number} [customTimeout] - the max length of time it should take to properly service this request
+	 * 		prior to it be being rejected
+	 *
+	 * @returns {Promise<Object>} - an object containing either data from an external source or a a plain old rejection
+	 *
+	 * @author kinsho
+	 */
+	post: function(url, payload, showLoader, requestHeaders, customTimeout)
 	{
-		/**
-		 * Generic function to leverage when making POST requests from the client
-		 *
-		 * @param {String} url - the URL towards which to direct the request
-		 * @param {Object} payload - a hashmap of data to send over the wire
-		 * @param {boolean} [showLoader] - a flag indicating whether a loading animation should be shown to the user
-		 * 		until the AJAX request returns back with data from the server
-		 * @param {Object} [requestHeaders] - request headers that modify the nature of this connection
-		 * @param {Number} [customTimeout] - the max length of time it should take to properly service this request
-		 * 		prior to it be being rejected
-		 *
-		 * @returns {Promise<Object>} - an object containing either data from an external source or a a plain old rejection
-		 *
-		 * @author kinsho
-		 */
-		post: function(url, payload, showLoader, requestHeaders, customTimeout)
+		var configObj = DEFAULT_CONFIG;
+
+		configObj.timeout = customTimeout || configObj.timeout;
+		configObj.headers = requestHeaders || {};
+
+		return new Promise((resolve, reject) =>
 		{
-			var configObj = DEFAULT_CONFIG;
+			// Hide any outstanding notifications
+			notifier.hideErrorBar();
+			notifier.hideSuccessBar();
 
-			configObj.timeout = customTimeout || configObj.timeout;
-			configObj.headers = requestHeaders || {};
-
-			return new Promise((resolve, reject) =>
+			if (showLoader)
 			{
-				// Hide any outstanding notifications
-				notifier.hideErrorBar();
-				notifier.hideSuccessBar();
+				_toggleLoadingVeil();
+			}
 
+			_axiosConnection.post(url, payload, configObj).then((response) =>
+			{
 				if (showLoader)
 				{
 					_toggleLoadingVeil();
 				}
 
-				_axiosConnection.post(url, payload, configObj).then((response) =>
-				{
-					if (showLoader)
-					{
-						_toggleLoadingVeil();
-					}
-
-					resolve(response);
-				}).catch((response) =>
-				{
-					if (showLoader)
-					{
-						_toggleLoadingVeil();
-					}
-
-					_genericErrorLogger(response);
-					reject('');
-				});
-			});
-		},
-
-		/**
-		 * Generic function to leverage when making GET requests from the client
-		 *
-		 * @param {String} url - the URL towards which to direct the request
-		 * @param {Object} payload - a hashmap of data to send over the wire as query parameters
-		 * @param {boolean} showLoader - a flag indicating whether a loading animation should be shown to the user
-		 * 		until the AJAX request returns back with data from the server
-		 *
-		 * @returns {Promise<Object>} - an object containing either data from an external source or a reason why the request
-		 * 		ultimately failed to return meaningful data
-		 *
-		 * @author kinsho
-		 */
-		get: function(url, params, showLoader)
-		{
-			return new Promise((resolve, reject) =>
+				resolve(response);
+			}).catch((response) =>
 			{
-				// Hide any outstanding notifications
-				notifier.hideErrorBar();
-				notifier.hideSuccessBar();
-
 				if (showLoader)
 				{
 					_toggleLoadingVeil();
 				}
 
-				_axiosConnection.get(url,
-				{
-					params : params
-				}).then((response) =>
-				{
-					if (showLoader)
-					{
-						_toggleLoadingVeil();
-					}
-
-					resolve(response.data);
-				}).catch((response) =>
-				{
-					if (showLoader)
-					{
-						_toggleLoadingVeil();
-					}
-
-					_genericErrorLogger(response);
-					reject('');
-				});
+				_genericErrorLogger(response);
+				reject('');
 			});
-		},
+		});
+	},
 
-		/**
-		 * Public function that allows us to show the loading veil in circumstances outside of those that this module
-		 * is designed to handle
-		 *
-		 * @author kinsho
-		 */
-		toggleLoadingVeil: function()
+	/**
+	 * Generic function to leverage when making GET requests from the client
+	 *
+	 * @param {String} url - the URL towards which to direct the request
+	 * @param {Object} payload - a hashmap of data to send over the wire as query parameters
+	 * @param {boolean} showLoader - a flag indicating whether a loading animation should be shown to the user
+	 * 		until the AJAX request returns back with data from the server
+	 *
+	 * @returns {Promise<Object>} - an object containing either data from an external source or a reason why the request
+	 * 		ultimately failed to return meaningful data
+	 *
+	 * @author kinsho
+	 */
+	get: function(url, params, showLoader)
+	{
+		return new Promise((resolve, reject) =>
 		{
-			_toggleLoadingVeil();
-		}
-	};
+			// Hide any outstanding notifications
+			notifier.hideErrorBar();
+			notifier.hideSuccessBar();
+
+			if (showLoader)
+			{
+				_toggleLoadingVeil();
+			}
+
+			_axiosConnection.get(url,
+			{
+				params : params
+			}).then((response) =>
+			{
+				if (showLoader)
+				{
+					_toggleLoadingVeil();
+				}
+
+				resolve(response.data);
+			}).catch((response) =>
+			{
+				if (showLoader)
+				{
+					_toggleLoadingVeil();
+				}
+
+				_genericErrorLogger(response);
+				reject('');
+			});
+		});
+	},
+
+	/**
+	 * Public function that allows us to show the loading veil in circumstances outside of those that this module
+	 * is designed to handle
+	 *
+	 * @author kinsho
+	 */
+	toggleLoadingVeil: function()
+	{
+		_toggleLoadingVeil();
+	}
+};
 
 // ----------------- CONFIGURATION ---------------------------
 

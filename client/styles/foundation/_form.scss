@@ -253,6 +253,11 @@
 	width: 95%;
 
 	text-align: left;
+
+	@include printOnly()
+	{
+		display: none;
+	}
 }
 
 /* ----------------------- INPUT STYLES ----------------------------- */

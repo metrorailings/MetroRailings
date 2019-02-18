@@ -2,20 +2,21 @@
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Customer Name</span>
-		<input id='customerName' type='text' value='{{ prospect.customer.name }}'/>
+		<input id='customerName' type='text' value='{{ order.customer.name }}'/>
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>Company</span>
-		<input id='companyName' type='text' class='optionalField' value='{{ prospect.customer.company }}'/>
+		<input id='companyName' type='text' class='optionalField' value='{{ order.customer.company }}'/>
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
 		    E-mail Address
 		</span>
-		<input id='customerEmail' type='email' class='optionalField' value='{{ prospect.customer.email }}' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
+		<span id='emailMultitext'>
+			{{> multiText values=order.customer.email }}
+		</span>
 		<div class='subtleHeadsUp'>
 			If you need to include multiple e-mail addresses here, just separate out each e-mail address with a comma
 		</div>
@@ -25,11 +26,11 @@
 		<span class='specializedLabel'>
 		    Phone Number
 		</span>
-		(<input id='areaCode' type='tel' maxlength='3' placeholder='Area Code' value='{{ prospect.customer.areaCode }}'/>)
+		(<input id='areaCode' type='tel' maxlength='3' placeholder='Area Code' value='{{ order.customer.areaCode }}'/>)
 		<span class='hint hint--right hint--always' data-hint='' ></span>
-		<input id='phoneOne' type='tel' maxlength='3' placeholder='###' value='{{ prospect.customer.phoneOne }}' />
+		<input id='phoneOne' type='tel' maxlength='3' placeholder='###' value='{{ order.customer.phoneOne }}' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
-		<input id='phoneTwo' type='tel' maxlength='4' placeholder='####' value='{{ prospect.customer.phoneTwo }}' />
+		<input id='phoneTwo' type='tel' maxlength='4' placeholder='####' value='{{ order.customer.phoneTwo }}' />
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 

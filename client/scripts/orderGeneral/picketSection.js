@@ -72,5 +72,5 @@ _orderPicketStyleField.addEventListener('change', setPicketStyle);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setPicketSize({ currentTarget: _orderPicketField });
-setPicketStyle({ currentTarget: _orderPicketStyleField });
+setPicketSize();
+setPicketStyle();

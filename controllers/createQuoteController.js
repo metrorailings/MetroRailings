@@ -11,6 +11,7 @@ var controllerHelper = global.OwlStakes.require('controllers/utility/controllerH
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
+	pdfGenerator = global.OwlStakes.require('utility/pdfGenerator'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
@@ -32,7 +33,8 @@ var CONTROLLER_FOLDER = 'createQuote',
 	INVOICE_URL = '/orderInvoice?id=::orderId',
 
 	VIEWS_DIRECTORY = '/client/views/',
-	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt';
+	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt',
+	PDF_EXTENSION = '.pdf';
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -46,9 +48,8 @@ module.exports =
 	init: async function (params, cookie, request)
 	{
 		var populatedPageTemplate,
-			agreementText = await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT),
-			prospect = {},
-			allData, pageData, designData;
+			agreementText,
+			prospect, allData, pageData, designData, order;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -63,20 +64,26 @@ module.exports =
 		{
 			prospect = await prospectsDAO.searchProspectById(parseInt(params.id, 10));
 		}
+		else if (params.testId)
+		{
+			order = await ordersDAO.searchOrderById(parseInt(params.testId, 10));
+		}
 
 		// Gather the data we'll need to properly render the page
-		allData = orderGeneralUtility.basicInit();
+		allData = await orderGeneralUtility.basicInit();
 		designData = allData.designData;
 		pageData = allData.pageData;
-		pageData.prospect = prospect;
-		pageData.agreement = agreementText;
+		pageData.order = prospect || order || {};
+
+		// Determine which agreement text to present on the page
+		agreementText = order && order.text && order.text.agreement && order.text.agreement.join('\n\n');
+		pageData.agreement = agreementText || await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT);
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,
 		{
-			prospectId: prospect._id,
 			designData: designData
 		}, true, true);
 	},
@@ -91,6 +98,8 @@ module.exports =
 		var processedOrder,
 			invoiceLink,
 			mailHTML,
+			quoteLink,
+			quotePDF, quoteAttachment,
 			username;
 
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
@@ -111,15 +120,24 @@ module.exports =
 				};
 			}
 
+			// Generate a link to the quote that we can send to the client
+			// Ensure that the ID of the order is obfuscated in this URL
+			quoteLink = INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, rQuery.obfuscateNumbers(processedOrder._id));
+
+			// Generate a PDF of the quote that we have just generated for the new customer
+			quotePDF = await pdfGenerator.htmlToPDF(quoteLink);
+
 			// Send out an e-mail to the customer if at least one e-mail address was provided
 			if (params.customer.email)
 			{
 				// Generate the link that will be sent to the customer so that he can approve and pay for the order
-				// Ensure that the ID of the order is obfuscated in this URL
-				invoiceLink = config.BASE_URL + INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, rQuery.obfuscateNumbers(processedOrder._id));
+				invoiceLink = config.BASE_URL + quoteLink;
+
+				// Prepare the PDF copy of the quote to be sent over as an attachment
+				quoteAttachment = await mailer.generateAttachment(processedOrder._id + PDF_EXTENSION, quotePDF);
 
 				mailHTML = await mailer.generateFullEmail(CUSTOM_ORDER_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_ORDER_EMAIL);
-				await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
+				await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX, '', [quoteAttachment]);
 			}
 		}
 

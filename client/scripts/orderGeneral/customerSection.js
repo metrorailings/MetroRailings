@@ -2,11 +2,13 @@
 
 import vm from 'client/scripts/orderGeneral/viewModel';
 
+import multiText from 'client/scripts/utility/multiText';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 var CUSTOMER_NAME = 'customerName',
 	COMPANY_NAME = 'companyName',
-	EMAIL_ADDRESS = 'customerEmail',
+	EMAIL_ADDRESS = 'emailMultitext',
 	AREA_CODE = 'areaCode',
 	PHONE_ONE = 'phoneOne',
 	PHONE_TWO = 'phoneTwo';
@@ -43,16 +45,6 @@ function setCompany()
 }
 
 /**
- * Listener responsible for setting a customer's e-mail address into the view model
- *
- * @author kinsho
- */
-function setEmail()
-{
-	vm.email = _emailField.value;
-}
-
-/**
  * Listener responsible for setting a customer's area code into the view model
  *
  * @author kinsho
@@ -86,16 +78,17 @@ function setPhoneTwo()
 
 _nameField.addEventListener('change', setName);
 _companyField.addEventListener('change', setCompany);
-_emailField.addEventListener('change', setEmail);
 _areaCodeField.addEventListener('change', setAreaCode);
 _phoneOneField.addEventListener('change', setPhoneOne);
 _phoneTwoField.addEventListener('change', setPhoneTwo);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
+// Instantiate the e-mail input as a multitext
+new multiText(vm, 'email', _emailField.children[0]);
+
 setName();
 setCompany();
-setEmail();
 setAreaCode();
 setPhoneOne();
 setPhoneTwo();

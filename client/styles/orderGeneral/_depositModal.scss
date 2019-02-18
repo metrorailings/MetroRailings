@@ -1,0 +1,109 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/colors';
+@import '../foundation/animations';
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#actionModalBody
+{
+	padding: 5px;
+}
+
+.modalRow, .modalStack
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > span
+	{
+		margin: 2px;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 100%;
+	}
+
+	&:first-of-type
+	{
+		border-bottom:
+		{
+			style: solid;
+			width: 2px;
+			color: map-get($COLORS, darkGrayTheme);
+		}
+	}
+}
+
+.modalStack
+{
+	flex-direction: column;
+}
+
+#depositPrice
+{
+	margin:
+	{
+		left: 3px;
+	}
+
+	width: 100px;
+}
+
+#depositPriceAdvisory
+{
+	@extend %tinyText;
+
+	margin-top: 3px;
+	width: 90%;
+
+	text-align: center;
+}
+
+#depositModalErrorMessage
+{
+	@extend %smallErrorText;
+	@include transitionSettings($property: all, $duration: 0.3s);
+
+	border:
+	{
+		width: 1px;
+		radius: 15px;
+		style: solid;
+		color: map-get($COLORS, lightWhiteTheme);
+	}
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	padding: 0px;
+	max-height: 0px;
+	width: 70%;
+
+	overflow: hidden;
+	opacity: 0.0;
+
+	&.show
+	{
+		max-height: 500px;
+		padding: 10px;
+
+		opacity: 1.0;
+
+		border-color: map-get($COLORS, darkRedTheme);
+	}
+}

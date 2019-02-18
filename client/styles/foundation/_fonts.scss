@@ -108,6 +108,11 @@ $FONTS:
 	@include basicFontSettings($weight: 400, $size: largePlusFontSize, $family: Muli);
 }
 
+%modestMajorText
+{
+	@include basicFontSettings($weight: 400, $size: largeFontSize, $family: Muli);
+}
+
 /* --- Home Fonts --- */
 %metroRailingsTitle
 {
@@ -425,6 +430,11 @@ $FONTS:
 %errorText
 {
 	@include basicFontSettings($size: regularFontSize, $family: Muli, $color: darkRedTheme);
+}
+
+%smallErrorText
+{
+	@include basicFontSettings($size: smallFontSize, $family: Muli, $color: darkRedTheme);
 }
 
 /* --- Smaller font stylings --- */

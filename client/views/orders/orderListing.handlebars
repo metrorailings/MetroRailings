@@ -38,21 +38,6 @@
 				</span>
             </span>
 
-			<!-- Only show this section for orders with time limits -->
-			{{#if this.timeLimit.original }}{{#unless_cond_group this.status '["closed", "cancelled", "pending"]' }}
-				<span class='orderInfoSection'>
-					<span class='orderInfoSectionHeader translate'>Time Left</span>
-					<span class='orderCell timeLeftCell {{#determine_priority_level timeLimit.rawDueDate}}{{/determine_priority_level}}'>
-						<div class='daysRemainingText translate'>
-							<b> {{#determine_days_left timeLimit.rawDueDate }}{{/determine_days_left}} </b> &nbsp; days left
-						</div>
-						<div>
-							<span class='orderLabel translate'>Due Date:</span> {{ timeLimit.translatedDueDate }}
-						</div>
-					</span>
-				</span>
-			{{/unless_cond_group}}{{/if}}
-
 		</div>
 
         {{#if this.notes }}
@@ -67,6 +52,8 @@
         {{/if}}
 
 		<div class='orderGrouping orderNavButtons'>
+			<!-- Comment out the below code for now, in the interest of de-cluttering -->
+			<!--
             {{#can_status_be_updated this.status}}
                 <span class='orderCell'>
                     <span class='nextStatusLink' data-id={{ this._id }}>
@@ -74,6 +61,7 @@
                     </span>
                 </span>
             {{/can_status_be_updated}}
+			-->
 
 			<!-- Allow for prospects and pending orders to be removed from the system -->
 			{{#if_cond_group this.status '["prospect", "pending"]'}}
@@ -86,6 +74,8 @@
 
 			<!-- Allow the user to generate a contractor-specific agreement for the order whenever the order is in 
 				 pending or queued status -->
+			<!-- Comment out the below code for now, in the interest of de-cluttering -->
+			<!--
 			{{#if_cond_group this.status '["pending", "queued"]'}}
 				<span class='orderCell'>
 					<a class='contractorAgreementLink' target='_blank' href='/contractorAgreement?id={{ this._id }}'>
@@ -93,6 +83,7 @@
 					</a>
 				</span>
 			{{/if_cond_group}}
+			-->
 
 			<!-- Only show this section for actual orders and not estimates -->
 			{{#unless_cond this.status 'prospect'}}
@@ -104,7 +95,7 @@
 					</span>
 				{{/unless_cond}}
 				<span class='orderCell'>
-					<a class='invoiceLink' target='_blank' href='/orderInvoice?id={{ this._id }}'>
+					<a class='invoiceLink' target='_blank' href='/orderInvoice?id={{#obfuscate_id this._id }}{{/obfuscate_id}}'>
 						<i class='fa fa-file-text'></i><span class='translate'>View Invoice</span>
 					</a>
 				</span>

@@ -240,5 +240,33 @@ module.exports =
 		}
 
 		return true;
+	},
+
+	/**
+	 * Function validates whether the passed value qualifies as a dollar amount
+	 *
+	 * @param {String | Number} val - the value to evaluate
+	 *
+	 * @returns {boolean} - a boolean indicating whether the value passes as a dollar amount
+	 *
+	 * @author kinsho
+	 */
+	isDollarAmount: function(val)
+	{
+		val = val ? val + '' : '';
+
+		var pointSplit = val.split('.');
+
+		if (pointSplit.length > 2)
+		{
+			return false;
+		}
+
+		if (pointSplit.length === 2 && (pointSplit[1].length < 1 || pointSplit[1].length > 2))
+		{
+			return false;
+		}
+
+		return this.isNumeric(val, '.');
 	}
 };

@@ -35,7 +35,7 @@ var ORDERS_COLLECTION = 'orders',
 	// Modify and add some new pricing data to all the orders to ensure these orders meet the criteria
 	for (i = 0; i < orders.length; i++)
 	{
-		orders[i].pricing.orderTotal = pricingCalculator.calculateOrderTotal(orders[i]);
+		orders[i].pricing.orderTotal = pricingCalculator.calculateSubtotal(orders[i]);
 
 		// Calculate the balance remaining only for those orders that haven't been closed yet
 		if (orders[i].status === CLOSED_STATUS)

@@ -1,28 +1,4 @@
 <div id='cableDesignSection'>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-		    Cable Size
-		</span>
-		<select id='orderCableSize'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.cableSizes}}
-				<option value='{{ this.id }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-		    Cable Caps
-		</span>
-		<select id='orderCableCap' data-field-name='cableCap'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.cableCaps}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
+	{{> designCategory categoryName='Cable Size' fieldId='orderCableSize' modelName='cableSize' designOptionName='cableSizes' disableDefault=false }}
+	{{> designCategory categoryName='Cable Cap' fieldId='orderCableCap' modelName='cableCap' designOptionName='cableCaps' disableDefault=false }}
 </div>

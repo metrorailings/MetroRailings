@@ -26,33 +26,25 @@ var SAVE_BUTTON = 'saveButton',
 // Elements
 var _saveButton = document.getElementById(SAVE_BUTTON);
 
-// ----------------- LISTENERS ---------------------------
-
 /**
- * Function responsible for submitting the form
+ * Function responsible for finally turning over all the page data to the server
  *
  * @author kinsho
  */
-function submit()
+function _submitAllData()
 {
-	var data = {},
-		isDesignValid = orderSubmissionUtility.validate(),
-		designObject = rQuery.copyObject(vm.design, true),
-		designDescriptionObject = rQuery.copyObject(vm.designDescriptions, true);
-
-	// Organize the data that will be sent over the wire as long as the entire form is valid
-	if (vm.isFormValid && isDesignValid)
-	{
+	var designObject = rQuery.copyObject(vm.design, true),
+		designDescriptionObject = rQuery.copyObject(vm.designDescriptions, true),
 		data =
 		{
-			_id: window.MetroRailings.prospectId || '', // Set an ID here in case we are transforming a prospect into an order
-
+			_id: vm._id || '',
+	
 			dimensions:
 			{
 				length: window.parseInt(vm.length, 10),
 				finishedHeight: window.parseInt(vm.finishedHeight, 10)
 			},
-
+	
 			text:
 			{
 				agreement: vm.agreement,
@@ -71,7 +63,8 @@ function submit()
 				pricePerFoot: window.parseFloat(vm.pricePerFoot),
 				additionalPrice: window.parseFloat(vm.additionalPrice) || 0,
 				isTaxApplied: vm.applyTaxes,
-				isTariffApplied: vm.applyTariffs
+				isTariffApplied: vm.applyTariffs,
+				depositAmount: window.parseFloat(vm.depositAmount)
 			},
 
 			customer:
@@ -93,27 +86,45 @@ function submit()
 			designDescription: rQuery.prunePrivateMembers(designDescriptionObject)
 		};
 
-		// Disable the button to ensure the order is not accidentally sent multiple times
-		_saveButton.disabled = true;
+	// Disable the button to ensure the order is not accidentally sent multiple times
+	_saveButton.disabled = true;
 
-		axios.post(SAVE_ORDER_URL, data, true).then(() =>
+	axios.post(SAVE_ORDER_URL, data, true).then(() =>
+	{
+		// In the main tab, show a message indicating success and navigate the user back to the main admin page
+		notifier.showSuccessMessage(SUCCESS_MESSAGE);
+
+		window.setTimeout(function()
 		{
-			// In the main tab, show a message indicating success and navigate the user back to the main admin page
-			notifier.showSuccessMessage(SUCCESS_MESSAGE);
+			window.location.href = ORDERS_PAGE_URL;
+		}, 2000);
 
-			window.setTimeout(function()
-			{
-				window.location.href = ORDERS_PAGE_URL;
-			}, 2000);
+		// Open the newly-generated invoice in a new tab
+		window.open(ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER), '_blank');
+	}, () =>
+	{
+		notifier.showGenericServerError();
 
-			// Open the newly-generated invoice in a new tab
-			window.open(ORDER_INVOICE_URL.replace(ORDER_ID_PLACEHOLDER), '_blank');
-		}, () =>
-		{
-			notifier.showGenericServerError();
+		_saveButton.disabled = false;
+	});
+}
 
-			_saveButton.disabled = false;
-		});
+// ----------------- LISTENERS ---------------------------
+
+/**
+ * Function responsible for submitting the form
+ *
+ * @author kinsho
+ */
+function submit()
+{
+	var isDesignValid = orderSubmissionUtility.validate();
+
+	// Organize the data that will be sent over the wire as long as the entire form is valid
+	if (vm.isFormValid && isDesignValid)
+	{
+		// Set up a modal to figure out what the deposit amount should be for this particular order
+		orderSubmissionUtility.figureOutDeposit(_submitAllData);
 	}
 }
 

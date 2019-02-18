@@ -9,9 +9,20 @@ import picketSection from 'client/scripts/orderGeneral/picketSection';
 import cableSection from 'client/scripts/orderGeneral/cableSection';
 import glassSection from 'client/scripts/orderGeneral/glassSection';
 import logisticsSection from 'client/scripts/orderGeneral/logisticsSection';
-import externalCharges from 'client/scripts/orderGeneral/externalCharges';
+import moneySection from 'client/scripts/orderGeneral/moneySection';
 import agreementSection from 'client/scripts/orderGeneral/agreementSection';
 import descriptor from 'client/scripts/orderGeneral/designDescriptor';
-import depositModal from 'client/scripts/orderGeneral/depositModal';
 
 import submissionSection from 'client/scripts/createQuote/submissionSection';
+
+// ----------------- HANDLEBAR HELPERS ---------------------------
+
+/**
+ * Handlebars helper function designed to round any number to a fixed number of decimal digits
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
+{
+	return num.toFixed(decimalDigits);
+});

@@ -194,10 +194,10 @@ var ordersModule =
 
 			var dbResults = await mongo.read(ORDERS_COLLECTION,
 				{
-					lastModifiedDate: mongo.greaterThanOrEqualToOperator(beginningDate)
+					'dates.lastModified': mongo.greaterThanOrEqualToOperator(beginningDate)
 				},
 				{
-					lastModifiedDate: -1
+					'dates.lastModified': 1
 				});
 
 			return dbResults;
@@ -315,9 +315,9 @@ var ordersModule =
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
 
 		// Calculate the amount to charge the customer
-		order.pricing.subTotal = pricingCalculator.calculateOrderTotal(order);
-		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subTotal, order);
-		order.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subTotal, order);
+		order.pricing.subtotal = pricingCalculator.calculateSubtotal(order);
+		order.pricing.tax = pricingCalculator.calculateTax(order.pricing.subtotal, order);
+		order.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subtotal, order);
 		order.pricing.orderTotal = pricingCalculator.calculateTotal(order);
 
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
@@ -533,9 +533,9 @@ var ordersModule =
 		orderModifications.pricing.deductions = _parseNumberOrReturnZero(orderModifications.pricing.deductions);
 
 		// Recalculate the total price of the order
-		orderModifications.pricing.subTotal = pricingCalculator.calculateOrderTotal(orderModifications);
-		orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subTotal, orderModifications);
-		orderModifications.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subTotal, orderModifications);
+		orderModifications.pricing.subtotal = pricingCalculator.calculateOrderTotal(orderModifications);
+		orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subtotal, orderModifications);
+		orderModifications.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subtotal, orderModifications);
 		orderModifications.pricing.orderTotal = pricingCalculator.calculateTotal(orderModifications);
 
 		// If the order is still pending finalization, reset the balance remaining
@@ -627,7 +627,7 @@ var ordersModule =
 			'pricing.additionalPrice': orderModifications.pricing.additionalPrice,
 			'pricing.deductions': orderModifications.pricing.deductions,
 			'pricing.modification': orderModifications.pricing.modification,
-			'pricing.subTotal': orderModifications.pricing.subTotal,
+			'pricing.subtotal': orderModifications.pricing.subtotal,
 			'pricing.isTaxApplied': orderModifications.pricing.isTaxApplied,
 			'pricing.isTariffApplied': orderModifications.pricing.isTariffApplied,
 			'pricing.orderTotal': orderModifications.pricing.orderTotal,

@@ -5,9 +5,11 @@
 			Cover Plates?
 		</span>
 		<span id='coverPlatesButtonSet' class='buttonSet'>
-			<input type='radio' class='yesRadio' id='coverPlatesYes' name='coverPlates' value='y' />
+			<input type='radio' class='yesRadio' id='coverPlatesYes' name='coverPlates' value='y'
+				{{#if order.installation.coverPlates}} checked {{/if}}/>
 			<label for='coverPlatesYes'>Yes</label>
-			<input type='radio' class='noRadio' id='coverPlatesNo' name='coverPlates' value='' />
+			<input type='radio' class='noRadio' id='coverPlatesNo' name='coverPlates' value=''
+				{{#unless order.installation.coverPlates}} checked {{/unless}}/>
 			<label for='coverPlatesNo'>No</label>
 		</span>
 	</div>
@@ -18,15 +20,15 @@
 		</span>
 		<select id='orderPlatformType'>
 			<option value='' disabled>Select a platform type...</option>
-			<option value='earth'>Earth</option>
-			<option value='concrete'>Concrete</option>
-			<option value='tile'>Tile</option>
-			<option value='wood'>Wood</option>
-			<option value='limestone'>Limestone</option>
-			<option value='sheetrock'>Sheetrock</option>
-			<option value='brick'>Brick</option>
-			<option value='granite'>Granite</option>
-			<option value='rebar'>Rebar</option>
+			<option value='earth' {{#if_cond order.installation.platformType 'earth'}} selected {{/if_cond}}>Earth</option>
+			<option value='concrete' {{#if_cond order.installation.platformType 'concrete'}} selected {{/if_cond}}>Concrete</option>
+			<option value='tile' {{#if_cond order.installation.platformType 'tile'}} selected {{/if_cond}}>Tile</option>
+			<option value='wood' {{#if_cond order.installation.platformType 'wood'}} selected {{/if_cond}}>Wood</option>
+			<option value='limestone' {{#if_cond order.installation.platformType 'limestone'}} selected {{/if_cond}}>Limestone</option>
+			<option value='sheetrock' {{#if_cond order.installation.platformType 'sheetrock'}} selected {{/if_cond}}>Sheetrock</option>
+			<option value='brick' {{#if_cond order.installation.platformType 'brick'}} selected {{/if_cond}}>Brick</option>
+			<option value='granite' {{#if_cond order.installation.platformType 'granite'}} selected {{/if_cond}}>Granite</option>
+			<option value='rebar' {{#if_cond order.installation.platformType 'rebat'}} selected {{/if_cond}}>Rebar</option>
 		</select>
 	</div>
 
@@ -34,7 +36,7 @@
 		<span class='specializedLabel'>
 		    Order Length (feet)
 		</span>
-		<input type='tel' id='orderLength' />
+		<input type='tel' id='orderLength' value='{{ order.dimensions.length }}'/>
 		<span class='hint hint--right hint--always' data-hint=''></span>
 	</div>
 
@@ -42,30 +44,15 @@
 		<span class='specializedLabel'>
 		    Finished Height (inches)
 		</span>
-		<input id='finishedHeight' type='tel' />
-	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-		    Price per Foot
-		</span>
-		$<input type='tel' id='pricePerFoot' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
+		<input id='finishedHeight' type='tel' value='{{ order.dimensions.finishedHeight }}' />
 	</div>
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
 		    Additional Information
 		</span>
-		<textarea id='additionalFeatures' class='optionalField'></textarea>
+		<textarea id='additionalFeatures' class='optionalField'
+				  value='{{#format_value_for_textarea order.text.additionalDescription}}{{/format_value_for_textarea}}'>
+		</textarea>
 	</div>
-
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>
-			Additional Pricing
-		</span>
-		$<input type='tel' id='additionalPrice' class='optionalField' />
-		<span class='hint hint--right hint--always' data-hint=''></span>
-	</div>
-
 </div>
