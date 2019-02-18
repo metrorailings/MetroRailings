@@ -4,7 +4,7 @@
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var MODAL_OVERLAY = 'modalOverlay',
+var MODAL_OVERLAY = 'confirmationModalOverlay',
 	CONFIRMATION_MODAL = 'confirmationModal',
 	CONFIRMATION_MODAL_BODY = 'confirmationModalBody',
 

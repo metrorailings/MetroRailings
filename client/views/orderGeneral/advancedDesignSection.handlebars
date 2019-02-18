@@ -1,53 +1,6 @@
 <div id='advancedDesignSection'>
-	
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-			Center Design
-		</span>
-		<select id='orderCenterDesign' data-field-name='centerDesign'>
-			{{#each designs.centerDesigns}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-	
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-			Collars
-		</span>
-		<select id='orderCollars' data-field-name='collars'>
-			{{#each designs.collars}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-	
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-			Baskets
-		</span>
-		<select id='orderBaskets' data-field-name='baskets'>
-			{{#each designs.baskets}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-			Valence
-		</span>
-		<select id='orderValence' data-field-name='valence'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.valences}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
+	{{> designCategory categoryName='Center Design' fieldId='orderCenterDesign' modelName='centerDesign' designOptionName='centerDesigns' disableDefault=false }}
+	{{> designCategory categoryName='Collars' fieldId='orderCollars' modelName='collars' designOptionName='collars' disableDefault=false }}
+	{{> designCategory categoryName='Baskets' fieldId='orderBaskets' modelName='baskets' designOptionName='baskets' disableDefault=false }}
+	{{> designCategory categoryName='Valence' fieldId='orderValence' modelName='valence' designOptionName='valences' disableDefault=false }}
 </div>

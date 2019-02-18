@@ -31,9 +31,11 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var ORDER_SHARED_FOLDER = 'orderGeneral',
+	UTILITY_FOLDER = 'utility',
 
 	PARTIALS =
 	{
+		ID: 'idSection',
 		CUSTOMER: 'customerSection',
 		LOCATION: 'locationSection',
 		TYPE: 'typeSection',
@@ -43,70 +45,78 @@ var ORDER_SHARED_FOLDER = 'orderGeneral',
 		CABLE_DESIGN: 'cableDesignSection',
 		GLASS_DESIGN: 'glassDesignSection',
 		LOGISTICS: 'logisticsSection',
-		EXTERNAL_CHARGES: 'externalCharges',
+		MONEY: 'moneySection',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection',
 		DESIGN_ERRORS: 'designErrors',
 		DESIGN_DESCRIPTOR: 'designDescriptor',
-		DEPOSIT_MODAL: 'depositModal'
+		DESIGN_CATEGORY: 'designCategory',
+		DEPOSIT_MODAL: 'depositModal',
+		MULTI_TEXT: 'multiText',
+		PICTURES: 'picturesSection'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
 
 /**
+ * The template for the ID section
+ */
+_Handlebars.registerPartial('orderId', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.ID));
+
+/**
  * The template for the customer section
  */
-_Handlebars.registerPartial('createQuoteCustomer', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CUSTOMER));
+_Handlebars.registerPartial('orderCustomer', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CUSTOMER));
 
 /**
  * The template for the location section
  */
-_Handlebars.registerPartial('createQuoteLocation', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOCATION));
+_Handlebars.registerPartial('orderLocation', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOCATION));
 
 /**
  * The template for the type section
  */
-_Handlebars.registerPartial('createQuoteType', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.TYPE));
+_Handlebars.registerPartial('orderType', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.TYPE));
 
 /**
  * The template for the base design section
  */
-_Handlebars.registerPartial('createQuoteBaseDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.BASE_DESIGN));
+_Handlebars.registerPartial('orderBaseDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.BASE_DESIGN));
 
 /**
  * The template for the picket section
  */
-_Handlebars.registerPartial('createQuotePicketDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICKET_DESIGN));
+_Handlebars.registerPartial('orderPicketDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICKET_DESIGN));
 
 /**
  * The template for the advanced design section
  */
-_Handlebars.registerPartial('createQuoteAdvancedDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.ADVANCED_DESIGN));
+_Handlebars.registerPartial('orderAdvancedDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.ADVANCED_DESIGN));
 
 /**
  * The template for the cable design section
  */
-_Handlebars.registerPartial('createQuoteCableDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CABLE_DESIGN));
+_Handlebars.registerPartial('orderCableDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CABLE_DESIGN));
 
 /**
  * The template for the glass design section
  */
-_Handlebars.registerPartial('createQuoteGlassDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.GLASS_DESIGN));
+_Handlebars.registerPartial('orderGlassDesign', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.GLASS_DESIGN));
 
 /**
  * The template for the railings logistics section
  */
-_Handlebars.registerPartial('createQuoteLogistics', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOGISTICS));
+_Handlebars.registerPartial('orderLogistics', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.LOGISTICS));
 
 /**
- * The template for the external charges section
+ * The template for the section where money will be discussed
  */
-_Handlebars.registerPartial('createQuoteExternalCharges', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.EXTERNAL_CHARGES));
+_Handlebars.registerPartial('orderMoney', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.MONEY));
 
 /**
  * The template for the agreement section
  */
-_Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.AGREEMENT));
+_Handlebars.registerPartial('orderAgreement', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.AGREEMENT));
 
 /**
  * The template for the design descriptor partial
@@ -114,14 +124,29 @@ _Handlebars.registerPartial('createQuoteAgreement', fileManager.fetchTemplateSyn
 _Handlebars.registerPartial('designDescriptor', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_DESCRIPTOR));
 
 /**
+ * The template for the design category partial
+ */
+_Handlebars.registerPartial('designCategory', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_CATEGORY));
+
+/**
  * The template for the submission button
  */
-_Handlebars.registerPartial('saveInvoiceButton', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.SUBMISSION_BUTTON));
+_Handlebars.registerPartial('saveOrderButton', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.SUBMISSION_BUTTON));
 
 /**
  * The template for the deposit modal
  */
 _Handlebars.registerPartial('depositModal', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL));
+
+/**
+ * The template for multi-text inputs
+ */
+_Handlebars.registerPartial('multiText', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.MULTI_TEXT));
+
+/**
+ * The template for the order pictures section
+ */
+_Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICTURES));
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -136,6 +161,8 @@ module.exports =
 	basicInit: async function ()
 	{
 		var designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
+			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
+			picturesTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PICTURES),
 			pageData,
 			designData;
 
@@ -166,13 +193,16 @@ module.exports =
 			taxRate: (pricingData.NJ_SALES_TAX_RATE * 100).toFixed(2),
 			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2),
 			designs: designData,
-			designErrorsTemplate: designErrorsTemplate
+			designErrorsTemplate: designErrorsTemplate,
+			picturesTemplate: picturesTemplate,
+			depositModal: depositModalTemplate
 		};
 
 		return {
 			designData : designData,
 			pageData : pageData
 		};
-	}
+	},
 
+	
 };

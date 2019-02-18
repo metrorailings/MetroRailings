@@ -1,16 +1,3 @@
 <div id='typeSection'>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-		    Type
-		</span>
-		<select id='orderType' data-field-name='type'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.types}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor designs.types.[0] }}
-	</div>
-
+	{{> designCategory categoryName='Type' fieldId='orderType' modelName='type' designOptionName='types' disableDefault=true }}
 </div>

@@ -1,6 +1,7 @@
 <div id='paymentSection'>
 
-	<div class='headlineQuestion'>How do you prefer to pay for this order?</div>
+	<div class='headlineQuestion'>How do you prefer to pay the deposit for this order?</div>
+	<div class='modestHeadlineText'>(Deposit: ${{#to_fixed order.pricing.depositAmount 2}}{{/to_fixed}})</div>
 
 	<div id='paymentOptionSection' >
 		<span class='regularRadioInput'>
@@ -15,9 +16,8 @@
 
 	<div id='checkMessage'>
 		<p>
-			Please keep in mind that (unless stated otherwise in our terms of agreement above) a check for half the
-			order total is due before the job begins. When we are finished installing your railings, the rest of the
-			balance is due then.
+			Please keep in mind that (unless stated otherwise in our terms of agreement above) a check for ${{#to_fixed order.pricing.depositAmount 2}}{{/to_fixed}} 
+			before the job begins. When we are finished installing your railings, the rest of the balance is due then.
 		</p>
 		<p>
 			We will not begin the job until we receive the check. In order to pay by check, you must mail the check to:
@@ -38,8 +38,8 @@
 	            <i class='fa fa-exclamation-circle'></i>
 			</span>
 			<p>
-				You will only be paying 50% of the order total today. The rest of the balance will be paid once we
-				finish the job to your satisfaction.
+				You will only be paying ${{#to_fixed order.pricing.depositAmount 2}}{{/to_fixed}} today. The rest of 
+				the balance will be paid once we finish the job to your satisfaction.
 			</p>
 		</div>
 

@@ -94,6 +94,40 @@ module.exports =
 	},
 
 	/**
+	 * Function meant to prepare an attachment that will be sent over in an e-mail
+	 *
+	 * @param {String} filename - the name of the attachment
+	 * @param {String | Buffer} [contents] - the contents of the attachment
+	 * @param {String} [pathToContents] - an internal path to the file that will need to sent over as an attachment
+	 *
+	 * @returns {Object} - an object encapsulating the name and contents of this attachment
+	 *
+	 * @author kinsho
+	 */
+	generateAttachment: async function (filename, contents, pathToContents)
+	{
+		console.log('Generating an attachment to be sent via e-mail');
+
+		if (pathToContents)
+		{
+			// Append a starting slash to the file path if one is not there
+			if (pathToContents[0] !== '/')
+			{
+				pathToContents = '/' + pathToContents;
+			}
+
+			contents = await fileManager.fetchFile(pathToContents);
+			contents = Buffer.from(contents);
+		}
+
+		return {
+			filename: filename,
+			content: contents,
+			contentType: 'application/pdf'
+		};
+	},
+
+	/**
 	 * Function meant to send an e-mail to a customer
 	 *
 	 * @param {String} htmlText - the HTML that comprises the e-mail
@@ -102,13 +136,14 @@ module.exports =
 	 * @param {String} subject - the subject to append to the e-mail
 	 * @param {String} [replyTo] - an e-mail address to reply back to should the recipient want to e-mail the sender
 	 * @param {String} [fromEntity] - the address that will be used to identify the sender
+	 * @param {Array<Object>} [attachments] - a collection of formally defined attachment objects
 	 *
 	 * @return {boolean} - a flag indicating whether the e-mail was sent successfully to all e-mail addresses or
 	 * 		rejected by any one of them
 	 *
 	 * @author kinsho
 	 */
-	sendMail: async function (htmlText, plainText, email, subject, replyTo, fromEntity)
+	sendMail: async function (htmlText, plainText, email, subject, replyTo, fromEntity, attachments)
 	{
 		console.log('Sending e-mail to ' + email);
 
@@ -121,14 +156,15 @@ module.exports =
 			for (let i = 0; i < addresses.length; i++)
 			{
 				mail = await _sendMail(
-					{
-						from: fromEntity,
-						to: email,
-						subject: subject,
-						text: plainText,
-						html: htmlText,
-						replyTo: replyTo || config.SUPPORT_MAILBOX
-					});
+				{
+					from: fromEntity || config.SUPPORT_MAILBOX,
+					to: email,
+					subject: subject,
+					text: plainText,
+					html: htmlText,
+					replyTo: replyTo || config.SUPPORT_MAILBOX,
+					attachments: attachments
+				});
 
 				if (mail.accepted.length)
 				{

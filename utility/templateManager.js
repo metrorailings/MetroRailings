@@ -114,6 +114,23 @@ _Handlebars.registerHelper('if_cond', function(val1, val2, block)
 });
 
 /**
+ * Helper designed to test the existence of two properties at once
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('if_and', function(val1, val2, block)
+{
+	if (val1 && val2)
+	{
+		return block.fn(this);
+	}
+	else
+	{
+		return block.inverse(this);
+	}
+});
+
+/**
  * Helper designed to help us test for the equality of two values and execute opposite blocks of code depending on
  * the results of that test
  *
@@ -322,6 +339,26 @@ _Handlebars.registerHelper('format_time', function(date)
 _Handlebars.registerHelper('is_string', function(val)
 {
 	return (typeof val === 'string');
+});
+
+/**
+ * Handlebars helper function designed to join together two string values
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('concat', function(val1, val2)
+{
+	return val1 + '' + val2;
+});
+
+/**
+ * Handlebars helper function designed to split a string into a collection of substrings segregated out by commas
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('split_by_comma', function(val)
+{
+	return val.split(',');
 });
 
 // ----------------- MODULE DEFINITION --------------------------

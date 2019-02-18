@@ -3,33 +3,34 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "app-root-path": "*",
+    "app-root-path": "^2.1.0",
+    "busboy": "^0.3.0",
     "cheerio": "*",
-    "q": "~1",
-    "request": "*",
-    "request-promise": "*",
-    "handlebars": "*",
-    "node-sass": "*",
-    "mongodb": "*",
-    "html-minifier": "*",
-    "sleep": "*",
+    "clean-css": "^4.2.1",
     "cookie": "*",
-    "randomstring": "*",
-    "stripe": "*",
-    "nodemailer": "*",
-    "styliner": "*",
-    "jspm": "beta",
+    "css-purge": "^3.1.7",
     "dropbox": "~2",
-    "busboy": "*",
-    "jpeg-autorotate": "*",
-    "imagemin": "*",
-    "imagemin-jpegtran": "*",
-    "sharp": "*",
-    "css-purge": "*",
-    "clean-css": "*",
     "google-translate-api": "*",
+    "handlebars": "^4.1.0",
+    "html-minifier": "^3.5.21",
+    "imagemin": "^6.1.0",
+    "imagemin-jpegtran": "^6.0.0",
+    "jpeg-autorotate": "^4.0.1",
+    "jspm": "^0.17.0-beta.49",
+    "mongodb": "^3.1.13",
+    "node-sass": "^4.11.0",
+    "nodemailer": "^5.1.1",
+    "puppeteer": "*",
+    "q": "~1",
+    "randomstring": "*",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "sharp": "^0.21.3",
+    "showdown": "^1.9.0",
+    "sleep": "^6.0.0",
+    "stripe": "^6.25.1",
     "striptags": "~2",
-    "showdown": "*"
+    "styliner": "^1.0.4"
   },
   "jspm": {
     "main": "MR.js",
@@ -47,6 +48,7 @@
       "handlebars": "npm:handlebars@^4.0.6",
       "jquery": "npm:jquery@^3.3.1",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25",
+      "randomstring": "npm:randomstring@^1.1.5",
       "slick": "github:kenwheeler/slick@^1.8.1",
       "smoothScroll": "github:cferdinandi/smooth-scroll@^10.1.0",
       "tether": "github:HubSpot/tether@^1.4.0",
@@ -138,10 +140,10 @@
       "npm:jquery@3.3.1": {
         "format": "amd"
       },
-      "npm:pbkdf2@3.0.14": {
+      "npm:pbkdf2@3.0.17": {
         "main": "browser.js"
       },
-      "npm:safe-buffer@5.1.1": {
+      "npm:safe-buffer@5.1.2": {
         "browser": "index.js"
       }
     }

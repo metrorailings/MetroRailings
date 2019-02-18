@@ -41,5 +41,5 @@ _orderGlassBuildField.addEventListener('change', setGlassBuild);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setGlassType({ currentTarget: _orderGlassTypeField });
-setGlassBuild({ currentTarget: _orderGlassBuildField });
+setGlassType();
+setGlassBuild();

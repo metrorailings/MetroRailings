@@ -1,76 +1,17 @@
 <div id='baseDesignSection'>
 
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-		    Post Design
-		</span>
-		<select id='orderPost' data-field-name='post'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.posts}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-		    Handrailing
-		</span>
-		<select id='orderHandrailing' data-field-name='handrailing'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.handrailings}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-		    Post End Design
-		</span>
-		<select id='orderPostEnd' data-field-name='postEnd'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.postEnds}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-		    Post Cap Design
-		</span>
-		<select id='orderPostCap' data-field-name='postCap'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.postCaps}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
-
-	<div class='dataDescriptionGrouping'>
-		<span class='specializedLabel'>
-		    ADA Handrail
-		</span>
-		<select id='orderAda' data-field-name='ada'>
-			<option value='' disabled>Select...</option>
-			{{#each designs.ada}}
-				<option value='{{ this.id }}' data-description='{{ this.description }}'>{{ this.label }}</option>
-			{{/each}}
-		</select>
-		{{> designDescriptor disabled=true }}
-	</div>
+	{{> designCategory categoryName='Post Size' fieldId='orderPost' modelName='post' designOptionName='posts' disableDefault=false }}
+	{{> designCategory categoryName='Handrailing' fieldId='orderHandrailing' modelName='handrailing' designOptionName='handrailings' disableDefault=false }}
+	{{> designCategory categoryName='Post End Design' fieldId='orderPostEnd' modelName='postEnd' designOptionName='postEnds' disableDefault=false }}
+	{{> designCategory categoryName='Post Cap Design' fieldId='orderPostCap' modelName='postCap' designOptionName='postCaps' disableDefault=false }}
+	{{> designCategory categoryName='ADA Handrail' fieldId='orderAda' modelName='ada' designOptionName='ada' disableDefault=false }}
 
 	<div class='dataGrouping'>
 		<span class='specializedLabel'>
 		    Color
 		</span>
 		<select id='orderColor'>
-			<option value='' disabled>Select a color...</option>
+			<option value='' selected>Select a color...</option>
 			{{#each designs.colors}}
 				<option value='{{ this.id }}'>{{ this.label }}</option>
 			{{/each}}

@@ -148,11 +148,11 @@ _otherColorField.addEventListener('change', setColor);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setType({ currentTarget: _orderTypeField });
-setPostDesign({ currentTarget: _orderPostDesignField });
-setHandrailing({ currentTarget: _orderHandrailingField });
-setPostEnd({ currentTarget: _orderPostEndField });
-setPostCap({ currentTarget: _orderPostCapField });
-setADA({ currentTarget: _orderAdaField });
+setType();
+setPostDesign();
+setHandrailing();
+setPostEnd();
+setPostCap();
+setADA();
 
-setColor({ currentTarget: _orderColorField });
+setColor();

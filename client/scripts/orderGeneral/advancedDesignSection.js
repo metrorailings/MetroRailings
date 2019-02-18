@@ -66,7 +66,7 @@ _orderBasketsField.addEventListener('change', setBaskets);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
-setCenterDesign({ currentTarget: _orderCenterDesignField });
-setCollars({ currentTarget: _orderCollarsField });
-setBaskets({ currentTarget: _orderBasketsField });
-setValence({ currentTarget: _orderValenceField });
+setCenterDesign();
+setCollars();
+setBaskets();
+setValence();

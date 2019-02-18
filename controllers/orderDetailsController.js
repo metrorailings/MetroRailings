@@ -4,11 +4,9 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('handlebars'),
-
-	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
-	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	dropbox = global.OwlStakes.require('utility/dropbox'),
 
@@ -22,79 +20,11 @@ var _Handlebars = require('handlebars'),
 // ----------------- ENUM/CONSTANTS --------------------------
 
 var CONTROLLER_FOLDER = 'orderDetails',
-	ORDER_SHARED_FOLDER = 'orderGeneral',
 
-	UTILITY_FOLDER = 'utility',
-
-	ADMIN_LOG_IN_URL = '/admin',
-
-	PARTIALS =
-	{
-		SUMMARY: 'orderSummary',
-		CUSTOMER_INFO: 'customerSummary',
-		LOCATION_INFO: 'locationSummary',
-		ORDER_SPECIFICS: 'orderSpecifics',
-		INSTALLATION_SUMMARY: 'installationSummary',
-		PRICING_SUMMARY: 'pricingSummary',
-		TERMS_SECTION: 'termsSection',
-		SAVE_BUTTON: 'submissionSection',
-		ORDER_PICTURES: 'orderPictures',
-		ORDER_NOTES: 'orderNotes'
-	};
-
-// ----------------- PARTIAL TEMPLATES --------------------------
-
-/**
- * The template for the order summary section
- */
-_Handlebars.registerPartial('orderSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUMMARY));
-
-/**
- * The template for the order notes section
- */
-_Handlebars.registerPartial('orderNotes', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ORDER_NOTES));
-
-/**
- * The template for the order pictures section
- */
-_Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES));
-
-/**
- * The template for the customer summary section
- */
-_Handlebars.registerPartial('customerSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.CUSTOMER_INFO));
-
-/**
- * The template for the location summary section
- */
-_Handlebars.registerPartial('locationSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.LOCATION_INFO));
-
-/**
- * The template for the order specifics section
- */
-_Handlebars.registerPartial('orderSpecifics', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.ORDER_SPECIFICS));
-
-/**
- * The template for the installation details section
- */
-_Handlebars.registerPartial('installationSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.INSTALLATION_SUMMARY));
-
-/**
- * The template for the pricing summary section
- */
-_Handlebars.registerPartial('pricingSummary', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.PRICING_SUMMARY));
-
-/**
- * The template for the terms/description section
- */
-_Handlebars.registerPartial('termsSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.TERMS_SECTION));
-
-/**
- * The template for the submission button
- */
-_Handlebars.registerPartial('saveOrderChangesButton', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SAVE_BUTTON));
+	ADMIN_LOG_IN_URL = '/admin';
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -105,7 +35,8 @@ module.exports =
 	init: async function (params, cookie, request)
 	{
 		var populatedPageTemplate,
-			orderNumber = params ? parseInt(params.orderNumber, 10) : undefined,
+			allData, designData,
+			orderNumber = params ? parseInt(params.id, 10) : undefined,
 			pageData =
 			{
 				dropboxToken: config.DROPBOX_TOKEN
@@ -120,19 +51,25 @@ module.exports =
 
 		console.log('Loading the order details page...');
 
-		// Fetch the data that will be needed to properly render the page
+		// Gather the basic data we'll need to properly render the page
+		allData = await orderGeneralUtility.basicInit();
+		designData = allData.designData;
+		pageData = allData.pageData;
+
+		// Fetch the order data that will be needed to fill in the page
 		pageData.order = await ordersDAO.searchOrderById(orderNumber);
 
 		// Format the agreement text so that it can be properly presented on the page
-		pageData.order.agreement = pageData.order.agreement.join('\n\n');
-
-		// Load the template that we will be using to render the images
-		pageData.picturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.ORDER_PICTURES);
+		pageData.order.text.agreement = pageData.order.text.agreement.join('\n\n');
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,
+		{
+			designData: designData,
+			pictures: pageData.order.pictures
+		}, true, true);
 	},
 
 	/**
@@ -167,7 +104,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	saveNewPicture: async function (params, cookie, request)
+	saveNewPictures: async function (params, cookie, request)
 	{
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
@@ -179,14 +116,23 @@ module.exports =
 			// Upload the image(s) to Dropbox
 			imgMetas = await dropbox.uploadImage(params.id, params.files);
 
-			// Save all the metadata from the newly uploaded images into the database
-			await ordersDAO.saveNewPicToOrder(params.id, imgMetas, username);
-		}
+			if (imgMetas.length)
+			{
+				// Save all the metadata from the newly uploaded images into the database
+				await ordersDAO.saveNewPicToOrder(params.id, imgMetas, username);
 
-		return {
-			statusCode: responseCodes.OK,
-			data: imgMetas
-		};
+				return {
+					statusCode: responseCodes.OK,
+					data: imgMetas
+				};
+			}
+			else
+			{
+				return {
+					statusCode: responseCodes.BAD_REQUEST
+				};
+			}
+		}
 	},
 
 	/**

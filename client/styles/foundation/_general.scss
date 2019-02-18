@@ -217,6 +217,31 @@ h5
 	overflow-x: auto;
 }
 
+// Styling for sub-section headline text
+.headlineQuestion
+{
+	@extend %majorText;
+
+	margin:
+	{
+		bottom: 5px;
+		left: 10px;
+		right: 10px;
+	}
+}
+
+.modestHeadlineText
+{
+	@extend %modestMajorText;
+
+	margin:
+	{
+		bottom: 5px;
+		left: 10px;
+		right: 10px;
+	}
+}
+
 // Image tags designed to preload high-resolution images
 .preloadImage
 {

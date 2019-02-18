@@ -4,6 +4,7 @@ import orderFilter from 'client/scripts/orders/orderFilter';
 import orderListing from 'client/scripts/orders/orderListing';
 import vm from 'client/scripts/orders/viewModel';
 
+import handlebarHelpers from 'client/scripts/utility/handlebarHelpers';
 import translate from 'client/scripts/utility/translate';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------

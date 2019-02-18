@@ -92,6 +92,7 @@ for (let i = 0; i < descriptionSections.length; i += 1)
 	// If the descriptive section has been tagged as disabled by default, just disable it upon page initialization
 	if (descriptionSections[i].dataset.disabled)
 	{
+		descriptionSections[i].classList.add(DISABLED_CLASS);
 		textarea.disabled = true;
 	}
 }
