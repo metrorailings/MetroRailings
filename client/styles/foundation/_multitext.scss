@@ -1,0 +1,78 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.multitextGroup
+{
+	border:
+	{
+		style: inset;
+		width: 1px;
+		radius: 1px;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	padding: 8px;
+
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+
+	&.error
+	{
+		background-color: map-get($COLORS, redTheme);
+	}
+}
+
+.multitextExistingValues
+{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.multitextSetValue
+{
+	@extend %fixedButtonText;
+
+	margin:
+	{
+		left: 3px;
+		right: 3px;
+	}
+
+	border-radius: 6px;
+	padding: 5px;
+
+	background-color: map-get($COLORS, darkerGrayTheme);
+
+	& > .fa-times
+	{
+		margin:
+		{
+			left: 4px;
+			right: 4px;
+		}
+
+		cursor: pointer;
+	}
+}
+
+.multitextNewValue
+{
+	width: 400px;
+
+	border: none;
+	box-shadow: none;
+	resize: none;
+
+	&:focus
+	{
+		outline: none;
+	}
+}

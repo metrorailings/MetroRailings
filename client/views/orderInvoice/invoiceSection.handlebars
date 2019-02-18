@@ -192,7 +192,7 @@
 		{{#if_or order.pricing.tax order.pricing.tariff}}
 			<div>
 				<span class='orderFooterHeader'>Order Subtotal</span>
-				<span class='orderFooterValue'>${{#to_fixed order.pricing.subTotal 2}}{{/to_fixed}}</span>
+				<span class='orderFooterValue'>${{#to_fixed order.pricing.subtotal 2}}{{/to_fixed}}</span>
 			</div>
 		{{/if_or}}
 		{{#if order.pricing.tax}}

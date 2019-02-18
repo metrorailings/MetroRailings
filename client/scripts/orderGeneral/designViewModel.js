@@ -301,7 +301,11 @@ function generateViewModel()
 	keys = Object.keys(viewModel);
 	for (let i = keys.length - 1; i >= 0; i -= 1)
 	{
-		viewModel[keys[i]] = '';
+		Object.defineProperty(viewModel, '__' + keys[i],
+		{
+			writable: true,
+			enumerable: false
+		});
 	}
 
 	// Prevent any properties from being added to this object, as this object is the definitive data dictionary for all

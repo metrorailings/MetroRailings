@@ -1,0 +1,38 @@
+<div id='picturesSection'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel translate'>
+			Pictures
+		</span>
+
+		<span id='picturesListingContainer'>
+			<div id='picturesListing'>
+				{{#order.pictures}}
+					<span>
+						<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index='{{@index}}' data-order-Id='{{ ../order._id }}'/>
+						<i class='fa fa-times-circle deleteImage'></i>
+					</span>
+				{{/order.pictures}}
+			</div>
+			<div id="uploadPictureButtonContainer">
+				<span id='uploadPictureButton' class='translate'>Upload a New Picture</span>
+				<input type='file' id='uploadPictureInput' multiple />
+			</div>
+		</span>
+
+		<span id='picturesListingLoadingIcons'>
+			<span id='uploadingText' class='translate'>Processing</span>
+			<span class='loadingBall'></span>
+			<span class='loadingBall'></span>
+			<span class='loadingBall'></span>
+		</span>
+	</div>
+
+</div>
+
+<script id='newPictureTemplate' type='text/x-handlebars-template'>
+	<span>
+		<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index='{{ @index }}' data-order-ID='{{ id }}'/>
+		<i class='fa fa-times-circle deleteImage'></i>
+	</span>
+</script>

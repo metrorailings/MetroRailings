@@ -4,6 +4,7 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 import rQuery from 'client/scripts/utility/rQueryClient';
 import actionModal from 'client/scripts/utility/actionModal';
+import depositModal from 'client/scripts/orderGeneral/depositModal';
 
 import designValidation from 'shared/designs/designValidation';
 
@@ -74,7 +75,7 @@ var submitUtility =
 		// Only pop out the deposit modal for orders that have not been confirmed yet
 		if ( !(vm.status) || (vm.status === PENDING_KEYWORD) )
 		{
-			actionModal.open(document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML, modalData, submissionFunction);
+			actionModal.open(document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML, modalData, submissionFunction, depositModal.initializeDepositModalListeners);
 		}
 		else
 		{

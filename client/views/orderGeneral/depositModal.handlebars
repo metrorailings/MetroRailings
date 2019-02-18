@@ -1,20 +1,25 @@
 <div id='depositModal'>
 
-	<div class='dataStack'>
-		<span>
-			Order Total
-		</span>
-		<span id='orderTotalDisplay' class='staticValue'>{{ orderTotal }}</span>
+	<div class='modalRow'>
+		<span class='modalLabel'>Order Total</span>
+		<span class='staticValue'>${{#to_fixed orderTotal 2 }}{{/to_fixed}}</span>
 	</div>
 
-	<div class='dataStack'>
+	<div class='modalStack'>
 		<span>
 			What should the deposit amount be?
 		</span>
 		<span>
-			$<input type='tel' id='depositPrice' value='{{ defaultDeposit }}'/>
-			<span class='hint hint--right hint--always' data-hint=''></span>
+			$<input type='tel' id='depositPrice' value='{{#to_fixed defaultDeposit 2 }}{{/to_fixed}}'/>
+		</span>
+		<span id='depositPriceAdvisory'>
+			Normally, the deposit is 50% of the order total, but exceptions can be made for institutional clients 
+			and larger orders
 		</span>
 	</div>
 
+	<div id='depositModalErrorMessage'>
+		Please enter a valid deposit amount here. Please note the deposit has to be less than the total price on 
+		this order.
+	</div>
 </div>

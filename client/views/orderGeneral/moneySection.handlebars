@@ -1,0 +1,59 @@
+<div id='moneySection'>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+		    Price per Foot
+		</span>
+		$<input type='tel' id='pricePerFoot' value='{{ order.pricing.pricePerFoot }}'/>
+		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Additional Pricing
+		</span>
+		$<input type='tel' id='additionalPrice' class='optionalField' value='{{ order.pricing.additionalPrice }}'/>
+		<span class='hint hint--right hint--always' data-hint=''></span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Order Subtotal
+		</span>
+		<!-- Note that the subtotal will be automatically updated when we set the pricing information into the textfields above -->
+		<span id='orderSubtotalDisplay' class='staticValue'>0.00</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Apply Taxes ({{ taxRate }}%)?
+		</span>
+		<span id='applyTaxesButtonSet' class='buttonSet'>
+			<input type='radio' id='applyTaxYes' name='applyTax' value='true'
+				{{#if order.pricing.isTaxApplied}} checked {{/if}}/>
+			<label for='applyTaxYes'>Yes</label>
+			<input type='radio' id='applyTaxNo' name='applyTax' value=''
+				{{#unless order.pricing.isTaxApplied}} checked {{/unless}}/>
+			<label for='applyTaxNo'>No</label>
+		</span>
+		<!-- Note that the tax total will be automatically calculated via JavaScript -->
+		<span id='orderTaxDisplay' class='staticValue'>0.00</span>
+	</div>
+
+	<div class='dataGrouping'>
+		<span class='specializedLabel'>
+			Apply Tariff Charge ({{ tariffRate }}%)?
+		</span>
+		<span id='applyTariffButtonSet' class='buttonSet'>
+			<input type='radio' id='applyTariffYes' name='applyTariff' value='true'
+				{{#if order.pricing.isTariffApplied}} checked {{/if}}/>
+			<label for='applyTariffYes'>Yes</label>
+			<input type='radio' id='applyTariffNo' name='applyTariff' value=''
+				{{#unless order.pricing.isTariffApplied}} checked {{/unless}}/>
+			<label for='applyTariffNo'>No</label>
+		</span>
+		<!-- Note that the tariff total will be automatically calculated via JavaScript -->
+		<span id='orderTariffDisplay' class='staticValue'>0.00</span>
+	</div>
+
+</div>

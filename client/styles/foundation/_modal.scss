@@ -42,7 +42,7 @@
 /* ----------------------- GALLERY STYLES ----------------------------- */
 
 // Black background
-#modalOverlay
+.modalOverlay
 {
 	@include transitionSettings($property: background-color, $duration: 0.35s);
 
@@ -199,7 +199,15 @@
 
 #actionModalOk
 {
-	@include button($bgColor: blueTheme);
+	@include button($bgColor: cadetBlueTheme);
+
+	opacity: 1.0;
+
+	&:disabled
+	{
+		opacity: 0.4;
+		cursor: default;
+	}
 }
 
 #confirmationModalYes, #confirmationModalNo, #actionModalOk
@@ -211,4 +219,11 @@
 	{
 		margin-right: 10px;
 	}
+}
+
+.modalLabel
+{
+	@extend %tabularLabelText;
+
+	font-weight: 700;
 }

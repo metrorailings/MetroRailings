@@ -15,7 +15,7 @@ import designModel from 'client/scripts/orderGeneral/designViewModel';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
+var CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
 	AREA_CODE_TEXTFIELD = 'areaCode',
 	PHONE_ONE_TEXTFIELD = 'phoneOne',
 	PHONE_TWO_TEXTFIELD = 'phoneTwo',
@@ -41,10 +41,13 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 	APPLY_TARIFF_BUTTONSET = 'applyTariffButtonSet',
 
 	DEPOSIT_PRICE_TEXTFIELD = 'depositPrice',
+	DEPOSIT_PRICE_ERROR_MESSAGE = 'depositModalErrorMessage',
 
 	SAVE_BUTTON = 'saveButton',
 
 	DISABLED_CLASS = 'disabled',
+	ERROR_CLASS = 'error',
+	SHOW_CLASS = 'show',
 
 	STATE_NJ_VALUE = 'NJ',
 
@@ -65,14 +68,12 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'customerEmail',
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
 		WHOLE_NUMBER_INVALID: 'Please enter a non-zero number here.',
-		TOTAL_INVALID: 'Please enter a valid dollar amount here.'
+		TOTAL_INVALID: 'Please enter a valid dollar amount here.',
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
 var _validationSet = new Set(),
-
-	_totalPrice = 0,
 
 	// Elements
 	_emailField = document.getElementById(CUSTOMER_EMAIL_TEXTFIELD),
@@ -100,25 +101,18 @@ var _validationSet = new Set(),
 	_chargeTaxButtons = document.getElementById(APPLY_TAXES_BUTTONSET),
 	_chargeTariffButtons = document.getElementById(APPLY_TARIFF_BUTTONSET),
 
-	_depositPriceField = document.getElementById(DEPOSIT_PRICE_TEXTFIELD),
-
 	_saveButton = document.getElementById(SAVE_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
 /**
  * Slightly specialized function for invoking the logic that validates this view model
- * Function is specialized in that it checks to see whether certain designs were specified as well
- *
- * @returns {boolean} - indicating whether this view model has been validated
- *
+ * 
  * @author kinsho
  */
 function _validate()
 {
-	var designsSelected = !!(viewModel.design && viewModel.design.post);
-
-	viewModel.isFormValid = rQueryClient.validateModel(viewModel, _validationSet) && designsSelected;
+	viewModel.isFormValid = rQueryClient.validateModel(viewModel, _validationSet);
 }
 
 /**
@@ -194,6 +188,23 @@ function _calculateTotal()
 
 var viewModel = {};
 
+// ID
+Object.defineProperty(viewModel, '_id',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__id;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__id = value;
+	}
+});
+
 // Customer Name
 Object.defineProperty(viewModel, 'name',
 {
@@ -243,7 +254,7 @@ Object.defineProperty(viewModel, 'email',
 
 	set: (value) =>
 	{
-		// Keep in mind that there may be multiple e-mail addresses inside, split by commas
+		// Keep in mind that there may be multiple e-mail addresses here, split by commas
 		var emailAddresses = (value ? value.split(',') : []),
 			isValid;
 
@@ -265,10 +276,15 @@ Object.defineProperty(viewModel, 'email',
 			}
 		}
 
+		// If no e-mail addresses are present in the field, remove any error signatures associated with the text field
+		if ( !(emailAddresses.length) )
+		{
+			rQueryClient.updateValidationOnField(false, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+		}
+
 		// Recompose the values now that extraneous spaces have been trimmed
 		value = emailAddresses.join(',');
 
-		rQueryClient.setField(_emailField, value, _validationSet);
 		viewModel.__email = value;
 
 		_validate();
@@ -350,6 +366,23 @@ Object.defineProperty(viewModel, 'phoneTwo',
 		rQueryClient.setField(_phoneTwoField, value, _validationSet);
 
 		_validate();
+	}
+});
+
+// Pictures
+Object.defineProperty(viewModel, 'pictures',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__pictures;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__pictures = value;
 	}
 });
 
@@ -650,11 +683,17 @@ Object.defineProperty(viewModel, 'additionalPrice',
 
 	set: (value) =>
 	{
+		// Blank out any zero values
+		if (window.parseFloat(value) === 0)
+		{
+			value = '';
+		}
+
 		viewModel.__additionalPrice = value;
 
 		// Make sure a valid total price is being set here
 		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
-			(value.length && !(window.parseFloat(value, 10)) ) ||
+			(value.length && !(window.parseFloat(value)) ) ||
 			(value.length && value.split('.').length > 2);
 
 		rQueryClient.updateValidationOnField(isInvalid, _additionalPriceField, ERROR.TOTAL_INVALID, _validationSet);
@@ -812,25 +851,27 @@ Object.defineProperty(viewModel, 'depositAmount',
 		viewModel.__depositAmount = value;
 
 		// Make sure a valid amount is set here
-		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
-			(value.length && !(window.parseFloat(value, 10)) ) ||
-			(value.length && value.split('.').length > 2);
+		var isInvalid = !(formValidator.isDollarAmount(value)) ||
+			(value.length && !(window.parseFloat(value) >= 0) );
 
 		// If the deposit amount is less than zero or greater than the order total, we have an invalid amount
 		// Notice the use of conditional logic here to ensure that we're dealing with a number
-		isInvalid = isInvalid || window.parseFloat(value) < 0 || window.parseFloat(value) > _totalPrice;
+		isInvalid = isInvalid || window.parseFloat(value) < 0 || window.parseFloat(value) > viewModel.orderTotal;
 
-		rQueryClient.updateValidationOnField(isInvalid, _depositPriceField, ERROR.DEPOSIT_INVALID, _validationSet);
-		rQueryClient.setField(_depositPriceField, value);
+		rQueryClient.setField(document.getElementById(DEPOSIT_PRICE_TEXTFIELD), value);
 
 		// As the deposit amount only gets set in a modal, we have to prevent the user from going forward should an
 		// invalid deposit amount be placed into that field
 		if (isInvalid)
 		{
+			document.getElementById(DEPOSIT_PRICE_TEXTFIELD).classList.add(ERROR_CLASS);
+			document.getElementById(DEPOSIT_PRICE_ERROR_MESSAGE).classList.add(SHOW_CLASS);
 			actionModal.disableOk();
 		}
 		else
 		{
+			document.getElementById(DEPOSIT_PRICE_TEXTFIELD).classList.remove(ERROR_CLASS);
+			document.getElementById(DEPOSIT_PRICE_ERROR_MESSAGE).classList.remove(SHOW_CLASS);
 			actionModal.enableOk();
 		}
 	}

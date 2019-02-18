@@ -1,0 +1,15 @@
+<div class='multitextGroup'>
+	<div class='multitextExistingValues'>
+		{{#if values}}
+			{{#each (split_by_comma values) }}
+				<div class='multitextSetValue' data-value='{{ this }}'>{{ this }}<i class='fa fa-times'></i></div>
+			{{/each}}
+		{{/if}}
+	</div>
+	<textarea class='multitextNewValue'></textarea>
+	<input type='hidden' class='multitextDefaultValue' value='{{ values }}' />
+</div>
+
+<script class='multitextSetValueTemplate' type='text/x-handlebars-template'>
+	<div class='multitextSetValue' data-value='\{{ value }}'>\{{ value }}<i class='fa fa-times'></i></div>
+</script>

@@ -37,26 +37,12 @@ var pricingModule =
 	 *
 	 * @author kinsho
 	 */
-	calculateOrderTotal: function(orderData)
+	calculateSubtotal: function(orderData)
 	{
-		var rawTotal = orderData.length * orderData.pricing.pricePerFoot,
-			designKeys = Object.keys(orderData.design),
-			i;
+		var rawTotal = orderData.dimensions.length * orderData.pricing.pricePerFoot;
 
-		// For each design, determine if it is a premium design. If so, add in its price to the raw total
-		for (i = designKeys.length - 1; i >= 0; i--)
-		{
-			if (orderData.design[designKeys[i]])
-			{
-				rawTotal += pricingModule.calculateDesignCost(orderData.length, orderData.design[designKeys[i]]);
-			}
-		}
-
-		// Add in any custom pricing
+		// Add in any additional pricing that has been set on this order
 		rawTotal += orderData.pricing.additionalPrice;
-
-		// Deduct any discounts assigned to this order
-		rawTotal -= orderData.pricing.deductions;
 
 		return rawTotal;
 	},
@@ -137,7 +123,7 @@ var pricingModule =
 	 */
 	calculateTotal: function(order)
 	{
-		return order.pricing.subTotal + order.pricing.tax + order.pricing.tariff;
+		return order.pricing.subtotal + order.pricing.tax + order.pricing.tariff;
 	},
 
 	/**

@@ -21,6 +21,15 @@ var DROPBOX_DOMAIN = 'www.dropbox.com',
 	{
 		jpg : true,
 		jpeg : true
+	},
+
+	IMG_EXTENSIONS =
+	{
+		jpg : true,
+		jpeg : true,
+		png : true,
+		gif : true,
+		tif : true
 	};
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
@@ -57,6 +66,13 @@ module.exports =
 			// Figure out the extension of the file being analyzed
 			fileNameComponents = filenames[i].split('.');
 			fileExtension = fileNameComponents[fileNameComponents.length - 1];
+
+			// If the file extension does not indicate that the file is a valid image, then we must skip any
+			// processing here
+			if ( !(IMG_EXTENSIONS[fileExtension]) )
+			{
+				continue;
+			}
 
 			// If we are uploading a JPEG image, ensure that it has been stripped of its exif data
 			if (JPEG_EXTENSIONS[fileExtension.toLowerCase()])

@@ -46,7 +46,7 @@ module.exports =
 			try
 			{
 				// Initialize the MongoDB client
-				var clientConnection = await connect(config.DATABASE_URL);
+				var clientConnection = await connect(config.DATABASE_URL, { useNewUrlParser: true });
 				db = clientConnection.db(config.DATABASE_NAME);
 				console.log('Connected to Mongo!');
 			}

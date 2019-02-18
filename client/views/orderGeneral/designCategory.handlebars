@@ -1,0 +1,31 @@
+<div class='dataDescriptionGrouping'>
+	<span class='specializedLabel'>
+		{{ categoryName }}
+	</span>
+	<select id='{{ fieldId }}' data-field-name='{{ modelName }}'>
+		<option value='' {{#if disableDefault}}disabled{{/if}}>Select...</option>
+		{{#each (lookup designs designOptionName) }}
+			<option value='{{ this.id }}' data-description='{{ this.description }}'
+				{{#if_and ../disabledDefault @first}} selected {{/if_and}}
+				{{#if (lookup @root.order.design ../modelName)}}
+					{{#if_cond (lookup @root.order.design ../modelName) this.id}} selected {{/if_cond}}
+				{{/if}}>
+				{{ this.label }}
+			</option>
+		{{/each}}
+	</select>
+
+	{{#if (lookup @root.order.design modelName) }}
+		{{#each (lookup @root.designs designOptionName)}}
+			{{#if_cond this.id (lookup @root.order.design ../modelName)}}
+				{{> designDescriptor this designName=../modelName }}
+			{{/if_cond}}
+		{{/each}}
+	{{else}}
+		{{#if disableDefault}}
+			{{> designDescriptor (lookup (lookup @root.designs designOptionName) 0) }}
+		{{else}}
+			{{> designDescriptor disabled=true }}
+		{{/if}}
+	{{/if}}
+</div>
