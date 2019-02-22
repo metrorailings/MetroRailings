@@ -70,8 +70,7 @@ function _attachImageListeners()
  */
 async function _deleteImage(imgElement)
 {
-	var imgContainer = imgElement.parentNode,
-		saveData =
+	var saveData =
 		{
 			id: imgElement.dataset.orderId,
 			// Remove the metadata from our local cache of order data
@@ -85,8 +84,9 @@ async function _deleteImage(imgElement)
 	// Reach out to the server to delete the image from Dropbox and wipe its metadata traces from the database
 	await axios.post(DELETE_PICTURE_URL, saveData);
 
-	// Modify the HTML to remove the now-deleted image
-	imgContainer.parentNode.removeChild(imgContainer);
+	// Reanimate the list of images to account for the image that was deleted and fix any indexing discrepancy
+	_picturesListing.innerHTML = orderPicturesTemplate({ id : vm._id, pictures : vm.pictures });
+	_attachImageListeners();
 
 	// Take off any loading indicators now that we have a response back from the server
 	_picturesContainer.classList.remove(HIDE_CLASS);
@@ -168,21 +168,16 @@ async function uploadImage()
 	// Store the metadata within our own local cache of data for this particular order
 	vm.pictures.push(...imgMetadata);
 
-	// Add the images to the list of images visible on the page
-	for (i = 0; i < imgMetadata.length; i += 1)
-	{
-		_picturesListing.innerHTML += (orderPicturesTemplate(
-		{
-			id: vm._id,
-			shareLink: imgMetadata[i].shareLink
-		}));
-	}
-
+	// Reanimate the list of images to show the newly uploaded image(s)
+	_picturesListing.innerHTML = orderPicturesTemplate({ id : vm._id, pictures : vm.pictures });
 	_attachImageListeners();
 
 	// Take off any loading indicators now that we have a response back from the server
-	_picturesContainer.classList.remove(HIDE_CLASS);
-	_picturesLoader.classList.remove(SHOW_CLASS);
+	window.setTimeout(() =>
+	{
+		_picturesContainer.classList.remove(HIDE_CLASS);
+		_picturesLoader.classList.remove(SHOW_CLASS);
+	}, 2000);
 }
 
 /**

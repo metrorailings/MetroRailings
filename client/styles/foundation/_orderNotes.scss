@@ -129,3 +129,42 @@
 
 	width: 100%;
 }
+
+.newNoteUpload
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.newNoteText
+{
+	width: 100%;
+}
+
+.newNoteActions
+{
+	background-color: map-get($COLORS, lightGrayTheme);
+
+	padding: 10px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.labelText
+{
+	@extend %formLabelText;
+
+	margin:
+	{
+		right: 3px;
+	}
+}
+
+.noteSave
+{
+	@include button($bgColor: indianRedTheme);
+}
