@@ -37,6 +37,7 @@ var ORDER_SHARED_FOLDER = 'orderGeneral',
 	{
 		ID: 'idSection',
 		CUSTOMER: 'customerSection',
+		NOTES: 'notesSection',
 		LOCATION: 'locationSection',
 		TYPE: 'typeSection',
 		BASE_DESIGN: 'baseDesignSection',
@@ -48,12 +49,14 @@ var ORDER_SHARED_FOLDER = 'orderGeneral',
 		MONEY: 'moneySection',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection',
+
 		DESIGN_ERRORS: 'designErrors',
 		DESIGN_DESCRIPTOR: 'designDescriptor',
 		DESIGN_CATEGORY: 'designCategory',
 		DEPOSIT_MODAL: 'depositModal',
 		MULTI_TEXT: 'multiText',
-		PICTURES: 'picturesSection'
+		PICTURES: 'picturesSection',
+		ORDER_NOTES: 'notes'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -67,6 +70,11 @@ _Handlebars.registerPartial('orderId', fileManager.fetchTemplateSync(ORDER_SHARE
  * The template for the customer section
  */
 _Handlebars.registerPartial('orderCustomer', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CUSTOMER));
+
+/**
+ * The template for the notes section
+ */
+_Handlebars.registerPartial('orderNotes', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.NOTES));
 
 /**
  * The template for the location section
@@ -147,6 +155,11 @@ _Handlebars.registerPartial('multiText', fileManager.fetchTemplateSync(UTILITY_F
  * The template for the order pictures section
  */
 _Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICTURES));
+
+/**
+ * The template for the notes lister
+ */
+_Handlebars.registerPartial('notes', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ORDER_NOTES));
 
 // ----------------- MODULE DEFINITION --------------------------
 

@@ -9,7 +9,7 @@
 			<div id='picturesListing'>
 				{{#order.pictures}}
 					<span>
-						<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index='{{@index}}' data-order-Id='{{ ../order._id }}'/>
+						<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index='{{@index}}' data-order-id='{{ ../order._id }}'/>
 						<i class='fa fa-times-circle deleteImage'></i>
 					</span>
 				{{/order.pictures}}
@@ -31,8 +31,10 @@
 </div>
 
 <script id='newPictureTemplate' type='text/x-handlebars-template'>
-	<span>
-		<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index='{{ @index }}' data-order-ID='{{ id }}'/>
-		<i class='fa fa-times-circle deleteImage'></i>
-	</span>
+	\{{#pictures}}
+		<span>
+			<img src='\{{ shareLink }}' class='uploadedImageThumbnail' data-index='\{{ @index }}' data-order-id='\{{../id }}'/>
+			<i class='fa fa-times-circle deleteImage'></i>
+		</span>
+	\{{/pictures}}
 </script>
