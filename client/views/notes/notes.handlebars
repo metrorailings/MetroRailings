@@ -1,8 +1,9 @@
-<div class='newNoteUpload'>
-	<textarea class='newNoteText' data-order-id='{{ _id }}'></textarea>
-	<div class='newNoteActions'>
+<div class='noteListing'>
+	<div class='newNoteUpload' data-order-id='{{ _id }}' data-category='new'>
+		<textarea class='newNoteText'></textarea>
+		<div class='newNoteActions'>
 
-		<span class='noteField'>
+		<span class='noteField typeContainer'>
 			<span class='labelText'>Type</span>
 			<select class='noteType'>
 				<option value='n'>Note</option>
@@ -10,7 +11,7 @@
 			</select>
 		</span>
 
-		<span class='noteField'>
+		<span class='noteField assignToContainer'>
 			<span class='labelText'>Assign To:</span>
 			<select class='taskAssignTo'>
 				<option value='n'>Blah</option>
@@ -18,21 +19,21 @@
 			</select>
 		</span>
 
-		<span class='noteField'>
+			<span class='noteField assignFromContainer'>
 			<span class='labelText'>Assigned From:</span>
 			<select class='staticText'>
 				kinsho
 			</select>
 		</span>
 
-		<button class='noteSave'>Save New</button>
+			<button class='noteSave'>Save New</button>
+		</div>
 	</div>
-</div>
 
-{{#if notes.length}}
-	<div class='notesHistory'>
-		{{#each notes}}
-			<div class='noteRecord'>
+	{{#if notes.length}}
+		<div class='notesHistory'>
+			{{#each notes}}
+				<div class='noteRecord'>
 				<span class='noteMetadata'>
 					<div class='noteDate'>
 						{{#format_date this.date}}{{/format_date}}
@@ -44,8 +45,9 @@
 						{{ this.author }}
 					</div>
 				</span>
-				<span class='noteCell translate'>{{{ this.note }}}</span>
-			</div>
-		{{/each}}
-	</div>
-{{/if}}
+					<span class='noteCell translate'>{{{ this.note }}}</span>
+				</div>
+			{{/each}}
+		</div>
+	{{/if}}
+</div>

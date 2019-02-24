@@ -1,0 +1,32 @@
+<div class='newNoteUpload' data-order-id='{{ _id }}' data-category='{{ category }}'>
+
+	<textarea class='newNoteText' value='{{ text }}'></textarea>
+
+	<div class='newNoteActions'>
+			<span class='noteField'>
+				<span class='labelText'>Type</span>
+				<select class='noteType' value='{{ type }}'>
+					<option value='n'>Note</option>
+					<option value='t'>Task</option>
+				</select>
+			</span>
+
+		<span class='noteField'>
+				<span class='labelText'>Assign To:</span>
+				<select class='taskAssignTo' value='{{ assignTo }}'>
+					<option value='n'>Blah</option>
+					<option value='t'>Blah</option>
+				</select>
+			</span>
+
+		<span class='noteField'>
+				<span class='labelText'>Assigned From:</span>
+				<select class='staticText'>
+					{{ assignFrom }}
+				</select>
+			</span>
+
+		<button class='noteSave'>Save New</button>
+	</div>
+
+</div>
