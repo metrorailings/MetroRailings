@@ -2,6 +2,10 @@
  * @main notes
  */
 
+// ----------------- EXTERNAL MODULES --------------------------
+
+import viewModel from 'client/scripts/notes/viewModel';
+
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 var NOTE_TYPE_SELECT = 'noteType',
@@ -23,8 +27,10 @@ var NOTE_TYPE_SELECT = 'noteType',
  *
  * @author kinsho
  */
-function initNotesTextfield(notesContainer)
-{}
+function initNotesTextfield(notesContainer, )
+{
+	var vm = new viewModel(notesContainer);
+}
 
 // ----------------- EXPORT ---------------------------
 

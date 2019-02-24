@@ -32,6 +32,7 @@ var _Handlebars = require('handlebars'),
 
 var ORDER_SHARED_FOLDER = 'orderGeneral',
 	UTILITY_FOLDER = 'utility',
+	NOTES_FOLDER = 'notes',
 
 	PARTIALS =
 	{
@@ -56,7 +57,11 @@ var ORDER_SHARED_FOLDER = 'orderGeneral',
 		DEPOSIT_MODAL: 'depositModal',
 		MULTI_TEXT: 'multiText',
 		PICTURES: 'picturesSection',
-		ORDER_NOTES: 'notes'
+		ORDER_NOTES: 'notes',
+
+		NEW_NOTE: 'newNote',
+		NOTE_RECORD: 'noteRecord',
+		NOTE_TEMPLATES: 'notesTemplates'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -161,6 +166,11 @@ _Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER
  */
 _Handlebars.registerPartial('notes', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ORDER_NOTES));
 
+/**
+ * The template for the note templates partial
+ */
+_Handlebars.registerPartial('notesTemplates', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NOTE_TEMPLATES));
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -176,6 +186,8 @@ module.exports =
 		var designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
 			picturesTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PICTURES),
+			newNoteTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NEW_NOTE),
+			noteRecordTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NOTE_RECORD),
 			pageData,
 			designData;
 
@@ -208,6 +220,8 @@ module.exports =
 			designs: designData,
 			designErrorsTemplate: designErrorsTemplate,
 			picturesTemplate: picturesTemplate,
+			newNoteTemplate: newNoteTemplate,
+			noteRecordTemplate: noteRecordTemplate,
 			depositModal: depositModalTemplate
 		};
 
