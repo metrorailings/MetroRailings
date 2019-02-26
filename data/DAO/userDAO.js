@@ -134,5 +134,31 @@ module.exports =
 
 			return false;
 		}
+	},
+
+	/**
+	 * Function that returns a list of all users on this system
+	 *
+	 * @returns {Array<String>} - the collection of all user names currently active in the system
+	 *
+	 * @author kinsho
+	 */
+	collectAllUsers: async function ()
+	{
+		var dbResults;
+
+		try
+		{
+			dbResults = await mongo.read(ADMINS_COLLECTION, {});
+
+			return dbResults;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error trying to fetch all active user names from the database!');
+			console.log(error);
+
+			return [];
+		}
 	}
 };

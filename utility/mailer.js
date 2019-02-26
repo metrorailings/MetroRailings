@@ -43,7 +43,7 @@ module.exports =
 	 * @param {String} templateName - the name of the template which to use to render the content of the e-mail
 	 * @param {Object} templateData - the data that will be used to populate the template
 	 * @param {String} stylesheetName - the name of the sass file to use in order to style the e-mail
-	 * @param {boolean} isAdminEmail - designates whether this e-mail is being sent to a member of our team
+	 * @param {boolean} [isAdminEmail] - designates whether this e-mail is being sent to a member of our team
 	 *
 	 * @returns {Promise<String>} - a blob of text that represents the entire e-mail
 	 *

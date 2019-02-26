@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+const controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
@@ -23,7 +23,7 @@ var controllerHelper = global.OwlStakes.require('controllers/utility/controllerH
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'createQuote',
+const CONTROLLER_FOLDER = 'createQuote',
 
 	CUSTOM_ORDER_EMAIL = 'customerInvoice',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
@@ -47,7 +47,7 @@ module.exports =
 	 */
 	init: async function (params, cookie, request)
 	{
-		var populatedPageTemplate,
+		let populatedPageTemplate,
 			agreementText,
 			prospect, allData, pageData, designData, order;
 
@@ -70,7 +70,7 @@ module.exports =
 		}
 
 		// Gather the data we'll need to properly render the page
-		allData = await orderGeneralUtility.basicInit();
+		allData = await orderGeneralUtility.basicInit(cookie);
 		designData = allData.designData;
 		pageData = allData.pageData;
 		pageData.order = prospect || order || {};
@@ -82,10 +82,7 @@ module.exports =
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,
-		{
-			designData: designData
-		}, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,{ designData: designData }, true, true);
 	},
 
 	/**
@@ -95,7 +92,7 @@ module.exports =
 	 */
 	saveNewOrder: async function (params, cookie, request)
 	{
-		var processedOrder,
+		let processedOrder,
 			invoiceLink,
 			mailHTML,
 			quoteLink,
