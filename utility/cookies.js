@@ -1,19 +1,16 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _cookieManager = require('cookie'),
+let _cookieManager = require('cookie'),
 	_crypto = require('crypto'),
 
 	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var ADMIN_COOKIE = 'owl';
-
-// ----------------- PRIVATE VARIABLES --------------------------
-
-// ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
+let ADMIN_COOKIE = 'owl';
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -58,8 +55,8 @@ module.exports =
 	 */
 	generateAdminCookie: function(username, password, rememberForAMonth)
 	{
-		var textToHash = username + '||' + password + '||' + new Date().getTime(),
-			cipher = _crypto.createCipher(config.ENCRYPTION_ALGORITHM, config.HASH_KEY),
+		let textToHash = username + '||' + password + '||' + new Date().getTime(),
+			cipher = _crypto.createCipheriv(config.ENCRYPTION_ALGORITHM, config.HASH_KEY, ''),
 			cookieSerializerOptions =
 			{
 				path: '/'
@@ -91,8 +88,8 @@ module.exports =
 	 */
 	retrieveAdminCookie: function(cookie)
 	{
-		var cookieData = _cookieManager.parse(cookie || '')[ADMIN_COOKIE],
-			decipher = _crypto.createDecipher(config.ENCRYPTION_ALGORITHM, config.HASH_KEY),
+		let cookieData = _cookieManager.parse(cookie || '')[ADMIN_COOKIE],
+			decipher = _crypto.createDecipheriv(config.ENCRYPTION_ALGORITHM, config.HASH_KEY, ''),
 			decipheredText,
 			adminData;
 

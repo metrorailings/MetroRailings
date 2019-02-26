@@ -4,9 +4,12 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('handlebars'),
+const _Handlebars = require('handlebars'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
+	cookieManager = global.OwlStakes.require('utility/cookies'),
+
+	userDAO = global.OwlStakes.require('data/DAO/userDAO'),
 
 	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 
@@ -30,7 +33,7 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var ORDER_SHARED_FOLDER = 'orderGeneral',
+const ORDER_SHARED_FOLDER = 'orderGeneral',
 	UTILITY_FOLDER = 'utility',
 	NOTES_FOLDER = 'notes',
 
@@ -164,7 +167,7 @@ _Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER
 /**
  * The template for the notes lister
  */
-_Handlebars.registerPartial('notes', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ORDER_NOTES));
+_Handlebars.registerPartial('notes', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.ORDER_NOTES));
 
 /**
  * The template for the note templates partial
@@ -179,17 +182,23 @@ module.exports =
 	 * Function designed to populate the parts of the quote/order page that will always be present, no matter what
 	 * state the quote/order is in
 	 *
+	 * @param {String} cookie - the cookie object coming to us from the browser
+	 *
 	 * @author kinsho
 	 */
-	basicInit: async function ()
+	basicInit: async function (cookie)
 	{
-		var designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
+		let designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
 			picturesTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PICTURES),
 			newNoteTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NEW_NOTE),
 			noteRecordTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NOTE_RECORD),
+			users = { all : await userDAO.collectAllUsers() },
 			pageData,
 			designData;
+
+		// Log the user name of the current user for note purposes
+		users.current = cookieManager.retrieveAdminCookie(cookie)[0];
 
 		// Gather all the design options that we can apply to the order
 		designData =
@@ -222,7 +231,8 @@ module.exports =
 			picturesTemplate: picturesTemplate,
 			newNoteTemplate: newNoteTemplate,
 			noteRecordTemplate: noteRecordTemplate,
-			depositModal: depositModalTemplate
+			depositModal: depositModalTemplate,
+			users: users
 		};
 
 		return {
