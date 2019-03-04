@@ -5,13 +5,12 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-.notesHistory
+.noteListing
 {
 	border:
 	{
 		style: solid;
-		width: 2.5px;
-		radius: 10px;
+		width: 1px;
 		color: map-get($COLORS, grayTheme);
 	}
 
@@ -136,27 +135,83 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+
+	width: 100%;
+
+	select
+	{
+		font-size: map-get($FONTS, smallPlusFontSize);
+
+		padding: 5px;
+	}
+}
+
+.newNoteTextContainer
+{
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
 }
 
 .newNoteText
 {
 	width: 100%;
+	height: 140px;
+	padding: 5px;
+
+	border: none;
+	box-shadow: none;
+	resize: none;
+
+	&:focus
+	{
+		outline: none;
+	}
 }
 
 .newNoteActions
 {
-	background-color: map-get($COLORS, lightGrayTheme);
+	padding:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
 
-	padding: 10px;
+	background-color: map-get($COLORS, lighterGrayTheme);
+
+	width: 100%;
 
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
+.noteField
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	flex: 1;
+
+	opacity: 1.0;
+
+	&.hide
+	{
+		opacity: 0.0;
+	}
+
+	&.disabled
+	{
+		opacity: 0.4;
+	}
+}
+
 .labelText
 {
-	@extend %formLabelText;
+	@extend %formSmallLabelText;
 
 	margin:
 	{
@@ -166,5 +221,7 @@
 
 .noteSave
 {
-	@include button($bgColor: indianRedTheme);
+	@include smallButton($bgColor: indianRedTheme);
+
+	width: 60%;
 }

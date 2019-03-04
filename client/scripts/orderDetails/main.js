@@ -2,6 +2,7 @@
 
 import idSection from 'client/scripts/orderGeneral/idSection';
 import customerSection from 'client/scripts/orderGeneral/customerSection';
+import noteSection from 'client/scripts/orderGeneral/notesSection';
 import addressSection from 'client/scripts/orderGeneral/addressSection';
 import typeSection from 'client/scripts/orderGeneral/typeSection';
 import picturesSection from 'client/scripts/orderGeneral/picturesSection';

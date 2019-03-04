@@ -111,6 +111,78 @@
 	}
 }
 
+/**
+ * A mix-in designed to style square buttons in the application
+ *
+ * @author kinsho
+ */
+@mixin squareButton($bgColor)
+{
+	@extend %smallButtonText;
+	@include transitionSettings($property: all, $duration: 0.25s);
+
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	width: 100%;
+	display: inline-block;
+	padding: 7.5px;
+
+	top: 0px;
+
+	cursor: pointer;
+
+	background-color: map-get($COLORS, $bgColor);
+	box-shadow: 0px 6px 8px map-get($COLORS, blackTheme);
+	opacity: 1.0;
+
+	&:active
+	{
+		top: 5px;
+		box-shadow: 0px 3px 3px map-get($COLORS, blackTheme);
+	}
+}
+
+/**
+ * A mix-in designed to style square buttons in the application
+ *
+ * @author kinsho
+ */
+@mixin smallButton($bgColor)
+{
+	@extend %tinyButtonText;
+	@include transitionSettings($property: all, $duration: 0.25s);
+
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, darkGrayTheme);
+	}
+
+	width: 100%;
+	display: inline-block;
+	padding: 4.5px;
+
+	top: 0px;
+
+	cursor: pointer;
+
+	background-color: map-get($COLORS, $bgColor);
+	box-shadow: 0px 3px 4px map-get($COLORS, blackTheme);
+	opacity: 1.0;
+
+	&:active
+	{
+		top: 5px;
+		box-shadow: 0px 1.5px 2px map-get($COLORS, blackTheme);
+	}
+}
+
 /* ----------------------- FORM STYLES ----------------------------- */
 
 .formRow
