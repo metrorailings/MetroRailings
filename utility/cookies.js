@@ -55,8 +55,9 @@ module.exports =
 	 */
 	generateAdminCookie: function(username, password, rememberForAMonth)
 	{
-		let textToHash = username + '||' + password + '||' + new Date().getTime(),
-			cipher = _crypto.createCipheriv(config.ENCRYPTION_ALGORITHM, config.HASH_KEY, ''),
+		let iv = _crypto.randomBytes(16),
+			textToHash = username + '||' + password + '||' + new Date().getTime(),
+			cipher = _crypto.createCipheriv(config.ENCRYPTION_ALGORITHM, config.HASH_KEY, iv),
 			cookieSerializerOptions =
 			{
 				path: '/'
@@ -66,6 +67,7 @@ module.exports =
 		// Encrypt whatever text needs to be encoded
 		cipherText = cipher.update(textToHash, config.ENCRYPTION_INPUT_TYPE, config.ENCRYPTION_OUTPUT_TYPE);
 		cipherText += cipher.final(config.ENCRYPTION_OUTPUT_TYPE);
+		cipherText = iv.toString('hex') + ':' + cipherText.toString('hex');
 
 		// If the flag is set, ensure that this cookie remains in effect for a month
 		if (rememberForAMonth)
@@ -89,14 +91,16 @@ module.exports =
 	retrieveAdminCookie: function(cookie)
 	{
 		let cookieData = _cookieManager.parse(cookie || '')[ADMIN_COOKIE],
-			decipher = _crypto.createDecipheriv(config.ENCRYPTION_ALGORITHM, config.HASH_KEY, ''),
+			cryptoComponents = (cookieData ? cookieData.split(':') : []),
+			decipher,
 			decipheredText,
 			adminData;
 
 		if (cookieData)
 		{
 			// Decrypt the cookie to see if we have meaningful data
-			decipheredText = decipher.update(cookieData, config.ENCRYPTION_OUTPUT_TYPE, config.ENCRYPTION_INPUT_TYPE);
+			decipher = _crypto.createDecipheriv(config.ENCRYPTION_ALGORITHM, config.HASH_KEY, Buffer.from(cryptoComponents[0], 'hex'));
+			decipheredText = decipher.update(Buffer.from(cryptoComponents[1], 'hex'), config.ENCRYPTION_OUTPUT_TYPE, config.ENCRYPTION_INPUT_TYPE);
 			decipheredText += decipher.final(config.ENCRYPTION_INPUT_TYPE);
 			adminData = decipheredText.split('||');
 

@@ -23,7 +23,8 @@ $FONTS:
 (
 	
 	tinyFontSize: 12px,
-	smallFontSize: 16px,
+	smallFontSize: 14px,
+	smallPlusFontSize: 16px,
 	regularFontSize: 18px,
 	regularPlusFontSize: 20px,
 	largeFontSize: 24px,
@@ -34,6 +35,7 @@ $FONTS:
 
 	mobile-tinyFontSize: 10px,
 	mobile-smallFontSize: 12px,
+	mobile-smallPlusFontSize: 14px,
 	mobile-regularFontSize: 16px,
 	mobile-regularPlusFontSize: 18px,
 	mobile-largeFontSize: 20px,
@@ -43,6 +45,7 @@ $FONTS:
 
 	print-tinyFontSize: 8px,
 	print-smallFontSize: 10px,
+	print-smallPlusFontSize: 12px,
 	print-regularFontSize: 14px,
 	print-regularPlusFontSize: 16px,
 	print-largeFontSize: 18px,
@@ -279,10 +282,17 @@ $FONTS:
 	letter-spacing: 0.05em;
 }
 
+%formSmallLabelText
+{
+	@include basicFontSettings($weight: 400, $size: smallPlusFontSize, $family: Sorts Mill Goudy);
+
+	letter-spacing: 0.05em;
+}
+
 /* --- Button stylings --- */
 %tinyButtonText
 {
-	@include basicFontSettings($weight: 400, $size: tinyFontSize, $family: Muli, $color: whiteTheme);
+	@include basicFontSettings($weight: 400, $size: smallFontSize, $family: Muli, $color: whiteTheme);
 
 	text-shadow: 0.5px 0.5px map-get($COLORS, blackTheme);
 }

@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+const controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -19,7 +19,7 @@ var controllerHelper = global.OwlStakes.require('controllers/utility/controllerH
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'orderDetails',
+const CONTROLLER_FOLDER = 'orderDetails',
 
 	ADMIN_LOG_IN_URL = '/admin';
 
@@ -34,7 +34,7 @@ module.exports =
 	 */
 	init: async function (params, cookie, request)
 	{
-		var populatedPageTemplate,
+		let populatedPageTemplate,
 			allData, designData,
 			orderNumber = params ? parseInt(params.id, 10) : undefined,
 			pageData =
@@ -52,7 +52,7 @@ module.exports =
 		console.log('Loading the order details page...');
 
 		// Gather the basic data we'll need to properly render the page
-		allData = await orderGeneralUtility.basicInit();
+		allData = await orderGeneralUtility.basicInit(cookie);
 		designData = allData.designData;
 		pageData = allData.pageData;
 
@@ -83,7 +83,7 @@ module.exports =
 	{
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
-			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+			let username = cookieManager.retrieveAdminCookie(cookie)[0];
 
 			console.log('Saving changes made to an order...');
 
@@ -108,7 +108,7 @@ module.exports =
 	{
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
-			var username = cookieManager.retrieveAdminCookie(cookie)[0],
+			let username = cookieManager.retrieveAdminCookie(cookie)[0],
 				imgMetas;
 
 			console.log('Saving new picture(s) to the order...');
@@ -147,7 +147,7 @@ module.exports =
 	{
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
-			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+			let username = cookieManager.retrieveAdminCookie(cookie)[0];
 
 			console.log('Deleting a picture from an order...');
 

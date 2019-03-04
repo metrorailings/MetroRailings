@@ -9,7 +9,7 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CURVES_YES_RADIO = 'curvesYes',
+let CURVES_YES_RADIO = 'curvesYes',
 	CURVES_NO_RADIO = 'curvesNo',
 	BALCONY_YES_RADIO = 'balconyYes',
 	BALCONY_NO_RADIO = 'balconyNo',
@@ -21,7 +21,7 @@ var CURVES_YES_RADIO = 'curvesYes',
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
-var _validationSet = new Set(),
+let _validationSet = new Set(),
 
 	// Elements
 	_curvesYesRadio = document.getElementById(CURVES_YES_RADIO),
@@ -48,7 +48,7 @@ function _validate()
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
-var viewModel = {};
+let viewModel = {};
 
 // Curves Flag
 Object.defineProperty(viewModel, 'curvesNecessary',

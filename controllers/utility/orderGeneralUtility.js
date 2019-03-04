@@ -170,6 +170,16 @@ _Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER
 _Handlebars.registerPartial('notes', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.ORDER_NOTES));
 
 /**
+ * The template for a new note textarea
+ */
+_Handlebars.registerPartial('newNote', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NEW_NOTE));
+
+/**
+ * The template for a note record
+ */
+_Handlebars.registerPartial('noteRecord', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NOTE_RECORD));
+
+/**
  * The template for the note templates partial
  */
 _Handlebars.registerPartial('notesTemplates', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NOTE_TEMPLATES));

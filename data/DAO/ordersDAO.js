@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
+const mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
@@ -12,7 +12,7 @@ var mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var ORDERS_COLLECTION = 'orders',
+const ORDERS_COLLECTION = 'orders',
 	COUNTERS_COLLECTION = 'counters',
 	REMOVED_ORDERS_COLLECTION = 'removedOrders',
 
@@ -36,7 +36,7 @@ var ORDERS_COLLECTION = 'orders',
  */
 function _applyModificationUpdates(order, username)
 {
-	var modificationDate = new Date();
+	let modificationDate = new Date();
 
 	order.dates = order.dates || {};
 
@@ -117,7 +117,7 @@ function _generateUserFriendlyDate(date)
 
 // ----------------- MODULE DEFINITION --------------------------
 
-var ordersModule =
+let ordersModule =
 {
 	/**
 	 * Function responsible for fetching an existing order from the database using its ID
@@ -132,7 +132,7 @@ var ordersModule =
 	{
 		try
 		{
-			var dbResults = await mongo.read(ORDERS_COLLECTION,
+			let dbResults = await mongo.read(ORDERS_COLLECTION,
 				{
 					_id: orderNumber
 				});
@@ -161,7 +161,7 @@ var ordersModule =
 	{
 		try
 		{
-			var dbResults = await mongo.read(REMOVED_ORDERS_COLLECTION,
+			let dbResults = await mongo.read(REMOVED_ORDERS_COLLECTION,
 				{
 					_id: orderNumber
 				});
@@ -192,7 +192,7 @@ var ordersModule =
 		{
 			console.log('Searching for all orders that have been modified after ' + beginningDate);
 
-			var dbResults = await mongo.read(ORDERS_COLLECTION,
+			let dbResults = await mongo.read(ORDERS_COLLECTION,
 				{
 					'dates.lastModified': mongo.greaterThanOrEqualToOperator(beginningDate)
 				},
@@ -224,7 +224,7 @@ var ordersModule =
 	 */
 	searchOrdersByMisc: async function (orderID, email, phoneTwo)
 	{
-		var filterData = {};
+		let filterData = {};
 
 		// Create the query by which to filter orders
 		if (orderID)
@@ -244,7 +244,7 @@ var ordersModule =
 		{
 			console.log('Searching for orders...');
 
-			var dbResults = await mongo.read(ORDERS_COLLECTION, filterData,
+			let dbResults = await mongo.read(ORDERS_COLLECTION, filterData,
 				{
 					createDate: -1
 				});
@@ -272,7 +272,7 @@ var ordersModule =
 	 */
 	setUpNewOrder: async function (order, username)
 	{
-		var counterRecord,
+		let counterRecord,
 			prospect,
 			databaseRecord;
 
@@ -357,7 +357,7 @@ var ordersModule =
 	 */
 	finalizeNewOrder: async function (approvedOrder)
 	{
-		var orderID = parseInt(approvedOrder._id, 10),
+		let orderID = parseInt(approvedOrder._id, 10),
 			order = await ordersModule.searchOrderById(orderID),
 			chargeAmount = 0,
 			taxBalanceRemaining = 0,
@@ -462,7 +462,7 @@ var ordersModule =
 	 */
 	updateStatus: async function (orderNumber, username)
 	{
-		var order = await ordersModule.searchOrderById(orderNumber),
+		let order = await ordersModule.searchOrderById(orderNumber),
 			nextStatus = statuses.moveStatusToNextLevel(order.status),
 			updateRecord;
 
@@ -512,7 +512,7 @@ var ordersModule =
 	 */
 	saveChangesToOrder: async function (orderModifications, username)
 	{
-		var order = await ordersModule.searchOrderById(parseInt(orderModifications._id, 10)),
+		let order = await ordersModule.searchOrderById(parseInt(orderModifications._id, 10)),
 			amountToBePaid,
 			transactionID,
 			dataToUpdate,
@@ -706,7 +706,7 @@ var ordersModule =
 	 */
 	saveNewPicToOrder: async function (orderID, images, username)
 	{
-		var order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
+		let order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
 			updateRecord;
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
@@ -757,7 +757,7 @@ var ordersModule =
 	 */
 	deletePicFromOrder: async function (orderID, imgMeta, username)
 	{
-		var order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
+		let order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
 			updateRecord,
 			i;
 
@@ -814,7 +814,7 @@ var ordersModule =
 	 */
 	removeOrder: async function (orderID, username)
 	{
-		var order = await ordersModule.searchOrderById(parseInt(orderID, 10));
+		let order = await ordersModule.searchOrderById(parseInt(orderID, 10));
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
@@ -851,7 +851,7 @@ var ordersModule =
 	 */
 	restoreRemovedOrder: async function (orderID, username)
 	{
-		var order = await ordersModule.searchRemovedOrderById(parseInt(orderID, 10));
+		let order = await ordersModule.searchRemovedOrderById(parseInt(orderID, 10));
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
