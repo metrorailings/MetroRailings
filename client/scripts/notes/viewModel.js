@@ -8,14 +8,14 @@ import rQuery from 'client/scripts/utility/rQueryClient';
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var TYPE_CONTAINER = 'typeContainer',
+const TYPE_CONTAINER = 'typeContainer',
 	TYPE_SELECT = 'noteType',
 	ASSIGN_TO_CONTAINER = 'assignToContainer',
 	ASSIGN_TO_SELECT = 'taskAssignTo',
 	ASSIGN_FROM_CONTAINER = 'assignFromContainer',
 	NEW_NOTE_TEXT = 'newNoteText',
 
-	STATIC_TEXT = 'staticText',
+	ASSIGN_FROM_TEXT = 'assignFromText',
 	HIDE_CLASS = 'hide',
 	DISABLED_CLASS = 'disabled',
 
@@ -43,13 +43,13 @@ var TYPE_CONTAINER = 'typeContainer',
  */
 function generateViewModel(newNoteContainer)
 {
-	var viewModel = {},
+	let viewModel = {},
 		typeSection = newNoteContainer.getElementsByClassName(TYPE_CONTAINER)[0],
 		typeSelect = typeSection.getElementsByClassName(TYPE_SELECT)[0],
 		assignToSection = newNoteContainer.getElementsByClassName(ASSIGN_TO_CONTAINER)[0],
 		assignToSelect = assignToSection.getElementsByClassName(ASSIGN_TO_SELECT)[0],
 		assignFromSection = newNoteContainer.getElementsByClassName(ASSIGN_FROM_CONTAINER)[0],
-		assignFromStaticValue = assignFromSection.getElementsByClassName(STATIC_TEXT)[0],
+		assignFromStaticValue = assignFromSection.getElementsByClassName(ASSIGN_FROM_TEXT)[0],
 		noteTextarea = newNoteContainer.getElementsByClassName(NEW_NOTE_TEXT)[0];
 
 	// Order ID
@@ -196,7 +196,7 @@ function generateViewModel(newNoteContainer)
 	viewModel.text = noteTextarea.value || '';
 	viewModel.type = typeSelect.value;
 	viewModel.assignTo = assignToSelect.value;
-	viewModel.assignFrom = assignFromStaticValue.value;
+	viewModel.assignFrom = assignFromStaticValue.innerHTML;
 
 	return viewModel;
 }

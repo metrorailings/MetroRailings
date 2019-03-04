@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
+const _Q = require('q'),
 	_zlib = require('zlib'),
 
 	config = global.OwlStakes.require('config/config'),
@@ -14,7 +14,7 @@ var _Q = require('q'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var BASE_TEMPLATE_FILE = 'base',
+const BASE_TEMPLATE_FILE = 'base',
 	REDIRECT_TEMPLATE_FILE = 'redirect',
 
 	BOOTLEG_STRIPE_KEY = 'stripeKey',
@@ -34,7 +34,7 @@ var BASE_TEMPLATE_FILE = 'base',
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
-var zlibGZipper = _Q.denodeify(_zlib.gzip);
+const zlibGZipper = _Q.denodeify(_zlib.gzip);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -59,7 +59,7 @@ module.exports =
 	 */
 	renderInitialView: async function (content, directory, bootData, ignoreScaling, isAdmin)
 	{
-		var data = {},
+		let data = {},
 			response;
 
 		// Augment the bootlegged data with other data that needs to be loaded for all pages
@@ -118,7 +118,7 @@ module.exports =
 	 */
 	renderRedirectView: async function (redirectURL)
 	{
-		var data = {},
+		let data = {},
 			redirectTemplate;
 
 		// Populate the redirect URL into the script that will immediately be executed when the page loads

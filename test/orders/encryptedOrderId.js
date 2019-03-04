@@ -39,6 +39,6 @@ _Q.spawn(function* ()
 	console.log(cipherText);
 
 	// Close out this program
-	console.log("Done!");
+	console.log('Done!');
 	process.exit();
 });

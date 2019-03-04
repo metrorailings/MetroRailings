@@ -1,4 +1,7 @@
-<div class='noteRecord'>
+<div class='noteRecord
+		{{#if_cond type 'task'}}
+			{{#if_cond status 'open'}} openTask {{ else }} closedTask {{/if_cond}}
+		{{/if_cond}}'>
 	<span class='noteMetadata'>
 		<div class='noteDate'>
 			{{#format_date date}}{{/format_date}}
@@ -10,5 +13,20 @@
 			{{ author }}
 		</div>
 	</span>
-	<span class='noteCell translate'>{{{ text }}}</span>
+	{{#if_cond type 'task'}}
+		<span class='taskMetadata'>
+			<div class='taskLabel'>Task</div>
+			<div class='taskStatus'>{{#capitalize status}}{{/capitalize}}</div>
+			<div class='taskAssignTo'>Owner: {{ assignTo }}</div>
+			<div class='taskAssignFrom'>
+				Assigner:
+				{{#if_cond assignFrom @root.users.current}}
+					You
+				{{else}}
+					{{ assignFrom }}
+				{{/if_cond}}
+			</div>
+		</span>
+	{{/if_cond}}
+	<span class='noteCell'>{{{ text }}}</span>
 </div>

@@ -1,9 +1,11 @@
 <div class='noteListing'>
-    {{> newNote _id=order._id category='new' assignFrom=users.current }}
+    {{> newNote _id=order._id category='new' type='note' assignTo=users.current assignFrom=users.current }}
 
-	{{#if notes.length}}
-        {{#each notes}}
-            {{> noteRecord this}}
-        {{/each}}
-    {{/if}}
+	<div class='noteRecordContainer'>
+		{{#if notes.length}}
+			{{#each notes}}
+				{{> noteRecord this}}
+			{{/each}}
+		{{/if}}
+	</div>
 </div>

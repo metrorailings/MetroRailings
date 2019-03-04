@@ -1,6 +1,6 @@
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var TOOLTIP_SIZE_CLASSES =
+let TOOLTIP_SIZE_CLASSES =
 	{
 		SMALL: 'tooltipSmall',
 		MEDIUM: 'tooltipMedium',
@@ -12,7 +12,7 @@ var TOOLTIP_SIZE_CLASSES =
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // The collection of all existing tooltips on the page
-var _tooltipCache = {};
+let _tooltipCache = {};
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -29,7 +29,7 @@ var _tooltipCache = {};
  */
 function _wrapMessage(hostElementID, message)
 {
-	var container = document.createElement('div');
+	let container = document.createElement('div');
 
 	container.innerHTML = message;
 
@@ -57,7 +57,7 @@ function _wrapMessage(hostElementID, message)
 
 // ----------------- MODULE DEFINITION -----------------------------
 
-var tooltipModule =
+let tooltipModule =
 {
 	/**
 	 * The data structure that houses all the different values that could be used to position the tooltip
@@ -95,7 +95,7 @@ var tooltipModule =
 	 */
 	setTooltip: function(targetElement, message, openInitial, openOn, position)
 	{
-		var tooltipElement = _tooltipCache[targetElement.id];
+		let tooltipElement = _tooltipCache[targetElement.id];
 
 		// If the tooltip exists for the target element, simply update the text inside the tooltip
 		if (tooltipElement)
@@ -159,7 +159,7 @@ var tooltipModule =
 	 */
 	closeTooltip: function(targetElement, destroyOnClose)
 	{
-		var tooltipElement = _tooltipCache[targetElement.id];
+		let tooltipElement = _tooltipCache[targetElement.id];
 
 		if (tooltipElement)
 		{
