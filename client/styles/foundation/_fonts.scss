@@ -201,6 +201,13 @@ $FONTS:
 	@include basicFontSettings($size: largePlusFontSize);
 }
 
+%smallDecorativeText
+{
+	@include basicFontSettings($size: smallFontSize, $family: Raleway, $weight: 300);
+
+	letter-spacing: 0.75px;
+}
+
 %decorativeText
 {
 	@include basicFontSettings($size: regularPlusFontSize, $family: Raleway, $weight: 300);
