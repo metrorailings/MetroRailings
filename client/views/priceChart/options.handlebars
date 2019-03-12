@@ -1,0 +1,57 @@
+{{#each this}}
+
+	<div class='railingTable'>
+
+		<span class='idSection'>
+			<div class='nameCell'>
+				{{ name }}
+			</div>
+			{{#if previewImage}}
+				<div class='previewImageCell'>
+					{{#each previewImage}}
+						<img src='{{ this }}' alt='Preview' />
+					{{/each}}
+				</div>
+			{{/if}}
+		</span>
+
+		<span class='pricingSection'>
+
+			<span class='priceColumn'>
+				<div class='priceHeader'>
+					Regular Price
+				</div>
+				<div class='priceCell'>
+					${{ regularPrice }}{{ pricingUnit }}
+				</div>
+			</span>
+
+			{{#if curves}}
+				<span class='priceColumn'>
+					<div class='priceHeader'>
+						Curve Pricing
+					</div>
+					<div class='priceCell curvePriceCell'>
+						<span>
+							<span class='priceCellHeader'>Flat Platforms:</span>
+							<span>Additional ${{ curves.flat }}{{ pricingUnit }}</span>
+						</span>
+						<span>
+							<span class='priceCellHeader'>Stairs:</span>
+							<span>Additional ${{ curves.stairs }}{{ pricingUnit }}</span>
+						</span>
+					</div>
+				</span>
+			{{/if}}
+
+		</span>
+
+		{{#if note}}
+			<div class='noteRow'>
+				<span>{{ note }}</span>
+			</div>
+		{{/if}}
+
+	</div>
+
+{{/each}}
