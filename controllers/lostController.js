@@ -4,13 +4,13 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+const controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'lost',
+const CONTROLLER_FOLDER = 'lost',
 
 	LOST_URL = '/lost';
 
@@ -35,7 +35,7 @@ module.exports =
 		}
 
 		// Render the page template
-		var populatedPageTemplate = await templateManager.populateTemplate({}, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		let populatedPageTemplate = await templateManager.populateTemplate({}, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
 	}

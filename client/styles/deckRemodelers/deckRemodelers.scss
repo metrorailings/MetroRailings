@@ -1,0 +1,96 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#languageSelection
+{
+	display: none;
+}
+
+#drInstructionalText
+{
+	text-align: center;
+}
+
+#drCustomerDetails, #drRailingsDetails, #drMiscellaneousDetails, #submissionSection
+{
+	display: block;
+}
+
+#submissionSection
+{
+	margin-bottom: 25px;
+}
+
+.dataGrouping
+{
+	@extend %regularText;
+
+	margin:
+	{
+		top: 35px;
+		bottom: 35px;
+		left: 15px;
+		right: 15px;
+	}
+
+	display: flex;
+	align-items: center;
+
+	& > .staticValue, & > textarea, & > .buttonSet
+	{
+		width: 70%;
+		text-align: left;
+	}
+
+	&.disabled
+	{
+		opacity: 0.6;
+	}
+
+	& > i
+	{
+		color: map-get($COLORS, darkBlueTheme);
+		margin-left: 5px;
+	}
+}
+
+.specializedLabel
+{
+	@extend %formLabelText;
+
+	width: 20%;
+	margin-right: 20px;
+	text-align: right;
+
+	& > i
+	{
+		padding:
+		{
+			left: 5px;
+			top: 5px;
+		}
+
+		visibility: hidden;
+		color: map-get($COLORS, darkGreenTheme);
+
+		&.reveal
+		{
+			visibility: visible;
+		}
+	}
+}
+
+#submitButton
+{
+	@include button($bgColor: darkBlueTheme);
+
+	width: 300px;
+}
