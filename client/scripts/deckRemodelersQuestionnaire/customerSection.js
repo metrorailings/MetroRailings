@@ -1,10 +1,11 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-import vm from 'client/scripts/deckRemodelers/viewModel';
+import vm from 'client/scripts/deckRemodelersQuestionnaire/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 let CUSTOMER_NAME = 'customerName',
+	PROJECT_MANAGER = 'projectManager',
 	STREET_ADDRESS = 'customerAddress',
 	CITY = 'customerCity',
 	STATE = 'customerState';
@@ -13,6 +14,7 @@ let CUSTOMER_NAME = 'customerName',
 
 // Elements
 let _nameField = document.getElementById(CUSTOMER_NAME),
+	_managerField = document.getElementById(PROJECT_MANAGER),
 	_addressField = document.getElementById(STREET_ADDRESS),
 	_cityField = document.getElementById(CITY),
 	_stateField = document.getElementById(STATE);
@@ -26,7 +28,17 @@ let _nameField = document.getElementById(CUSTOMER_NAME),
  */
 function setName()
 {
-	vm.name = _nameField.value;
+	vm.customerName = _nameField.value;
+}
+
+/**
+ * Listener responsible for setting the project manager's name into the view model
+ *
+ * @author kinsho
+ */
+function setManager()
+{
+	vm.projectManager = _managerField.value;
 }
 
 /**
@@ -62,6 +74,7 @@ function setState()
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 _nameField.addEventListener('change', setName);
+_managerField.addEventListener('change', setManager);
 _addressField.addEventListener('change', setAddress);
 _cityField.addEventListener('change', setCity);
 _stateField.addEventListener('change', setState);
@@ -69,6 +82,7 @@ _stateField.addEventListener('change', setState);
 // ----------------- DATA INITIALIZATION -----------------------------
 
 setName();
+setManager();
 setAddress();
 setCity();
 setState();

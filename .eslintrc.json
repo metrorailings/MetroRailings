@@ -27,6 +27,7 @@
 
     },
     "globals": {
+        "datepicker" : false,
         "Handlebars" : false,
         "console" : false,
         "Tooltip" : false,
