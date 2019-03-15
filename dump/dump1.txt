@@ -1,0 +1,278 @@
+Fetching the following file: /app/client/views/utility/gallery.handlebars
+Fetching the following file: /app/client/views/utility/confirmationModal.handlebars
+Fetching the following file: /app/client/views/utility/scrollDownLabel.handlebars
+Fetching the following file: /app/client/views/utility/optionsCarousel.handlebars
+Fetching the following file: /app/client/views/utility/notificationBar.handlebars
+Fetching the following file: /app/client/views/utility/successBar.handlebars
+Fetching the following file: /app/client/views/utility/topMenu.handlebars
+Connecting to the database using the following URL: mongodb://admin:DgIoMUhU1hHi9o7r@production-shard-00-00-3lvtw.mongodb.net:27017,production-shard-00-01-3lvtw.mongodb.net:27017,production-shard-00-02-3lvtw.mongodb.net:27017/MetroRailings?ssl=true&replicaSet=production-shard-0&authSource=admin
+Connected to Mongo!
+Fetching the following file: /app/.ssl/metrorailings.key
+Fetching the following file: /app/.ssl/metrorailings.crt
+Server started!
+Listening on ports 80 and 443...
+Connection made from URL: /deckRemodelersQuestionnaire
+Fetching the following file: /app/config/routes.json
+Fetching the following file: /app/client/views/utility/banner.handlebars
+Fetching the following file: /app/client/views/deckRemodelersQuestionnaire/customerDetails.handlebars
+Fetching the following file: /app/client/views/deckRemodelersQuestionnaire/railingDetails.handlebars
+Fetching the following file: /app/client/views/deckRemodelersQuestionnaire/miscellaneousDetails.handlebars
+CONTROLLER: controllers/deckRemodelersQuestionnaireController
+ACTION: init
+Loading the Deck Remodelers page...
+Fetching the following file: /app/client/views/deckRemodelersQuestionnaire/deckRemodelersQuestionnaire.handlebars
+Fetching the following file: /app/client/views//base.handlebars
+Response ready to be returned from URL: //deckRemodelersQuestionnaire
+Connection made from URL: /client/styles/deckRemodelersQuestionnaire/page.css
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/styles/deckRemodelersQuestionnaire/page.css
+Response ready to be returned from URL: //client/styles/deckRemodelersQuestionnaire/page.css
+Connection made from URL: /prod/thirdParty.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/thirdParty.js
+Connection made from URL: /prod/thirdParty.css
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/thirdParty.css
+Connection made from URL: /client/images/logo/png/white_logo_color_background.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/logo/png/white_logo_color_background.png
+Connection made from URL: /client/scripts/jspm_packages/system.src.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/jspm_packages/system.src.js
+Connection made from URL: /client/scripts/jspm_config.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/jspm_config.js
+Connection made from URL: /client/images/deckRemodelers/traditionalFullBody.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/traditionalFullBody.jpg
+Response ready to be returned from URL: //prod/thirdParty.css
+Response ready to be returned from URL: //client/scripts/jspm_config.js
+Response ready to be returned from URL: //client/images/logo/png/white_logo_color_background.png
+Connection made from URL: /client/scripts/systemConfig.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/systemConfig.js
+Connection made from URL: /prod/app.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/app.js
+Connection made from URL: /client/images/deckRemodelers/vistaFullBody.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/vistaFullBody.jpg
+Response ready to be returned from URL: //client/scripts/systemConfig.js
+Connection made from URL: /client/images/deckRemodelers/cableFullBody.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/cableFullBody.jpg
+Response ready to be returned from URL: //prod/thirdParty.js
+Response ready to be returned from URL: //client/scripts/jspm_packages/system.src.js
+Connection made from URL: /client/images/deckRemodelers/standardHandrail.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/standardHandrail.jpg
+Connection made from URL: /client/images/deckRemodelers/colonialHandrail.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/colonialHandrail.jpg
+Response ready to be returned from URL: //prod/app.js
+Connection made from URL: /client/images/deckRemodelers/modernHandrail.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/modernHandrail.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/standardHandrail.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/traditionalFullBody.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/vistaFullBody.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/modernHandrail.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/cableFullBody.jpg
+Connection made from URL: /client/images/deckRemodelers/squareCap.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/squareCap.jpg
+Connection made from URL: /client/images/deckRemodelers/pyramidCap.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/pyramidCap.jpg
+Connection made from URL: /client/images/deckRemodelers/texturedBlack.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/texturedBlack.png
+Connection made from URL: /client/images/deckRemodelers/texturedBronze.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/texturedBronze.png
+Response ready to be returned from URL: //client/images/deckRemodelers/texturedBronze.png
+Connection made from URL: /client/images/deckRemodelers/matteBlack.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/matteBlack.png
+Response ready to be returned from URL: //client/images/deckRemodelers/texturedBlack.png
+Response ready to be returned from URL: //client/images/deckRemodelers/matteBlack.png
+Connection made from URL: /client/images/deckRemodelers/stainlessSteel.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/stainlessSteel.png
+Response ready to be returned from URL: //client/images/deckRemodelers/colonialHandrail.jpg
+Connection made from URL: /client/images/deckRemodelers/notInStock.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/notInStock.png
+Response ready to be returned from URL: //client/images/deckRemodelers/stainlessSteel.png
+Response ready to be returned from URL: //client/images/deckRemodelers/notInStock.png
+Response ready to be returned from URL: //client/images/deckRemodelers/pyramidCap.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/squareCap.jpg
+Connection made from URL: /favicon.ico
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/favicon.ico
+Response ready to be returned from URL: //favicon.ico
+Connection made from URL: /deckRemodelersQuestionnaire/saveNewForm
+In the process of receiving POST data...
+Handling a POST request from /deckRemodelersQuestionnaire/saveNewForm
+Saving new Deck Remodelers customer data...
+About to do a simultaneous read and update on records from counters
+Just performed a simultaneous read and update on at least one record in the counters collection
+Ran into an error when trying to store a new customer form!
+TypeError: Cannot read property 'seq' of null
+    at Object.insertNewForm (/app/data/DAO/customerFormsDAO.js:36:29)
+    at processTicksAndRejections (internal/process/next_tick.js:81:5)
+Generating an attachment to be sent via e-mail
+Fetching the following file: /app/client/styles/email/customerForm.scss
+Fetching the following file: /app/client/views/email/customerForm.handlebars
+Fetching the following file: /app/client/views/email/baseEmail.handlebars
+Sending e-mail to wilson.paredes@metrorailings.com,kinsho@metrorailings.com
+Response ready to be returned from URL: //deckRemodelersQuestionnaire/saveNewForm
+Connection made from URL: /deckRemodelersQuestionnaire
+CONTROLLER: controllers/deckRemodelersQuestionnaireController
+ACTION: init
+Loading the Deck Remodelers page...
+Response ready to be returned from URL: //deckRemodelersQuestionnaire
+Connection made from URL: /client/styles/deckRemodelersQuestionnaire/page.css
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/styles/deckRemodelersQuestionnaire/page.css
+Connection made from URL: /prod/thirdParty.css
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/thirdParty.css
+Connection made from URL: /client/images/logo/png/white_logo_color_background.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/logo/png/white_logo_color_background.png
+Response ready to be returned from URL: //client/styles/deckRemodelersQuestionnaire/page.css
+Connection made from URL: /client/images/deckRemodelers/traditionalFullBody.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/traditionalFullBody.jpg
+Connection made from URL: /prod/thirdParty.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/thirdParty.js
+Response ready to be returned from URL: //prod/thirdParty.css
+Response ready to be returned from URL: //client/images/logo/png/white_logo_color_background.png
+Connection made from URL: /client/scripts/jspm_packages/system.src.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/jspm_packages/system.src.js
+Connection made from URL: /client/scripts/systemConfig.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/systemConfig.js
+Response ready to be returned from URL: //prod/thirdParty.js
+Connection made from URL: /client/scripts/jspm_config.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/scripts/jspm_config.js
+Response ready to be returned from URL: //client/scripts/systemConfig.js
+Connection made from URL: /prod/app.js
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/prod/app.js
+Response ready to be returned from URL: //client/scripts/jspm_config.js
+Connection made from URL: /client/images/deckRemodelers/vistaFullBody.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/vistaFullBody.jpg
+Connection made from URL: /client/images/deckRemodelers/cableFullBody.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/cableFullBody.jpg
+Connection made from URL: /client/images/deckRemodelers/standardHandrail.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/standardHandrail.jpg
+Response ready to be returned from URL: //client/scripts/jspm_packages/system.src.js
+Connection made from URL: /client/images/deckRemodelers/colonialHandrail.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/colonialHandrail.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/standardHandrail.jpg
+Response ready to be returned from URL: //prod/app.js
+Response ready to be returned from URL: //client/images/deckRemodelers/traditionalFullBody.jpg
+Connection made from URL: /client/images/deckRemodelers/modernHandrail.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/modernHandrail.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/vistaFullBody.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/cableFullBody.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/modernHandrail.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/colonialHandrail.jpg
+Connection made from URL: /client/images/deckRemodelers/squareCap.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/squareCap.jpg
+Connection made from URL: /client/images/deckRemodelers/pyramidCap.jpg
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/pyramidCap.jpg
+Connection made from URL: /client/images/deckRemodelers/texturedBlack.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/texturedBlack.png
+Connection made from URL: /client/images/deckRemodelers/texturedBronze.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/texturedBronze.png
+Response ready to be returned from URL: //client/images/deckRemodelers/texturedBronze.png
+Response ready to be returned from URL: //client/images/deckRemodelers/texturedBlack.png
+Connection made from URL: /client/images/deckRemodelers/matteBlack.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/matteBlack.png
+Response ready to be returned from URL: //client/images/deckRemodelers/matteBlack.png
+Connection made from URL: /client/images/deckRemodelers/stainlessSteel.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/stainlessSteel.png
+Connection made from URL: /client/images/deckRemodelers/notInStock.png
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/client/images/deckRemodelers/notInStock.png
+Response ready to be returned from URL: //client/images/deckRemodelers/stainlessSteel.png
+Response ready to be returned from URL: //client/images/deckRemodelers/notInStock.png
+Response ready to be returned from URL: //client/images/deckRemodelers/pyramidCap.jpg
+Response ready to be returned from URL: //client/images/deckRemodelers/squareCap.jpg
+Connection made from URL: /favicon.ico
+CONTROLLER: controllers/utility/ResourcesController
+ACTION: init
+Fetching the following file: /app/favicon.ico
+Response ready to be returned from URL: //favicon.ico
+Connection made from URL: /deckRemodelersQuestionnaire/saveNewForm
+In the process of receiving POST data...
+Handling a POST request from /deckRemodelersQuestionnaire/saveNewForm
+Saving new Deck Remodelers customer data...
+About to do a simultaneous read and update on records from counters
+Just performed a simultaneous read and update on at least one record in the counters collection
+Just did a bulkWrite to the database!
+Wrote 1 records to the "customerForms" collection
+Generating an attachment to be sent via e-mail
+Fetching the following file: /app/client/styles/email/customerForm.scss
+Sending e-mail to wilson.paredes@metrorailings.com,kinsho@metrorailings.com
+Response ready to be returned from URL: //deckRemodelersQuestionnaire/saveNewForm

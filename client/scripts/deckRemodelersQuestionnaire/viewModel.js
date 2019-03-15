@@ -10,13 +10,15 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 let CUSTOMER_NAME = 'customerName',
+	PROJECT_MANAGER = 'projectManager',
 	STREET_ADDRESS = 'customerAddress',
 	CITY = 'customerCity',
 	STATE = 'customerState',
 
 	SUBMIT_BUTTON = 'submitButton',
 
-	SUBMISSION_INSTRUCTIONS = 'Please make sure you have the complete address filled out before submitting this form.';
+	SUBMISSION_INSTRUCTIONS = 'Please make sure the customer\'s name, a complete address, and a project manager have' +
+		' been listed before submitting this form.';
 
 // ----------------- PRIVATE MEMBERS ---------------------------
 
@@ -24,6 +26,7 @@ let CUSTOMER_NAME = 'customerName',
 let _validationSet = new Set(),
 
 	_nameField = document.getElementById(CUSTOMER_NAME),
+	_managerField = document.getElementById(PROJECT_MANAGER),
 	_addressField = document.getElementById(STREET_ADDRESS),
 	_cityField = document.getElementById(CITY),
 	_stateField = document.getElementById(STATE),
@@ -49,10 +52,10 @@ function _validate()
 let viewModel = {};
 
 // Customer Name
-Object.defineProperty(viewModel, 'name',
+Object.defineProperty(viewModel, 'customerName',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -64,6 +67,25 @@ Object.defineProperty(viewModel, 'name',
 		viewModel.__name = value;
 
 		rQueryClient.setField(_nameField, value);
+	}
+});
+
+// Project Manager
+Object.defineProperty(viewModel, 'projectManager',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__propertyManager;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__propertyManager = value;
+
+		rQueryClient.setField(_managerField, value, _validationSet);
 
 		_validate();
 	}
@@ -132,6 +154,57 @@ Object.defineProperty(viewModel, 'state',
 	}
 });
 
+// Design Details
+Object.defineProperty(viewModel, 'design',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__design;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__design = value;
+	}
+});
+
+// Questions
+Object.defineProperty(viewModel, 'questions',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__questions;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__questions = value;
+	}
+});
+
+// Due Date
+Object.defineProperty(viewModel, 'dueDate',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__dueDate;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__dueDate = value;
+	}
+});
+
 // Form Validation Flag
 Object.defineProperty(viewModel, 'isFormValid',
 {
@@ -158,3 +231,7 @@ Object.defineProperty(viewModel, 'isFormValid',
 		}
 	}
 });
+
+// ----------------- EXPORT -----------------------------
+
+export default viewModel;

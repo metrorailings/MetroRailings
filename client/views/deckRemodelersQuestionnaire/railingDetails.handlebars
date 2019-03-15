@@ -1,0 +1,28 @@
+<div id='interactivityTip'>
+	Click or tap on the pictures below to mark your design selections.
+</div>
+
+<div id='drRailingsDetails'>
+
+	{{#each questionnaireData.designOptions}}
+		<div class='optionPicker'>
+			<div class='optionPickerHeader'>{{ name }}</div>
+			<div class='optionPickerItems'>
+				{{#each options}}
+					<span class='optionPickerItem' data-name='{{ ../id }}' data-value='{{ value }}'>
+						<div class='optionPickerItemHeader'>
+							{{ name }}{{#if curvable}}&nbsp;({{ curvable }}){{/if}}
+						</div>
+						<img src='{{ previewImage }}' alt='alt' class='optionPickerImage' />
+						{{#if basePrice}}
+							<div class='optionPickerPrice'>
+								Base Price: ${{ basePrice }}{{ pricingUnit }}
+							</div>
+						{{/if}}
+					</span>
+				{{/each}}
+			</div>
+		</div>
+	{{/each}}
+
+</div>

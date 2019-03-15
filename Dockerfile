@@ -1,5 +1,5 @@
-# Use Node 7 as a base image
-FROM node:7.10.0
+# Use Node 11 as a base image
+FROM node:11
 
 # Set the working directory to /app
 WORKDIR /app
@@ -16,6 +16,7 @@ COPY /config /app/config
 COPY /controllers /app/controllers
 COPY /data /app/data
 COPY /prod /app/prod
+COPY /quotes /app/quotes
 COPY /shared /app/shared
 COPY /utility /app/utility
 COPY /validators /app/validators
@@ -28,8 +29,25 @@ COPY /.ssl /app/.ssl
 COPY /external /app/external
 COPY /external/processGallery.sh /etc/cron.daily/processGallery.sh
 
+# Only uncomment the below should we're testing in a local dev environment
+# COPY /client/scripts/ /app/client/scripts
+
+RUN  apt-get update
+     # See https://crbug.com/795759
+RUN apt-get install -yq libgconf-2-4
+     # Install latest chrome dev package, which installs the necessary libs to
+     # make the bundled version of Chromium that Puppeteer installs work.
+RUN apt-get install -y wget --no-install-recommends
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+RUN apt-get update
+RUN apt-get install -y google-chrome-unstable --no-install-recommends
+RUN rm -rf /var/lib/apt/lists/*
+RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh
+RUN chmod +x /usr/sbin/wait-for-it.sh
+
 # No need to run JSPM install, as the JSPM files have already been brought over from the COPY command
-# We decide not to bring over the NPM files as it saves us from needing to upload even data over the wire. More
+# We decide not to bring over the NPM files as it saves us from needing to upload even more data over the wire. More
 # importantly, we need to build some of the NPM dependencies within the container environment to ensure that they work
 # as intended (e.g. node-sass)
 RUN npm install;

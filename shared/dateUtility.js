@@ -39,6 +39,17 @@ module.exports =
 		'December'
 	],
 
+	DAYS:
+	[
+		'Sunday',
+		'Monday',
+		'Tuesday',
+		'Wednesday',
+		'Thursday',
+		'Friday',
+		'Saturday'
+	],
+
 	/**
 	 * Function responsible for finding the ordinal suffix that would naturally be associated
 	 * with a given date

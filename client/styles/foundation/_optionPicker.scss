@@ -1,0 +1,188 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import 'colors';
+@import 'responsive';
+@import 'fonts';
+@import 'animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.optionPicker
+{
+	margin:
+	{
+		top: 40px;
+		bottom: 40px;
+		left: auto;
+		right: auto;
+	}
+
+	border:
+	{
+		radius: 10px;
+		width: 2.5px;
+		color: map-get($COLORS, darkGrayTheme);
+		style: solid;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 85%;
+
+	&:first-of-type
+	{
+		margin-top: 0px;
+	}
+}
+
+.optionPickerHeader
+{
+	@extend %tabularSlimHeaderText;
+
+	padding:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	border:
+	{
+		bottom:
+		{
+			width: 1px;
+			style: solid;
+			color: map-get($COLORS, darkGrayTheme);
+		}
+
+		top-left-radius: 10px;
+		top-right-radius: 10px;
+	}
+
+	background-color: map-get($COLORS, lightGrayTheme);
+	text-transform: uppercase;
+
+	width: 100%;
+}
+
+.optionPickerItems
+{
+	padding:
+	{
+		top: 10px;
+		bottom: 20px;
+	}
+
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include tabletUp()
+	{
+		flex-wrap: wrap;
+	}
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
+}
+
+.optionPickerItem
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	@include tabletUp()
+	{
+		width: 33.3%;
+	}
+
+	& > input
+	{
+		margin:
+		{
+			top: 10px;
+			bottom: 20px;
+		}
+
+		background-color: map-get($COLORS, grayTheme);
+
+		width: 32px;
+		height: 32px;
+	}
+}
+
+.optionPickerItemHeader
+{
+	@extend %tabularRegularText;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 10px;
+	}
+
+	text-align: center;
+}
+
+.optionPickerPrice
+{
+	@extend %tabularNoteText;
+
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+}
+
+.optionPickerImage
+{
+	@include transitionSettings($property: filter);
+
+	margin:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	cursor: pointer;
+
+	@include desktopOnly()
+	{
+		border:
+		{
+			width: 12px;
+			style: solid;
+			color: map-get($COLORS, whiteTheme);
+		}
+
+		max-width: 250px;
+		max-height: 250px;
+	}
+
+	@include mobileOnly()
+	{
+		border:
+		{
+			width: 10px;
+			style: solid;
+			color: map-get($COLORS, whiteTheme);
+		}
+
+		max-width: 175px;
+		max-height: 175px;
+	}
+
+	&.highlight
+	{
+		border-color: map-get($COLORS, darkBlueTheme);
+	}
+}

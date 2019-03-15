@@ -29,7 +29,8 @@
     "clean-css": "*",
     "google-translate-api": "*",
     "striptags": "~2",
-    "showdown": "*"
+    "showdown": "*",
+    "puppeteer": "*"
   },
   "jspm": {
     "main": "MR.js",

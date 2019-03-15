@@ -278,6 +278,17 @@ _Handlebars.registerHelper('format_date', function(date)
 });
 
 /**
+ * Handlebars helper function designed to translate computerized dates into user-friendly text
+ * Additionally, the day of the week is also listed here
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_date_with_day_of_week', function(date)
+{
+	return dateUtility.DAYS[date.getDay()] + ', ' + dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
+});
+
+/**
  * Handlebars helper function designed to translate computerized time strings into user-friendly text
  *
  * @author kinsho

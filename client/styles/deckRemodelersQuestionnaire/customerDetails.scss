@@ -1,0 +1,36 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/responsive';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#customerName, #customerCity, #projectManager
+{
+	@include tabletUp()
+	{
+		width: 180px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 125px;
+	}
+}
+
+#customerAddress
+{
+	@include tabletUp()
+	{
+		width: 225px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 175px;
+	}
+}
+
+#customerState
+{
+	width: 80px;
+}

@@ -367,6 +367,11 @@ $FONTS:
 	@include basicFontSettings($weight: 400, $size: regularPlusFontSize, $family: Playfair Display);
 }
 
+%tabularNoteText
+{
+	@include basicFontSettings($weight: 400, $size: smallFontSize, $family: Comfortaa, $style: italic);
+}
+
 %tabularLabelText
 {
 	@include basicFontSettings($weight: 700, $size: regularPlusFontSize, $family: Playfair Display);

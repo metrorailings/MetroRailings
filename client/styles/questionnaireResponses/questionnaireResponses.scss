@@ -1,0 +1,207 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/convention';
+@import '../foundation/fonts';
+@import '../foundation/general';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/animations';
+@import '../foundation/optionPicker';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#banner
+{
+	@include printOnly()
+	{
+		display: inline-block !important;
+	}
+}
+
+.textRow
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+		left: 30px;
+		right: 10px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+
+	height: 30px;
+}
+
+.columnOne, .columnTwo
+{
+	display: flex;
+
+	flex: 1;
+}
+
+.labelText
+{
+	@extend %formLabelText;
+
+	text-decoration: underline;
+
+	text-align: right;
+	margin-right: 20px;
+
+	flex: 1;
+}
+
+.keyText
+{
+	@extend %formDescriptiveText;
+
+	text-align: left;
+
+	flex: 1;
+}
+
+#railingDetails
+{
+	border:
+	{
+		width: 2px;
+		color: map-get($COLORS, darkGrayTheme);
+		radius: 10px;
+	}
+
+	margin:
+	{
+		top: 40px;
+		bottom: 40px;
+		left: auto;
+		right: auto;
+	}
+
+	width: 90%;
+
+	& > legend
+	{
+		@extend %tabularHeaderText;
+
+		padding:
+		{
+			left: 15px;
+			right: 15px;
+		}
+	}
+}
+
+#designContainer
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	margin:
+	{
+		top: 10px;
+		bottom: 25px;
+	}
+}
+
+.designSelection
+{
+	width: 33%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.designCategory
+{
+	@extend %formLabelText;
+
+	text-decoration: underline;
+
+	margin:
+	{
+		top: 25px;
+	}
+}
+
+.designValue
+{
+	@extend %formDescriptiveText;
+
+	margin:
+	{
+		top: 3px;
+	}
+}
+
+.designImage
+{
+	max-width: 150px;
+	height: 100px;
+}
+
+#questions
+{
+	display: flex;
+
+	flex-direction: column;
+
+	page-break-inside: avoid;
+}
+
+.questionContainer
+{
+	margin:
+	{
+		top: 15px;
+		bottom: 15px;
+		left: auto;
+		right: auto;
+	}
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+	}
+
+	border-bottom:
+	{
+		width: 1px;
+		color: map-get($COLORS, grayTheme);
+		style: solid;
+	}
+
+	width: 80%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.question
+{
+	@extend %formSectionHeaderText;
+
+	margin:
+	{
+		bottom: 15px;
+		left: auto;
+		right: auto;
+	}
+
+	font-style: italic;
+}
+
+.response
+{
+	@extend %regularPlusText;
+}
