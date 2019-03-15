@@ -1,0 +1,69 @@
+{{> bannerSection }}
+
+<div class='pageHeader'>
+	<h3>{{ formData.company }} - New Order Form</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<div id='customerDetails'>
+
+	<div class='textRow'>
+		<span class='columnOne'>
+			<span class='labelText'>Customer Name:</span>
+			<span class='keyText'>{{ formData.customerName }}</span>
+		</span>
+		<span class='columnTwo'>
+			<span class='labelText'>Project Manager:</span>
+			<span class='keyText'>{{ projectManager }}</span>
+		</span>
+	</div>
+
+	<div class='textRow'>
+		<span class='columnOne'>
+			<span class='labelText'>Project Location:</span>
+			<span class='keyText'>{{ formData.address }},&nbsp;{{ formData.city }},&nbsp;{{ formData.state }}</span>
+		</span>
+		<span class='columnTwo'></span>
+	</div>
+
+	{{#if formData.dueDate}}
+		<div class='textRow'>
+			<span class='columnOne'>
+				<span class='labelText'>Desired Due Date:</span>
+				<span class='keyText'>
+					{{#format_date_with_day_of_week formData.dueDate}}{{/format_date_with_day_of_week }}
+				</span>
+			</span>
+			<span class='columnTwo'></span>
+		</div>
+	{{/if}}
+
+</div>
+
+{{#if designData.0.name}}
+	<fieldset id='railingDetails'>
+		<legend>Product Details</legend>
+		<div id='designContainer'>
+			{{#each designData}}
+				<div class='designSelection'>
+					<div class='designCategory'>{{ name }}</div>
+					<div class='designValue'>{{ value }}</div>
+					<img class='designImage' src='{{ image }}' alt='alt' />
+				</div>
+			{{/each}}
+		</div>
+	</fieldset>
+{{/if}}
+
+<div id='questions'>
+	{{#if formData.questions.length}}
+		{{#each formData.questions}}
+			{{#if response}}
+				<div class='questionContainer'>
+					<div class='question'>{{ question }}</div>
+					<div class='response'>{{ response }}</div>
+				</div>
+			{{/if}}
+		{{/each}}
+	{{/if}}
+</div>

@@ -30,30 +30,24 @@ COPY /external /app/external
 COPY /external/processGallery.sh /etc/cron.daily/processGallery.sh
 
 # Only uncomment the below should we're testing in a local dev environment
-COPY /client/scripts/ /app/client/scripts
+# COPY /client/scripts/ /app/client/scripts
 
-# See https://crbug.com/795759
-RUN apt-get update && apt-get install -yq libgconf-2-4
-
-# Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
-# Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
-# installs, work.
-RUN apt-get update && apt-get install -y wget --no-install-recommends \
-    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-    && apt-get update \
-    && apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
-      --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get purge --auto-remove -y curl \
-    && rm -rf /src/*.deb
-
-# It's a good idea to use dumb-init to help prevent zombie chrome processes.
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
-RUN chmod +x /usr/local/bin/dumb-init
+RUN apt-get update
+     # See https://crbug.com/795759
+RUN apt-get install -yq libgconf-2-4
+     # Install latest chrome dev package, which installs the necessary libs to
+     # make the bundled version of Chromium that Puppeteer installs work.
+RUN apt-get install -y wget --no-install-recommends
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+RUN apt-get update
+RUN apt-get install -y google-chrome-unstable --no-install-recommends
+RUN rm -rf /var/lib/apt/lists/*
+RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh
+RUN chmod +x /usr/sbin/wait-for-it.sh
 
 # No need to run JSPM install, as the JSPM files have already been brought over from the COPY command
-# We decide not to bring over the NPM files as it saves us from needing to upload even data over the wire. More
+# We decide not to bring over the NPM files as it saves us from needing to upload even more data over the wire. More
 # importantly, we need to build some of the NPM dependencies within the container environment to ensure that they work
 # as intended (e.g. node-sass)
 RUN npm install;
