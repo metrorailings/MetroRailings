@@ -1,0 +1,40 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../email/email';
+
+@import '../foundation/responsive';
+@import '../foundation/colors';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#header
+{
+	margin-bottom: 0px;
+}
+
+#personalizedOrder
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 100%;
+
+	& > tr > td
+	{
+		padding:
+		{
+			left: 20px;
+			right: 20px;
+			top: 20px;
+			bottom: 20px;
+		}
+
+		font-size: 16px;
+		vertical-align: middle;
+
+		width: 100%;
+	}
+}

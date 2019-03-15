@@ -1,0 +1,40 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#interactivityTip
+{
+	@extend %regularPlusText;
+
+	border:
+	{
+		width: 2.5px;
+		color: map-get($COLORS, darkGrayTheme);
+		style: solid;
+
+		bottom: none;
+		top-left-radius: 10px;
+		top-right-radius: 15px;
+	}
+
+	margin:
+	{
+		top: 40px;
+		left: auto;
+		right: auto;
+	}
+
+	padding:
+	{
+		top: 10px;
+		bottom: 10px;
+		left: 5px;
+		right: 5px;
+	}
+
+	text-align: center;
+
+	width: 50%;
+}

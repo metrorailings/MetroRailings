@@ -4,8 +4,10 @@
 @import '../foundation/fonts';
 @import '../foundation/general';
 @import '../foundation/form';
+@import '../foundation/convention';
 @import '../foundation/responsive';
 @import '../foundation/animations';
+@import '../foundation/optionPicker';
 
 /* ----------------------- STYLES ----------------------------- */
 
@@ -14,8 +16,10 @@
 	display: none;
 }
 
-#drInstructionalText
+.drInstructionalText
 {
+	@extend %regularPlusText;
+
 	text-align: center;
 }
 
@@ -29,36 +33,50 @@
 	margin-bottom: 25px;
 }
 
-.dataGrouping
+.dataGroupingII
 {
 	@extend %regularText;
 
 	margin:
 	{
-		top: 35px;
-		bottom: 35px;
+		top: 20px;
+		bottom: 20px;
 		left: 15px;
 		right: 15px;
 	}
 
 	display: flex;
 	align-items: center;
+	justify-content: flex-start;
+	flex: 1;
 
-	& > .staticValue, & > textarea, & > .buttonSet
+	@include phoneOnly()
 	{
-		width: 70%;
-		text-align: left;
+		flex-direction: column;
 	}
 
-	&.disabled
+	input, select
 	{
-		opacity: 0.6;
+		margin-right: 0px;
 	}
+}
 
-	& > i
+.rowGrouping
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.rowColumnGrouping
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	@include phoneOnly()
 	{
-		color: map-get($COLORS, darkBlueTheme);
-		margin-left: 5px;
+		flex-direction: column;
 	}
 }
 
@@ -66,25 +84,19 @@
 {
 	@extend %formLabelText;
 
-	width: 20%;
-	margin-right: 20px;
-	text-align: right;
-
-	& > i
+	@include tabletUp()
 	{
-		padding:
-		{
-			left: 5px;
-			top: 5px;
-		}
+		width: 140px;
 
-		visibility: hidden;
-		color: map-get($COLORS, darkGreenTheme);
+		margin-right: 20px;
+		text-align: right;
+	}
 
-		&.reveal
-		{
-			visibility: visible;
-		}
+ 	@include phoneOnly()
+	{
+		width: 120px;
+
+		text-align: center;
 	}
 }
 

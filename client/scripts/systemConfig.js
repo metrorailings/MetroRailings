@@ -41,6 +41,9 @@ SystemJS.config({
 		contractorAgreement: '/client/scripts/contractorAgreement/main.js',
 		priceChart: '/client/scripts/priceChart/main.js',
 
+		deckRemodelersQuestionnaire: '/client/scripts/deckRemodelersQuestionnaire/main.js',
+		questionnaireResponses: '/client/scripts/questionnaireResponses/main.js',
+
 		barrett: '/client/scripts/barrett/main.js',
 		bellari: '/client/scripts/bellari/main.js',
 		restricted: '/client/scripts/restricted/main.js'

@@ -1,0 +1,15 @@
+<div id='drMiscellaneousDetails'>
+
+	{{#each questionnaireData.questions}}
+		<div class='openText' data-index='{{ @index }}'>
+			<div class='openTextQuestion'>{{ this }}</div>
+			<textarea class='openTextResponse' />
+		</div>
+	{{/each}}
+
+	<div class='openTextII'>
+		<div class='openTextQuestionII'>Due Date</div>
+		<input type='text' id='dueDate' />
+	</div>
+
+</div>

@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _nodemailer = require('nodemailer'),
+const _nodemailer = require('nodemailer'),
 	_styliner = require('styliner'),
 	_sass = require('node-sass'),
 	_Q = require('q'),
@@ -12,7 +12,7 @@ var _nodemailer = require('nodemailer'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var EMAIL_DIRECTORY = 'email',
+const EMAIL_DIRECTORY = 'email',
 	BASE_EMAIL_TEMPLATE = 'baseEmail',
 
 	EMAIL_STYLESHEET_DIRECTORY = '/client/styles/email/',
@@ -22,16 +22,17 @@ var EMAIL_DIRECTORY = 'email',
 	[
 		'client/styles/foundation/'
 	],
-	COMPRESSED_KEYWORD;
+	COMPRESSED_KEYWORD = '';
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
-var _transport = _nodemailer.createTransport(config.NODEMAILER_CONFIG), // The actual object to invoke in order to send mail
+	// The actual object to invoke in order to send mail
+let _transport = _nodemailer.createTransport(config.NODEMAILER_CONFIG),
 	_inlineStyler = new _styliner('');
 
 // ----------------- GENERATOR TRANSFORMATION FUNCTIONS --------------------------
 
-var _sendMail = _Q.nbind(_transport.sendMail, _transport);
+let _sendMail = _Q.nbind(_transport.sendMail, _transport);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -51,7 +52,7 @@ module.exports =
 	 */
 	generateFullEmail: async function (templateName, templateData, stylesheetName, isAdminEmail)
 	{
-		var deferred = _Q.defer(),
+		let deferred = _Q.defer(),
 			stylesheet = await fileManager.fetchFile(EMAIL_STYLESHEET_DIRECTORY + stylesheetName + SCSS_EXTENSION),
 			styles,
 			emailDetails,
@@ -147,29 +148,22 @@ module.exports =
 	{
 		console.log('Sending e-mail to ' + email);
 
-		var mail,
-			// Multiple e-mail addresses may have been provided
-			addresses = email.split(',');
-
 		try
 		{
-			for (let i = 0; i < addresses.length; i++)
+			let mail = await _sendMail(
 			{
-				mail = await _sendMail(
-				{
-					from: fromEntity || config.SUPPORT_MAILBOX,
-					to: email,
-					subject: subject,
-					text: plainText,
-					html: htmlText,
-					replyTo: replyTo || config.SUPPORT_MAILBOX,
-					attachments: attachments
-				});
+				from: fromEntity || config.SUPPORT_MAILBOX,
+				to: email,
+				subject: subject,
+				text: plainText,
+				html: htmlText,
+				replyTo: replyTo || config.SUPPORT_MAILBOX,
+				attachments: attachments
+			});
 
-				if (mail.accepted.length)
-				{
-					return false;
-				}
+			if (mail.rejected.length)
+			{
+				return false;
 			}
 
 			return true;

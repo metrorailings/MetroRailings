@@ -1,0 +1,56 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+.openText
+{
+	margin:
+	{
+		top: 45px;
+		bottom: 45px;
+		left: auto;
+		right: auto;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 75%;
+}
+
+.openTextQuestion
+{
+	@extend %majorText;
+
+	margin:
+	{
+		bottom: 15px;
+	}
+
+	width: 100%;
+}
+
+.openTextResponse
+{
+	width: 100%;
+	height: 150px;
+}
+
+.openTextII
+{
+	@extend .openText;
+}
+
+.openTextQuestionII
+{
+	@extend .openTextQuestion;
+}
+
+#dueDate
+{
+	width: 250px;
+}

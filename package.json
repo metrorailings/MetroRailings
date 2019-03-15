@@ -30,6 +30,8 @@
     "stripe": "^6.25.1",
     "striptags": "~2",
     "styliner": "^1.0.4"
+    "showdown": "*",
+    "puppeteer": "*"
   },
   "jspm": {
     "main": "MR.js",
