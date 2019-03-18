@@ -16,7 +16,7 @@ const LOADING_VEIL = 'baseLoaderOverlay',
 
 	DEFAULT_CONFIG =
 	{
-		timeout: 20000
+		timeout: 30000
 	};
 
 // ----------------- PRIVATE MEMBERS --------------------------
