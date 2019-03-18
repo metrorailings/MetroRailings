@@ -90,9 +90,9 @@ module.exports =
 		let customerForm = await DAO.insertNewForm(params),
 			// Generate the HTML to insert into the PDF attachment
 			pdfLink = QUESTIONNAIRE_RESPONSE_URL + parseInt(customerForm._id, 10),
-			// pdf = await pdfGenerator.htmlToPDF(pdfLink),
+			pdf = await pdfGenerator.htmlToPDF(pdfLink),
 			// Prepare the PDF copy of the quote to be sent over as an attachment
-			// formAttachment = await mailer.generateAttachment(customerForm._id + PDF_EXTENSION, pdf),
+			formAttachment = await mailer.generateAttachment(customerForm._id + PDF_EXTENSION, pdf),
 			mailHTML = await mailer.generateFullEmail(CUSTOMER_FORM_EMAIL, { companyName : COMPANY_NAME, formLink : config.BASE_URL + pdfLink }, CUSTOMER_FORM_EMAIL),
 			emailAddresses = drConfig.UNIVERSAL_EMAIL_ADDRESSES;
 
@@ -102,7 +102,7 @@ module.exports =
 			emailAddresses.push(drConfig.PM_EMAIL_ADDRESSES[customerForm.projectManager]);
 		}
 
-		await mailer.sendMail(mailHTML, '', emailAddresses, CUSTOM_ORDER_SUBJECT_HEADER, config.SUPPORT_MAILBOX, '', []);
+		await mailer.sendMail(mailHTML, '', emailAddresses, CUSTOM_ORDER_SUBJECT_HEADER, config.SUPPORT_MAILBOX, '', [formAttachment]);
 
 		return {
 			statusCode: responseCodes.OK,
