@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 
 quotes/*.*
+dump/**
 prod/buildScript.sh
 prod/build.src.js
 prod/app.js
