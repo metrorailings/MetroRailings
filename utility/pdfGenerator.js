@@ -6,7 +6,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _puppeteer = require('puppeteer'),
+const _puppeteer = require('puppeteer'),
 	_fs = require('fs'),
 	_Q = require('q'),
 
@@ -14,11 +14,11 @@ var _puppeteer = require('puppeteer'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var PDF_EXTENSION = '.pdf';
+const PDF_EXTENSION = '.pdf';
 
 // ----------------- GENERATOR TRANSFORMATION FUNCTIONS --------------------------
 
-var fsWriteFile = _Q.denodeify(_fs.writeFile);
+let fsWriteFile = _Q.denodeify(_fs.writeFile);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -39,11 +39,11 @@ module.exports =
 	{
 		try
 		{
-			var browser = await _puppeteer.launch(
+			let browser = await _puppeteer.launch(
 				{
 					headless : true,
 					ignoreHTTPSErrors : true,
-					args: ['--no-sandbox']
+					args: ['--no-sandbox', '--single-process']
 				}),
 				page = await browser.newPage(),
 				options = {},
@@ -70,9 +70,9 @@ module.exports =
 		}
 		catch(error)
 		{
-			console.log('ERROR when trying to generate a PDF version of a quote.');
+			console.log('ERROR when trying to generate a PDF copy of ' + url);
 			console.log(error);
 		}
-	},
+	}
 
 };
