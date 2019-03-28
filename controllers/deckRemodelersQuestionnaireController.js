@@ -108,6 +108,5 @@ module.exports =
 			statusCode: responseCodes.OK,
 			data: {}
 		};
-
 	}
 };
