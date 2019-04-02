@@ -28,6 +28,11 @@
 	width: 70%;
 }
 
+.noteRecordContainer
+{
+	width: 100%;
+}
+
 .noteRecord
 {
 	border-bottom:
@@ -38,6 +43,9 @@
 	}
 
 	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	width: 100%;
 	min-height: 120px;
 
@@ -87,7 +95,7 @@
 
 .noteCell
 {
-	@extend %regularPlusText;
+	@extend %regularText;
 
 	display: flex;
 	justify-content: flex-start;

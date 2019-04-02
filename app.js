@@ -7,7 +7,7 @@ global.OwlStakes =
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _http = require('http'),
+let _http = require('http'),
 	_https = require('https'),
 
 	config = global.OwlStakes.require('config/config'),
@@ -43,7 +43,7 @@ function _process(request, response)
 		try
 		{
 			// Manage the request through the requestManager
-			var url = request.url.trim(),
+			let url = request.url.trim(),
 				responseData = await requestHandler.delegate(request);
 
 			// Send the response back
@@ -60,7 +60,7 @@ function _process(request, response)
 
 // ----------------- OPENING LOGIC --------------------------
 
-var privateKey,
+let privateKey,
 	certificate;
 
 (async function()
