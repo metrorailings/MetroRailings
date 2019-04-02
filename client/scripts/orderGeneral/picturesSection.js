@@ -9,7 +9,7 @@ import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
+const UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
 	UPLOAD_PICTURE_INPUT = 'uploadPictureInput',
 	PICTURES_LISTING_CONTAINER = 'picturesListingContainer',
 	PICTURES_LISTING = 'picturesListing',
@@ -31,7 +31,7 @@ var UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _picturesContainer = document.getElementById(PICTURES_LISTING_CONTAINER),
+let _picturesContainer = document.getElementById(PICTURES_LISTING_CONTAINER),
 	_picturesListing = document.getElementById(PICTURES_LISTING),
 	_picturesLoader = document.getElementById(PICTURES_LISTING_LOADER);
 
@@ -40,7 +40,7 @@ var _picturesContainer = document.getElementById(PICTURES_LISTING_CONTAINER),
 /**
  * The partial to load a new image into the pictures container
  */
-var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
+let orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -51,7 +51,7 @@ var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PIC
  */
 function _attachImageListeners()
 {
-	var image;
+	let image;
 
 	for (let i = 0; i < _picturesListing.children.length; i += 1)
 	{
@@ -70,7 +70,7 @@ function _attachImageListeners()
  */
 async function _deleteImage(imgElement)
 {
-	var saveData =
+	let saveData =
 		{
 			id: imgElement.dataset.orderId,
 			// Remove the metadata from our local cache of order data
@@ -114,10 +114,10 @@ function triggerFileBrowser()
  */
 function openGallery(event)
 {
-	var imageURLs = [];
+	let imageURLs = [];
 
 	// Cycle through each of the uploaded images and collect their src links
-	for (var i = 0; i < vm.pictures.length; i++)
+	for (let i = 0; i < vm.pictures.length; i++)
 	{
 		imageURLs.push(vm.pictures[i].shareLink);
 	}
@@ -132,7 +132,7 @@ function openGallery(event)
  */
 async function uploadImage()
 {
-	var filesToUpload = document.getElementById(UPLOAD_PICTURE_INPUT).files,
+	let filesToUpload = document.getElementById(UPLOAD_PICTURE_INPUT).files,
 		saveData = new FormData(),
 		imgMetadata,
 		i;
@@ -190,7 +190,7 @@ async function uploadImage()
  */
 async function deleteImage(event)
 {
-	var imgElement = event.currentTarget.previousElementSibling,
+	let imgElement = event.currentTarget.previousElementSibling,
 		imageIndex = window.parseInt(imgElement.dataset.index, 10),
 		imgMetadata = vm.pictures[imageIndex],
 		modalMessage = DELETE_IMAGE_MESSAGE.replace(IMAGE_SOURCE_PLACEHOLDER, imgMetadata.shareLink),

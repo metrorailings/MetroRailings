@@ -6,6 +6,7 @@
 
 import axios from 'client/scripts/utility/axios';
 import tooltipManager from 'client/scripts/utility/tooltip';
+import handlebarHelpers from 'client/scripts/utility/handlebarHelpers';
 
 import viewModel from 'client/scripts/notes/viewModel';
 
@@ -20,7 +21,7 @@ const NOTE_TEXTAREA = 'newNoteText',
 	NEW_NOTE_TEMPLATE = 'newNoteTemplate',
 	NOTE_RECORD_TEMPLATE = 'noteRecordTemplate',
 
-	SAVE_NOTE_URL = 'notes/saveNote',
+	SAVE_NOTE_URL = 'notes/saveNewNote',
 
 	NO_TEXT_FOUND_MESSAGE = 'Please enter some text here before trying to save the note.',
 
@@ -54,7 +55,7 @@ function initNotesTextfield(notesContainer)
 		noteTypeSelect = notesContainer.getElementsByClassName(NOTE_TYPE_SELECT)[0],
 		assignToSelect = notesContainer.getElementsByClassName(TASK_ASSIGN_TO_SELECT)[0],
 		saveButton = notesContainer.getElementsByClassName(NOTE_SAVE_BUTTON)[0],
-		noteRecordContainer = notesContainer.getElementsByClassName(NOTE_RECORD_CONTAINER)[0],
+		noteRecordContainer = notesContainer.parentElement.getElementsByClassName(NOTE_RECORD_CONTAINER)[0],
 
 		// Define the listeners to allow us to set values into the view model
 		saveText = () =>
@@ -94,11 +95,11 @@ function initNotesTextfield(notesContainer)
 			}
 			else if ((vm.category === CATEGORIES.NEW) || (vm.category === CATEGORIES.REPLY))
 			{
-				axios.post(SAVE_NOTE_URL, data, true).then((data) =>
+				axios.post(SAVE_NOTE_URL, data, true).then((response) =>
 				{
 					// For new notes, create a note record and stick it to the top of the record container
 					let newHTML = document.createElement('template');
-					newHTML.innerHTML = noteRecordTemplate(data);
+					newHTML.innerHTML = noteRecordTemplate(response.data);
 					noteRecordContainer.insertBefore(newHTML.content.firstChild, noteRecordContainer.firstElementChild);
 				});
 			}

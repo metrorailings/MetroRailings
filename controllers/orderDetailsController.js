@@ -14,6 +14,7 @@ const controllerHelper = global.OwlStakes.require('controllers/utility/controlle
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
+	notesDAO = global.OwlStakes.require('data/DAO/notesDAO'),
 
 	config = global.OwlStakes.require('config/config');
 
@@ -58,6 +59,9 @@ module.exports =
 
 		// Fetch the order data that will be needed to fill in the page
 		pageData.order = await ordersDAO.searchOrderById(orderNumber);
+
+		// Gather all the notes that may belong to this order
+		pageData.notes = await notesDAO.fetchNotesByOrderId(orderNumber);
 
 		// Format the agreement text so that it can be properly presented on the page
 		pageData.order.text.agreement = pageData.order.text.agreement.join('\n\n');

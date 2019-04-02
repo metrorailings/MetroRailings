@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _url = require('url'),
+let _url = require('url'),
 	_Q = require('q'),
 	_busboy = require('busboy'),
 
@@ -26,7 +26,7 @@ async function _servicePostRequest(request, data, deferred)
 {
 	console.log('Handling a POST request from ' + request.url.trim());
 
-	var url = request.url.trim(),
+	let url = request.url.trim(),
 		urlObj = _url.parse(url, true),
 		routeSigns = urlObj.pathname.split('/'),
 		action = routeSigns[2],
@@ -60,7 +60,7 @@ async function _servicePostRequest(request, data, deferred)
  */
 function _handlePostRequest(request)
 {
-	var deferred = _Q.defer(),
+	let deferred = _Q.defer(),
 		busboy = (request.headers['content-type'].indexOf('application/json') === -1) ? new _busboy({ headers: request.headers }) : null,
 		data;
 
@@ -137,7 +137,7 @@ async function _handleStandardRequest(request)
 {
 	try
 	{
-		var url = request.url.trim(),
+		let url = request.url.trim(),
 			urlObj = _url.parse(url, true),
 			routeSigns = urlObj.pathname.split('/'),
 
@@ -210,7 +210,7 @@ module.exports =
 	 */
 	delegate : async function(request)
 	{
-		var responseData;
+		let responseData;
 
 		switch(request.method)
 		{
