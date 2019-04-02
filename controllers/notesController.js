@@ -39,11 +39,11 @@ module.exports =
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
-		await notesDAO.addNewNote(params, cookies.retrieveAdminCookie(cookie)[0]);
+		noteData = await notesDAO.addNewNote(params, cookies.retrieveAdminCookie(cookie)[0]);
 
 		return {
 			statusCode: responseCodes.OK,
-			data: {data: noteData, category: noteData.category}
+			data: noteData
 		};
 	}
 };

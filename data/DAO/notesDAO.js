@@ -2,11 +2,7 @@
 
 const mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
-	orderDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-
-	rQuery = global.OwlStakes.require('utility/rQuery'),
-
-	dateUtility = global.OwlStakes.require('shared/dateUtility');
+	orderDAO = global.OwlStakes.require('data/DAO/ordersDAO');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -47,7 +43,7 @@ module.exports =
 
 		try
 		{
-			order = await orderDAO.searchOrderById(note.orderId);
+			order = await orderDAO.searchOrderById(parseInt(note.orderId, 10));
 			counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION, 
 			{
 				$inc: { seq : 1 }
@@ -65,17 +61,23 @@ module.exports =
 			// Record the author of this note
 			note.author = username;
 
+			// Convert the orer ID to a primitive number
+			note.orderId = parseInt(note.orderId, 10);
+
 			// If the note is a task, initialize the note
 			if (note.type === TYPES.TASK)
 			{
 				note.status = STATUSES.OPEN;
 			}
 
+			// Add the note to our notes collection
+			await mongo.bulkWrite(NOTES_COLLECTION, true, mongo.formInsertSingleQuery(note));
+
 			// Initialize the notes collection inside the order object if none exists yet
 			order.notes = order.notes || [];
 
-			// Add the new note to the collection of notes
-			order.notes.push(note);
+			// Add a reference to the new note to the collection of notes
+			order.notes.push(note._id);
 
 			// Push the modified order into the database
 			await mongo.bulkWrite(ORDERS_COLLECTION, true, mongo.formUpdateOneQuery(
@@ -88,6 +90,36 @@ module.exports =
 		catch(error)
 		{
 			console.log('Ran into an error saving a new note into the order...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
+	 * Function to retrieve all notes that belong to a particular order
+	 *
+	 * @param {Number} orderId - the ID of the order from which to fetch notes
+	 *
+	 * @return {Array<Object>} - the collection of notes that belong to that order
+	 *
+	 * @author kinsho
+	 */
+	fetchNotesByOrderId: async function (orderId)
+	{
+		try
+		{
+			return await mongo.read(NOTES_COLLECTION,
+			{
+				orderId : orderId
+			},
+			{
+				'dates.created' : -1
+			});
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching all notes that belong to order #' + orderId);
 			console.log(error);
 
 			return false;

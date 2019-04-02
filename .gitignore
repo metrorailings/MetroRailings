@@ -14,3 +14,4 @@ client/images/gallery
 **/*.DS_Store
 client/styles/**/page.css
 quotes/*.*
+dump/**.**

@@ -163,19 +163,17 @@ module.exports =
 	 * @param {String} collectionName - the name of the collection from which to read data
 	 * @param {Object} updateInstructions - the instructions that will be used to update the data after the read is made
 	 * @param {Object} [params] - the parameters that will be used to filter the data
-	 * @param {Object} [sortCriteria] - the instructions that will be used to sort the result set
 	 *
 	 * @returns {Array<Object>} - the set of processed records which satisfy the query
 	 *
 	 * @author kinsho
 	 */
-	readThenModify: function(collectionName, updateInstructions, params, sortCriteria)
+	readThenModify: function(collectionName, updateInstructions, params)
 	{
-		var collection,
+		let collection,
 			deferred = _Q.defer();
 
 		params = params || {};
-		sortCriteria = sortCriteria || {};
 
 		// Note that yielding will not be used here, given that the function that necessitates the need for
 		// generator stoppage in the first place is a function that is dynamically created at run-time. A clean
@@ -187,7 +185,7 @@ module.exports =
 
 			// Log the query about to be executed
 			console.log('About to do a simultaneous read and update on records from ' + collectionName);
-			collection.findAndModify(params, sortCriteria, updateInstructions).then(function(results)
+			collection.findOneAndUpdate(params, updateInstructions).then(function(results)
 			{
 				if ( !(results.ok) )
 				{
@@ -219,9 +217,8 @@ module.exports =
 	 */
 	bulkWrite : function (collectionName, ordered, data)
 	{
-		var collection,
+		let collection,
 			dataArgs = [],
-			i,
 			deferred = _Q.defer();
 
 		// The below statement is simply a means of keeping JSHint from bitching about the data parameter not
@@ -240,7 +237,7 @@ module.exports =
 			collection = db.collection(collectionName);
 
 			// Prep the data that will be written to the database
-			for (i = 2; i < arguments.length; i++)
+			for (let i = 2; i < arguments.length; i++)
 			{
 				dataArgs.push(arguments[i]);
 			}

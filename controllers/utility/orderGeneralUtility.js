@@ -239,8 +239,8 @@ module.exports =
 			designs: designData,
 			designErrorsTemplate: designErrorsTemplate,
 			picturesTemplate: picturesTemplate,
-			newNoteTemplate: newNoteTemplate,
-			noteRecordTemplate: noteRecordTemplate,
+			newNote: newNoteTemplate,
+			noteRecord: noteRecordTemplate,
 			depositModal: depositModalTemplate,
 			users: users
 		};
