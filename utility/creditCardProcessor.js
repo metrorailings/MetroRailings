@@ -7,25 +7,18 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 	// Import the configuration file first as we need it to properly instantiate the stripe module
-var config = global.OwlStakes.require('config/config'),
+let config = global.OwlStakes.require('config/config'),
 
 	_Q = require('q'),
 	_stripe = require('stripe')(config.STRIPE_SECRET_KEY); // The stripe module has to be initialized prior to using it
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var ACCEPTABLE_CURRENCY = 'usd',
-	ORDER_ID_PLACEHOLDER = '::orderID',
-
-	TRANSACTION_DESCRIPTION =
-	{
-		CHARGE: 'Order ::orderID - System Charge'
-	};
+const ACCEPTABLE_CURRENCY = 'usd';
 
 // ----------------- GENERATOR TRANSFORMATION FUNCTIONS --------------------------
 
-var _createCustomer = _Q.nbind(_stripe.customers.create, _stripe.customers),
-	_chargeCard = _Q.nbind(_stripe.charges.create, _stripe.charges),
+let _chargeCard = _Q.nbind(_stripe.charges.create, _stripe.charges),
 	_retrieveTransaction = _Q.nbind(_stripe.charges.retrieve, _stripe.charges),
 	_refundMoney = _Q.nbind(_stripe.refunds.create, _stripe.refunds),
 	_createToken = _Q.nbind(_stripe.tokens.create, _stripe.tokens);
@@ -42,82 +35,69 @@ module.exports =
 	 * @param {Number} expYear - the year on which this credit card will expire
 	 * @param {String} cvc - the credit card verification code
 	 *
-	 * @returns {String} - the token that will be used to reference the credit card in Stripe's database
+	 * @returns {Object} - the credit card token we can use to generate new transactions
 	 *
 	 * @author kinsho
 	 */
 	generateToken: async function (ccNumber, expMonth, expYear, cvc)
 	{
-		var token = await _createToken({
+		let token = await _createToken(
+		{
 			card :
 			{
 				number: ccNumber,
 				exp_month: parseInt(expMonth, 10),
 				exp_year: parseInt(expYear, 10),
 				cvc: cvc
-			}});
+			}
+		});
 
-		return token.id;
-	},
-
-	/**
-	 * Simple little function meant to create a new customer object from a Stripe credit card token.
-	 * Creating a customer record would allow us to transact with that customer again without requesting his or her
-	 * information again
-	 *
-	 * @param {String} ccToken - the credit card token ID
-	 * @param {String} name - the customer's name
-	 * @param {String} email - the customer's e-mail address
-	 *
-	 * @returns {String} - the ID of the customer record
-	 *
-	 * @author kinsho
-	 */
-	generateCustomerRecord: async function (ccToken, name, email)
-	{
-		var customer = await _createCustomer(
-			{
-				source: ccToken,
-				metadata: { Name: name },
-				email: email || null,
-				description: name
-			});
-
-		return customer.id;
+		return token;
 	},
 
 	/**
 	 * Function responsible for charging a customer's credit card
 	 *
 	 * @param {Number} orderTotal - the price to charge the customer
-	 * @param {String} customerID - the ID of the customer who will be charged
-	 * @param {Number} orderID - the ID of the order that's currently making us some money
+	 * @param {Number} orderId - the ID of the order that's currently making us some money
+	 * @param {String} tokenId - the ID of the token that contains the credit card we'll be using to process payment
 	 * @param {String} [emailAddr] - the e-mail address which to e-mail the receipt to once the transaction is complete
+	 * @param {String} [customerName] - the name of the customer
+	 * @param {String} [companyName] - the company that the customer is affiliated with
+	 * @param {String} [txDescription] - the description that identifies the purpose of this transaction
 	 *
 	 * @returns {boolean} - the transaction ID
 	 *
 	 * @author kinsho
 	 */
-	chargeTotal: async function (orderTotal, customerID, orderID, emailAddr)
+	chargeTotal: async function (orderTotal, orderId, tokenId, emailAddr, customerName, companyName, txDescription)
 	{
-		var chargeParams =
+		let chargeParams =
 			{
 				amount: Math.floor(orderTotal * 100),
-				customer: customerID,
 				currency: ACCEPTABLE_CURRENCY,
-				metadata: { 'Order ID' : orderID },
-				description: TRANSACTION_DESCRIPTION.CHARGE.replace(ORDER_ID_PLACEHOLDER, orderID)
-			},
-			charge;
+				metadata: { 'Order ID' : orderId },
+				source: tokenId,
+				description: txDescription
+			};
 
+		// Prep an e-mail recipient should at least one e-mail address be provided
 		if (emailAddr)
 		{
-			chargeParams.receipt_email = emailAddr;
+			chargeParams.receipt_email = emailAddr.split(',')[0];
 		}
 
-		charge = await _chargeCard(chargeParams);
+		// Update the metadata if additional information was provided about the customer
+		if (customerName)
+		{
+			chargeParams.metadata.name = customerName;
+		}
+		if (companyName)
+		{
+			chargeParams.metadata.company = companyName;
+		}
 
-		return charge.id;
+		return await _chargeCard(chargeParams);
 	},
 
 	/**
@@ -133,7 +113,7 @@ module.exports =
 	 */
 	refundMoney: async function (refundAmount, transactionIDs, orderID)
 	{
-		var transaction,
+		let transaction,
 			amountLeft, amountToRefund,
 			i;
 

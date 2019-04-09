@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderInvoice/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var STREET_ADDRESS_TEXTFIELD = 'streetAddress',
+const STREET_ADDRESS_TEXTFIELD = 'streetAddress',
 	APT_SUITE_NUMBER_TEXTFIELD = 'aptSuiteNumber',
 	CITY_TEXTFIELD = 'city',
 	STATE_DROPDOWN = 'state',
@@ -12,7 +12,7 @@ var STREET_ADDRESS_TEXTFIELD = 'streetAddress',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _streetAddressField = document.getElementById(STREET_ADDRESS_TEXTFIELD),
+let _streetAddressField = document.getElementById(STREET_ADDRESS_TEXTFIELD),
 	_aptSuiteNumberField = document.getElementById(APT_SUITE_NUMBER_TEXTFIELD),
 	_cityField = document.getElementById(CITY_TEXTFIELD),
 	_stateField = document.getElementById(STATE_DROPDOWN),
@@ -27,7 +27,7 @@ var _streetAddressField = document.getElementById(STREET_ADDRESS_TEXTFIELD),
  */
 function setAddress()
 {
-	vm.customerAddress = _streetAddressField.value;
+	vm.address = _streetAddressField.value;
 }
 
 /**
@@ -37,7 +37,7 @@ function setAddress()
  */
 function setAptSuiteNumber()
 {
-	vm.customerAptSuiteNumber = _aptSuiteNumberField.value;
+	vm.aptSuiteNumber = _aptSuiteNumberField.value;
 }
 
 /**
@@ -47,7 +47,7 @@ function setAptSuiteNumber()
  */
 function setCity()
 {
-	vm.customerCity = _cityField.value;
+	vm.city = _cityField.value;
 }
 
 /**
@@ -57,7 +57,7 @@ function setCity()
  */
 function setState()
 {
-	vm.customerState = _stateField.value;
+	vm.state = _stateField.value;
 }
 
 /**
@@ -67,7 +67,7 @@ function setState()
  */
 function setZipCode()
 {
-	vm.customerZipCode = _zipCodeField.value;
+	vm.zipCode = _zipCodeField.value;
 }
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
@@ -81,8 +81,8 @@ _zipCodeField.addEventListener('blur', setZipCode);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-vm.customerAddress = _streetAddressField.value;
-vm.customerAptSuiteNumber = _aptSuiteNumberField.value;
-vm.customerCity = _cityField.value;
-vm.customerState = _stateField.value;
-vm.customerZipCode = _zipCodeField.value;
+vm.address = _streetAddressField.value;
+vm.aptSuiteNumber = _aptSuiteNumberField.value;
+vm.city = _cityField.value;
+vm.state = _stateField.value;
+vm.zipCode = _zipCodeField.value;

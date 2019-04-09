@@ -2,20 +2,25 @@
 
 import vm from 'client/scripts/orderInvoice/viewModel';
 
+import multiText from 'client/scripts/utility/multiText';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var AREA_CODE_TEXTFIELD = 'customerPhoneAreaCode',
+const AREA_CODE_TEXTFIELD = 'customerPhoneAreaCode',
 	PHONE_NUMBER_ONE = 'customerPhoneNumber1',
 	PHONE_NUMBER_TWO = 'customerPhoneNumber2',
 	NAME_TEXTFIELD = 'customerName',
-	EMAIL_TEXTFIELD = 'customerEmail';
+	EMAIL_TEXTFIELD = 'emailMultitext',
+	COMPANY_NAME_FIELD = 'companyName';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
+let _areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
 	_phoneOneField = document.getElementById(PHONE_NUMBER_ONE),
 	_phoneTwoField = document.getElementById(PHONE_NUMBER_TWO),
 	_nameField = document.getElementById(NAME_TEXTFIELD),
+	_companyField = document.getElementById(COMPANY_NAME_FIELD),
+
 	_emailField = document.getElementById(EMAIL_TEXTFIELD);
 
 // ----------------- LISTENERS ---------------------------
@@ -27,7 +32,17 @@ var _areaCodeField = document.getElementById(AREA_CODE_TEXTFIELD),
  */
 function setName()
 {
-	vm.customerName = _nameField.value;
+	vm.name = _nameField.value;
+}
+
+/**
+ * A listener to set the customer's company affiliation into the view model
+ *
+ * @author kinsho
+ */
+function setCompany()
+{
+	vm.company = _companyField.value;
 }
 
 /**
@@ -60,29 +75,22 @@ function setPhoneTwo()
 	vm.phoneTwo = _phoneTwoField.value;
 }
 
-/**
- * A listener to set the customer's email address into the view model
- *
- * @author kinsho
- */
-function setEmail()
-{
-	vm.customerEmail = _emailField.value;
-}
-
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Attach event listeners to set data into the view model
-_areaCodeField.addEventListener('blur', setAreaCode);
-_phoneOneField.addEventListener('blur', setPhoneOne);
-_phoneTwoField.addEventListener('blur', setPhoneTwo);
-_emailField.addEventListener('blur', setEmail);
-_nameField.addEventListener('keyup', setName);
+_areaCodeField.addEventListener('change', setAreaCode);
+_phoneOneField.addEventListener('change', setPhoneOne);
+_phoneTwoField.addEventListener('change', setPhoneTwo);
+_nameField.addEventListener('change', setName);
+_companyField.addEventListener('change', setCompany);
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
+// Instantiate the e-mail input as a multitext
+new multiText(vm, 'email', _emailField.children[0]);
+
+vm.name = _nameField.value;
+vm.company = _companyField.value;
 vm.areaCode = _areaCodeField.value;
 vm.phoneOne = _phoneOneField.value;
 vm.phoneTwo = _phoneTwoField.value;
-vm.customerEmail = _emailField.value;
-vm.customerName = _nameField.value;

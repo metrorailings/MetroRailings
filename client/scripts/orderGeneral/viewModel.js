@@ -255,7 +255,7 @@ Object.defineProperty(viewModel, 'email',
 	set: (value) =>
 	{
 		// Keep in mind that there may be multiple e-mail addresses here, split by commas
-		var emailAddresses = (value ? value.split(',') : []),
+		let emailAddresses = (value ? value.split(',') : []),
 			isValid;
 
 		for (let i = 0; i < emailAddresses.length; i++)

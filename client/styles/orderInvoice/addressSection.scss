@@ -8,9 +8,14 @@
 {
 	display: flex;
 
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
+
 	& > .controlGrouping
 	{
-		@include desktopOnly()
+		@include tabletUp()
 		{
 			flex: 1;
 		}

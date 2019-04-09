@@ -10,7 +10,7 @@ import designValidation from 'shared/designs/designValidation';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
+const DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
 	DESIGN_ERRORS_TEMPLATE = 'designErrorsTemplate',
 	DEPOSIT_MODAL_TEMPLATE = 'depositModalTemplate',
 
@@ -19,18 +19,18 @@ var DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-var _designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER);
+let _designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER);
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
  * The partial to render design-validation errors on page
  */
-var designErrorsTemplate = Handlebars.compile(document.getElementById(DESIGN_ERRORS_TEMPLATE).innerHTML);
+let designErrorsTemplate = Handlebars.compile(document.getElementById(DESIGN_ERRORS_TEMPLATE).innerHTML);
 
 // ----------------- MODULE ---------------------------
 
-var submitUtility =
+let submitUtility =
 {
 	/**
 	 * Function responsible for validating that the design selections are valid when combined together. If not,
@@ -42,7 +42,7 @@ var submitUtility =
 	 */
 	validate: function()
 	{
-		var designErrorMessages = [],
+		let designErrorMessages = [],
 			designObject = rQuery.copyObject(vm.design, true);
 
 		// First check to see if the design selections made are valid
@@ -70,7 +70,7 @@ var submitUtility =
 	 */
 	figureOutDeposit: function(submissionFunction)
 	{
-		var modalData = { orderTotal : vm.orderTotal, defaultDeposit : vm.orderTotal / 2 };
+		let modalData = { orderTotal : vm.orderTotal, defaultDeposit : vm.orderTotal / 2 };
 
 		// Only pop out the deposit modal for orders that have not been confirmed yet
 		if ( !(vm.status) || (vm.status === PENDING_KEYWORD) )
