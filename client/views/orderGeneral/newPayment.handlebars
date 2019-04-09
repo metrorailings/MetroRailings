@@ -1,0 +1,35 @@
+<div id='newPaymentForm'>
+	<div id='paymentOptionHeaders'>
+		<span class='paymentOptionHeader'>Credit Card</span>
+		<span class='paymentOptionHeader'>Check</span>
+		<span class='paymentOptionHeader'>Cash</span>
+	</div>
+
+	<div id='newPaymentCreditCard'>
+		<div>
+			<label>Payment Amount</label>
+			<input id='newPaymentCCAmount' type='tel' />
+		</div>
+		<div>
+			{{#if order.payment.ccNumbers}}
+				{{#each order.payment.ccNumbers}}
+					<div>
+						<input id='cc{{ this.number }}' type='radio' name='existingCC' value='{{this.id}}' />
+						<label for='cc{{ this.number }}'>{{ this.type }}{{ this.number }} </label>
+					</div>
+				{{/each}}
+				<div id='newPaymentCCForm'>
+					<div>
+						<label>Credit Card Number</label>
+						<input id='newCCNumber' type='tel' />
+					</div>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+
+	<div id='newPaymentCheck' class='hide'></div>
+
+	<div id='newPaymentCash' class='hide'></div>
+
+</div>

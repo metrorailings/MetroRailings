@@ -21,7 +21,28 @@ const ORDERS_COLLECTION = 'orders',
 
 	PENDING_STATUS = 'pending',
 	QUEUE_STATUS = 'queue',
-	CLOSED_STATUS = 'closed';
+	CLOSED_STATUS = 'closed',
+
+	TRANSACTION_REASONS =
+	{
+		ORDER_ID: 'Order ',
+		DEPOSIT: ' - Deposit',
+		PAYMENT: ' - Payment',
+		CLOSING: ' - Closing Payment'
+	},
+
+	PAYMENT_TYPES =
+	{
+		CREDIT_CARD: 'card',
+		CHECK: 'check',
+		CASH: 'cash'
+	},
+
+	MODIFICATION_REASONS =
+	{
+		QUOTE_CREATION: 'Quote Created',
+		FINALIZE_ORDER: 'Order Finalized'
+	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -31,10 +52,11 @@ const ORDERS_COLLECTION = 'orders',
  *
  * @param {Object} order - the order
  * @param {String} username - the name of the user modifying the order
+ * @param {String} [reason] - the reason which this order is being modified
  *
  * @author kinsho
  */
-function _applyModificationUpdates(order, username)
+function _applyModificationUpdates(order, username, reason)
 {
 	let modificationDate = new Date();
 
@@ -45,7 +67,8 @@ function _applyModificationUpdates(order, username)
 	order.modHistory.push(
 	{
 		user: username,
-		date: modificationDate
+		date: modificationDate,
+		reason: reason || ''
 	});
 }
 
@@ -84,6 +107,31 @@ function _formNoteRecord(order, note, username)
 			date: new Date()
 		});
 	}
+}
+
+/**
+ * Function responsible for simplifying a credit card charge object so that it only contains data relevant to our
+ * purposes
+ *
+ * @param {Object} charge - the charge object, coming directly from Stripe
+ *
+ * @returns {Object} - the reduced charge object
+ *
+ * @author kinsho
+ */
+function _parseCharge(charge)
+{
+	return {
+		id: charge.id,
+		type: PAYMENT_TYPES.CREDIT_CARD,
+		amount: charge.amount,
+		refund: charge.amount_refunded,
+		cardDetails:
+		{
+			brand: charge.payment_method_details.card.brand,
+			last4: charge.payment_method_details.card.last4
+		}
+	};
 }
 
 /**
@@ -309,7 +357,7 @@ let ordersModule =
 			order.dates.lastModified = prospect.lastModifiedDate || prospect.dates.lastModified;
 			order.modHistory = prospect.modHistory;
 		}
-		_applyModificationUpdates(order, username);
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.QUOTE_CREATION);
 
 		// Figure out how we'll be referencing the customer
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
@@ -320,8 +368,11 @@ let ordersModule =
 		order.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subtotal, order);
 		order.pricing.orderTotal = pricingCalculator.calculateTotal(order);
 
+		// Generate an empty hash object to record all payments made on this order
+		order.payments = {};
+
 		// As the customer has not paid anything yet, the balance remaining should be equal to the order total
-		order.pricing.balanceRemaining = order.pricing.orderTotal;
+		order.payments.balanceRemaining = order.pricing.orderTotal;
 
 		// Generate a record to upsert all this order information into our database
 		databaseRecord = mongo.formUpdateOneQuery(
@@ -349,7 +400,7 @@ let ordersModule =
 	 * Function responsible for indicating that an order has been finalized and for saving any changes the customer
 	 * may have made to the order while approving.
 	 *
-	 * @param {Object} approvedOrder - the approved order to save into our system
+	 * @param {Object} approvedOrder - certain details of the approved order to save into our system
 	 *
 	 * @returns {Object} - the order, completely processed now that it has been finalized
 	 *
@@ -357,21 +408,19 @@ let ordersModule =
 	 */
 	finalizeNewOrder: async function (approvedOrder)
 	{
-		let orderID = parseInt(approvedOrder._id, 10),
-			order = await ordersModule.searchOrderById(orderID),
-			chargeAmount = 0,
-			taxBalanceRemaining = 0,
-			dueDate,
-			transactionID,
+		let orderId = parseInt(approvedOrder._id, 10),
+			order = await ordersModule.searchOrderById(orderId),
+			transaction,
 			updateRecord;
 
+		// Merge any order detail changes from the invoice page over into our database record
 		order = rQuery.mergeObjects(approvedOrder, order);
 
 		// Record that this order is being modified
-		_applyModificationUpdates(order, SYSTEM_USER_NAME);
+		_applyModificationUpdates(order, SYSTEM_USER_NAME, MODIFICATION_REASONS.FINALIZE_ORDER);
 
 		// Note the date that this order was finalized
-		order.finalizationDate = new Date();
+		order.dates.finalized = new Date();
 
 		// Update the status to indicate that the order is now queued for production
 		order.status = QUEUE_STATUS;
@@ -379,59 +428,38 @@ let ordersModule =
 		// Run over this nickname logic again just in case the customer changed his name
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
 
-		// Figure out the due date on when this order is due, if a time limit has been specified
-		if (order.timeLimit && order.timeLimit.original)
-		{
-			dueDate = new Date();
-			dueDate.setDate(dueDate.getDate() + order.timeLimit.original);
-			order.timeLimit.rawDueDate = dueDate;
-			order.timeLimit.translatedDueDate = _generateUserFriendlyDate(dueDate);
-			order.timeLimit.extension = 0;
-		}
+		// Initialize the collection where we will keep track of all payments made for this order
+		order.payments.charges = [];
 
 		// Generate a payment record for the order if the user provided a credit card number
-		// And don't forget to charge the customer either
-		if (order.ccToken)
+		// And don't forget to charge the customer either!!
+		if (order.payments && order.payments.ccTokens && order.payments.ccTokens.length)
 		{
 			try
 			{
-				order.stripe =
-				{
-					customer: await creditCardProcessor.generateCustomerRecord(order.ccToken, order.customer.name, order.customer.email),
-					charges: []
-				};
+				// Charge the customer prior to saving the order
+				transaction = await creditCardProcessor.chargeTotal(order.pricing.depositAmount, order._id, order.payments.ccTokens[0].id, order.customer.email, order.customer.name, order.customer.company,TRANSACTION_REASONS.ORDER_ID + orderId + TRANSACTION_REASONS.DEPOSIT);
 
-				// Calculate the proper charge amount, making sure to round down should we have an uneven change amount
-				chargeAmount = Math.floor(order.pricing.orderTotal * 50) / 100;
-				taxBalanceRemaining = Math.floor(order.pricing.tax * 50) / 100;
+				// After charging the customer, store relevant transaction details inside the order itself so that
+				// we can reference the payment for tracking purposes
+				order.payments.charges = [_parseCharge(transaction)];
 
-				// Charge the customer prior to saving the order. After charging the customer, store the transaction ID
-				// inside the order itself
-				transactionID = await creditCardProcessor.chargeTotal(chargeAmount, order.stripe.customer, order._id, order.customer.email);
-				order.stripe.charges.push(transactionID);
+				// Adjust the balance remaining to reflect that a portion of the price has been paid off
+				order.payments.balanceRemaining -= order.pricing.depositAmount;
 			}
 			catch(error)
 			{
-				console.log('Ran into an error trying to transact some money...');
+				console.log('Ran into an error trying to process a credit card for Order #' + orderId);
 				console.log(error);
 
 				throw error;
 			}
 		}
-		// Else record that the order is being paid via check
-		else
-		{
-			order.pricing.paidByCheck = true;
-		}
-
-		// Note that the order has yet to be paid off, regardless of payment method
-		order.pricing.balanceRemaining = order.pricing.orderTotal - chargeAmount;
-		order.pricing.taxRemaining = order.pricing.tax - taxBalanceRemaining;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
 		{
-			_id: orderID
+			_id: orderId
 		}, order, false);
 
 		try

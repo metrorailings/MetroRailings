@@ -19,9 +19,15 @@
 
 	display: flex;
 	justify-content: flex-start;
-	align-items: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
 
 	box-shadow: 2px 2px 4px -1px map-get($COLORS, grayTheme);
+
+	@include phoneOnly()
+	{
+		flex-direction: column;
+	}
 
 	&.error
 	{
@@ -33,7 +39,8 @@
 {
 	display: flex;
 	justify-content: flex-start;
-	align-items: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
 }
 
 .multitextSetValue
@@ -42,12 +49,18 @@
 
 	margin:
 	{
+		top: 5px;
+		bottom: 5px;
 		left: 3px;
 		right: 3px;
 	}
 
 	border-radius: 6px;
 	padding: 5px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	background-color: map-get($COLORS, darkerGrayTheme);
 
@@ -65,11 +78,19 @@
 
 .multitextNewValue
 {
-	width: 400px;
-
 	border: none;
 	box-shadow: none;
 	resize: none;
+
+	@include tabletUp()
+	{
+		width: 400px;
+	}
+
+	@include phoneOnly()
+	{
+		width: 95%;
+	}
 
 	&:focus
 	{
