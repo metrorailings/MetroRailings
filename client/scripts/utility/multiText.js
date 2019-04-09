@@ -8,7 +8,7 @@ import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var MULTITEXT_EXISTING_VALUES = 'multitextExistingValues',
+const MULTITEXT_EXISTING_VALUES = 'multitextExistingValues',
 	MULTITEXT_DEFAULT_VALUE = 'multitextDefaultValue',
 
 	REMOVE_ICON = 'fa-times',
@@ -20,7 +20,7 @@ var MULTITEXT_EXISTING_VALUES = 'multitextExistingValues',
 /**
  * The partial to render existing values into a multitext field
  */
-var _setValueTemplate = Handlebars.compile(document.getElementsByClassName(SET_VALUE_TEMPLATE)[0].innerHTML);
+let _setValueTemplate = Handlebars.compile(document.getElementsByClassName(SET_VALUE_TEMPLATE)[0].innerHTML);
 
 // ----------------- MULTITEXT OBJECT ---------------------------
 
@@ -36,7 +36,7 @@ var _setValueTemplate = Handlebars.compile(document.getElementsByClassName(SET_V
  */
 function multitextConstructor(vm, modelName, element)
 {
-	var settledValuesContainer = element.getElementsByClassName(MULTITEXT_EXISTING_VALUES)[0],
+	let settledValuesContainer = element.getElementsByClassName(MULTITEXT_EXISTING_VALUES)[0],
 		removeIcons = settledValuesContainer.getElementsByClassName(REMOVE_ICON),
 		textarea = element.getElementsByTagName('textarea')[0],
 
@@ -49,7 +49,7 @@ function multitextConstructor(vm, modelName, element)
 		 */
 		recordValue = function(event)
 		{
-			var textfield = event.currentTarget,
+			let textfield = event.currentTarget,
 				value = textfield.value;
 	
 			// Update the view model to account for the new value
@@ -101,7 +101,7 @@ function multitextConstructor(vm, modelName, element)
 		 */
 		removeSettledValue = function(event)
 		{
-			var setValueContainer = event.currentTarget.parentNode,
+			let setValueContainer = event.currentTarget.parentNode,
 				value = setValueContainer.dataset.value,
 				vmValues = vm[modelName].split(',');
 	
@@ -121,10 +121,10 @@ function multitextConstructor(vm, modelName, element)
 		 */
 		setNewValue = function(value)
 		{
-			var removeIcons;
+			let removeIcons;
 
 			settledValuesContainer.innerHTML += _setValueTemplate({ value: value });
-	
+
 			// Set up a listener on all the remove icons now that we modified the HTML
 			removeIcons = settledValuesContainer.getElementsByClassName(REMOVE_ICON);
 
@@ -151,7 +151,7 @@ function multitextConstructor(vm, modelName, element)
 
 // ----------------- PAGE INITIALIZATION --------------------------
 
-var setValueTemplates = document.getElementsByClassName(SET_VALUE_TEMPLATE);
+let setValueTemplates = document.getElementsByClassName(SET_VALUE_TEMPLATE);
 
 // Given that the template may be invoked several times in any given page, we have a scenario in which the
 // handlebars template for generating a new value may be replicated on the page

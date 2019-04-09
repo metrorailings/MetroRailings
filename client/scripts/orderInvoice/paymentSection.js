@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderInvoice/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var CREDIT_CARD_RADIO = 'creditCardOption',
+const CREDIT_CARD_RADIO = 'creditCardOption',
 	CHECK_RADIO = 'checkOption',
 
 	CREDIT_CARD_TEXTFIELD = 'creditCardNumber',
@@ -14,7 +14,7 @@ var CREDIT_CARD_RADIO = 'creditCardOption',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _creditCardRadio = document.getElementById(CREDIT_CARD_RADIO),
+let _creditCardRadio = document.getElementById(CREDIT_CARD_RADIO),
 	_checkRadio = document.getElementById(CHECK_RADIO),
 
 	_creditCardNumberField = document.getElementById(CREDIT_CARD_TEXTFIELD),
@@ -31,7 +31,7 @@ var _creditCardRadio = document.getElementById(CREDIT_CARD_RADIO),
  */
 function setPaymentMethod(event)
 {
-	var element = event.currentTarget;
+	let element = event.currentTarget;
 
 	vm.paymentMethod = element.value;
 }
@@ -79,6 +79,7 @@ function setCCSecurityCode()
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Only allow this listener to be added should such a button exist in the first place
+// Usually, the button exists only when the order is still pending
 if (_creditCardRadio)
 {
 	_creditCardRadio.addEventListener('click', setPaymentMethod);
@@ -91,7 +92,7 @@ if (_creditCardRadio)
 
 // ----------------- VIEW MODEL INITIALIZATION -----------------------------
 
-// Only allow view model logic here should this section be shown to the user
+// Only allow view model logic here should this section be visible to the user
 if (_creditCardRadio)
 {
 	vm.paymentMethod = '';

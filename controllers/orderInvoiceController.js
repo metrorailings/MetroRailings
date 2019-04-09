@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('handlebars'),
+let _Handlebars = require('handlebars'),
 	_showdown = require('showdown'),
 
 	config = global.OwlStakes.require('config/config'),
@@ -14,7 +14,6 @@ var _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
-	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
@@ -24,7 +23,8 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'orderInvoice',
+const CONTROLLER_FOLDER = 'orderInvoice',
+	UTILITY_FOLDER = 'utility',
 
 	ORDER_RECEIPT_EMAIL = 'orderReceipt',
 	ADMIN_ORDER_CONFIRMATION_EMAIL = 'adminOrderConfirmed',
@@ -45,7 +45,8 @@ var CONTROLLER_FOLDER = 'orderInvoice',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
 		ADDRESS_SECTION: 'addressSection',
 		CC_SECTION: 'paymentSection',
-		SUBMISSION_SECTION: 'submissionSection'
+		SUBMISSION_SECTION: 'submissionSection',
+		MULTI_TEXT: 'multiText'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -85,10 +86,15 @@ _Handlebars.registerPartial('orderInvoicePaymentSection', fileManager.fetchTempl
  */
 _Handlebars.registerPartial('orderInvoiceSubmissionSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.SUBMISSION_SECTION));
 
+/**
+ * The template for multi-text inputs
+ */
+_Handlebars.registerPartial('multiText', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.MULTI_TEXT));
+
 // ----------------- PRIVATE MEMBERS --------------------------
 
 // The tool used to convert Markdown text to HTML text
-var _showdownConverter = new _showdown.Converter();
+let _showdownConverter = new _showdown.Converter();
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -101,13 +107,12 @@ module.exports =
 	 */
 	init: async function (params)
 	{
-		var populatedPageTemplate,
+		let populatedPageTemplate,
 			pageData = {},
 			// Use a nonsense order ID if one isn't provided, as that would eventually trigger logic to take the user back to the home page
 			orderNumber = params ? parseInt(rQuery.decryptNumbers(params.id), 10) : 0,
 			currentYear = new Date().getFullYear(),
-			expirationYears = [],
-			i;
+			expirationYears = [];
 
 		console.log('Loading the custom order invoice page...');
 
@@ -123,7 +128,7 @@ module.exports =
 		}
 
 		// Find some years that can be placed into the expiration year dropdown as selectable options
-		for (i = currentYear; i <= currentYear + 10; i++)
+		for (let i = currentYear; i <= currentYear + 10; i++)
 		{
 			expirationYears.push(i);
 		}
@@ -148,35 +153,6 @@ module.exports =
 	},
 
 	/**
-	 * Function meant to generate a token that represents the credit card we will be using for a given order
-	 *
-	 * @param {Object} params - the credit card information we will be using to create the token
-	 *
-	 * @author kinsho
-	 */
-	generatePaymentToken: async function (params)
-	{
-		try
-		{
-			var token = await creditCardProcessor.generateToken(params.number, params.exp_month, params.exp_year, params.cvc);
-
-			return {
-				statusCode: responseCodes.OK,
-				data: token
-			};
-		}
-		catch (error)
-		{
-			console.log('Credit card was unable to be processed...');
-
-			return {
-				statusCode: responseCodes.BAD_REQUEST
-			};
-		}
-
-	},
-
-	/**
 	 * Function meant to save all updates that may have been made to a particular order and charge the user if he
 	 * elected to pay for the order by credit card
 	 *
@@ -186,7 +162,7 @@ module.exports =
 	 */
 	approveOrder: async function (params)
 	{
-		var mailHTML,
+		let mailHTML,
 			adminMailHTML,
 			processedOrder;
 

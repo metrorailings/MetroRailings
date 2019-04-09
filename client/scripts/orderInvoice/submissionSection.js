@@ -7,15 +7,14 @@ import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var SUBMIT_BUTTON = 'orderSubmissionButton',
+const SUBMIT_BUTTON = 'orderSubmissionButton',
+	ORDER_ID = 'orderIdHidden',
 
 	CREDIT_CARD_PAYMENT_METHOD = 'cc',
 
-	GENERATE_TOKEN_URL = 'orderInvoice/generatePaymentToken',
+	GENERATE_TOKEN_URL = 'payment/generateCCToken',
 	SAVE_ORDER_URL = 'orderInvoice/approveOrder',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation',
-
-	ID_URL_PARAM = 'id=',
 
 	CREDIT_CARD_INVALID_MESSAGE = 'Your credit card failed our authentication process. Please check your credit card ' +
 		'information and try again.';
@@ -23,7 +22,7 @@ var SUBMIT_BUTTON = 'orderSubmissionButton',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-var _submitButton = document.getElementById(SUBMIT_BUTTON);
+let _submitButton = document.getElementById(SUBMIT_BUTTON);
 
 // ----------------- PRIVATE METHODS ---------------------------
 
@@ -57,7 +56,7 @@ function _submitOrder(data)
  */
 function submit()
 {
-	var data,
+	let data,
 		orderID;
 
 	if (vm.isFormSubmissible)
@@ -65,26 +64,27 @@ function submit()
 		// Hide any service-related error that may have popped up before
 		notifier.hideErrorBar();
 
-		// Figure out the order ID
-		orderID = window.location.href.slice(window.location.href.indexOf(ID_URL_PARAM) + 3);
-		orderID = window.parseInt(orderID, 10);
+		// Fetch the order ID from a hidden field on the page
+		orderID = window.parseInt(document.getElementById(ORDER_ID).value, 10);
 
 		// Organize the data that will need to be sent over the wire
 		data =
 		{
 			_id: orderID,
+
 			customer:
 			{
 				name: vm.customerName,
-				address: vm.customerAddress,
+				company: vm.company || '',
+				email: vm.email || '',
 				areaCode: vm.areaCode,
 				phoneOne: vm.phoneOne,
 				phoneTwo: vm.phoneTwo,
-				email: vm.customerEmail || '',
-				aptSuiteNumber: vm.customerAptSuiteNumber,
-				city: vm.customerCity,
-				state: vm.customerState,
-				zipCode: vm.customerZipCode,
+				address: vm.customerAddress,
+				aptSuiteNo: vm.aptSuiteNumber,
+				city: vm.city,
+				state: vm.state,
+				zipCode: vm.zipCode || ''
 			}
 		};
 
@@ -99,10 +99,13 @@ function submit()
 				exp_month: vm.ccExpMonth,
 				exp_year: vm.ccExpYear,
 				cvc: vm.ccSecurityCode
-			}, true).then((token) =>
+			}, true).then((response) =>
 			{
 				// Append that token to the data to be sent over the wire
-				data.ccToken = token.data;
+				data.payments =
+				{
+					ccTokens : [response.data]
+				};
 
 				_submitOrder(data);
 			}, () =>

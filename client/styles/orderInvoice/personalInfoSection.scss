@@ -2,28 +2,54 @@
 
 @import '../foundation/fonts';
 @import '../foundation/responsive';
+@import '../foundation/multitext';
+@import '../foundation/form';
 
 /* ----------------------- STYLES ----------------------------- */
 
 #personalInfoSection
 {
-	& > .formRow
-	{
-		display: flex;
+	display: flex;
+	align-items: middle;
+	justify-content: flex-start;
+	flex-direction: column;
 
-		& > .controlGrouping
+	& > .controlGrouping
+	{
+		margin:
 		{
-			flex: 1;
+			top: 10px;
+			bottom: 10px;
+		}
+
+		flex: 1;
+	}
+
+	& > .subtleHeadsUp
+	{
+		margin:
+		{
+			top: 5px;
+			bottom: 25px;
+		}
+
+		&:last-of-type
+		{
+			margin:
+			{
+				top: 25px;
+				bottom: 5px;
+			}
 		}
 	}
 }
 
 // Input lengths
-#customerName
+#customerName, #companyName
 {
 	@include desktopOnly()
 	{
-		width: 25%;
+		width: 375px;
 	}
 
 	@include mobileOnly()
@@ -84,18 +110,6 @@
 			{
 				opacity: 1.0;
 			}
-		}
-	}
-
-	& > .formDescriptiveText
-	{
-		margin-top: 10px;
-		width: 90%;
-
-
-		@include printOnly()
-		{
-			display: none;
 		}
 	}
 }

@@ -4,11 +4,11 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _randomstring = require('randomstring');
+let _randomstring = require('randomstring');
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var RANDOM_ALPHA_3 =
+const RANDOM_ALPHA_3 =
 	{
 		length: 3,
 		charset: 'alphabetic'
@@ -36,7 +36,7 @@ module.exports =
 	 */
 	copyObject: function (obj)
 	{
-		var keys = Object.keys(obj || {}),
+		let keys = Object.keys(obj || {}),
 			cloneObj = {},
 			i;
 
@@ -67,7 +67,7 @@ module.exports =
 	 */
 	findObjectEntries: function (obj)
 	{
-		var keys = Object.keys(obj),
+		let keys = Object.keys(obj),
 			entries = [],
 			i;
 
@@ -117,7 +117,7 @@ module.exports =
 	 */
 	mergeObjects: function(srcObj, destObj)
 	{
-		var srcKeys = Object.keys(srcObj),
+		let srcKeys = Object.keys(srcObj),
 			i;
 
 		for (i = srcKeys.length - 1; i >= 0; i--)
@@ -171,7 +171,7 @@ module.exports =
 	 */
 	obfuscateNumbers: function(num)
 	{
-		var numStr = num + '',
+		let numStr = num + '',
 			jumble = '';
 
 		for (let i = 0; i < numStr.length; i += 1)
@@ -206,7 +206,7 @@ module.exports =
 	 */
 	decryptNumbers: function(str)
 	{
-		var num = '';
+		let num = '';
 
 		// Loop through each character in the string in order to parse out the digits from the alphabetical characters
 		for (let i = 0; i < str.length; i += 1)

@@ -10,7 +10,7 @@ import orderSubmissionUtility from 'client/scripts/orderGeneral/submissionUtilit
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var SAVE_BUTTON = 'saveButton',
+const SAVE_BUTTON = 'saveButton',
 
 	SUCCESS_MESSAGE = 'Success! A new order has been created and the client has been e-mailed the link to approve' +
 		' the order. The system will automatically take you back to the orders listings in a few moments.',
@@ -24,7 +24,7 @@ var SAVE_BUTTON = 'saveButton',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-var _saveButton = document.getElementById(SAVE_BUTTON);
+let _saveButton = document.getElementById(SAVE_BUTTON);
 
 /**
  * Function responsible for finally turning over all the page data to the server
@@ -33,7 +33,7 @@ var _saveButton = document.getElementById(SAVE_BUTTON);
  */
 function _submitAllData()
 {
-	var designObject = rQuery.copyObject(vm.design, true),
+	let designObject = rQuery.copyObject(vm.design, true),
 		designDescriptionObject = rQuery.copyObject(vm.designDescriptions, true),
 		data =
 		{
@@ -118,7 +118,7 @@ function _submitAllData()
  */
 function submit()
 {
-	var isDesignValid = orderSubmissionUtility.validate();
+	let isDesignValid = orderSubmissionUtility.validate();
 
 	// Organize the data that will be sent over the wire as long as the entire form is valid
 	if (vm.isFormValid && isDesignValid)

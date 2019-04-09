@@ -15,45 +15,56 @@
 
 	<div class='sectionHeadline'>Your Personal Details</div>
 
-	<div class='formRow'>
-        <span class='controlGrouping'>
-            <label for='customerName' class='required'>Your Name</label>
-            <input type='text' id='customerName' value='{{order.customer.name}}'
-				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
-        </span>
+	<div class='controlGrouping'>
+		<label for='customerName' class='required'>Your Name</label>
+		<input type='text' id='customerName' value='{{order.customer.name}}' {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
 	</div>
 
-	<div class='formRow'>
-        <span class='controlGrouping'>
-            <label for='customerPhoneAreaCode' class='required'>Your Phone Number</label>
-            <span id='customerPhoneNumberInputs' class='controlGroupingRow'>
-                (<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code'
-						value='{{ order.customer.areaCode }}'
-						{{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />)
-                <input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###'
-					   value='{{ order.customer.phoneOne }}'
-					   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} >-
-                <input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####'
-					   value='{{ order.customer.phoneTwo }}'
-					   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} >
-				{{#if_cond order.status 'pending'}}
-					<span class='formDescriptiveText'>Please give us the best phone number that we can use to reach you during afternoon hours.</span>
-				{{/if_cond}}
-            </span>
-        </span>
+	<div class='controlGrouping'>
+		<label for='companyName'>Company</label>
+		<input id='companyName' type='text' class='optionalField' value='{{ order.customer.company }}' {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
 	</div>
 
-	<div class='formRow'>
-        <span class='controlGrouping'>
-            <label for='customerEmail'>Your E-mail Address</label>
-            <input type='email' id='customerEmail' value='{{order.customer.email}}'
-				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />
+	<div class='controlGrouping'>
+		<label for='customerPhoneAreaCode' class='required'>Your Phone Number</label>
+		<span id='customerPhoneNumberInputs' class='controlGroupingRow'>
+			(<input type='tel' id='customerPhoneAreaCode' maxlength='3' placeholder='Area Code'
+					value='{{ order.customer.areaCode }}'
+					{{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} />)
+			<input type='tel' id='customerPhoneNumber1' maxlength='3' placeholder='###'
+				   value='{{ order.customer.phoneOne }}'
+				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} >-
+			<input type='tel' id='customerPhoneNumber2' maxlength='4' placeholder='####'
+				   value='{{ order.customer.phoneTwo }}'
+				   {{#unless_cond order.status 'pending'}} disabled {{/unless_cond}} >
 		</span>
 	</div>
+
+	{{#if_cond order.status 'pending'}}
+		<div class='subtleHeadsUp'>
+			Please give us the best phone number that we can use to reach you during afternoon hours.
+		</div>
+	{{/if_cond}}
+
+	<div class='controlGrouping'>
+		<label for='customerEmail'>
+			Your E-mail Address
+		</label>
+		<span id='emailMultitext'>
+			{{> multiText values=order.customer.email }}
+		</span>
+	</div>
+
+	{{#if_cond order.status 'pending'}}
+		<div class='subtleHeadsUp'>
+			If you need to include multiple e-mail addresses here, just separate out each e-mail address with a comma
+		</div>
+	{{/if_cond}}
 
 	{{#if_cond order.status 'pending'}}
 		<div class='subtleHeadsUp'>
 			* indicates that the field is required to be filled out
 		</div>
 	{{/if_cond}}
+
 </div>

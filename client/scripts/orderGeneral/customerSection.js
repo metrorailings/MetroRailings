@@ -6,7 +6,7 @@ import multiText from 'client/scripts/utility/multiText';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var CUSTOMER_NAME = 'customerName',
+const CUSTOMER_NAME = 'customerName',
 	COMPANY_NAME = 'companyName',
 	EMAIL_ADDRESS = 'emailMultitext',
 	AREA_CODE = 'areaCode',
@@ -15,7 +15,7 @@ var CUSTOMER_NAME = 'customerName',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _nameField = document.getElementById(CUSTOMER_NAME),
+let _nameField = document.getElementById(CUSTOMER_NAME),
 	_companyField = document.getElementById(COMPANY_NAME),
 	_emailField = document.getElementById(EMAIL_ADDRESS),
 	_areaCodeField = document.getElementById(AREA_CODE),

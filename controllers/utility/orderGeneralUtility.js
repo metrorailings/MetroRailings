@@ -60,6 +60,7 @@ const ORDER_SHARED_FOLDER = 'orderGeneral',
 		DEPOSIT_MODAL: 'depositModal',
 		MULTI_TEXT: 'multiText',
 		PICTURES: 'picturesSection',
+		PAYMENTS: 'paymentsSection',
 		ORDER_NOTES: 'notes',
 
 		NEW_NOTE: 'newNote',
@@ -163,6 +164,11 @@ _Handlebars.registerPartial('multiText', fileManager.fetchTemplateSync(UTILITY_F
  * The template for the order pictures section
  */
 _Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICTURES));
+
+/**
+ * The template for the order payments section
+ */
+_Handlebars.registerPartial('orderPayments', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PAYMENTS));
 
 /**
  * The template for the notes lister

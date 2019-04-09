@@ -12,10 +12,11 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
+const CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 	CUSTOMER_PHONE_NUMBER_ONE_FIELD = 'customerPhoneNumber1',
 	CUSTOMER_PHONE_NUMBER_TWO_FIELD = 'customerPhoneNumber2',
-	CUSTOMER_EMAIL_FIELD = 'customerEmail',
+	CUSTOMER_EMAIL_FIELD = 'emailMultitext',
+	COMPANY_NAME_FIELD = 'companyName',
 	CUSTOMER_NAME_FIELD = 'customerName',
 
 	CUSTOMER_ADDRESS_FIELD = 'streetAddress',
@@ -56,9 +57,6 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 		PHONE_ONE_INVALID: 'Please enter exactly three digits here.',
 		PHONE_TWO_INVALID: 'Please enter exactly four digits here.',
 
-		ADDRESS_INVALID: 'Please enter a valid address here. We only tolerate alphabetical characters, numbers, spaces, and periods here.',
-		APT_SUITE_INVALID: 'Please enter a valid suite or apartment number here. We can only handle alphabetical characters, numbers, spaces, periods, and dashes here.',
-		CITY_INVALID: 'Please enter a valid city name here. We only tolerate alphabetical characters, spaces, dashes, and periods here.',
 		ZIP_CODE_INVALID: 'Please enter a five-digit zip code here.',
 
 		CC_NUMBER_INVALID: 'Please enter only digits here in the credit card number field.',
@@ -68,10 +66,11 @@ var CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
-var _validationSet = new Set(),
+let _validationSet = new Set(),
 
 	// Elements
 	_nameField = document.getElementById(CUSTOMER_NAME_FIELD),
+	_companyField = document.getElementById(COMPANY_NAME_FIELD),
 	_areaCodeField = document.getElementById(CUSTOMER_AREA_CODE_FIELD),
 	_phoneOneField = document.getElementById(CUSTOMER_PHONE_NUMBER_ONE_FIELD),
 	_phoneTwoField = document.getElementById(CUSTOMER_PHONE_NUMBER_TWO_FIELD),
@@ -87,7 +86,7 @@ var _validationSet = new Set(),
 	_checkOption = document.getElementById(CHECK_RADIO),
 	_checkMessage = document.getElementById(CHECK_MESSAGE),
 	_creditCardSection = document.getElementById(CREDIT_CARD_SECTION),
-	// Defensive logic should the payment section not be exposed to the user
+	// Defensive logic should the payment section not be extant on the page
 	_creditCardIcons = document.getElementById(CREDIT_CARD_ICON_ROW) ? document.getElementById(CREDIT_CARD_ICON_ROW).children : null,
 	_ccNumberField = document.getElementById(CREDIT_CARD_TEXTFIELD),
 	_ccSecurityCodeField = document.getElementById(SECURITY_CODE_TEXTFIELD),
@@ -107,10 +106,9 @@ var _validationSet = new Set(),
  */
 function _toggleCCIconOpacity(brand)
 {
-	for (var i = 0; i < _creditCardIcons.length; i++)
+	for (let i = 0; i < _creditCardIcons.length; i++)
 	{
-		// In the event that a brand is not passed into this function, simply remove the opacity
-		// class from all the icons
+		// In the event that a brand is not passed into this function, simply make all the icons fully visible
 		if ( !(brand) || (_creditCardIcons[i].id.toLowerCase().indexOf(brand) > -1) )
 		{
 			_creditCardIcons[i].classList.remove(SHADE_CLASS);
@@ -129,7 +127,7 @@ function _toggleCCIconOpacity(brand)
  */
 function _validate()
 {
-	var validated = rQueryClient.validateModel(viewModel, _validationSet);
+	let validated = rQueryClient.validateModel(viewModel, _validationSet);
 
 	// Break out of this validation logic should there be no submission button present on the page
 	if ( !(_submissionButton) )
@@ -139,6 +137,7 @@ function _validate()
 
 	if (viewModel.paymentMethod === CREDIT_CARD_PAYMENT_METHOD)
 	{
+		// Ensure all the credit card information has been put into place
 		viewModel.isFormSubmissible = (validated && viewModel.ccNumber && viewModel.ccExpMonth && viewModel.ccExpYear && viewModel.ccSecurityCode);
 	}
 	else if (viewModel.paymentMethod === CHECK_PAYMENT_METHOD)
@@ -153,13 +152,13 @@ function _validate()
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
-var viewModel = {};
+let viewModel = {};
 
-// Remember that for form elements that have validation logic, the tooltip to relay errors to the user is attached
+// Remember that for form elements with validation logic, the tooltip to relay errors to the user is attached
 // to the span element that follows these input elements
 
 // Customer's name
-Object.defineProperty(viewModel, 'customerName',
+Object.defineProperty(viewModel, 'name',
 {
 	configurable: false,
 	enumerable: true,
@@ -180,6 +179,27 @@ Object.defineProperty(viewModel, 'customerName',
 	}
 });
 
+// Company name
+Object.defineProperty(viewModel, 'company',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__companyName;
+	},
+
+	set: (value) =>
+	{
+		// Ensure that the value does not simply consist of spaces
+		value = value.trim();
+		viewModel.__companyName = value;
+
+		rQueryClient.setField(_companyField, value);
+	}
+});
+
 // Customer's area code
 Object.defineProperty(viewModel, 'areaCode',
 {
@@ -195,7 +215,7 @@ Object.defineProperty(viewModel, 'areaCode',
 	{
 		viewModel.__areaCode = value;
 
-		var isInvalid = ((value.length && value.length !== 3)) ||
+		let isInvalid = ((value.length && value.length !== 3)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _areaCodeField, ERROR.AREA_CODE_INVALID, _validationSet);
@@ -219,7 +239,7 @@ Object.defineProperty(viewModel, 'phoneOne',
 	{
 		viewModel.__phoneOne = value;
 
-		var isInvalid = ((value.length && value.length !== 3)) ||
+		let isInvalid = ((value.length && value.length !== 3)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _phoneOneField, ERROR.PHONE_ONE_INVALID, _validationSet);
@@ -243,7 +263,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 	{
 		viewModel.__phoneTwo = value;
 
-		var isInvalid = ((value.length && value.length !== 4)) ||
+		let isInvalid = ((value.length && value.length !== 4)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _phoneTwoField, ERROR.PHONE_TWO_INVALID, _validationSet);
@@ -253,7 +273,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 });
 
 // Customer's e-mail address
-Object.defineProperty(viewModel, 'customerEmail',
+Object.defineProperty(viewModel, 'email',
 {
 	configurable: false,
 	enumerable: false,
@@ -266,7 +286,7 @@ Object.defineProperty(viewModel, 'customerEmail',
 	set: (value) =>
 	{
 		// Keep in mind that there may be multiple e-mail addresses inside, split by commas
-		var emailAddresses = (value ? value.split(',') : []),
+		let emailAddresses = (value ? value.split(',') : []),
 			isValid;
 
 		for (let i = 0; i < emailAddresses.length; i++)
@@ -287,10 +307,15 @@ Object.defineProperty(viewModel, 'customerEmail',
 			}
 		}
 
+		// If no e-mail addresses are present in the field, remove any error signatures associated with the text field
+		if ( !(emailAddresses.length) )
+		{
+			rQueryClient.updateValidationOnField(false, _emailField, ERROR.EMAIL_ADDRESS_INVALID, _validationSet);
+		}
+
 		// Recompose the values now that extraneous spaces have been trimmed
 		value = emailAddresses.join(',');
 
-		rQueryClient.setField(_emailField, value, _validationSet);
 		viewModel.__customerEmail = value;
 
 		_validate();
@@ -298,7 +323,7 @@ Object.defineProperty(viewModel, 'customerEmail',
 });
 
 // Customer's address
-Object.defineProperty(viewModel, 'customerAddress',
+Object.defineProperty(viewModel, 'address',
 {
 	configurable: false,
 	enumerable: true,
@@ -313,14 +338,13 @@ Object.defineProperty(viewModel, 'customerAddress',
 		viewModel.__customerAddress = value;
 
 		// Test whether the value is a proper address
-		rQueryClient.updateValidationOnField(!(formValidator.isAlphaNumeric(value, ' .')), _streetAddressField, ERROR.ADDRESS_INVALID, _validationSet);
 		rQueryClient.setField(_streetAddressField, value, _validationSet);
 		_validate();
 	}
 });
 
 // Customer's apartment/suite number
-Object.defineProperty(viewModel, 'customerAptSuiteNumber',
+Object.defineProperty(viewModel, 'aptSuiteNumber',
 {
 	configurable: false,
 	enumerable: false,
@@ -335,14 +359,13 @@ Object.defineProperty(viewModel, 'customerAptSuiteNumber',
 		viewModel.__customerAptSuiteNumber = value;
 
 		// Test whether the value is a proper apartment or suite number
-		rQueryClient.updateValidationOnField(!(formValidator.isAlphaNumeric(value, ' .-')), _aptSuiteNumberField, ERROR.APT_SUITE_INVALID, _validationSet);
 		rQueryClient.setField(_aptSuiteNumberField, value, _validationSet);
 		_validate();
 	}
 });
 
 // Customer's city
-Object.defineProperty(viewModel, 'customerCity',
+Object.defineProperty(viewModel, 'city',
 {
 	configurable: false,
 	enumerable: true,
@@ -357,14 +380,13 @@ Object.defineProperty(viewModel, 'customerCity',
 		viewModel.__customerCity = value;
 
 		// Test whether the value qualifies as a proper city name
-		rQueryClient.updateValidationOnField(!(formValidator.isAlphabetical(value, ' .-')) , _cityField, ERROR.CITY_INVALID, _validationSet);
 		rQueryClient.setField(_cityField, value, _validationSet);
 		_validate();
 	}
 });
 
 // Customer's state
-Object.defineProperty(viewModel, 'customerState',
+Object.defineProperty(viewModel, 'state',
 {
 	configurable: false,
 	enumerable: true,
@@ -384,7 +406,7 @@ Object.defineProperty(viewModel, 'customerState',
 });
 
 // Customer's zip code
-Object.defineProperty(viewModel, 'customerZipCode',
+Object.defineProperty(viewModel, 'zipCode',
 {
 	configurable: false,
 	enumerable: false,
@@ -399,7 +421,7 @@ Object.defineProperty(viewModel, 'customerZipCode',
 		viewModel.__customerZipCode = value;
 
 		// Test whether the value qualifies as a valid zip code
-		var isInvalid = ((value.length && value.length !== 5)) ||
+		let isInvalid = ((value.length && value.length !== 5)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _addressZipCodeField, ERROR.ZIP_CODE_INVALID, _validationSet);
@@ -463,7 +485,7 @@ Object.defineProperty(viewModel, 'ccNumber',
 		viewModel.__ccNumber = value;
 
 		// Test whether the value contains any non-numeric character
-		var isInvalid = !(formValidator.isNumeric(value));
+		let isInvalid = !(formValidator.isNumeric(value));
 		rQueryClient.updateValidationOnField(isInvalid, _ccNumberField, ERROR.CC_NUMBER_INVALID, _validationSet);
 
 		// If valid, test whether the credit card number belongs to that of an acceptable brand
@@ -471,7 +493,7 @@ Object.defineProperty(viewModel, 'ccNumber',
 		{
 			if (value.length >= 6)
 			{
-				var acceptedBrand = ccAllowed.checkCCNumber(value);
+				let acceptedBrand = ccAllowed.checkCCNumber(value);
 
 				_toggleCCIconOpacity(acceptedBrand);
 				rQueryClient.updateValidationOnField( !(acceptedBrand), _ccNumberField, ERROR.CC_NUMBER_UNACCEPTABLE, _validationSet);
@@ -504,7 +526,7 @@ Object.defineProperty(viewModel, 'ccSecurityCode',
 		viewModel.__ccSecurityCode = value;
 
 		// Test whether the value qualifies as a valid security code
-		var isInvalid = (value.length && (value.length < 3 || value.length > 4)) ||
+		let isInvalid = (value.length && (value.length < 3 || value.length > 4)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _ccSecurityCodeField, ERROR.CC_SECURITY_CODE_INVALID, _validationSet);
