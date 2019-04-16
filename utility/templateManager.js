@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('handlebars'),
+let _Handlebars = require('handlebars'),
 	_htmlMinifier = require('html-minifier').minify,
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
@@ -15,7 +15,15 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var UTILITY_FOLDER = 'utility',
+const UTILITY_FOLDER = 'utility',
+
+	CC_ICONS =
+	{
+		'visa' : 'fa-cc-visa',
+		'amex' : 'fa-cc-amex',
+		'discover' : 'fa-cc-discover',
+		'mastercard' : 'fa-cc-mastercard'
+	},
 
 	PARTIALS =
 	{
@@ -31,7 +39,7 @@ var UTILITY_FOLDER = 'utility',
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
-var _compiledTemplates = [],
+let _compiledTemplates = [],
 	_htmlMinifierConfig =
 	{
 		collapseWhitespace : true,
@@ -90,7 +98,7 @@ _Handlebars.registerPartial('topMenu', fileManager.fetchTemplateSync(UTILITY_FOL
  */
 _Handlebars.registerHelper('range', (beginningNumber, endingNumber, block) =>
 {
-	var num = beginningNumber,
+	let num = beginningNumber,
 		output = '';
 
 	while(num <= endingNumber)
@@ -159,7 +167,7 @@ _Handlebars.registerHelper('if_or', function(val1, val2, block)
  */
 _Handlebars.registerHelper('unless_cond_group', function(val, [groupVals], block)
 {
-	for (var i = groupVals.length - 1; i >= 0; i--)
+	for (let i = groupVals.length - 1; i >= 0; i--)
 	{
 		if (groupVals[i] === val)
 		{
@@ -189,11 +197,10 @@ _Handlebars.registerHelper('if_greater_cond', function(val1, val2, block)
  */
 _Handlebars.registerHelper('iterate_keys', function(obj, block)
 {
-	var keys = Object.keys(obj),
-		output = '',
-		i;
+	let keys = Object.keys(obj),
+		output = '';
 
-	for (i = 0; i < keys.length; i++)
+	for (let i = 0; i < keys.length; i++)
 	{
 		output += block.fn(
 		{
@@ -308,7 +315,7 @@ _Handlebars.registerHelper('format_date', function(date)
  */
 _Handlebars.registerHelper('format_time', function(date)
 {
-	var militaryHour = date.getHours(),
+	let militaryHour = date.getHours(),
 		readableHour = (militaryHour % 12 ? militaryHour % 12 : 12),
 		useAMorPM = (militaryHour - 12 < 0 ? 'AM' : 'PM'),
 		readableMinute = date.getMinutes(),
@@ -361,6 +368,17 @@ _Handlebars.registerHelper('split_by_comma', function(val)
 	return val.split(',');
 });
 
+/**
+ * Handlebars helper function designed to determine which credit card icon to display depending on the value passed
+ * into the function
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('determine_cc_icon', function(val)
+{
+	return CC_ICONS[val.toLowerCase()];
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -380,7 +398,7 @@ module.exports =
 	 */
 	populateTemplate: async function (data, templateDirectory, templateName)
 	{
-		var template;
+		let template;
 
 		try
 		{
