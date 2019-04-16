@@ -15,7 +15,7 @@ import designModel from 'client/scripts/orderGeneral/designViewModel';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
+const CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
 	AREA_CODE_TEXTFIELD = 'areaCode',
 	PHONE_ONE_TEXTFIELD = 'phoneOne',
 	PHONE_TWO_TEXTFIELD = 'phoneTwo',
@@ -73,7 +73,7 @@ var CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
-var _validationSet = new Set(),
+let _validationSet = new Set(),
 
 	// Elements
 	_emailField = document.getElementById(CUSTOMER_EMAIL_TEXTFIELD),
@@ -122,7 +122,7 @@ function _validate()
  */
 function _calculateSubTotal()
 {
-	var subTotal = 0;
+	let subTotal = 0;
 
 	if (viewModel.length && viewModel.pricePerFoot)
 	{
@@ -168,7 +168,7 @@ function _updateTariffAndTaxDisplays()
 
 function _calculateTotal()
 {
-	var totalPrice = viewModel.subtotal || 0;
+	let totalPrice = viewModel.subtotal || 0;
 
 	// Take the subtotal and add in any taxes and additional fees
 	if (viewModel.applyTaxes && viewModel.state === STATE_NJ_VALUE)
@@ -186,7 +186,7 @@ function _calculateTotal()
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
-var viewModel = {};
+let viewModel = {};
 
 // ID
 Object.defineProperty(viewModel, '_id',
@@ -307,7 +307,7 @@ Object.defineProperty(viewModel, 'areaCode',
 		viewModel.__areaCode = value;
 
 		// Test whether we have a valid area code here
-		var isInvalid = ((value.length && value.length !== 3)) ||
+		let isInvalid = ((value.length && value.length !== 3)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _areaCodeField, ERROR.AREA_CODE_INVALID, _validationSet);
@@ -333,7 +333,7 @@ Object.defineProperty(viewModel, 'phoneOne',
 		viewModel.__phoneOne = value;
 
 		// Test whether we have a valid area code here
-		var isInvalid = ((value.length && value.length !== 3)) ||
+		let isInvalid = ((value.length && value.length !== 3)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _phoneOneField, ERROR.PHONE_ONE_INVALID, _validationSet);
@@ -359,7 +359,7 @@ Object.defineProperty(viewModel, 'phoneTwo',
 		viewModel.__phoneTwo = value;
 
 		// Test whether we have a valid area code here
-		var isInvalid = ((value.length && value.length !== 4)) ||
+		let isInvalid = ((value.length && value.length !== 4)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _phoneTwoField, ERROR.PHONE_TWO_INVALID, _validationSet);
@@ -498,7 +498,7 @@ Object.defineProperty(viewModel, 'zipCode',
 		viewModel.__zipCode = value;
 
 		// Test whether the value qualifies as a valid zip code
-		var isInvalid = ((value.length && value.length !== 5)) ||
+		let isInvalid = ((value.length && value.length !== 5)) ||
 			!(formValidator.isNumeric(value));
 
 		rQueryClient.updateValidationOnField(isInvalid, _zipCodeField, ERROR.ZIP_CODE_INVALID, _validationSet);
@@ -584,7 +584,7 @@ Object.defineProperty(viewModel, 'length',
 		viewModel.__length = value;
 
 		// Make sure a valid length is being set here
-		var isInvalid = !(formValidator.isNumeric(value)) ||
+		let isInvalid = !(formValidator.isNumeric(value)) ||
 			(value.length && !(window.parseInt(value, 10)));
 
 		rQueryClient.updateValidationOnField(isInvalid, _orderLengthField, ERROR.WHOLE_NUMBER_INVALID, _validationSet);
@@ -611,7 +611,7 @@ Object.defineProperty(viewModel, 'finishedHeight',
 		viewModel.__finishedHeight = value;
 
 		// Make sure a valid length is being set here
-		var isInvalid = !(formValidator.isNumeric(value)) ||
+		let isInvalid = !(formValidator.isNumeric(value)) ||
 			(value.length && !(window.parseInt(value, 10)));
 
 		rQueryClient.updateValidationOnField(isInvalid, _finishedHeightField, ERROR.WHOLE_NUMBER_INVALID, _validationSet);
@@ -637,7 +637,7 @@ Object.defineProperty(viewModel, 'pricePerFoot',
 		viewModel.__pricePerFoot = value;
 
 		// Make sure a valid total price is being set here
-		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
+		let isInvalid = !(formValidator.isNumeric(value, '.')) ||
 			(value.length && !(window.parseFloat(value, 10)) ) ||
 			(value.length && value.split('.').length > 2);
 
@@ -692,7 +692,7 @@ Object.defineProperty(viewModel, 'additionalPrice',
 		viewModel.__additionalPrice = value;
 
 		// Make sure a valid total price is being set here
-		var isInvalid = !(formValidator.isNumeric(value, '.')) ||
+		let isInvalid = !(formValidator.isNumeric(value, '.')) ||
 			(value.length && !(window.parseFloat(value)) ) ||
 			(value.length && value.split('.').length > 2);
 
@@ -851,7 +851,7 @@ Object.defineProperty(viewModel, 'depositAmount',
 		viewModel.__depositAmount = value;
 
 		// Make sure a valid amount is set here
-		var isInvalid = !(formValidator.isDollarAmount(value)) ||
+		let isInvalid = !(formValidator.isDollarAmount(value)) ||
 			(value.length && !(window.parseFloat(value) >= 0) );
 
 		// If the deposit amount is less than zero or greater than the order total, we have an invalid amount
