@@ -1,0 +1,315 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/colors';
+@import '../foundation/fonts';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#paymentsContainer
+{
+	width: 70%;
+}
+
+#newPaymentForm
+{
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+#paymentOptionHeaders
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+}
+
+.paymentOptionHeader
+{
+	@extend %formLabelText;
+
+	border:
+	{
+		style: none;
+		width: 0.5px;
+
+		bottom:
+		{
+			style: solid;
+			width: 0.5px;
+			color: map-get($COLORS, slateGrayTheme);
+		}
+
+		top-left-radius: 15px;
+		top-right-radius: 15px;
+	}
+
+	margin:
+	{
+		left: 5px;
+		right: 5px;
+	}
+
+	background-color: map-get($COLORS, grayTheme);
+	text-align: center;
+	cursor: pointer;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	height: 35px;
+
+	&:first-of-type
+	{
+		margin-left: 0px;
+	}
+
+	&:last-of-type
+	{
+		margin-right: 0px;
+	}
+
+	&.selected
+	{
+		border:
+		{
+			style: solid;
+			size: 0.5px;
+			color: map-get($COLORS, grayTheme);
+
+			bottom: none;
+		}
+
+		background-color: map-get($COLORS, smokeWhiteTheme);
+
+		cursor: default;
+	}
+}
+
+#newPaymentCreditCard, #newPaymentCheck, #newPaymentCash
+{
+	border:
+	{
+		style: solid;
+		width: 1px;
+		color: map-get($COLORS, grayTheme);
+
+		top: none;
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	width: 100%;
+	background-color: map-get($COLORS, smokeWhiteTheme);
+
+	&.hide
+	{
+		display: none;
+	}
+}
+
+#ccPaymentDetails
+{
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+
+	& > span
+	{
+		flex: 1;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	label
+	{
+		margin-right: 25px;
+
+		display: flex;
+		align-items: center;
+	}
+}
+
+#newPaymentCCAmount
+{
+	margin-left: 3px;
+
+	width: 200px;
+}
+
+#ccList
+{
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-direction: column;
+}
+
+.ccListEntry
+{
+	margin:
+	{
+		top: 5px;
+		bottom: 5px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > input
+	{
+		display: none;
+
+		&:checked + label::before
+		{
+			background-color: map-get($COLORS, greenTheme);
+		}
+	}
+
+	& > label
+	{
+		@include transitionSettings($property: background, $duration: 0.25s);
+
+		&::before
+		{
+			@include transitionSettings($property: background, $duration: 0.25s);
+
+			content: '';
+
+			border:
+			{
+				radius: 50%;
+
+				width: 3px;
+				style: solid;
+				color:map-get($COLORS, grayTheme);
+			}
+
+			margin:
+			{
+				right: 10px;
+			}
+
+			background-color: MAP-GET($COLORS, lightWhiteTheme);
+			cursor: pointer;
+
+			width: 16px;
+			height: 16px;
+		}
+
+		&.smallLabel
+		{
+			font-size: map-get($FONTS, smallFontSize);
+		}
+	}
+}
+
+#newPaymentCCForm
+{
+	border-top:
+	{
+		width: 0.5px;
+		color: map-get($COLORS, lightGrayTheme);
+		style: solid;
+	}
+
+	padding:
+	{
+		top: 20px;
+		bottom: 20px;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
+
+	opacity: 1.0;
+
+	&.disabled
+	{
+		opacity: 0.4;
+	}
+
+	& > .controlGroupingRow
+	{
+		margin:
+		{
+			top: 15px;
+			bottom: 15px;
+		}
+
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+
+		& > span
+		{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			flex: 1;
+		}
+
+		label
+		{
+			margin-right: 10px;
+		}
+	}
+}
+
+#newCCNumber
+{
+	width: 300px;
+}
+
+#ccExpDateMonth, #ccExpDateYear
+{
+	margin:
+	{
+		left: 5px;
+		right: 5px;
+	}
+
+	width: 80px;
+}
+
+#newCVCNumber
+{
+	width: 100px;
+}
+
+#ccSaveButton
+{
+	@include smallButton($bgColor: cadetBlueTheme);
+
+	width: 250px;
+}
