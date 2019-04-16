@@ -38,6 +38,8 @@ module.exports =
 		let populatedPageTemplate,
 			allData, designData,
 			orderNumber = params ? parseInt(params.id, 10) : undefined,
+			currentYear = new Date().getFullYear(),
+			expirationYears = [],
 			pageData =
 			{
 				dropboxToken: config.DROPBOX_TOKEN
@@ -65,6 +67,13 @@ module.exports =
 
 		// Format the agreement text so that it can be properly presented on the page
 		pageData.order.text.agreement = pageData.order.text.agreement.join('\n\n');
+
+		// Find some years that can be placed into the expiration year dropdown as selectable options
+		for (let i = currentYear; i <= currentYear + 10; i++)
+		{
+			expirationYears.push(i);
+		}
+		pageData.expirationYears = expirationYears;
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

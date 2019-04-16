@@ -7,6 +7,7 @@
 @import 'railingsSection';
 @import 'picturesSection';
 @import 'submissionSection';
+@import 'paymentsSection';
 @import 'depositModal';
 
 @import '../foundation/general';
@@ -21,7 +22,7 @@
 /* ----------------------- STYLES ----------------------------- */
 
 #idSection, #orderSummary, #customerSummary, #notesSection, #locationSummary, #typeSection, #baseDesignSection, #cableDesignSection, #glassDesignSection,
-#advancedDesignSection, #picketSection, #logisticsSection, #moneySection, #agreementSection, #picturesSection, #submissionSection
+#advancedDesignSection, #picketSection, #logisticsSection, #moneySection, #paymentsSection, #agreementSection, #picturesSection, #submissionSection
 {
 	padding:
 	{

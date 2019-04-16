@@ -19,9 +19,12 @@ const ORDERS_COLLECTION = 'orders',
 	SYSTEM_USER_NAME = 'system',
 	UNKNOWN_USER_NAME = 'Unknown',
 
-	PENDING_STATUS = 'pending',
-	QUEUE_STATUS = 'queue',
-	CLOSED_STATUS = 'closed',
+	STATUS =
+	{
+		PENDING: 'pending',
+		QUEUE: 'queue',
+		CLOSED: 'closed'
+	},
 
 	TRANSACTION_REASONS =
 	{
@@ -344,7 +347,7 @@ let ordersModule =
 		}
 
 		// Set the status
-		order.status = PENDING_STATUS;
+		order.status = STATUS.PENDING;
 
 		// Set the creation date of the order
 		order.dates = order.dates || {};
@@ -423,7 +426,7 @@ let ordersModule =
 		order.dates.finalized = new Date();
 
 		// Update the status to indicate that the order is now queued for production
-		order.status = QUEUE_STATUS;
+		order.status = STATUS.QUEUE;
 
 		// Run over this nickname logic again just in case the customer changed his name
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
@@ -567,7 +570,7 @@ let ordersModule =
 		orderModifications.pricing.orderTotal = pricingCalculator.calculateTotal(orderModifications);
 
 		// If the order is still pending finalization, reset the balance remaining
-		if (order.status === PENDING_STATUS)
+		if (order.status === STATUS.PENDING)
 		{
 			orderModifications.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
 			orderModifications.pricing.taxRemaining = orderModifications.pricing.tax;
@@ -590,7 +593,7 @@ let ordersModule =
 
 		try
 		{
-			if (orderModifications.status === CLOSED_STATUS)
+			if (orderModifications.status === STATUS.CLOSED)
 			{
 				// Generate credit card transactions necessary to satisfy any changes that may have been made to the order
 				// price only after the order has been closed
@@ -695,7 +698,7 @@ let ordersModule =
 			};
 		}
 		// If the order is still pending finalization, reset the balance remaining
-		if (order.status === PENDING_STATUS)
+		if (order.status === STATUS.PENDING)
 		{
 			dataToUpdate['pricing.balanceRemaining'] = orderModifications.pricing.orderTotal;
 		}
