@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _dropbox = require('dropbox'),
+let _dropbox = require('dropbox'),
 	_jpegrotator = require('jpeg-autorotate'),
 	_Q = require('q'),
 
@@ -12,10 +12,11 @@ var _dropbox = require('dropbox'),
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
-var DROPBOX_DOMAIN = 'www.dropbox.com',
+const DROPBOX_DOMAIN = 'www.dropbox.com',
 	DIRECT_LINK_DROPBOX_DOMAIN = 'dl.dropboxusercontent.com',
 
 	ORDERS_DIRECTORY = '/orders/',
+	PAYMENTS_DIRECTORY = '/payments/',
 
 	JPEG_EXTENSIONS =
 	{
@@ -34,7 +35,7 @@ var DROPBOX_DOMAIN = 'www.dropbox.com',
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
-var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
+let jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -45,21 +46,23 @@ module.exports =
 	 *
 	 * @param {String} orderID - the ID of the order associated with this image
 	 * @param {Object} files - the image to upload, indexed by their file name
+	 * @param {Boolean} isPayment - flag that determines whether the image is related to a payment
 	 *
 	 * @returns {Array<Object>} - the metadatas for all the images newly uploaded to the Dropbox repository
 	 *
 	 * @author kinsho
 	 */
-	uploadImage: async function(orderID, files)
+	uploadImage: async function(orderID, files, isPayment)
 	{
-		var dropboxConnection = new _dropbox({ accessToken: config.DROPBOX_TOKEN }), // Instantiate a new dropbox connection
+		let dropboxConnection = new _dropbox({ accessToken: config.DROPBOX_TOKEN }), // Instantiate a new dropbox
+		// connection
 			filenames = Object.keys(files),
 			metadataCollection = [],
 			fileNameComponents, fileExtension,
 			shareLink, dropboxMetadata,
-			file, i;
+			file, path;
 
-		for (i = 0; i < filenames.length; i++)
+		for (let i = 0; i < filenames.length; i++)
 		{
 			file = files[filenames[i]];
 
@@ -89,13 +92,24 @@ module.exports =
 				}
 			}
 
+			// Determine the path where we will store this image
+			if (isPayment)
+			{
+				path = PAYMENTS_DIRECTORY + orderID + '-' + new Date().getTime() + '-';
+			}
+			else
+			{
+				// By default, we'll store everything in the 'Orders' sub-directory
+				path = ORDERS_DIRECTORY + orderID + '-' + new Date().getTime() + '-';
+			}
+
 			try
 			{
 				// Now push the image into Dropbox
 				dropboxMetadata = await dropboxConnection.filesUpload(
 				{
 					contents: file,
-					path: ORDERS_DIRECTORY + orderID + '-' + new Date().getTime() + '-' + filenames[i],
+					path: path,
 					mode: { '.tag' : 'add' },
 					autorename: true,
 					mute: false
@@ -133,7 +147,8 @@ module.exports =
 	 */
 	deleteImage: async function(path)
 	{
-		var dropboxConnection = new _dropbox({ accessToken: config.DROPBOX_TOKEN }); // Instantiate a new dropbox connection
+		// Instantiate a new dropbox connection
+		let dropboxConnection = new _dropbox({ accessToken: config.DROPBOX_TOKEN }); 
 
 		try
 		{

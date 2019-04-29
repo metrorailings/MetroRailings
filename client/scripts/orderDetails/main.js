@@ -13,6 +13,7 @@ import cableSection from 'client/scripts/orderGeneral/cableSection';
 import glassSection from 'client/scripts/orderGeneral/glassSection';
 import logisticsSection from 'client/scripts/orderGeneral/logisticsSection';
 import moneySection from 'client/scripts/orderGeneral/moneySection';
+import paymentsSection from 'client/scripts/orderGeneral/paymentsSection';
 import agreementSection from 'client/scripts/orderGeneral/agreementSection';
 import descriptor from 'client/scripts/orderGeneral/designDescriptor';
 
