@@ -7,12 +7,12 @@
 			<div id='paymentsContainer'>
 				<div id='newPaymentForm'>
 					<div id='paymentOptionHeaders'>
-						<span class='paymentOptionHeader selected'>Credit Card</span>
-						<span class='paymentOptionHeader'>Check</span>
-						<span class='paymentOptionHeader'>Cash</span>
+						<span class='paymentOptionHeader selected' data-pay-form='newPaymentCreditCard'>Credit Card</span>
+						<span class='paymentOptionHeader' data-pay-form='newPaymentCheck'>Check</span>
+						<span class='paymentOptionHeader' data-pay-form='newPaymentCash'>Cash</span>
 					</div>
 
-					<div id='newPaymentCreditCard'>
+					<div id='newPaymentCreditCard' class='paymentForm'>
 						<div id='ccPaymentDetails'>
 							<span>
 								<label>Payment Amount</label>
@@ -39,15 +39,15 @@
 							</span>
 						</div>
 						<div>
-							<div id='newPaymentCCForm' class='disabled'>
+							<div id='newPaymentCCForm' class='{{#if order.payments.ccTokens}} disabled {{/if}}'>
 								<div class='controlGroupingRow'>
 									<label>Credit Card Number</label>
-									<input id='newCCNumber' type='tel' disabled />
+									<input id='newCCNumber' type='tel' maxlength='16' {{#if order.payments.ccTokens}} disabled {{/if}} />
 								</div>
 								<div class='controlGroupingRow'>
 									<span>
 										<label>Expiration Date</label>
-										<select id='ccExpDateMonth' disabled>
+										<select id='ccExpDateMonth' {{#if order.payments.ccTokens}} disabled {{/if}}>
 											<option value='' selected='selected' disabled>Month</option>
 											<option value='1'>January</option>
 											<option value='2'>February</option>
@@ -62,7 +62,7 @@
 											<option value='11'>November</option>
 											<option value='12'>December</option>
 										</select>
-										<select id='ccExpDateYear' disabled>
+										<select id='ccExpDateYear' {{#if order.payments.ccTokens}} disabled {{/if}}>
 											<option value='' selected='selected' disabled>Year</option>
 											{{#each expirationYears }}
 												<option value='{{this}}'>{{this}}</option>
@@ -72,7 +72,7 @@
 
 									<span>
 										<label>Security Code (CVC)</label>
-										<input type='tel' id='newCVCNumber' maxlength='4' disabled />
+										<input type='tel' id='newCVCNumber' maxlength='4' {{#if order.payments.ccTokens}} disabled {{/if}} />
 									</span>
 								</div>
 							</div>
@@ -82,9 +82,28 @@
 						</div>
 					</div>
 
-					<div id='newPaymentCheck' class='hide'></div>
+					<div id='newPaymentCheck' class='hide paymentForm'>
+						<div id='checkPaymentDetails'>
+							<span>
+								<label>Payment Amount</label>
+								$<input id='newPaymentCheckAmount' type='tel' />
+							</span>
+						</div>
+						<div>
+							<div id='checkImageContainer'>
+								<span id='checkUploadBox'>
+									<i class='fa fa-upload'></i>
+									<div>Upload Image of Check Here...</div>
+								</span>
+							</div>
+							<div>
+								<button id='checkSaveButton'>Submit Payment</button>
+							</div>
+							<input id='checkUploadFile' type='file' />
+						</div>
+					</div>
 
-					<div id='newPaymentCash' class='hide'></div>
+					<div id='newPaymentCash' class='hide paymentForm'></div>
 
 				</div>
 

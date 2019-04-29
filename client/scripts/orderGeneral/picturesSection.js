@@ -21,7 +21,7 @@ const UPLOAD_PICTURE_BUTTON = 'uploadPictureButton',
 
 	DELETE_IMAGE_MESSAGE = 'Are you sure you want to delete this image? Once you delete this image, it will be gone' +
 		' for good.',
-	IMAGE_DISPLAY_HTML = '<img src=\'::imageSrc\' />',
+	IMAGE_DISPLAY_HTML = '<img src=\'::imageSrc\' alt="Order Images" />',
 	IMAGE_SOURCE_PLACEHOLDER = '::imageSrc',
 
 	IMAGE_UPLOAD_FAILED = 'Your image upload failed. If you tried to upload a file that\'s not naturally an image,' +
@@ -134,11 +134,10 @@ async function uploadImage()
 {
 	let filesToUpload = document.getElementById(UPLOAD_PICTURE_INPUT).files,
 		saveData = new FormData(),
-		imgMetadata,
-		i;
+		imgMetadata;
 
 	// Prepare all the files that needs to be uploaded
-	for (i = 0; i < filesToUpload.length; i += 1)
+	for (let i = 0; i < filesToUpload.length; i += 1)
 	{
 		saveData.append('files', filesToUpload[i], filesToUpload[i].name);
 	}
@@ -151,7 +150,6 @@ async function uploadImage()
 	_picturesLoader.classList.add(SHOW_CLASS);
 
 	// Upload the images into Dropbox and save all the metadata within our own database
-
 	try
 	{
 		imgMetadata = await axios.post(SAVE_PICTURES_URL, saveData, false,
