@@ -26,25 +26,11 @@ const ORDERS_COLLECTION = 'orders',
 		CLOSED: 'closed'
 	},
 
-	TRANSACTION_REASONS =
-	{
-		ORDER_ID: 'Order ',
-		DEPOSIT: ' - Deposit',
-		PAYMENT: ' - Payment',
-		CLOSING: ' - Closing Payment'
-	},
-
-	PAYMENT_TYPES =
-	{
-		CREDIT_CARD: 'card',
-		CHECK: 'check',
-		CASH: 'cash'
-	},
-
 	MODIFICATION_REASONS =
 	{
 		QUOTE_CREATION: 'Quote Created',
-		FINALIZE_ORDER: 'Order Finalized'
+		FINALIZE_ORDER: 'Order Finalized',
+		CARD_PAYMENT: 'Credit Card Payment'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -113,31 +99,6 @@ function _formNoteRecord(order, note, username)
 }
 
 /**
- * Function responsible for simplifying a credit card charge object so that it only contains data relevant to our
- * purposes
- *
- * @param {Object} charge - the charge object, coming directly from Stripe
- *
- * @returns {Object} - the reduced charge object
- *
- * @author kinsho
- */
-function _parseCharge(charge)
-{
-	return {
-		id: charge.id,
-		type: PAYMENT_TYPES.CREDIT_CARD,
-		amount: charge.amount,
-		refund: charge.amount_refunded,
-		cardDetails:
-		{
-			brand: charge.payment_method_details.card.brand,
-			last4: charge.payment_method_details.card.last4
-		}
-	};
-}
-
-/**
  * Simple utility function that's meant to parse a number from a string or return a zero otherwise if the string cannot
  * be parsed to yield a non-zero number
  *
@@ -184,9 +145,9 @@ let ordersModule =
 		try
 		{
 			let dbResults = await mongo.read(ORDERS_COLLECTION,
-				{
-					_id: orderNumber
-				});
+			{
+				_id: orderNumber
+			});
 
 			return dbResults[0];
 		}
@@ -400,6 +361,96 @@ let ordersModule =
 	},
 
 	/**
+	 * Function responsible for adding a securitized token to an order so that we could charge credit cards
+	 * repeatedly if necessary
+	 *
+	 * @param {Number} orderId - the ID of the order which will store the token
+	 * @param {Object} token - the token to store into the order
+	 *
+	 * @param {Array<Object>} - the list of credit cards that have been used for payments on this order
+	 *
+	 * @author kinsho
+	 */
+	addTokenToOrder: async function (orderId, token)
+	{
+		let order = await ordersModule.searchOrderById(parseInt(orderId, 10)),
+			updateRecord;
+
+		order.payments.ccTokens = order.payments.ccTokens || [];
+		order.payments.ccTokens.push(token);
+
+		// Now generate a record of data we will be using to update the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: orderId
+		}, order, false);
+
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return order.payments.ccTokens;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error approving order ' + order._id);
+			console.log(error);
+
+			throw error;
+		}
+
+	},
+
+	/**
+	 * Function responsible for recording details about a recent charge made on this order
+	 *
+	 * @param {Object} order - the actual order to modify
+	 * @param {String} username - the name of the user recording this charge
+	 * @param {Object} transaction - the transaction details to store
+	 * @param {Number} amount - the amount that was charged
+	 *
+	 * @returns {Object} - the payments property for the order being modified
+	 *
+	 * @author kinsho
+	 */
+	recordCharge: async function (order, username, transaction, amount)
+	{
+		let updateRecord;
+
+		// Store those transaction details inside the order itself so that we can reference the payment for
+		// tracking purposes
+		order.payments.charges.push(transaction);
+
+		// Adjust the balance remaining to reflect what has been paid off
+		order.payments.balanceRemaining -= amount;
+
+		// Record the modifications being made to this order
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.CARD_PAYMENT);
+
+		// Now generate a record of data we will be using to update the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: order._id
+		}, order, false);
+
+		// Save the order now that it has been updated and the payment has been successfully made
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return order.payments;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error approving order ' + order._id);
+			console.log(error);
+
+			throw error;
+		}
+
+	},
+
+	/**
 	 * Function responsible for indicating that an order has been finalized and for saving any changes the customer
 	 * may have made to the order while approving.
 	 *
@@ -442,10 +493,6 @@ let ordersModule =
 			{
 				// Charge the customer prior to saving the order
 				transaction = await creditCardProcessor.chargeTotal(order.pricing.depositAmount, order._id, order.payments.ccTokens[0].id, order.customer.email, order.customer.name, order.customer.company,TRANSACTION_REASONS.ORDER_ID + orderId + TRANSACTION_REASONS.DEPOSIT);
-
-				// After charging the customer, store relevant transaction details inside the order itself so that
-				// we can reference the payment for tracking purposes
-				order.payments.charges = [_parseCharge(transaction)];
 
 				// Adjust the balance remaining to reflect that a portion of the price has been paid off
 				order.payments.balanceRemaining -= order.pricing.depositAmount;

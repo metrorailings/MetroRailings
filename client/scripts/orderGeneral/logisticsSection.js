@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var COVER_PLATES_RADIO_BUTTONS = 'coverPlates',
+const COVER_PLATES_RADIO_BUTTONS = 'coverPlates',
 	PLATFORM_TYPE_SELECT = 'orderPlatformType',
 	FINISHED_HEIGHT_TEXTFIELD = 'finishedHeight',
 	ORDER_LENGTH_TEXTFIELD = 'orderLength',
@@ -12,7 +12,7 @@ var COVER_PLATES_RADIO_BUTTONS = 'coverPlates',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _coverPlateButtons = document.getElementsByName(COVER_PLATES_RADIO_BUTTONS),
+let _coverPlateButtons = document.getElementsByName(COVER_PLATES_RADIO_BUTTONS),
 	_orderPlatformTypeField = document.getElementById(PLATFORM_TYPE_SELECT),
 
 	_orderLengthField = document.getElementById(ORDER_LENGTH_TEXTFIELD),

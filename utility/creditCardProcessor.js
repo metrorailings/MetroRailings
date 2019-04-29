@@ -14,7 +14,8 @@ let config = global.OwlStakes.require('config/config'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-const ACCEPTABLE_CURRENCY = 'usd';
+const ACCEPTABLE_CURRENCY = 'usd',
+	CREDIT_CARD_PAYMENT_TYPE = 'card';
 
 // ----------------- GENERATOR TRANSFORMATION FUNCTIONS --------------------------
 
@@ -150,5 +151,29 @@ module.exports =
 		}
 
 		return true;
+	},
+
+	/**
+	 * Function that parses out only relevant information from transactions
+	 *
+	 * @param {Object} transaction - the transaction to whittle down
+	 *
+	 * @return {Object} - a leaner transaction object
+	 *
+	 * @author kinsho
+	 */
+	whittleTransaction: function (transaction)
+	{
+		return {
+			id: transaction.id,
+			type: CREDIT_CARD_PAYMENT_TYPE,
+			amount: transaction.amount,
+			refund: transaction.amount_refunded,
+			cardDetails:
+			{
+				brand: transaction.payment_method_details.card.brand,
+				last4: transaction.payment_method_details.card.last4
+			}
+		};
 	}
 };

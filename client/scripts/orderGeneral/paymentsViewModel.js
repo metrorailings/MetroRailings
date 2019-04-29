@@ -19,6 +19,26 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 	NEW_CARD_CVC_NUMBER = 'newCVCNumber',
 	CC_SAVE_BUTTON = 'ccSaveButton',
 
+	CHECK_PAYMENT_AMOUNT = 'newPaymentCheckAmount',
+	CHECK_SUBMIT_BUTTON = 'checkSaveButton',
+
+	NEW_KEYWORD = 'new',
+
+	EXISTING_CC_VALIDATION_FIELDS =
+	[
+		CC_PAYMENT_AMOUNT
+	],
+	NEW_CC_VALIDATION_FIELDS =
+	[
+		CC_PAYMENT_AMOUNT,
+		NEW_CARD_NUMBER,
+		NEW_CARD_CVC_NUMBER
+	],
+	NEW_CHECK_VALIDATION_FIELDS =
+	[
+		CHECK_PAYMENT_AMOUNT
+	],
+
 	ERROR_MESSAGES =
 	{
 		DOLLAR_AMOUNT_INVALID : 'Please enter a valid dollar amount here.',
@@ -30,8 +50,9 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
-		ERROR: 'At least one of the fields above has an erroneous value. Please fix these errors prior to submitting this order.',
-		BLANK_FIELD: 'In order to submit this order, please make sure you filled out all the fields.'
+		CC: 'At least one of the key fields above has an erroneous value or missing value. Please address' +
+			' whatever the problem is prior to submissing this form.',
+		CHECK: 'The check amount field has an erroneous or missing value. Please put an eligible value in that field.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -46,9 +67,34 @@ let _validationSet = new Set(),
 	_ccExpYear = document.getElementById(NEW_CARD_EXP_YEAR),
 	_ccCVCNumber = document.getElementById(NEW_CARD_CVC_NUMBER),
 
-	_ccSaveButton = document.getElementById(CC_SAVE_BUTTON);
+	_checkPaymentAmount = document.getElementById(CHECK_PAYMENT_AMOUNT),
+
+	_ccSaveButton = document.getElementById(CC_SAVE_BUTTON),
+	_checkSaveButton = document.getElementById(CHECK_SUBMIT_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
+
+/**
+ * Validation test designed to test whether a given set of fields contain an erroneous value
+ *
+ * @param {Array<String>} fields - a collection of field IDs representing fields that need to be checked
+ *
+ * @returns {Boolean} - a boolean flag indicating whether at least one field in the passed set contains an error
+ *
+ * @private
+ */
+function _validationTest(fields)
+{
+	for (let i = 0; i < fields.length; i += 1)
+	{
+		if (_validationSet.has(fields[i]))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
 
 /**
  * Slightly specialized function for invoking the logic that validates a new potential credit card payment
@@ -58,7 +104,32 @@ let _validationSet = new Set(),
 function _validateCC()
 {
 	// Ensure all the credit card information has been put into place
-	viewModel.isCCFormSubmissible = (viewModel.ccAmount && !(_validationSet.ccAmount));
+	viewModel.isCCFormSubmissible = (viewModel.ccAmount &&
+		(viewModel.token || (viewModel.ccNumber && viewModel.ccExpMonth && viewModel.ccExpYear && viewModel.ccSecurityCode) ));
+
+	// Make sure none of the relevant credit card fields are currently hosting an erroneous value
+	if (viewModel.token !== NEW_KEYWORD)
+	{
+		viewModel.isCCFormSubmissible = viewModel.isCCFormSubmissible && !(_validationTest(EXISTING_CC_VALIDATION_FIELDS));
+	}
+	else
+	{
+		viewModel.isCCFormSubmissible = viewModel.isCCFormSubmissible && !(_validationTest(NEW_CC_VALIDATION_FIELDS));
+	}
+}
+
+/**
+ * Slightly specialized function for invoking the logic that validates a new potential check payment
+ *
+ * @author kinsho
+ */
+function _validateCheck()
+{
+	// Ensure all the check information has been put into place
+	viewModel.isCheckFormSubmissible = (viewModel.checkAmount && viewModel.checkImage);
+
+	// Make sure none of the check fields are currently hosting an erroneous value
+	viewModel.isCheckFormSubmissible = viewModel.isCheckFormSubmissible && !(_validationTest(NEW_CHECK_VALIDATION_FIELDS));
 }
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
@@ -108,6 +179,25 @@ Object.defineProperty(viewModel, 'ccAmount',
 
 		rQueryClient.updateValidationOnField(isInvalid, _ccPaymentAmount, ERROR_MESSAGES.DOLLAR_AMOUNT_INVALID, _validationSet);
 		rQueryClient.setField(_ccPaymentAmount, value);
+		_validateCC();
+	}
+});
+
+// The token to charge, if an existing credit card is meant to generate a new payment
+Object.defineProperty(viewModel, 'token',
+{
+	configurable: false,
+	enumerable: true,
+
+	get: () =>
+	{
+		return viewModel.__token;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__token = value;
+
 		_validateCC();
 	}
 });
@@ -232,14 +322,99 @@ Object.defineProperty(viewModel, 'isCCFormSubmissible',
 	{
 		viewModel.__isCCFormSubmissible = value;
 
+		// Disable the button depending on whether the form can be submitted
 		if (!(value))
 		{
+			_ccSaveButton.disabled = true;
+
 			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_ccSaveButton, _validationSet.size ? SUBMISSION_INSTRUCTIONS.ERROR : SUBMISSION_INSTRUCTIONS.BLANK_FIELD);
+			tooltipManager.setTooltip(_ccSaveButton, SUBMISSION_INSTRUCTIONS.CC);
 		}
 		else
 		{
+			_ccSaveButton.disabled = false;
 			tooltipManager.closeTooltip(_ccSaveButton, true);
 		}
 	}
 });
+
+// Amount that new check is worth
+Object.defineProperty(viewModel, 'checkAmount',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__checkAmount;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__checkAmount = value;
+
+		// Make sure a valid amount is set here
+		let isInvalid = !(formValidator.isDollarAmount(value)) ||
+			(value.length && !(window.parseFloat(value) >= 0) );
+
+		// If the deposit amount is less than zero or greater than the remaining balance, we have an invalid amount
+		// Notice the use of conditional logic here to ensure that we're dealing with a number
+		isInvalid = isInvalid || window.parseFloat(value) < 0 || window.parseFloat(value) > viewModel.balanceRemaining;
+
+		rQueryClient.updateValidationOnField(isInvalid, _checkPaymentAmount, ERROR_MESSAGES.DOLLAR_AMOUNT_INVALID, _validationSet);
+		rQueryClient.setField(_checkPaymentAmount, value);
+		_validateCheck();
+	}
+});
+
+// Flag indicating whether a check image is ready to be uploaded
+Object.defineProperty(viewModel, 'isCheckImageProvided',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__checkImage;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__checkImage = value;
+	}
+});
+
+// Check form validation flag
+Object.defineProperty(viewModel, 'isCheckFormSubmissible',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__isCheckFormSubmissible;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__isCheckFormSubmissible = value;
+
+		// Disable the button depending on whether the form can be submitted
+		if (!(value))
+		{
+			_checkSaveButton.disabled = true;
+
+			// Set up a tooltip indicating why the button is disabled
+			tooltipManager.setTooltip(_ccSaveButton, SUBMISSION_INSTRUCTIONS.CHECK);
+		}
+		else
+		{
+			_checkSaveButton.disabled = false;
+			tooltipManager.closeTooltip(_ccSaveButton, true);
+		}
+	}
+});
+
+// ----------------- EXPORT LOGIC -----------------------------
+
+export default viewModel;
