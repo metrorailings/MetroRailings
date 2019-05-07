@@ -120,7 +120,11 @@ let contractorModule =
 	questions:
 	[
 		'Are there any gates?',
-		'Is there anything out of the normal for this particular order?',
+		'Are there any curves? If so, approximately how many feet of curve may we be dealing with? Feel free to give' +
+		' us a rough range.',
+		'Are you running any wiring through the posts?',
+		'Are there any columns? If so, how thick will the wrapping around these columns be?',
+		'Is there anything else out of the normal for this particular order?',
 		'Is there anything we need to know about this particular customer?'
 	]
 };

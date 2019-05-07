@@ -94,9 +94,13 @@ module.exports =
 			// Prepare the PDF copy of the quote to be sent over as an attachment
 			formAttachment = await mailer.generateAttachment(customerForm._id + PDF_EXTENSION, pdf),
 			mailHTML = await mailer.generateFullEmail(CUSTOMER_FORM_EMAIL, { companyName : COMPANY_NAME, formLink : config.BASE_URL + pdfLink }, CUSTOMER_FORM_EMAIL),
-			emailAddresses = drConfig.UNIVERSAL_EMAIL_ADDRESSES;
-
+			emailAddresses = [];
+		
 		// Gather all the e-mail addresses we'll be sending this out too
+		for (let i = 0; i < drConfig.UNIVERSAL_EMAIL_ADDRESSES.length; i += 1)
+		{
+			emailAddresses.push(drConfig.UNIVERSAL_EMAIL_ADDRESSES[i]);
+		}
 		if (drConfig.PM_EMAIL_ADDRESSES[customerForm.projectManager])
 		{
 			emailAddresses.push(drConfig.PM_EMAIL_ADDRESSES[customerForm.projectManager]);
