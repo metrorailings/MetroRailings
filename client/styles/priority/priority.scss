@@ -1,0 +1,127 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+@import '../foundation/modal';
+@import '../foundation/adminOnly';
+@import '../foundation/animations';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#openOrderListColumnHeaders
+{
+	@extend %tabularSmallHeaderText;
+
+	border:
+	{
+		width: 1px;
+		color: map-get($COLORS, lightGrayTheme);
+		style: solid;
+	}
+
+	margin:
+	{
+		top: 35px;
+		left: auto;
+		right: auto;
+	}
+
+	width: 90%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: map-get($COLORS, smokeWhiteTheme);
+
+	& > span
+	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		min-height: 70px;
+
+		&:not(:last-of-type)
+		{
+			border-right:
+			{
+				width: 0.5px;
+				color: map-get($COLORS, lightGrayTheme);
+				style: solid;
+			}
+		}
+	}
+}
+
+#openOrderList
+{
+	border:
+	{
+		width: 1px;
+		color: map-get($COLORS, lightGrayTheme);
+		style: solid;
+	}
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 90%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.openOrder
+{
+	@extend %smallSignificantText;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+
+	width: 100%;
+
+	& > span
+	{
+		padding:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		min-height: 70px;
+
+		&:not(:last-of-type)
+		{
+			border-right:
+			{
+				width: 0.5px;
+				color: map-get($COLORS, lightGrayTheme);
+				style: solid;
+			}
+		}
+	}
+
+	&:nth-of-type(2n)
+	{
+		background-color: map-get($COLORS, lightBlueTheme);
+	}
+}
+
+.dragIndicator
+{
+	font-size: map-get($FONTS, largeFontSize);
+}

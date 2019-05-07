@@ -105,7 +105,7 @@ function _validateCC()
 {
 	// Ensure all the credit card information has been put into place
 	viewModel.isCCFormSubmissible = (viewModel.ccAmount &&
-		(viewModel.token || (viewModel.ccNumber && viewModel.ccExpMonth && viewModel.ccExpYear && viewModel.ccSecurityCode) ));
+		((viewModel.token && viewModel.token !== NEW_KEYWORD) || (viewModel.ccNumber && viewModel.ccExpMonth && viewModel.ccExpYear && viewModel.ccSecurityCode) ));
 
 	// Make sure none of the relevant credit card fields are currently hosting an erroneous value
 	if (viewModel.token !== NEW_KEYWORD)
@@ -325,15 +325,12 @@ Object.defineProperty(viewModel, 'isCCFormSubmissible',
 		// Disable the button depending on whether the form can be submitted
 		if (!(value))
 		{
-			_ccSaveButton.disabled = true;
-
 			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_ccSaveButton, SUBMISSION_INSTRUCTIONS.CC);
+			tooltipManager.setTooltip(_ccSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CC);
 		}
 		else
 		{
-			_ccSaveButton.disabled = false;
-			tooltipManager.closeTooltip(_ccSaveButton, true);
+			tooltipManager.closeTooltip(_ccSaveButton.parentNode, true);
 		}
 	}
 });
@@ -402,15 +399,12 @@ Object.defineProperty(viewModel, 'isCheckFormSubmissible',
 		// Disable the button depending on whether the form can be submitted
 		if (!(value))
 		{
-			_checkSaveButton.disabled = true;
-
 			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_ccSaveButton, SUBMISSION_INSTRUCTIONS.CHECK);
+			tooltipManager.setTooltip(_ccSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CHECK);
 		}
 		else
 		{
-			_checkSaveButton.disabled = false;
-			tooltipManager.closeTooltip(_ccSaveButton, true);
+			tooltipManager.closeTooltip(_ccSaveButton.parentNode, true);
 		}
 	}
 });

@@ -92,8 +92,14 @@
 						<div>
 							<div id='checkImageContainer'>
 								<span id='checkUploadBox'>
-									<i class='fa fa-upload'></i>
-									<div>Upload Image of Check Here...</div>
+									<div id='noCheckImageUploaded'>
+										<i class='fa fa-upload'></i>
+										<div>Upload Image of Check Here...</div>
+									</div>
+									<div id='yesCheckImageUploaded' class='hide'>
+										<i class='fa fa-check-circle'></i>
+										<div>Check Uploaded!</div>
+									</div>
 								</span>
 							</div>
 							<div>
@@ -103,7 +109,32 @@
 						</div>
 					</div>
 
-					<div id='newPaymentCash' class='hide paymentForm'></div>
+					<div id='newPaymentCash' class='hide paymentForm'>
+						<div id='cashPaymentDetails'>
+							<span>
+								<label>Payment Amount</label>
+								$<input id='newPaymentCashAmount' type='tel' />
+							</span>
+						</div>
+						<div>
+							<div id='cashImageContainer'>
+								<span id='cashImageUploadBox'>
+									<div id='noCashImageUploaded'>
+										<i class='fa fa-upload'></i>
+										<div>Upload Image of Cash/Money Order Here...</div>
+									</div>
+									<div id='yesCashImageUploaded' class='hide'>
+										<i class='fa fa-check-circle'></i>
+										<div>Image Uploaded!</div>
+									</div>
+								</span>
+							</div>
+							<div>
+								<button id='cashSaveButton'>Submit Payment</button>
+							</div>
+							<input id='cashUploadFile' type='file' />
+						</div>
+					</div>
 
 				</div>
 

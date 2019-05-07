@@ -11,7 +11,11 @@ import notifier from 'client/scripts/utility/notifications';
 const CHECK_PAYMENT_AMOUNT = 'newPaymentCheckAmount',
 	CHECK_UPLOAD_BOX = 'checkUploadBox',
 	CHECK_UPLOAD_FILE = 'checkUploadFile',
+	NO_CHECK_IMAGE_UPLOADED = 'noCheckImageUploaded',
+	YES_CHECK_IMAGE_UPLOADED = 'yesCheckImageUploaded',
 	CHECK_SUBMIT_BUTTON = 'checkSaveButton',
+
+	HIDE_CLASS = 'hide',
 
 	CHECK_PAYMENT_URL = 'payment/recordCheckPayment',
 	SUCCESS_MESSAGE = 'Success! A new payment has been made on this order in the amount of $',
@@ -21,8 +25,10 @@ const CHECK_PAYMENT_AMOUNT = 'newPaymentCheckAmount',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 let _checkPaymentAmount = document.getElementById(CHECK_PAYMENT_AMOUNT),
-	_checkUploadBox = document.getElementsByName(CHECK_UPLOAD_BOX),
+	_checkUploadBox = document.getElementById(CHECK_UPLOAD_BOX),
 	_checkUploadFile = document.getElementById(CHECK_UPLOAD_FILE),
+	_noImageUploaded = document.getElementById(NO_CHECK_IMAGE_UPLOADED),
+	_yesImageUploaded = document.getElementById(YES_CHECK_IMAGE_UPLOADED),
 	_checkSubmitButton = document.getElementById(CHECK_SUBMIT_BUTTON);
 
 // ----------------- LISTENERS ---------------------------
@@ -45,6 +51,10 @@ function uploadImage()
 	if (_checkUploadFile.files && _checkUploadFile.files.length)
 	{
 		paymentsVM.isCheckImageProvided = true;
+
+		// Show the section of HTML indicating an image is ready to be uploaded
+		_noImageUploaded.classList.add(HIDE_CLASS);
+		_yesImageUploaded.classList.remove(HIDE_CLASS);
 	}
 }
 

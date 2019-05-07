@@ -11,7 +11,7 @@
 
 // ----------------- MODULE DEFINITION --------------------------
 
-var picketStyles =
+let picketStyles =
 {
 	options:
 	[
