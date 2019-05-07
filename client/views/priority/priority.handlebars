@@ -20,7 +20,10 @@
 			<span>{{ customer.name }}</span>
 			<span>{{#if customer.company}} {{ customer.company }} {{/if}}</span>
 			<span>{{#capitalize status }}{{/capitalize}}</span>
-			<span>{{#format_date_shorthand dates.due }}{{/format_date_shorthand}}</span>
+			<span>
+				<input class='dueDates' value='{{#format_date_shorthand dates.due }}{{/format_date_shorthand}}' 
+					   data-order-id='{{ _id }}'/>
+			</span>
 		</div>
 	{{/each}}	
 </div>

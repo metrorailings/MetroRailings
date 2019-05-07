@@ -5,7 +5,7 @@
  */
 // ----------------- MODULE DEFINITION --------------------------
 
-module.exports =
+let dateModule =
 {
 	ABBR_MONTHS:
 	[
@@ -39,6 +39,28 @@ module.exports =
 		'December'
 	],
 
+	DAYS:
+	[
+		'Sunday',
+		'Monday',
+		'Tuesday',
+		'Wednesday',
+		'Thursday',
+		'Friday',
+		'Saturday'
+	],
+
+	SHORT_DAYS:
+	[
+		'Sun',
+		'Mon',
+		'Tues',
+		'Weds',
+		'Thurs',
+		'Fri',
+		'Sat'
+	],
+
 	/**
 	 * Function responsible for finding the ordinal suffix that would naturally be associated
 	 * with a given date
@@ -63,5 +85,21 @@ module.exports =
 		}
 
 		return 'th';
+	},
+
+	/**
+	 * A function that formats the date to a concise user-friendly string
+	 *
+	 * @param {Date} date - the date to format
+	 *
+	 * @author kinsho
+	 */
+	formatShortDate: function(date)
+	{
+		return dateModule.SHORT_DAYS[date.getDay()] + ', ' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + (date.getFullYear() - 2000);
 	}
-}
+};
+
+// ----------------- EXPORT MODULE --------------------------
+
+module.exports = dateModule;

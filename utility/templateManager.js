@@ -315,7 +315,7 @@ _Handlebars.registerHelper('format_date', function(date)
  */
 _Handlebars.registerHelper('format_date_shorthand', function(date)
 {
-	return (date.getMonth() + 1) + '/' + date.getDate() + '/' + (date.getFullYear() - 2000);
+	return dateUtility.formatShortDate(date);
 });
 
 /**
