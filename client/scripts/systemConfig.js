@@ -27,6 +27,7 @@ SystemJS.config({
 
 		adminLogIn: '/client/scripts/adminLogIn/main.js',
 		orders: '/client/scripts/orders/main.js',
+		priority: '/client/scripts/priority/main.js',
 		orderDetails: '/client/scripts/orderDetails/main.js',
 		prospectDetails: '/client/scripts/prospectDetails/main.js',
 		createProspect: '/client/scripts/createProspect/main.js',
