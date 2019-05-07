@@ -1,0 +1,26 @@
+<div class='pageHeader'>
+	<h3>Prioritize Orders</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<div id='openOrderListColumnHeaders'>
+	<span></span>
+	<span>ID</span>
+	<span>Name</span>
+	<span>Company</span>
+	<span>Status</span>
+	<span>Due Date</span>
+</div>
+
+<div id='openOrderList'>
+	{{#each orders}}
+		<div class='openOrder'>
+			<span class='dragIndicator'><i class='fa fa-grip-vertical'></i></span>
+			<span>{{ _id }}</span>
+			<span>{{ customer.name }}</span>
+			<span>{{#if customer.company}} {{ customer.company }} {{/if}}</span>
+			<span>{{#capitalize status }}{{/capitalize}}</span>
+			<span>{{#format_date_shorthand dates.due }}{{/format_date_shorthand}}</span>
+		</div>
+	{{/each}}	
+</div>

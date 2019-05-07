@@ -124,7 +124,7 @@
 	}
 }
 
-#ccPaymentDetails, #checkPaymentDetails
+#ccPaymentDetails, #checkPaymentDetails, #cashPaymentDetails
 {
 	padding:
 	{
@@ -156,7 +156,7 @@
 	}
 }
 
-#newPaymentCCAmount, #newPaymentCheckAmount
+#newPaymentCCAmount, #newPaymentCheckAmount, #newPaymentCashAmount
 {
 	margin-left: 3px;
 
@@ -314,7 +314,7 @@
 	width: 250px;
 }
 
-#checkImageContainer
+#checkImageContainer, #cashImageContainer
 {
 	border-top:
 	{
@@ -335,7 +335,7 @@
 	flex-direction: column;
 }
 
-#checkUploadBox
+#checkUploadBox, #cashImageUploadBox
 {
 	border:
 	{
@@ -353,13 +353,21 @@
 	width: 400px;
 	height: 200px;
 
+	color: map-get($COLORS, darkGrayTheme);
+	cursor: pointer;
+}
+
+#noCheckImageUploaded, #yesCheckImageUploaded, #noCashImageUploaded, #yesCashImageUploaded
+{
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
 
-	color: map-get($COLORS, darkGrayTheme);
-	cursor: pointer;
+	&.hide
+	{
+		display: none;
+	}
 
 	& > i
 	{
@@ -383,7 +391,7 @@
 	}
 }
 
-#checkUploadFile
+#checkUploadFile, #cashUploadFile
 {
 	display: none;
 }

@@ -309,6 +309,16 @@ _Handlebars.registerHelper('format_date', function(date)
 });
 
 /**
+ * Handlebars helper function designed to translate computerized dates into concise user-friendly text
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_date_shorthand', function(date)
+{
+	return (date.getMonth() + 1) + '/' + date.getDate() + '/' + (date.getFullYear() - 2000);
+});
+
+/**
  * Handlebars helper function designed to translate computerized time strings into user-friendly text
  *
  * @author kinsho

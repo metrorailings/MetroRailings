@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Handlebars = require('handlebars'),
+let _Handlebars = require('handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
@@ -20,8 +20,7 @@ var _Handlebars = require('handlebars'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'orders',
-	UTILITY_FOLDER = 'utility',
+const CONTROLLER_FOLDER = 'orders',
 
 	ADMIN_LOG_IN_URL = '/admin',
 
@@ -50,7 +49,7 @@ module.exports =
 	 */
 	init: async function (params, cookie, request)
 	{
-		var populatedPageTemplate,
+		let populatedPageTemplate,
 			pageData = {},
 			bootData =
 			{
@@ -97,7 +96,7 @@ module.exports =
 		{
 			console.log('Searching for newly modified orders...');
 
-			var newData = await ordersDAO.searchOrdersByDate(new Date(params.date));
+			let newData = await ordersDAO.searchOrdersByDate(new Date(params.date));
 
 			return {
 				statusCode: responseCodes.OK,
@@ -124,20 +123,20 @@ module.exports =
 	 */
 	updateStatus: async function (params, cookie, request)
 	{
-		var updatedData;
+		let username, updatedData;
 
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
-			var username = cookieManager.retrieveAdminCookie(cookie)[0];
-
 			console.log('Updating a status on order ' + params.orderID);
+
+			username = cookieManager.retrieveAdminCookie(cookie)[0];
 
 			updatedData = await ordersDAO.updateStatus(parseInt(params.orderID, 10), username);
 		}
 
 		return {
 			statusCode: responseCodes.OK,
-			data: updatedData || {}
+			data: (updatedData ? updatedData : {})
 		};
 	},
 
@@ -156,7 +155,7 @@ module.exports =
 	{
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
-			var username = cookieManager.retrieveAdminCookie(cookie)[0];
+			let username = cookieManager.retrieveAdminCookie(cookie)[0];
 
 			console.log('"Deleting" order ' + params.orderID);
 
