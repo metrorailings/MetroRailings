@@ -23,6 +23,11 @@ const ORDERS_COLLECTION = 'orders',
 	{
 		PENDING: 'pending',
 		QUEUE: 'queue',
+		LAYOUT: 'layout',
+		WELDING: 'welding',
+		GRINDING: 'grinding',
+		PAINTING: 'painting',
+		INSTALL: 'install',
 		CLOSED: 'closed'
 	},
 
@@ -30,7 +35,7 @@ const ORDERS_COLLECTION = 'orders',
 	{
 		QUOTE_CREATION: 'Quote Created',
 		FINALIZE_ORDER: 'Order Finalized',
-		CARD_PAYMENT: 'Credit Card Payment'
+		PAYMENT: 'Payment'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -154,6 +159,30 @@ let ordersModule =
 		catch(error)
 		{
 			console.log('Ran into an error fetching an existing order using its ID...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
+	 * Function responsible for fetching all open orders
+	 *
+	 * @author kinsho
+	 */
+	searchForOpenOrders: async function ()
+	{
+		try
+		{
+			let dbResults = await mongo.read(ORDERS_COLLECTION, mongo.orOperator('status', 
+				[STATUS.QUEUE, STATUS.LAYOUT, STATUS.WELDING, STATUS.GRINDING, STATUS.PAINTING, STATUS.INSTALL]),
+				{ 'dates.due': 1 });
+
+			return dbResults;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching all open orders...');
 			console.log(error);
 
 			return false;
@@ -425,7 +454,7 @@ let ordersModule =
 		order.payments.balanceRemaining -= amount;
 
 		// Record the modifications being made to this order
-		_applyModificationUpdates(order, username, MODIFICATION_REASONS.CARD_PAYMENT);
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.PAYMENT);
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
@@ -438,7 +467,7 @@ let ordersModule =
 		{
 			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
 
-			return order.payments;
+			return true;
 		}
 		catch(error)
 		{

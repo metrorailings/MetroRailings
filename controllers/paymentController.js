@@ -1,5 +1,5 @@
 /**
- * @module ccController
+ * @module paymentController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -11,7 +11,8 @@ const responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	dropbox = global.OwlStakes.require('utility/dropbox'),
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-	usersDAO = global.OwlStakes.require('data/DAO/usersDAO');
+	usersDAO = global.OwlStakes.require('data/DAO/usersDAO'),
+	paymentsDAO = global.OwlStakes.require('data/DAO/paymentsDAO');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
@@ -32,6 +33,39 @@ const TRANSACTION_REASONS =
 	};
 
 // ----------------- PRIVATE METHODS --------------------------
+
+/**
+ * Function responsible for figuring out whether the transaction is a deposit, a progress payment, or a closing payment
+ *
+ * @param {Object} order - the order to analyze
+ * @param {Number} amount - the amount of the transaction
+ *
+ * @returns {Enum} - an enumerated string listing the nature of the transaction
+ *
+ * @author kinsho
+ */
+function _determineTxnReason(order, amount)
+{
+	if ( !(order.payments.charges.length) )
+	{
+		return TRANSACTION_REASONS.DEPOSIT;
+	}
+	else if (amount === order.payments.balanceRemaining)
+	{
+		if ( !(order.payments.charges.length) )
+		{
+			return TRANSACTION_REASONS.FULL;
+		}
+		else
+		{
+			return TRANSACTION_REASONS.CLOSING;
+		}
+	}
+	else
+	{
+		return TRANSACTION_REASONS.PROGRESS;
+	}
+}
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -87,7 +121,7 @@ module.exports =
 			let username = cookieManager.retrieveAdminCookie(cookie)[0],
 				order = await ordersDAO.searchOrderById(params.orderId),
 				transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
-				transaction, payments;
+				transaction, transactionNature;
 
 			console.log('Recording a new credit card payment...');
 
@@ -96,40 +130,22 @@ module.exports =
 
 			try
 			{
-				// Determine whether this is the first payment being made on this order, the last payment being made, or
-				// simply a progress payment
-				if ( !(order.payments.charges.length) )
-				{
-					transactionReason += TRANSACTION_REASONS.DEPOSIT;
-				}
-				else if (params.amount === order.payments.balanceRemaining)
-				{
-					if ( !(order.payments.charges.length) )
-					{
-						transactionReason += TRANSACTION_REASONS.FULL;
-					}
-					else
-					{
-						transactionReason += TRANSACTION_REASONS.CLOSING;
-					}
-				}
-				else
-				{
-					transactionReason += TRANSACTION_REASONS.PROGRESS;
-				}
+				// Find out the nature of the transaction
+				transactionNature = _determineTxnReason(order, params.amount);
 
 				// Now charge the customer
-				transaction = await creditCardProcessor.chargeTotal(params.amount, params.orderId, params.token, order.customer.email, order.customer.name, order.customer.company, transactionReason);
+				transaction = await creditCardProcessor.chargeTotal(params.amount, order._id, params.token, order.customer.email, order.customer.name, order.customer.company, transactionReason + transactionNature);
 
-				// Record the payment information in our database
-				transaction = creditCardProcessor.whittleTransaction(transaction);
+				// Record the payment information in the payments collection in our database
+				transaction = await paymentsDAO.addNewPayment(params.amount, PAYMENT_TYPES.CREDIT_CARD, order, transactionNature, username, transaction);
 
-				// Record the transaction in our database for tracking purposes
-				payments = await ordersDAO.recordCardCharge(order, username, transaction, params.amount);
+				// Also, record the transaction in the order that's associated with it
+				await ordersDAO.recordCharge(order, username, transaction, params.amount);
 
+				// Return the processed transaction metadata back to the client
 				return {
 					statusCode: responseCodes.OK,
-					data: payments
+					data: transaction
 				};
 			}
 			catch(error)
@@ -149,42 +165,115 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	recordCheckPayment: async function (params)
+	recordCheckPayment: async function (params, cookie, request)
 	{
 		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
 		{
 			let username = cookieManager.retrieveAdminCookie(cookie)[0],
-				transaction,
-				imgMeta;
+				order = await ordersDAO.searchOrderById(params.orderId),
+				transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
+				imgMeta, transaction;
 
 			console.log('Recording a new check payment...');
 
-			// Upload the check image to Dropbox
-			imgMeta = await dropbox.uploadImage(params.orderId, params.checkImage);
-			imgMeta = imgMeta.pop();
+			// Initializes the charges array if a charge has not been recorded for this order yet
+			order.payments.charges = order.payments.charges || [];
 
-			if (imgMeta.length)
+			// Find out the nature of the transaction
+			transactionReason += _determineTxnReason(order, params.amount);
+
+			try
 			{
-				// Now that the image has been successfully uploaded, tease out the relevant details about the check
-				transaction =
+				// Upload the check image to Dropbox
+				imgMeta = await dropbox.uploadImage(params.orderId, params.checkImage);
+				imgMeta = imgMeta.pop();
+
+				if (imgMeta.length)
 				{
-					image: imgMeta,
-					
-				};
+					// Record the payment information in the payments collection in our database
+					transaction = await paymentsDAO.addNewPayment(params.amount, PAYMENT_TYPES.CHECK, order, transactionReason, username, null, imgMeta);
 
-				// Save all the metadata from the newly uploaded images into the database
-				await ordersDAO.saveNewPicToOrder(params.id, imgMetas, username);
+					// Also, record the transaction in the order that's associated with it
+					await ordersDAO.recordCharge(order, username, transaction, params.amount);
 
-				return {
-					statusCode: responseCodes.OK,
-					data: imgMeta
-				};
+					return {
+						statusCode: responseCodes.OK,
+						data: imgMeta
+					};
+				}
+				else
+				{
+					return {
+						statusCode: responseCodes.BAD_REQUEST
+					};
+				}
 			}
-			else
+			catch(error)
 			{
-				return {
-					statusCode: responseCodes.BAD_REQUEST
-				};
+				console.log('Ran into an error trying to record a check payment for Order #' + params.orderId);
+				console.log(error);
+
+				throw error;
+			}
+		}
+	},
+
+	/**
+	 * Function responsible for recording cash payments
+	 *
+	 * @param {Object} params - the payment information to store, including an image of the cash or money order itself
+	 *
+	 * @author kinsho
+	 */
+	recordCashPayment: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let username = cookieManager.retrieveAdminCookie(cookie)[0],
+				order = await ordersDAO.searchOrderById(params.orderId),
+				transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
+				imgMeta, transaction;
+
+			console.log('Recording a new cash payment...');
+
+			// Initializes the charges array if a charge has not been recorded for this order yet
+			order.payments.charges = order.payments.charges || [];
+
+			// Find out the nature of the transaction
+			transactionReason += _determineTxnReason(order, params.amount);
+
+			try
+			{
+				// Upload the check image to Dropbox
+				imgMeta = await dropbox.uploadImage(params.orderId, params.cashImage);
+				imgMeta = imgMeta.pop();
+
+				if (imgMeta.length)
+				{
+					// Record the payment information in the payments collection in our database
+					transaction = await paymentsDAO.addNewPayment(params.amount, PAYMENT_TYPES.CASH, order, transactionReason, username, null, imgMeta);
+
+					// Also, record the transaction in the order that's associated with it
+					await ordersDAO.recordCharge(order, username, transaction, params.amount);
+
+					return {
+						statusCode: responseCodes.OK,
+						data: imgMeta
+					};
+				}
+				else
+				{
+					return {
+						statusCode: responseCodes.BAD_REQUEST
+					};
+				}
+			}
+			catch(error)
+			{
+				console.log('Ran into an error trying to record a cash payment for Order #' + params.orderId);
+				console.log(error);
+
+				throw error;
 			}
 		}
 	}

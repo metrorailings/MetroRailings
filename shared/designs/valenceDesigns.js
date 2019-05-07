@@ -11,7 +11,7 @@
 
 // ----------------- MODULE DEFINITION --------------------------
 
-var valenceDesigns =
+let valenceDesigns =
 {
 	options:
 	[

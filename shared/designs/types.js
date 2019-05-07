@@ -7,7 +7,7 @@
 
 // ----------------- MODULE DEFINITION --------------------------
 
-var types =
+let types =
 {
 	options:
 	[

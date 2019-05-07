@@ -88,11 +88,10 @@ module.exports =
 	 */
 	read: function(collectionName, params, sortCriteria, aggregationOptions)
 	{
-		var collection,
+		let collection,
 			completeQuery = [],
 			keys,
-			deferred = _Q.defer(),
-			i;
+			deferred = _Q.defer();
 
 		params = params || {};
 		aggregationOptions = aggregationOptions || {};
@@ -103,7 +102,7 @@ module.exports =
 		keys = Object.keys(aggregationOptions);
 		if (keys.length)
 		{
-			for (i = keys.length; i >= 0; i--)
+			for (let i = keys.length; i >= 0; i--)
 			{
 				completeQuery.push(aggregationOptions[keys[i]]);
 			}
@@ -425,6 +424,32 @@ module.exports =
 	{
 		return {
 			$gt: value
+		};
+	},
+
+	/**
+	 * Function responsible for forming a query to search for whether a record satisfies any one of the conditions
+	 * specified in said query
+	 *
+	 * @param {String} key - the property within the document to test
+	 * @param {Array<any>} conds - the conditional statements to test
+	 *
+	 * @return {Object} - the query that will eventually join a larger query that can be consumed by the read function
+	 *
+	 * @author kinsho
+	 */
+	orOperator: function(key, conds)
+	{
+		let conditionals = [];
+
+		for (let i = 0; i < conds.length; i += 1)
+		{
+			conditionals.push({});
+			conditionals[i][key] = conds[i];
+		}
+
+		return {
+			$or: conditionals
 		};
 	}
 };
