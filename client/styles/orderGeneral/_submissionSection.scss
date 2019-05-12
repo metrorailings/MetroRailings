@@ -18,9 +18,20 @@
 	justify-content: center;
 }
 
-#saveButton
+#saveButton, #tempButton
 {
+	margin:
+	{
+		left: 50px;
+		right: 50px;
+	}
+
 	width: 300px;
+}
+
+#tempButton
+{
+	background-color: map-get($COLORS, darkGreenTheme);
 }
 
 #designErrorsSection

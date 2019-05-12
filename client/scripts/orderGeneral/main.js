@@ -1,28 +1,22 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
+import handlebarHelpers from 'client/scripts/utility/handlebarHelpers';
+
+import idSection from 'client/scripts/orderGeneral/idSection';
 import customerSection from 'client/scripts/orderGeneral/customerSection';
+import notesSection from 'client/scripts/orderGeneral/notesSection';
+import picturesSection from 'client/scripts/orderGeneral/picturesSection';
 import addressSection from 'client/scripts/orderGeneral/addressSection';
 import typeSection from 'client/scripts/orderGeneral/typeSection';
 import baseDesignSection from 'client/scripts/orderGeneral/baseDesignSection';
-import advancedDesignSection from 'client/scripts/orderGeneral/advancedDesignSection';
 import picketSection from 'client/scripts/orderGeneral/picketSection';
+import advancedDesignSection from 'client/scripts/orderGeneral/advancedDesignSection';
 import cableSection from 'client/scripts/orderGeneral/cableSection';
 import glassSection from 'client/scripts/orderGeneral/glassSection';
 import logisticsSection from 'client/scripts/orderGeneral/logisticsSection';
 import moneySection from 'client/scripts/orderGeneral/moneySection';
+import paymentsSection from 'client/scripts/orderGeneral/picturesSection';
 import agreementSection from 'client/scripts/orderGeneral/agreementSection';
 import descriptor from 'client/scripts/orderGeneral/designDescriptor';
 
-import submissionSection from 'client/scripts/createQuote/submissionSection';
-
-// ----------------- HANDLEBAR HELPERS ---------------------------
-
-/**
- * Handlebars helper function designed to round any number to a fixed number of decimal digits
- *
- * @author kinsho
- */
-Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
-{
-	return num.toFixed(decimalDigits);
-});
+import submissionSection from 'client/scripts/orderGeneral/submissionSection';

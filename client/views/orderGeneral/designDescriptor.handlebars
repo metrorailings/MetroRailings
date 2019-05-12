@@ -1,4 +1,4 @@
 <div class='descriptiveSection {{#if this.description}}show{{/if}}' {{#if this.disabled}}data-disabled='true'{{/if}}>
 	<span>Customer-facing Description</span>
-	<textarea class='descriptiveText'>{{#if designName}}{{lookup @root.order.designDescription designName}}{{else}}{{ this.description }}{{/if}}</textarea>
+	<textarea class='descriptiveText' {{#if this.disabled}}disabled{{/if}}>{{#if designName}}{{lookup @root.order.designDescription designName}}{{else}}{{ this.description }}{{/if}}</textarea>
 </div>

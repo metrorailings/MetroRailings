@@ -1,15 +1,5 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
-@import 'idSection';
-@import 'agreementSection';
-@import 'customerSection';
-@import 'designDescriptor';
-@import 'railingsSection';
-@import 'picturesSection';
-@import 'submissionSection';
-@import 'paymentsSection';
-@import 'depositModal';
-
 @import '../foundation/general';
 @import '../foundation/fonts';
 @import '../foundation/form';
@@ -18,6 +8,16 @@
 @import '../foundation/modal';
 @import '../foundation/gallery';
 @import '../foundation/notes';
+
+@import '../orderGeneral/idSection';
+@import '../orderGeneral/agreementSection';
+@import '../orderGeneral/customerSection';
+@import '../orderGeneral/designDescriptor';
+@import '../orderGeneral/railingsSection';
+@import '../orderGeneral/picturesSection';
+@import '../orderGeneral/submissionSection';
+@import '../orderGeneral/paymentsSection';
+@import '../orderGeneral/depositModal';
 
 /* ----------------------- STYLES ----------------------------- */
 

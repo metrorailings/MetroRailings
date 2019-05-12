@@ -4,7 +4,6 @@
 </div>
 
 <div id='openOrderListColumnHeaders'>
-	<span></span>
 	<span>ID</span>
 	<span>Name</span>
 	<span>Company</span>
@@ -15,14 +14,14 @@
 <div id='openOrderList'>
 	{{#each orders}}
 		<div class='openOrder'>
-			<span class='dragIndicator'><i class='fa fa-grip-vertical'></i></span>
 			<span>{{ _id }}</span>
 			<span>{{ customer.name }}</span>
 			<span>{{#if customer.company}} {{ customer.company }} {{/if}}</span>
 			<span>{{#capitalize status }}{{/capitalize}}</span>
 			<span>
-				<input class='dueDates' value='{{#format_date_shorthand dates.due }}{{/format_date_shorthand}}' 
-					   data-order-id='{{ _id }}'/>
+				<input type='date' class='dueDates' 
+					   value='{{#if dates.due}}{{#format_date_for_input dates.due}}{{/format_date_for_input}}{{/if}}'
+					   data-order-id='{{ _id }}' data-create-date='{{ dates.created }}' />
 			</span>
 		</div>
 	{{/each}}	

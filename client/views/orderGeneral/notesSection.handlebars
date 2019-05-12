@@ -1,8 +1,10 @@
-<div id='notesSection'>
+{{#if order._id}}
+	<div id='notesSection'>
 
-	<div class='dataGrouping'>
-		<span class='specializedLabel translate'>Notes</span>
-		{{> notes }}
+		<div class='dataGrouping'>
+			<span class='specializedLabel translate'>Notes</span>
+			{{> notes }}
+		</div>
+
 	</div>
-
-</div>
+{{/if}}

@@ -1,11 +1,12 @@
-<div id='picturesSection'>
+{{#if order._id}}
+	<div id='picturesSection'>
 
-	<div class='dataGrouping'>
+		<div class='dataGrouping'>
 		<span class='specializedLabel translate'>
 			Pictures
 		</span>
 
-		<span id='picturesListingContainer'>
+			<span id='picturesListingContainer'>
 			<div id='picturesListing'>
 				{{#order.pictures}}
 					<span>
@@ -20,21 +21,22 @@
 			</div>
 		</span>
 
-		<span id='picturesListingLoadingIcons'>
+			<span id='picturesListingLoadingIcons'>
 			<span id='uploadingText' class='translate'>Processing</span>
 			<span class='loadingBall'></span>
 			<span class='loadingBall'></span>
 			<span class='loadingBall'></span>
 		</span>
+		</div>
+
 	</div>
 
-</div>
-
-<script id='newPictureTemplate' type='text/x-handlebars-template'>
-	\{{#pictures}}
+	<script id='newPictureTemplate' type='text/x-handlebars-template'>
+		\{{#pictures}}
 		<span>
 			<img src='\{{ shareLink }}' class='uploadedImageThumbnail' data-index='\{{ @index }}' data-order-id='\{{../id }}'/>
 			<i class='fa fa-times-circle deleteImage'></i>
 		</span>
-	\{{/pictures}}
-</script>
+		\{{/pictures}}
+	</script>
+{{/if}}

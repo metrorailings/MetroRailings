@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var DEPOSIT_PRICE_FIELD = 'depositPrice';
+const DEPOSIT_PRICE_FIELD = 'depositPrice';
 
 // ----------------- LISTENERS ---------------------------
 
@@ -21,7 +21,7 @@ function setDeposit()
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 // Set listener initialization logic inside an exportable module so that we can call upon the logic whenever we need to
-var depositModalModule =
+let depositModalModule =
 {
 	initializeDepositModalListeners: function()
 	{

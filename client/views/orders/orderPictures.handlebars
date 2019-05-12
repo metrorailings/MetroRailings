@@ -1,5 +1,7 @@
-<div class='picturesContainer' data-id='{{ id }}'>
-	{{#pictures}}
-		<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index="{{@index}}"/>
-	{{/pictures}}
-</div>
+{{#if order._id}}
+	<div class='picturesContainer' data-id='{{ id }}'>
+		{{#pictures}}
+			<img src='{{shareLink}}' class='uploadedImageThumbnail' data-index="{{@index}}"/>
+		{{/pictures}}
+	</div>	
+{{/if}}

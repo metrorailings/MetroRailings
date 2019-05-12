@@ -5,11 +5,11 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var ID_FIELD = 'idField';
+const ID_FIELD = 'idField';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _idField = document.getElementById(ID_FIELD);
+let _idField = document.getElementById(ID_FIELD);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
