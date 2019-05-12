@@ -319,6 +319,16 @@ _Handlebars.registerHelper('format_date_shorthand', function(date)
 });
 
 /**
+ * Handlebars helper function designed to format dates so that they can be programmatically set into date fields
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_date_for_input', function(date)
+{
+	return dateUtility.formatForInputDate(date);
+});
+
+/**
  * Handlebars helper function designed to translate computerized time strings into user-friendly text
  *
  * @author kinsho

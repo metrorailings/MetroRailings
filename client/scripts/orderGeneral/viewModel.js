@@ -44,6 +44,7 @@ const CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
 	DEPOSIT_PRICE_ERROR_MESSAGE = 'depositModalErrorMessage',
 
 	SAVE_BUTTON = 'saveButton',
+	SAVE_AND_FINISH_LATER_BUTTON = 'tempButton',
 
 	DISABLED_CLASS = 'disabled',
 	ERROR_CLASS = 'error',
@@ -55,7 +56,8 @@ const CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
 	{
 		ERROR: 'At least one of the fields above has an erroneous value. Please fix the errors first.',
 		BLANK_FIELD: 'At least one of the fields above has been left empty. Every field that is not ' +
-			'tinted blue has to be populated.'
+			'tinted blue has to be populated.',
+		CANNOT_SAVE_PROGRESS: 'Please fill in the customer\'s name before saving any progress on this order.'
 	},
 
 	ERROR =
@@ -101,9 +103,20 @@ let _validationSet = new Set(),
 	_chargeTaxButtons = document.getElementById(APPLY_TAXES_BUTTONSET),
 	_chargeTariffButtons = document.getElementById(APPLY_TARIFF_BUTTONSET),
 
-	_saveButton = document.getElementById(SAVE_BUTTON);
+	_saveButton = document.getElementById(SAVE_BUTTON),
+	_saveAndFinishLaterButton = document.getElementById(SAVE_AND_FINISH_LATER_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
+
+/**
+ * Function that checks whether we have enough information to at least save whatever data was put in on the form
+ *
+ * @author kinsho
+ */
+function _canSaveProgress()
+{
+	viewModel.isSaveValid = !!(viewModel.name);
+}
 
 /**
  * Slightly specialized function for invoking the logic that validates this view model
@@ -220,6 +233,7 @@ Object.defineProperty(viewModel, 'name',
 	{
 		viewModel.__name = value;
 
+		_canSaveProgress();
 		_validate();
 	}
 });
@@ -900,6 +914,38 @@ Object.defineProperty(viewModel, 'isFormValid',
 		else
 		{
 			tooltipManager.closeTooltip(_saveButton, true);
+		}
+	}
+});
+
+// Save Validation Flag
+Object.defineProperty(viewModel, 'isSaveValid',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__isSaveValid;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__isSaveValid = value;
+
+		// Check to see if the save and finish later button is present before running logic to play around with that
+		// button
+		if (_saveAndFinishLaterButton)
+		{
+			if (!(value))
+			{
+				// Set up a tooltip indicating why the buttons are disabled
+				tooltipManager.setTooltip(_saveAndFinishLaterButton, SUBMISSION_INSTRUCTIONS.CANNOT_SAVE_PROGRESS);
+			}
+			else
+			{
+				tooltipManager.closeTooltip(_saveAndFinishLaterButton, true);
+			}
 		}
 	}
 });

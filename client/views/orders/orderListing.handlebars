@@ -102,18 +102,7 @@
 					</a>
 				</span>
 				<span class='orderCell'>
-					<a class='detailsButton' href='/orderDetails?id={{ this._id }}'>
-						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
-					</a>
-				</span>
-			{{else}}
-				<span class='orderCell'>
-					<a class='convertOrderLink' href='/createQuote?id={{ this._id }}'>
-						<i class='fa fa-first-order'></i><span class='translate'>Convert to Order</span>
-					</a>
-				</span>
-				<span class='orderCell'>
-					<a class='detailsButton' href='/prospectDetails?orderNumber={{ this._id }}'>
+					<a class='detailsButton' href='/orderGeneral?id={{ this._id }}'>
 						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
 					</a>
 				</span>

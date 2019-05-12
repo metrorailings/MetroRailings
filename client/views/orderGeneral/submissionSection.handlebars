@@ -1,5 +1,9 @@
 <div id='submissionSection'>
-	<button id='saveButton' class='navButton'>Submit Data</button>
+	<button id='saveButton' class='navButton'>Create a Quote</button>
+
+	{{#if_cond order.status 'prospect'}}
+		<button id='tempButton' class='navButton'>Save and Finish Later</button>
+	{{/if_cond}}
 </div>
 
 <div id='designErrorsContainer'><!-- Design validation error messages will go here --></div>

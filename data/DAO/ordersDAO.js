@@ -5,7 +5,6 @@ const mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
-	prospectsModule = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
 	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 	statuses = global.OwlStakes.require('shared/orderStatus');
@@ -21,8 +20,9 @@ const ORDERS_COLLECTION = 'orders',
 
 	STATUS =
 	{
+		PROSPECT: 'prospect',
 		PENDING: 'pending',
-		QUEUE: 'queue',
+		MATERIAL: 'material',
 		LAYOUT: 'layout',
 		WELDING: 'welding',
 		GRINDING: 'grinding',
@@ -35,7 +35,8 @@ const ORDERS_COLLECTION = 'orders',
 	{
 		QUOTE_CREATION: 'Quote Created',
 		FINALIZE_ORDER: 'Order Finalized',
-		PAYMENT: 'Payment'
+		PAYMENT: 'Payment',
+		DUE_DATE_CHANGE: 'Due Date Change'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -70,7 +71,7 @@ function _applyModificationUpdates(order, username, reason)
  * Function responsible for storing a note in a special format that would allow us to track all the notes that were
  * written on this order
  *
- * @param {Object} prospect - the prospect
+ * @param {Object} order - the order
  * @param {String} note - the note
  * @param {String} username - the name of the user writing the note
  *
@@ -175,7 +176,7 @@ let ordersModule =
 		try
 		{
 			let dbResults = await mongo.read(ORDERS_COLLECTION, mongo.orOperator('status', 
-				[STATUS.QUEUE, STATUS.LAYOUT, STATUS.WELDING, STATUS.GRINDING, STATUS.PAINTING, STATUS.INSTALL]),
+				[STATUS.MATERIAL, STATUS.LAYOUT, STATUS.WELDING, STATUS.GRINDING, STATUS.PAINTING, STATUS.INSTALL]),
 				{ 'dates.due': 1 });
 
 			return dbResults;
@@ -302,6 +303,59 @@ let ordersModule =
 	},
 
 	/**
+	 * Function responsible for saving or updating a prospect in the database
+	 *
+	 * @param {Object} order - the order data to save into our system
+	 *
+	 * @author kinsho
+	 */
+	saveProspect: async function (prospect)
+	{
+		let orderId = prospect._id,
+			counterRecord,
+			databaseRecord;
+
+		// If the order is not extant in our database, then assign a new ID to the order
+		if ( !(orderId) )
+		{
+			counterRecord = await mongo.readThenModify(COUNTERS_COLLECTION,
+				{
+					$inc: { seq: 1 }
+				},
+				{
+					_id: ORDERS_COLLECTION
+				});
+
+			// Attach a new ID to the order
+			prospect._id = counterRecord.seq;
+		}
+
+		// Mark this order as a prospect
+		prospect.status = STATUS.PROSPECT;
+
+		// Generate a record to upsert all this order information into our database
+		databaseRecord = mongo.formUpdateOneQuery(
+		{
+			_id: orderId
+		}, prospect, true);
+
+		// Now save the order
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, databaseRecord);
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error saving data to a prospect!');
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
 	 * Function responsible for registering a new order into the database
 	 *
 	 * @param {Object} order - a new customer order to save into our system
@@ -314,7 +368,6 @@ let ordersModule =
 	setUpNewOrder: async function (order, username)
 	{
 		let counterRecord,
-			prospect,
 			databaseRecord;
 
 		// If the order is not a prospect being converted to an order, then assign a new ID to the order
@@ -333,7 +386,6 @@ let ordersModule =
 		}
 		else
 		{
-			prospect = await prospectsModule.searchProspectById(order._id);
 		}
 
 		// Set the status
@@ -344,12 +396,6 @@ let ordersModule =
 		order.dates.created = new Date();
 
 		// Apply and/or initialize properties to indicate when this order was last modified
-		if (prospect)
-		{
-			// Note the conditional statement is needed for backwards compatability
-			order.dates.lastModified = prospect.lastModifiedDate || prospect.dates.lastModified;
-			order.modHistory = prospect.modHistory;
-		}
 		_applyModificationUpdates(order, username, MODIFICATION_REASONS.QUOTE_CREATION);
 
 		// Figure out how we'll be referencing the customer
@@ -505,8 +551,9 @@ let ordersModule =
 		// Note the date that this order was finalized
 		order.dates.finalized = new Date();
 
-		// Update the status to indicate that the order is now queued for production
-		order.status = STATUS.QUEUE;
+		// Update the status to indicate that the order is now ready for production and we need to start gathering
+		// material
+		order.status = STATUS.MATERIAL;
 
 		// Run over this nickname logic again just in case the customer changed his name
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
@@ -600,6 +647,52 @@ let ordersModule =
 		catch(error)
 		{
 			console.log('Ran into an error updating a status for order ' + orderNumber);
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for changing the due date for a given order in the database
+	 *
+	 * @param {Number} orderId - the ID of the order to modify
+	 * @param {Date || falsy} dueDate - the new due date, if one was presented to this function
+	 *
+	 * @author kinsho
+	 */
+	changeDueDate: async function (orderId, dueDate, username)
+	{
+		let order = await ordersModule.searchOrderById(orderId),
+			updateRecord;
+
+		// Ensure that the order is properly updated with a record indicating when this order was updated
+		// and who updated this order
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.DUE_DATE_CHANGE);
+
+		// Update the due date
+		order.dates.due = dueDate;
+
+		// Generate the record that will update the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: orderId
+		},
+		{
+			dates: order.dates,
+			modHistory: order.modHistory
+		},
+		false);
+
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error updating the due date for order ' + orderId);
 			console.log(error);
 
 			throw error;

@@ -1,5 +1,5 @@
 /**
- * @module createQuoteController
+ * @module orderGeneralController
  */
 
 // ----------------- EXTERNAL MODULES --------------------------
@@ -12,10 +12,10 @@ const controllerHelper = global.OwlStakes.require('controllers/utility/controlle
 	mailer = global.OwlStakes.require('utility/mailer'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 	pdfGenerator = global.OwlStakes.require('utility/pdfGenerator'),
+	dropbox = global.OwlStakes.require('utility/dropbox'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
-	prospectsDAO = global.OwlStakes.require('data/DAO/prospectsDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
 
@@ -23,7 +23,7 @@ const controllerHelper = global.OwlStakes.require('controllers/utility/controlle
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-const CONTROLLER_FOLDER = 'createQuote',
+const CONTROLLER_FOLDER = 'orderGeneral',
 
 	CUSTOM_ORDER_EMAIL = 'customerInvoice',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
@@ -31,6 +31,8 @@ const CONTROLLER_FOLDER = 'createQuote',
 
 	ADMIN_LOG_IN_URL = '/admin',
 	INVOICE_URL = '/orderInvoice?id=::orderId',
+
+	DEFAULT_STATUS = 'prospect',
 
 	VIEWS_DIRECTORY = '/client/views/',
 	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt',
@@ -49,7 +51,7 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			agreementText,
-			prospect, allData, pageData, designData, order;
+			allData, pageData, designData, order;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -58,22 +60,19 @@ module.exports =
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
-		console.log('Loading the create quote page...');
+		console.log('Loading the order page...');
 
+		// Pull all order data if we're modifying an existing order within our database
 		if (params.id)
 		{
-			prospect = await prospectsDAO.searchProspectById(parseInt(params.id, 10));
-		}
-		else if (params.testId)
-		{
-			order = await ordersDAO.searchOrderById(parseInt(params.testId, 10));
+			order = await ordersDAO.searchOrderById(parseInt(params.id, 10));
 		}
 
 		// Gather the data we'll need to properly render the page
 		allData = await orderGeneralUtility.basicInit(cookie);
 		designData = allData.designData;
 		pageData = allData.pageData;
-		pageData.order = prospect || order || {};
+		pageData.order =  order || { status : DEFAULT_STATUS };
 
 		// Determine which agreement text to present on the page
 		agreementText = order && order.text && order.text.agreement && order.text.agreement.join('\n\n');
@@ -82,7 +81,42 @@ module.exports =
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,{ designData: designData }, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,
+			{ designData: designData }, true, true);
+	},
+
+	/**
+	 * Function responsible for saving a new custom order into the system
+	 *
+	 * @author kinsho
+	 */
+	saveProgressOnOrder: async function (params, cookie, request)
+	{
+		let username;
+
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			username = cookieManager.retrieveAdminCookie(cookie)[0];
+
+			console.log('Saving a prospect into the system...');
+
+			try
+			{
+				// Save a new prospect into the database
+				await ordersDAO.saveProspect(params, username);
+
+				return {
+					statusCode: responseCodes.OK,
+					data: {}
+				};
+			}
+			catch (error)
+			{
+				return {
+					statusCode: responseCodes.BAD_REQUEST
+				};
+			}
+		}
 	},
 
 	/**
@@ -107,7 +141,7 @@ module.exports =
 
 			try
 			{
-				// Save a new order into the database
+				// Save a new order or convert an prospect within the database
 				processedOrder = await ordersDAO.setUpNewOrder(params, username);
 			}
 			catch (error)
@@ -134,13 +168,108 @@ module.exports =
 				quoteAttachment = await mailer.generateAttachment(processedOrder._id + PDF_EXTENSION, quotePDF);
 
 				mailHTML = await mailer.generateFullEmail(CUSTOM_ORDER_EMAIL, { orderInvoiceLink: invoiceLink }, CUSTOM_ORDER_EMAIL);
-				await mailer.sendMail(mailHTML, '', params.customer.email, CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX, '', [quoteAttachment]);
+				await mailer.sendMail(mailHTML, '', params.customer.email, 
+					CUSTOM_ORDER_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id),
+					config.SUPPORT_MAILBOX, '', [quoteAttachment]);
 			}
 		}
 
 		return {
 			statusCode: responseCodes.OK,
 			data: { id: processedOrder._id }
+		};
+	},
+
+	/**
+	 * Function meant to save all updates that may have been made to a particular order
+	 *
+	 * @params {Object} params - all the details of the order whose changes will be saved
+	 *
+	 * @author kinsho
+	 */
+	saveChangesToOrder: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let username = cookieManager.retrieveAdminCookie(cookie)[0];
+
+			console.log('Saving changes made to an order...');
+
+			await ordersDAO.saveChangesToOrder(params, username);
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
+	},
+
+	/**
+	 * Function meant to upload a new image into Dropbox and attach new image metadata to the order associated with
+	 * the new image
+	 *
+	 * @params {Object} params - the ID of the order to modify and the new pictures to upload
+	 *
+	 * @author kinsho
+	 */
+	saveNewPictures: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let username = cookieManager.retrieveAdminCookie(cookie)[0],
+				imgMetas;
+
+			console.log('Saving new picture(s) to the order...');
+
+			// Upload the image(s) to Dropbox
+			imgMetas = await dropbox.uploadImage(params.id, params.files);
+
+			if (imgMetas.length)
+			{
+				// Save all the metadata from the newly uploaded images into the database
+				await ordersDAO.saveNewPicToOrder(params.id, imgMetas, username);
+
+				return {
+					statusCode: responseCodes.OK,
+					data: imgMetas
+				};
+			}
+			else
+			{
+				return {
+					statusCode: responseCodes.BAD_REQUEST
+				};
+			}
+		}
+	},
+
+	/**
+	 * Function meant to delete an image from the Dropbox repository and wipe away an image's metadata from the order
+	 * associated with that image
+	 *
+	 * @params {Object} params - the ID of the order to modify and the picture metadata to delete from that order
+	 *
+	 * @author kinsho
+	 */
+	deletePicture: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let username = cookieManager.retrieveAdminCookie(cookie)[0];
+
+			console.log('Deleting a picture from an order...');
+
+			// Delete the image from the Dropbox repository
+			if (await dropbox.deleteImage(params.imgMeta.path_lower))
+			{
+				// Now delete the picture's metadata from the database
+				await ordersDAO.deletePicFromOrder(params.id, params.imgMeta, username);
+			}
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
 		};
 	}
 };

@@ -2,7 +2,7 @@
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var USER_NOTIFICATION_BAR = 'userNotificationBar',
+const USER_NOTIFICATION_BAR = 'userNotificationBar',
 	USER_NOTIFICATION_MESSAGE_SECTION = 'userNotificationMessage',
 	USER_NOTIFICATION_CLOSE_ICON = 'userNotificationBarExit',
 
@@ -18,7 +18,7 @@ var USER_NOTIFICATION_BAR = 'userNotificationBar',
 // ----------------- PRIVATE VARIABLES -----------------------------
 
 // Elements
-var _serverNotificationBar = document.getElementById(USER_NOTIFICATION_BAR),
+let _serverNotificationBar = document.getElementById(USER_NOTIFICATION_BAR),
 	_errorMessageArea = document.getElementById(USER_NOTIFICATION_MESSAGE_SECTION),
 
 	_successBar = document.getElementById(USER_SUCCESS_BAR),
@@ -49,7 +49,7 @@ function _hideSuccessBar()
 
 // ----------------- MODULE -----------------------------
 
-var notifications =
+let notifications =
 {
 	/**
 	 * Function that shows a notification bar indicating that there may be some server issues

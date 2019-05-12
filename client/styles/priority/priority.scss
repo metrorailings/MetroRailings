@@ -11,6 +11,11 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#languageSelection
+{
+	display: none;
+}
+
 #openOrderListColumnHeaders
 {
 	@extend %tabularSmallHeaderText;
@@ -121,7 +126,15 @@
 	}
 }
 
-.dragIndicator
+.dueDates
 {
-	font-size: map-get($FONTS, largeFontSize);
+	@extend %smallSignificantText;
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 90%;
 }

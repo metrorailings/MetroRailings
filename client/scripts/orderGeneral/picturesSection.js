@@ -37,10 +37,15 @@ let _picturesContainer = document.getElementById(PICTURES_LISTING_CONTAINER),
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
+let orderPicturesTemplate;
+
 /**
  * The partial to load a new image into the pictures container
  */
-let orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
+if (_picturesContainer)
+{
+	orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
+}
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -199,12 +204,16 @@ async function deleteImage(event)
 
 // --------------- INITIALIZATION LOGIC ----------------------
 
-// Set the high-level listeners for the section
-document.getElementById(UPLOAD_PICTURE_BUTTON).addEventListener('click', triggerFileBrowser);
-document.getElementById(UPLOAD_PICTURE_INPUT).addEventListener('change', uploadImage);
+// Ensure it's possible to upload pictures prior to running any logic that assumes we can upload pictures here
+if (_picturesContainer)
+{
+	// Set the high-level listeners for the section
+	document.getElementById(UPLOAD_PICTURE_BUTTON).addEventListener('click', triggerFileBrowser);
+	document.getElementById(UPLOAD_PICTURE_INPUT).addEventListener('change', uploadImage);
 
-_attachImageListeners();
+	_attachImageListeners();
 
-// If this order has any pictures present, load the metadata associated with those pictures into the view model
-// Otherwise, initialize the view model with an empty array to signify that no pictures have yet been uploaded
-vm.pictures = window.MetroRailings.pictures || [];
+	// If this order has any pictures present, load the metadata associated with those pictures into the view model
+	// Otherwise, initialize the view model with an empty array to signify that no pictures have yet been uploaded
+	vm.pictures = window.MetroRailings.pictures || [];
+}
