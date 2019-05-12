@@ -31,7 +31,7 @@ const STATES = ['NJ', 'NY'],
 	CITIES = ['North Plainfield', 'Watchung', 'Warren', 'Clifton', 'Passaic', 'Parsippany'],
 	COMPANIES = ['Metro Railings', 'Two Kings Real Estate', 'Deck Remodelers', '', ''],
 	DOMAINS = ['gmail.com', 'aol.com', 'outlook.com', 'yahoo.com'],
-	STATUSES = ['prospect', 'pending', 'queue', 'layout', 'welding', 'grinding', 'painting', 'install', 'closed', 'cancelled'],
+	STATUSES = ['prospect', 'pending', 'material', 'layout', 'welding', 'grinding', 'painting', 'install', 'closed', 'cancelled'],
 	PLATFORM_TYPES = ['earth', 'cement', 'tile', 'wood', 'limestone'],
 
 	DESIGN_TYPES =

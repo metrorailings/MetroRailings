@@ -1,6 +1,8 @@
-<div id='idSection'>
-	<div class='dataGrouping'>
-		<span class='specializedLabel'>ID</span>
-		<span id='idField' data-value='{{ order._id }}'>{{ order._id }}</span>
+{{#if order._id }}
+	<div id='idSection'>
+		<div class='dataGrouping'>
+			<span class='specializedLabel'>ID</span>
+			<span id='idField' data-value='{{ order._id }}'>{{ order._id }}</span>
+		</div>
 	</div>
-</div>
+{{/if}}

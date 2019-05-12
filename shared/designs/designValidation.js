@@ -7,7 +7,7 @@
 
 // ----------------- RULES --------------------------
 
-var RESTRICTIONS =
+const RESTRICTIONS =
 {
 	type:
 	{
@@ -205,7 +205,7 @@ module.exports =
 	 */
 	testRequirements: function(designObject)
 	{
-		var errorMessages = new Set(),
+		let errorMessages = new Set(),
 			restrictions, requirements, propertyValue,
 			designProperties = Object.keys(designObject);
 
@@ -252,7 +252,7 @@ module.exports =
 	 */
 	testPrerequisites: function(designObject)
 	{
-		var errorMessages = new Set(),
+		let errorMessages = new Set(),
 			restrictions, prerequisites,
 			designProperties = Object.keys(designObject);
 
@@ -293,7 +293,7 @@ module.exports =
 	 */
 	testValues: function(designObject)
 	{
-		var errorMessages = new Set(),
+		let errorMessages = new Set(),
 			restrictions, valueRestrictions, prerequisites,
 			designProperties = Object.keys(designObject);
 

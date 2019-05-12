@@ -56,7 +56,12 @@ function switchPaymentForms(event)
 
 // ----------------- INITIALIZATION LOGIC ---------------------------
 
-for (let i = 0; i < _paymentOptionHeaders.length; i += 1)
+// Ensure we're able to create payments prior to running logic that necessitates payment elements being present on
+// the page
+if (_paymentOptionHeaders)
 {
-	_paymentOptionHeaders[i].addEventListener('click', switchPaymentForms);
+	for (let i = 0; i < _paymentOptionHeaders.length; i += 1)
+	{
+		_paymentOptionHeaders[i].addEventListener('click', switchPaymentForms);
+	}	
 }

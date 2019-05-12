@@ -229,3 +229,13 @@ Handlebars.registerHelper('obfuscate_id', function(id)
 {
 	return rQueryClient.obfuscateNumbers(id);
 });
+
+/**
+ * Handlebars helper function designed to round any number to a fixed number of decimal digits
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
+{
+	return num.toFixed(decimalDigits);
+});

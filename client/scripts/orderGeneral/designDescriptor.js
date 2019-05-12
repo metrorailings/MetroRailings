@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var DISABLED_CLASS = 'disabled',
+const DISABLED_CLASS = 'disabled',
 
 	DESCRIPTIVE_SECTION_CLASS = 'descriptiveSection',
 	TEXTAREA_CLASS = 'descriptiveText';
@@ -21,7 +21,7 @@ var DISABLED_CLASS = 'disabled',
 function toggleDescriptor(event)
 {
 	// Always assume that the descriptive section immediately follows the design field inside the DOM tree
-	var designField = event.currentTarget,
+	let designField = event.currentTarget,
 		descriptiveSection = designField.nextElementSibling,
 		selectedOption = designField.selectedOptions[0],
 		description = (selectedOption ? selectedOption.dataset.description || '' : ''),
@@ -69,7 +69,7 @@ function setDescriptorText(event)
 
 // ----------------- INITIALIZATION ---------------------------
 
-var descriptionSections = document.getElementsByClassName(DESCRIPTIVE_SECTION_CLASS),
+let descriptionSections = document.getElementsByClassName(DESCRIPTIVE_SECTION_CLASS),
 	textarea;
 
 for (let i = 0; i < descriptionSections.length; i += 1)
