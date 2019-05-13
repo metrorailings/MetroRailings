@@ -12,6 +12,7 @@ let _Handlebars = require('handlebars'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+	companies = global.OwlStakes.require('shared/company'),
 
 	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
@@ -53,7 +54,7 @@ module.exports =
 			pageData = {},
 			bootData =
 			{
-				dropboxToken: config.DROPBOX_TOKEN
+				dropboxToken: config.DROPBOX_TOKEN,
 			};
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
@@ -73,6 +74,9 @@ module.exports =
 
 		// Grab the raw HTML of the order pictures template
 		pageData.orderPicturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.PICTURES);
+
+		// Load a list of the companies we regularly do business with
+		pageData.companies = companies;
 
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

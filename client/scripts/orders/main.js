@@ -30,7 +30,7 @@ function triggerPing()
  */
 window.addEventListener('hashchange', function()
 {
-	var hash = window.location.href.split('#')[1];
+	let hash = window.location.href.split('#')[1];
 
 	// If the hash currently set in the URL does not reflect the actual status filter in effect, then change the
 	// status filter to reflect the value in the hash

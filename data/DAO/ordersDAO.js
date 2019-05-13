@@ -28,7 +28,9 @@ const ORDERS_COLLECTION = 'orders',
 		GRINDING: 'grinding',
 		PAINTING: 'painting',
 		INSTALL: 'install',
-		CLOSED: 'closed'
+		CLOSING: 'closing',
+		CLOSED: 'closed',
+		CANCELLED: 'cancelled'
 	},
 
 	MODIFICATION_REASONS =
