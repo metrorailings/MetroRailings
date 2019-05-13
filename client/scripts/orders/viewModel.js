@@ -12,12 +12,15 @@ import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var STATUS_FILTER_CLASS = 'statusFilter',
+const GENERAL_FILTER_CLASS = 'generalFilter',
+	STATUS_FILTER_CLASS = 'statusFilter',
 	SELECTED_CLASS = 'selected',
 	REVEAL_CLASS = 'reveal',
 
+	COMPANY_FILTER = 'companySelector',
 	SEARCH_FILTER = 'searchFilterTextfield',
 	RESET_SEARCH_ICON = 'resetSearch',
+	RESET_COMPANY_ICON = 'resetCompany',
 	ORDER_LISTINGS_CONTAINER = 'orderListing',
 	ORDER_LISTING_TEMPLATE = 'orderListingTemplate',
 	ORDER_NOTES_TEMPLATE = 'orderNotesTemplate',
@@ -26,13 +29,24 @@ var STATUS_FILTER_CLASS = 'statusFilter',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
-	DEFAULT_MODIFICATION_DATE = new Date('1/1/2014');
+	DEFAULT_MODIFICATION_DATE = new Date('1/1/2014'),
+
+	HASH_LABELS =
+	{
+		GENERAL : 'general',
+		STATUS : 'status',
+		COMPANY : 'company',
+		SEARCH : 'search'
+	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
 
 // Elements
-var _statusFilterLinks = document.getElementsByClassName(STATUS_FILTER_CLASS),
+let _generalFilterLinks = document.getElementsByClassName(GENERAL_FILTER_CLASS),
+	_statusFilterLinks = document.getElementsByClassName(STATUS_FILTER_CLASS),
+	_companyFilter = document.getElementById(COMPANY_FILTER),
 	_searchFilter = document.getElementById(SEARCH_FILTER),
+	_resetCompanyIcon = document.getElementById(RESET_COMPANY_ICON),
 	_resetSearchIcon = document.getElementById(RESET_SEARCH_ICON),
 	_orderListing = document.getElementById(ORDER_LISTINGS_CONTAINER);
 
@@ -41,7 +55,7 @@ var _statusFilterLinks = document.getElementsByClassName(STATUS_FILTER_CLASS),
 /**
  * The partial to render individual orders on the orders page
  */
-var orderListingTemplate = Handlebars.compile(document.getElementById(ORDER_LISTING_TEMPLATE).innerHTML);
+let orderListingTemplate = Handlebars.compile(document.getElementById(ORDER_LISTING_TEMPLATE).innerHTML);
 
 /**
  * The partial to render the HTML that renders out all the notes associated with any given order
@@ -59,7 +73,7 @@ Handlebars.registerPartial('orderNotes', document.getElementById(ORDER_NOTES_TEM
  */
 function _renderOrders(renderWithDelay)
 {
-	var filteredOrders = viewModel.orders;
+	let filteredOrders = viewModel.orders;
 
 	// We need this escape logic only during initialization
 	if ( !(filteredOrders) )
@@ -136,9 +150,44 @@ function _displayListingsWithDelay(orders)
 	}
 }
 
+/**
+ * Function updates the hash values in the URL depending on the filters that were selected
+ *
+ * @author kinsho
+ */
+function _updateHash()
+{
+	let hash = [];
+
+	if (viewModel.generalFilter)
+	{
+		hash.push(HASH_LABELS.GENERAL + '=' + viewModel.generalFilter);
+	}
+	if (viewModel.statusFilter)
+	{
+		hash.push(HASH_LABELS.STATUS + '=' + viewModel.statusFilter);
+	}
+
+	if (viewModel.companyFilter)
+	{
+		hash.push(HASH_LABELS.COMPANY + '=' + viewModel.companyFilter);
+	}
+
+	if (viewModel.searchFilter)
+	{
+		hash.push(HASH_LABELS.SEARCH + '=' + viewModel.searchFilter);
+	}
+
+	// Join the hash key/value pairs together 
+	hash = hash.join('&');
+
+	// Set the hash values into the URL
+	window.location.href = (window.location.href.split('#')[0]) + '#' + hash;
+}
+
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
-var viewModel = {};
+let viewModel = {};
 
 // Orders Collection
 Object.defineProperty(viewModel, 'orders',
@@ -153,7 +202,7 @@ Object.defineProperty(viewModel, 'orders',
 
 	set: (value) =>
 	{
-		var prevValue = viewModel.__orders;
+		let prevValue = viewModel.__orders;
 
 		// If we are initializing this collection from a cached array, ensure each cached order is properly
 		// wrapped in a view model object and then render any open orders on the screen
@@ -166,6 +215,78 @@ Object.defineProperty(viewModel, 'orders',
 		{
 			viewModel.__orders = value || [];
 		}
+	}
+});
+
+// General Filter
+Object.defineProperty(viewModel, 'generalFilter',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__generalFilter;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__generalFilter = value;
+
+		// Properly indicate to the user by which status are the orders being filtered
+		for (let i = _generalFilterLinks.length - 1; i >= 0; i--)
+		{
+			if (_generalFilterLinks[i].dataset.value === value)
+			{
+				_generalFilterLinks[i].classList.add(REVEAL_CLASS);
+			}
+			else
+			{
+				_generalFilterLinks[i].classList.remove(REVEAL_CLASS);
+			}
+		}
+
+		// Reorganize the orders that are shown
+		_renderOrders(true);
+
+		// Set this filter into the URL
+		_updateHash();
+	}
+});
+
+// Company Filter
+Object.defineProperty(viewModel, 'companyFilter',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__companyFilter;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__companyFilter = value;
+
+		// Set the company filter input
+		_companyFilter.value = value;
+
+		// Figure out whether to show the icon used to cancel out any value that's been set inside the company selector
+		if (value)
+		{
+			_resetCompanyIcon.classList.add(REVEAL_CLASS);
+		}
+		else
+		{
+			_resetCompanyIcon.classList.remove(REVEAL_CLASS);
+		}
+
+		// Reorganize the orders that are shown
+		_renderOrders(true);
+
+		// Set this filter into the URL
+		_updateHash();
 	}
 });
 
@@ -185,7 +306,7 @@ Object.defineProperty(viewModel, 'statusFilter',
 		viewModel.__statusFilter = value;
 
 		// Properly indicate to the user by which status are the orders being filtered
-		for (var i = _statusFilterLinks.length - 1; i >= 0; i--)
+		for (let i = _statusFilterLinks.length - 1; i >= 0; i--)
 		{
 			if (_statusFilterLinks[i].dataset.value === value)
 			{
@@ -201,7 +322,7 @@ Object.defineProperty(viewModel, 'statusFilter',
 		_renderOrders(true);
 
 		// Set this filter into the URL
-		window.location.href = (window.location.href.split('#')[0]) + '#' + value;
+		_updateHash();
 	}
 });
 
@@ -236,6 +357,9 @@ Object.defineProperty(viewModel, 'searchFilter',
 
 		// Reorganize the orders that are shown
 		_renderOrders(false);
+
+		// Set this filter into the URL
+		_updateHash();
 	}
 });
 
@@ -258,7 +382,7 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	set: () =>
 	{
-		var orders = viewModel.orders,
+		let orders = viewModel.orders,
 			// Before looking for new orders, figure out from what date to begin our search
 			dateToSearch = (orders[0] ? new Date(orders[0].lastModifiedDate) : DEFAULT_MODIFICATION_DATE),
 			changeCount;
