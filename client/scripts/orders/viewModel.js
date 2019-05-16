@@ -12,7 +12,7 @@ import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-const GENERAL_FILTER_CLASS = 'generalFilter',
+const SORT_FILTER_CLASS = 'sortFilter',
 	STATUS_FILTER_CLASS = 'statusFilter',
 	SELECTED_CLASS = 'selected',
 	REVEAL_CLASS = 'reveal',
@@ -33,7 +33,7 @@ const GENERAL_FILTER_CLASS = 'generalFilter',
 
 	HASH_LABELS =
 	{
-		GENERAL : 'general',
+		SORT : 'sort',
 		STATUS : 'status',
 		COMPANY : 'company',
 		SEARCH : 'search'
@@ -42,7 +42,7 @@ const GENERAL_FILTER_CLASS = 'generalFilter',
 // ----------------- PRIVATE VARIABLES -----------------------------
 
 // Elements
-let _generalFilterLinks = document.getElementsByClassName(GENERAL_FILTER_CLASS),
+let _sortFilterLinks = document.getElementsByClassName(SORT_FILTER_CLASS),
 	_statusFilterLinks = document.getElementsByClassName(STATUS_FILTER_CLASS),
 	_companyFilter = document.getElementById(COMPANY_FILTER),
 	_searchFilter = document.getElementById(SEARCH_FILTER),
@@ -82,7 +82,9 @@ function _renderOrders(renderWithDelay)
 	}
 
 	filteredOrders = orderUtility.filterOrdersByStatus(filteredOrders, viewModel.statusFilter);
+	filteredOrders = orderUtility.filterOrdersByCompany(filteredOrders, viewModel.companyFilter);
 	filteredOrders = orderUtility.filterOrdersBySearchText(filteredOrders, viewModel.searchFilter);
+	orderUtility.sortOrders(filteredOrders, viewModel.sortFilter);
 
 	if (renderWithDelay)
 	{
@@ -159,9 +161,9 @@ function _updateHash()
 {
 	let hash = [];
 
-	if (viewModel.generalFilter)
+	if (viewModel.sortFilter)
 	{
-		hash.push(HASH_LABELS.GENERAL + '=' + viewModel.generalFilter);
+		hash.push(HASH_LABELS.SORT + '=' + viewModel.sortFilter);
 	}
 	if (viewModel.statusFilter)
 	{
@@ -202,47 +204,37 @@ Object.defineProperty(viewModel, 'orders',
 
 	set: (value) =>
 	{
-		let prevValue = viewModel.__orders;
+		viewModel.__orders = orderUtility.wrapOrdersInModels(value);
 
-		// If we are initializing this collection from a cached array, ensure each cached order is properly
-		// wrapped in a view model object and then render any open orders on the screen
-		if (!(prevValue) && value.length)
-		{
-			viewModel.__orders = orderUtility.wrapOrdersInModels(value);
-			_renderOrders(true);
-		}
-		else
-		{
-			viewModel.__orders = value || [];
-		}
+		_renderOrders(true);
 	}
 });
 
 // General Filter
-Object.defineProperty(viewModel, 'generalFilter',
+Object.defineProperty(viewModel, 'sortFilter',
 {
 	configurable: false,
 	enumerable: false,
 
 	get: () =>
 	{
-		return viewModel.__generalFilter;
+		return viewModel.__sortFilter;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__generalFilter = value;
+		viewModel.__sortFilter = value;
 
 		// Properly indicate to the user by which status are the orders being filtered
-		for (let i = _generalFilterLinks.length - 1; i >= 0; i--)
+		for (let i = _sortFilterLinks.length - 1; i >= 0; i--)
 		{
-			if (_generalFilterLinks[i].dataset.value === value)
+			if (_sortFilterLinks[i].dataset.value === value)
 			{
-				_generalFilterLinks[i].classList.add(REVEAL_CLASS);
+				_sortFilterLinks[i].classList.add(SELECTED_CLASS);
 			}
 			else
 			{
-				_generalFilterLinks[i].classList.remove(REVEAL_CLASS);
+				_sortFilterLinks[i].classList.remove(SELECTED_CLASS);
 			}
 		}
 
@@ -382,14 +374,12 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	set: () =>
 	{
-		let orders = viewModel.orders,
-			// Before looking for new orders, figure out from what date to begin our search
-			dateToSearch = (orders[0] ? new Date(orders[0].lastModifiedDate) : DEFAULT_MODIFICATION_DATE),
-			changeCount;
+		let changeCount,
+			dateToSearch = DEFAULT_MODIFICATION_DATE;
 
 		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
 		{
-			changeCount = orderUtility.reconcileOrders(orders, results.data);
+			changeCount = orderUtility.reconcileOrders(viewModel.orders, results.data);
 
 			// Only re-render the orders should there be any changes made to the order
 			if (changeCount)

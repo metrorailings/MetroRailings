@@ -18,7 +18,7 @@
 	}
 }
 
-#stateFilter, #generalFilter, #companyFilter, #searchFilter
+#stateFilter, #sortFilter, #companyFilter, #searchFilter
 {
 	margin: 25px;
 
@@ -40,7 +40,7 @@
 	text-align: right;
 }
 
-#stateFilter, #generalFilter
+#stateFilter, #sortFilter
 {
 	& > span:not(:first-of-type)
 	{
