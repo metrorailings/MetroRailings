@@ -61,8 +61,8 @@ const ORDER_SHARED_FOLDER = 'orderGeneral',
 		MULTI_TEXT: 'multiText',
 		PICTURES: 'picturesSection',
 		PAYMENTS: 'paymentsSection',
-		ORDER_NOTES: 'notes',
 
+		ORDER_NOTES: 'notes',
 		NEW_NOTE: 'newNote',
 		NOTE_RECORD: 'noteRecord',
 		NOTE_TEMPLATES: 'notesTemplates'

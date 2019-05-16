@@ -6,6 +6,7 @@
 
 const controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
+	noteUtility = global.OwlStakes.require('controller/utility/noteUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -51,7 +52,7 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			agreementText,
-			allData, pageData, designData, order;
+			allData, noteData, pageData, designData, order;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -70,8 +71,11 @@ module.exports =
 
 		// Gather the data we'll need to properly render the page
 		allData = await orderGeneralUtility.basicInit(cookie);
+		noteData = await noteUtility.basicInit();
 		designData = allData.designData;
 		pageData = allData.pageData;
+		pageData.newNote = noteData.newNoteTemplate;
+		pageData.noteRecord = noteData.noteRecord;
 		pageData.order =  order || { status : DEFAULT_STATUS };
 
 		// Determine which agreement text to present on the page

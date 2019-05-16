@@ -1,19 +1,13 @@
 <div id='orderFilter'>
 
-	<div id='generalFilter'>
-		<span class='filterHeader'>Filter</span>
-		<span class='generalFilter' data-value=''>All</span>
-		<span class='generalFilter' data-value='open'>Open</span>
-		<span class='generalFilter' data-value='dueDate'>Sort by Due Date</span>
-	</div>
-
     <div id='stateFilter'>
         <span class='filterHeader'>Status</span>
 		<span class='statusFilter' data-value=''>All</span>
+		<span class='statusFilter' data-value='open'>Open</span>
         <span class='statusFilter' data-value='prospect'>Prospect</span>
         <span class='statusFilter' data-value='pending'>Pending Confirmation</span>
 		<span class='statusFilter' data-value='material'>Material</span>
-		<span class='statusFilter' data-value='layout'>Production</span>
+		<span class='statusFilter' data-value='production'>Production</span>
 		<span class='statusFilter' data-value='install'>Install</span>
 		<span class='statusFilter' data-value='closing'>Closing</span>
 		<span class='statusFilter' data-value='closed'>Closed</span>
@@ -38,4 +32,11 @@
             <i id='resetSearch' class='fa fa-times-circle'></i>
         </span>
     </div>
+
+	<div id='sortFilter'>
+		<span class='filterHeader'>Sort</span>
+		<span class='sortFilter' data-value='dueDate'>Due Date</span>
+		<span class='sortFilter' data-value='lastModified'>Last Modified</span>
+	</div>
+
 </div>

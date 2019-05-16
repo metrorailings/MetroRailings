@@ -78,6 +78,9 @@ module.exports =
 		// Load a list of the companies we regularly do business with
 		pageData.companies = companies;
 
+		// Load all the orders on the page
+		bootData.orders = await ordersDAO.retrieveAllOrders();
+
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 

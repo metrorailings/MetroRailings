@@ -40,30 +40,9 @@
 
 		</div>
 
-<!--
-        {{#if this.notes }}
-			{{#if this.notes.internal.length }}
-				<div class='orderGrouping orderNotesSection'>
-					<span class='orderInfoSection'>
-						<span class='orderInfoSectionHeader translate'>Notes</span>
-						<span class='orderCell'>{{> orderNotes }}</span>
-					</span>
-				</div>
-			{{/if}}
-        {{/if}}
--->
+		{{> notes }}
 
 		<div class='orderGrouping orderNavButtons'>
-			<!-- Comment out the below code for now, in the interest of de-cluttering -->
-			<!--
-            {{#can_status_be_updated this.status}}
-                <span class='orderCell'>
-                    <span class='nextStatusLink' data-id={{ this._id }}>
-                        <i class='fa fa-level-up'></i><span class='translate'>Move to {{#next_state this.status}}{{/next_state}}</span>
-                    </span>
-                </span>
-            {{/can_status_be_updated}}
-			-->
 
 			<!-- Allow for prospects and pending orders to be removed from the system -->
 			{{#if_cond_group this.status '["prospect", "pending"]'}}

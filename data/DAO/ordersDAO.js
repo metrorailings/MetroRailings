@@ -18,21 +18,6 @@ const ORDERS_COLLECTION = 'orders',
 	SYSTEM_USER_NAME = 'system',
 	UNKNOWN_USER_NAME = 'Unknown',
 
-	STATUS =
-	{
-		PROSPECT: 'prospect',
-		PENDING: 'pending',
-		MATERIAL: 'material',
-		LAYOUT: 'layout',
-		WELDING: 'welding',
-		GRINDING: 'grinding',
-		PAINTING: 'painting',
-		INSTALL: 'install',
-		CLOSING: 'closing',
-		CLOSED: 'closed',
-		CANCELLED: 'cancelled'
-	},
-
 	MODIFICATION_REASONS =
 	{
 		QUOTE_CREATION: 'Quote Created',
@@ -140,6 +125,30 @@ function _generateUserFriendlyDate(date)
 let ordersModule =
 {
 	/**
+	 * Function that will return all orders in our database, period
+	 *
+	 * @returns {Array<Object>} - a collection of every single order from our database
+	 *
+	 * @author kinsho
+	 */
+	retrieveAllOrders: async function()
+	{
+		try
+		{
+			let dbResults = await mongo.read(ORDERS_COLLECTION, {});
+
+			return dbResults;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching all orders...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for fetching an existing order from the database using its ID
 	 *
 	 * @param {Object} orderNumber - the order identification number
@@ -177,9 +186,8 @@ let ordersModule =
 	{
 		try
 		{
-			let dbResults = await mongo.read(ORDERS_COLLECTION, mongo.orOperator('status', 
-				[STATUS.MATERIAL, STATUS.LAYOUT, STATUS.WELDING, STATUS.GRINDING, STATUS.PAINTING, STATUS.INSTALL]),
-				{ 'dates.due': 1 });
+			let dbResults = await mongo.read(ORDERS_COLLECTION, 
+				mongo.orOperator('status', statuses.listAllOpenStatuses()), { 'dates.due': 1 });
 
 			return dbResults;
 		}
@@ -333,7 +341,7 @@ let ordersModule =
 		}
 
 		// Mark this order as a prospect
-		prospect.status = STATUS.PROSPECT;
+		prospect.status = statuses.ALL.PROSPECT;
 
 		// Generate a record to upsert all this order information into our database
 		databaseRecord = mongo.formUpdateOneQuery(
@@ -391,7 +399,7 @@ let ordersModule =
 		}
 
 		// Set the status
-		order.status = STATUS.PENDING;
+		order.status = statuses.ALL.PENDING;
 
 		// Set the creation date of the order
 		order.dates = order.dates || {};
@@ -541,7 +549,6 @@ let ordersModule =
 	{
 		let orderId = parseInt(approvedOrder._id, 10),
 			order = await ordersModule.searchOrderById(orderId),
-			transaction,
 			updateRecord;
 
 		// Merge any order detail changes from the invoice page over into our database record
@@ -555,7 +562,7 @@ let ordersModule =
 
 		// Update the status to indicate that the order is now ready for production and we need to start gathering
 		// material
-		order.status = STATUS.MATERIAL;
+		order.status = statuses.ALL.MATERIAL;
 
 		// Run over this nickname logic again just in case the customer changed his name
 		order.customer.nickname = (order.customer.name.split(' ').length > 1 ? rQuery.capitalize(order.customer.name.split(' ')[0]) : order.customer.name);
@@ -569,9 +576,6 @@ let ordersModule =
 		{
 			try
 			{
-				// Charge the customer prior to saving the order
-				transaction = await creditCardProcessor.chargeTotal(order.pricing.depositAmount, order._id, order.payments.ccTokens[0].id, order.customer.email, order.customer.name, order.customer.company,TRANSACTION_REASONS.ORDER_ID + orderId + TRANSACTION_REASONS.DEPOSIT);
-
 				// Adjust the balance remaining to reflect that a portion of the price has been paid off
 				order.payments.balanceRemaining -= order.pricing.depositAmount;
 			}

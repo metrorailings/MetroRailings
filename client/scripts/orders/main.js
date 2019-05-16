@@ -18,27 +18,10 @@ import translate from 'client/scripts/utility/translate';
  *
  * @author kinsho
  */
-function triggerPing()
-{
-	vm.pingTheServer = true;
-}
-
-// ----------------- LISTENER INITIALIZATION -----------------------------
-
-/**
- * Set up a listener to check for when the hash changes
- */
-window.addEventListener('hashchange', function()
-{
-	let hash = window.location.href.split('#')[1];
-
-	// If the hash currently set in the URL does not reflect the actual status filter in effect, then change the
-	// status filter to reflect the value in the hash
-	if (vm.statusFilter !== hash)
-	{
-		vm.statusFilter = hash || '';
-	}
-});
+// function triggerPing()
+// {
+//	vm.pingTheServer = true;
+// }
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
@@ -46,13 +29,14 @@ window.addEventListener('hashchange', function()
 
 // @TODO: Set up caching of orders
 // vm.orders = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_KEY) || '[]');
-vm.orders = [];
-vm.pingTheServer = true;
+// vm.pingTheServer = true;
+vm.orders = window.MetroRailings.orders;
 
 // ----------------- PAGE INITIALIZATION -----------------------------
 
 // Set up a regular timer to check the service for newly-updated data
-window.setInterval(triggerPing, 45000);
+// @TODO - Get the ping service working to update orders in real-time
+// window.setInterval(triggerPing, 45000);
 
 // Scroll to the top when the page loads
 window.scrollTo(0, 0);
