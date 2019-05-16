@@ -6,43 +6,64 @@
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var ACTIVE_STATUSES =
-	[
-		'pending',
-		'queue',
-		'production',
-		'finishing',
-		'install',
-		'closed'
-	],
+const ALL_ORDER_STATUSES =
+	{
+		PROSPECT: 'prospect',
+		PENDING: 'pending',
+		MATERIAL: 'material',
+		LAYOUT: 'layout',
+		WELDING: 'welding',
+		GRINDING: 'grinding',
+		PAINTING: 'painting',
+		INSTALL: 'install',
+		CLOSING: 'closing',
+		CLOSED: 'closed',
+		CANCELLED: 'cancelled'
+	},
+	
+	OPEN_STATUSES =
+	{
+		material : true,
+		layout : true,
+		welding : true,
+		grinding : true,
+		painting : true,
+		install : true,
+		closing : true,
+	},
 
-	SHOP_STATUSES =
-	[
-		'queue',
-		'production',
-		'finishing'
-	],
-
+	PRODUCTION_STATUSES =
+	{
+		layout : true,
+		welding : true,
+		grinding : true,
+		painting : true
+	},
+	
 	STATUS_DESCRIPTIONS =
 	{
 		pending: 'Your order is <b>pending</b> your approval! Please check your e-mail and see if you received an' +
 			' e-mail from us that should inform you as to how to approve your order.',
-		queue: 'Your order is <b>queued</b> in our backlog. We should begin working on your order within a week' +
+		material: 'Your order is <b>queued</b> in our backlog. We should begin working on your order within a week' +
 			' after we have received your initial down deposit.',
 		production: 'Your order is now in <b>production</b>, meaning that we are hard at work cutting, shaping, and' +
-			' molding metal in order to construct your railings.',
+			' welding metal in order to construct your railings.',
 		finishing: 'Your order is now in the <b>finishing</b> stages, meaning we are applying powder coating to your' +
 			' railings. Once the railings are treated with the powder coating, we cure the railings under intense' +
 			' heat inside our custom-built oven so that the finish truly sticks for years to come.',
 		install: 'Your order is ready to be <b>installed</b>. Expect a call from us soon to schedule a date and time for us to ' +
 			'come over and install these railings. If we already spoke to you, we will be visiting you soon to install ' +
 			'your new railings.',
+		closing: 'Your order is in the final stages of <b>closing</b>. All that usually remains at this stage is to' +
+			' collect th rest of the balance remaining on the order',
 		closed: 'Your order is <b>complete</b>. Your new railings have been built, powder coated, and installed' +
-		' successfully! We thank you for your business.',
+			' successfully! We thank you for your business.',
 		cancelled: 'Your order has been <b>cancelled</b>, either because you requested that we cancel the order or because ' +
 			'we were unable to reach out to you at the contact information you gave us.'
 	},
 
+	LIVE_STATUS = 'open',
+	GENERAL_SHOP_STATUS = 'production',
 	PROSPECT_STATUS = 'prospect',
 	CANCELLED_STATUS = 'cancelled';
 
@@ -53,26 +74,29 @@ var ACTIVE_STATUSES =
 module.exports =
 {
 	/**
-	 * Function responsible for deducing which status to upgrade an order to given its previous status
+	 * Function responsible for determining whether the status indicates that the order is currently live in our system
 	 *
-	 * @param {String} status - the current status of the order
+	 * @param {String} status - the status to test
 	 *
-	 * @returns {String} - either the next status that comes after the current state or an empty string
-	 * 		denoting that no status comes after the current status
+	 * @returns {boolean} - a flag indicating whether the order is currently in the midst of fabrication
 	 *
 	 * @author kinsho
 	 */
-	moveStatusToNextLevel: function(status)
+	isOpenStatus: function(status)
 	{
-		for (var i = 0; i < ACTIVE_STATUSES.length; i++)
-		{
-			if (ACTIVE_STATUSES[i] === status)
-			{
-				return (ACTIVE_STATUSES[i + 1] || '');
-			}
-		}
+		return !!(OPEN_STATUSES[status]);
+	},
 
-		return '';
+	/**
+	 * Function responsible for returning a list of all statuses that denote that an order is currently live
+	 *
+	 * @returns {Array<String>} - an array of all live statuses
+	 *
+	 * @author kinsho
+	 */
+	listAllOpenStatuses: function()
+	{
+		return Object.keys(OPEN_STATUSES);
 	},
 
 	/**
@@ -86,15 +110,7 @@ module.exports =
 	 */
 	isShopStatus: function(status)
 	{
-		for (var i = 0; i < SHOP_STATUSES.length; i++)
-		{
-			if (SHOP_STATUSES[i] === status)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return !!(PRODUCTION_STATUSES[status]);
 	},
 
 	/**
@@ -111,27 +127,8 @@ module.exports =
 		return STATUS_DESCRIPTIONS[status];
 	},
 
-	/**
-	 * Function responsible for returning the status label indicating that an order has been cancelled
-	 *
-	 * @returns {String} - the cancelled status label
-	 *
-	 * @author kinsho
-	 */
-	cancelStatus: function()
-	{
-		return CANCELLED_STATUS;
-	},
+	LIVE: LIVE_STATUS,
+	SHOP: GENERAL_SHOP_STATUS,
 
-	/**
-	 * Function responsible for returning the status label used to flag prospects within our system
-	 *
-	 * @returns {String} - the estimate status label
-	 *
-	 * @author kinsho
-	 */
-	prospectStatus: function()
-	{
-		return PROSPECT_STATUS;
-	}
+	ALL: ALL_ORDER_STATUSES
 };

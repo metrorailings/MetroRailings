@@ -2,9 +2,17 @@
 
 import orderModel from 'client/scripts/orders/orderModel';
 
+import statuses from 'shared/orderStatus';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var LOCAL_STORAGE_ORDERS_KEY = 'metroRailings.orders';
+const SORT_METHODS =
+	{
+		DUE_DATE : 'dueDate',
+		LAST_MODIFIED_DATE : 'lastModified'
+	};
+
+	// const LOCAL_STORAGE_ORDERS_KEY = 'metroRailings.orders';
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -18,15 +26,29 @@ var LOCAL_STORAGE_ORDERS_KEY = 'metroRailings.orders';
  *
  * @author kinsho
  */
-function _sortOrders(a, b)
+function _sortOrdersByModDate(a, b)
 {
-	return ( (new Date(a.lastModifiedDate) < new Date(b.lastModifiedDate)) ? 1 : -1 );
+	return ( (new Date(a.dates.lastModified) < new Date(b.dates.lastModified)) ? 1 : -1 );
 }
 
+/**
+ * The sorting function that we will use to keep orders organized by due date
+ *
+ * @param {Object} a - the order to compare to the other order passed into this function
+ * @param {Object} b - the order to compare to the other order passed into this function
+ *
+ * @returns {Number} - a number indicating whether the first order's modification date comes before the second order's
+ *
+ * @author kinsho
+ */
+function _sortOrdersByDueDate(a, b)
+{
+	return ( (new Date(a.dates.due) < new Date(b.dates.due)) ? 1 : -1 );
+}
 
 // ----------------- MODULE DEFINITION -----------------------------
 
-var orderManagerModule =
+let orderManagerModule =
 {
 	/**
 	 * Function that takes a passed collection of orders and wraps each order in a specialized order view model.
@@ -35,19 +57,37 @@ var orderManagerModule =
 	 *
 	 * @returns {Array<Object>} - the collection of orders, each one wrapped in a view model
 	 */
-	wrapOrdersInModels: (orders) =>
+	wrapOrdersInModels: (orders = []) =>
 	{
-		var wrappedOrders = [],
-			i;
+		let wrappedOrders = [];
 
-		orders = orders || [];
-
-		for (i = 0; i < orders.length; i++)
+		for (let i = 0; i < orders.length; i++)
 		{
 			wrappedOrders.push(orderModel(orders[i]));
 		}
 
 		return wrappedOrders;
+	},
+
+	/**
+	 * Function that sets default values into an order should certain properties be not defined
+	 *
+	 * @param {Object} order - the order to stud with default values
+	 *
+	 * @returns {Object} - the order, initialized with default values in certain spots if needed
+	 *
+	 * @author kinsho
+	 */
+	studWithDefaultValues: (order) =>
+	{
+		order.customer.company = order.customer.company || '';
+		order.customer.email = order.customer.email || '';
+		order.customer.areaCode = order.customer.areaCode || '';
+		order.customer.phoneOne = order.customer.phoneOne || '';
+		order.customer.phoneTwo = order.customer.phoneTwo || '';
+		order.customer.address = order.customer.address || '';
+		order.customer.city = order.customer.city || '';
+		order.customer.state = order.customer.state || '';
 	},
 
 	/**
@@ -62,7 +102,7 @@ var orderManagerModule =
 	 */
 	reconcileOrders: (existingOrders, data) =>
 	{
-		var changedOrderCount = 0,
+		let changedOrderCount = 0,
 			changedOrders = [],
 			i, j;
 
@@ -74,10 +114,8 @@ var orderManagerModule =
 			{
 				if (existingOrders[j]._id === data[i]._id)
 				{
-					// Splice out the order from the existing set so that we can re-insert that order back from the
-					// top of the list
-					existingOrders.splice(j, 1);
-					changedOrders.push(orderModel(data[i]));
+					// Replace the old order from the existing set with the newly modified order
+					existingOrders.splice(j, 1, orderModel(data[i]));
 
 					changedOrderCount += 1;
 					break;
@@ -94,11 +132,7 @@ var orderManagerModule =
 			}
 		}
 
-		// Wrap all the changed orders in specialized view models
-		changedOrders = orderManagerModule.wrapOrdersInModels(changedOrders);
-
-		// Sort the changed orders by modification date, then push those changed orders to the top of the existing set
-		changedOrders.sort(_sortOrders);
+		// Sift the orders through whatever filters and sorting methodology have been selected
 		existingOrders.unshift(...changedOrders);
 
 		// @TODO: Set up caching of orders
@@ -120,8 +154,7 @@ var orderManagerModule =
 	 */
 	filterOrdersByStatus: (orders, status) =>
 	{
-		var filteredOrders = [],
-			i;
+		let filteredOrders = [];
 
 		// In the event that the user does not want to filter by status, return all the orders together
 		if ( !(status) )
@@ -129,7 +162,27 @@ var orderManagerModule =
 			return orders;
 		}
 
-		for (i = 0; i < orders.length; i++)
+		if (status === statuses.LIVE)
+		{
+			for (let i = 0; i < orders.length; i++)
+			{
+				if (statuses.isOpenStatus(orders[i].status))
+				{
+					filteredOrders.push(orders[i]);
+				}
+			}
+		}
+		else if (status === statuses.SHOP)
+		{
+			for (let i = 0; i < orders.length; i++)
+			{
+				if (statuses.isShopStatus(orders[i].status))
+				{
+					filteredOrders.push(orders[i]);
+				}
+			}
+		}
+		for (let i = 0; i < orders.length; i++)
 		{
 			if (orders[i].status === status)
 			{
@@ -141,6 +194,40 @@ var orderManagerModule =
 	},
 
 	/**
+	 * Function meant to filter orders by company
+	 *
+	 * @param {Array<Object>} orders - the collection of orders to filter
+	 * @param {String} company - the company whose orders we are seeking
+	 *
+	 * @return {Array<Object>} - the subset of orders that are currently affiliated with the passed company
+	 *
+	 * @author kinsho
+	 */
+	filterOrdersByCompany: (orders, company) =>
+	{
+		let filteredOrders = [];
+
+		// In the event that the user does not want to filter by company, return all the orders together
+		if ( !(company) )
+		{
+			return orders;
+		}
+
+		for (let i = 0; i < orders.length; i += 1)
+		{
+			// Test to ensure that a company is present first before testing for whether the order belongs to the
+			// company being searched
+			if ((orders[i].customer.company) && (orders[i].customer.company === company))
+			{
+				filteredOrders.push(orders[i]);
+			}
+		}
+
+		return filteredOrders;
+	},
+
+	/**
+	 * 
 	 * Function meant to filter orders given search text
 	 *
 	 * @param {Array<Object>} orders - the collection of orders to filter
@@ -154,35 +241,58 @@ var orderManagerModule =
 	 */
 	filterOrdersBySearchText: (orders, searchText) =>
 	{
-		var filteredOrders = [],
-			order, phoneNumber,
-			i;
+		let filteredOrders = [],
+			order, phoneNumber;
 
 		// Convert the search text over to lower case for the purposes of easier searching
 		searchText = searchText || '';
 		searchText = searchText.toLowerCase();
 
-		for (i = 0; i < orders.length; i++)
+		for (let i = 0; i < orders.length; i += 1)
 		{
 			order = orders[i];
+
+			// Populate the order with default values should we be dealing with a prospect here
+			orderManagerModule.studWithDefaultValues(order);
+
 			phoneNumber = '' + order.customer.areaCode + order.customer.phoneOne + order.customer.phoneTwo;
 
 			// @TODO: Allow to search design selections and notes as well
+			// Note that the search text will only work on order IDs and customer information
 			if ((order._id.toString().indexOf(searchText) >= 0) ||
 				(order.customer.name.toLowerCase().indexOf(searchText) >= 0) ||
+				(order.customer.company.toLowerCase().indexOf(searchText) >= 0) ||
 				(order.customer.email.toLowerCase().indexOf(searchText) >= 0) ||
 				(phoneNumber.indexOf(searchText) >= 0) ||
 				(order.customer.address.toLowerCase().indexOf(searchText) >= 0) ||
 				(order.customer.city.toLowerCase().indexOf(searchText) >= 0) ||
-				(order.customer.state.toLowerCase().indexOf(searchText) >= 0) ||
-				(order.customer.zipCode.toString().indexOf(searchText) >= 0))
+				(order.customer.state.toLowerCase().indexOf(searchText) >= 0))
 			{
 				filteredOrders.push(orders[i]);
 			}
-
 		}
 
 		return filteredOrders;
+	},
+
+	/**
+	 * Function that sorts a collection of orders by a prescribed method
+	 *
+	 * @param {Array<Object>} orders - the collection of orders
+	 * @param {Enum} sortBy - the methodology by which to organize the orders within the collection
+	 *
+	 * @author kinsho
+	 */
+	sortOrders: (orders, sortBy) =>
+	{
+		if (sortBy === SORT_METHODS.LAST_MODIFIED_DATE)
+		{
+			orders.sort(_sortOrdersByModDate);
+		}
+		else if (sortBy === SORT_METHODS.DUE_DATE)
+		{
+			orders.sort(_sortOrdersByDueDate);
+		}
 	},
 
 	/**
@@ -197,7 +307,7 @@ var orderManagerModule =
 	 */
 	findOrderIndexById: (orders, orderID) =>
 	{
-		for (var i = 0 ; i < orders.length; i++)
+		for (let i = 0 ; i < orders.length; i++)
 		{
 			if (orders[i]._id === orderID)
 			{

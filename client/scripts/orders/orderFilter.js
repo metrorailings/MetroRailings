@@ -2,10 +2,12 @@
 
 import vm from 'client/scripts/orders/viewModel';
 
+import statuses from 'shared/orderStatus';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
 const STATUS_FILTER_CLASS = 'statusFilter',
-	GENERAL_FILTER_CLASS = 'generalFilter',
+	SORT_FILTER_CLASS = 'sortFilter',
 	REVEAL_CLASS = 'reveal',
 
 	COMPANY_FILTER = 'companySelector',
@@ -13,11 +15,11 @@ const STATUS_FILTER_CLASS = 'statusFilter',
 	SEARCH_FILTER = 'searchFilterTextfield',
 	RESET_SEARCH_ICON = 'resetSearch',
 
-	OPEN_GENERAL_FILTER = 'open',
+	DUE_DATE_DEFAULT_SORT = 'dueDate',
 
 	HASH_LABELS =
 	{
-		GENERAL : 'general',
+		SORT : 'sort',
 		STATUS : 'status',
 		COMPANY : 'company',
 		SEARCH : 'search'
@@ -26,7 +28,7 @@ const STATUS_FILTER_CLASS = 'statusFilter',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 // Elements
-let _generalFilters = document.getElementsByClassName(GENERAL_FILTER_CLASS),
+let _sortFilters = document.getElementsByClassName(SORT_FILTER_CLASS),
 	_statusFilters = document.getElementsByClassName(STATUS_FILTER_CLASS),
 
 	_companyFilter = document.getElementById(COMPANY_FILTER),
@@ -54,9 +56,9 @@ function _readFiltersFromHash()
 	{
 		hashPair = hashValues[i].split('=');
 
-		if (HASH_LABELS.GENERAL === hashPair[0])
+		if (HASH_LABELS.SORT === hashPair[0])
 		{
-			vm.generalFilter = hashPair[1];
+			vm.sortFilter = hashPair[1];
 		}
 		else if (HASH_LABELS.STATUS === hashPair[0])
 		{
@@ -76,15 +78,18 @@ function _readFiltersFromHash()
 // ----------------- LISTENERS ---------------------------
 
 /**
- * Function meant to set the general filter into the view model
+ * Function meant to set the sort filter into the view model
  *
  * @param {Event} event - the event associated with the firing of this listener
  *
  * @author kinsho
  */
-function setGeneralFilter(event)
+function setSortFilter(event)
 {
-	vm.generalFilter = event.currentTarget.dataset.value;
+	if (event.currentTarget.dataset.value !== vm.sortFilter)
+	{
+		vm.sortFilter = event.currentTarget.dataset.value;
+	}
 }
 
 /**
@@ -96,7 +101,10 @@ function setGeneralFilter(event)
  */
 function setStateFilter(event)
 {
-	vm.statusFilter = event.currentTarget.dataset.value;
+	if (event.currentTarget.dataset.value !== vm.statusFilter)
+	{
+		vm.statusFilter = event.currentTarget.dataset.value;
+	}
 }
 
 /**
@@ -106,7 +114,10 @@ function setStateFilter(event)
  */
 function setCompanyFilter()
 {
-	vm.companyFilter = _companyFilter.value;
+	if (event.currentTarget.dataset.value !== vm.companyFilter)
+	{
+		vm.companyFilter = _companyFilter.value;
+	}
 }
 
 /**
@@ -149,9 +160,9 @@ function emptySearchFilter()
 
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
-for (let j = 0; j < _generalFilters.length; j += 1)
+for (let j = 0; j < _sortFilters.length; j += 1)
 {
-	_generalFilters[j].addEventListener('click', setGeneralFilter);
+	_sortFilters[j].addEventListener('click', setSortFilter);
 }
 
 for (let i = 0; i < _statusFilters.length; i += 1)
@@ -170,7 +181,7 @@ _resetSearch.addEventListener('click', emptySearchFilter);
 // Set the filters with whatever values they were set with last time. If values were not set, use default values instead
 _readFiltersFromHash();
 
-vm.generalFilter = vm.generalFilter || OPEN_GENERAL_FILTER;
-vm.statusFilter = vm.statusFilter || '';
+vm.sortFilter = vm.sortFilter || DUE_DATE_DEFAULT_SORT;
+vm.statusFilter = vm.statusFilter || statuses.LIVE;
 vm.companyFilter = vm.companyFilter || '';
 vm.searchFilter = vm.searchFilter || '';
