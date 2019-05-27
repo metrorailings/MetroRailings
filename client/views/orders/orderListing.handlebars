@@ -40,7 +40,9 @@
 
 		</div>
 
-		{{> notes }}
+		<div class='orderGrouping flexHeight'>
+			{{> notes order=this users=../users doNotLoadNotes=true}}
+		</div>
 
 		<div class='orderGrouping orderNavButtons'>
 
@@ -88,14 +90,10 @@
 			{{/unless_cond}}
 		</div>
 
-        {{#if this.pictures }}
-            <div class='orderGrouping orderPictures'>
-                <span class='orderInfoSection' data-id={{ this._id }}>
-					<span class='orderInfoSectionHeader translate'>Pictures</span>
-					<span class='loadPicturesLink translate' data-id={{ this._id }}>Load Pictures...</span>
-                </span>
-            </div>
-        {{/if}}
+		<div class='orderGrouping flexHeight'>
+			{{> fileUpload order=this doNotLoadOnInit=true}}
+		</div>
+
 	</div>
 
 {{/each}}

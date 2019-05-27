@@ -25,10 +25,16 @@
 		{{{ orderPrintTemplate }}}
 	</script>
 
-	<script id='orderNotesTemplate' type='text/x-handlebars-template'>
-		{{{ orderNotesTemplate }}}
+	<script id='notesTemplate' type='text/x-handlebars-template'>
+		{{{ notesTemplate }}}
 	</script>
 
+	<script id='uploadTemplate' type='text/x-handlebars-template'>
+		{{{ fileUploadTemplate }}}
+	</script>
+
+	{{> notesTemplates }}
+	{{> uploadTemplates }}
 </div>
 
 {{> gallery }}

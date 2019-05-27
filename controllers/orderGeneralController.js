@@ -6,7 +6,7 @@
 
 const controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
-	noteUtility = global.OwlStakes.require('controller/utility/noteUtility'),
+	noteUtility = global.OwlStakes.require('controllers/utility/noteUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -74,8 +74,7 @@ module.exports =
 		noteData = await noteUtility.basicInit();
 		designData = allData.designData;
 		pageData = allData.pageData;
-		pageData.newNote = noteData.newNoteTemplate;
-		pageData.noteRecord = noteData.noteRecord;
+		pageData = rQuery.mergeObjects(noteData.pageData, pageData);
 		pageData.order =  order || { status : DEFAULT_STATUS };
 
 		// Determine which agreement text to present on the page

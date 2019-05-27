@@ -3,66 +3,50 @@
 import vm from 'client/scripts/orders/viewModel';
 import orderUtility from 'client/scripts/orders/orderUtility';
 
-import statuses from 'shared/orderStatus';
+import noteHandler from 'client/scripts/notes/notes';
+import uploader from 'client/scripts/uploadFile/uploadFile';
 
 import axios from 'client/scripts/utility/axios';
 import notifier from 'client/scripts/utility/notifications';
 import confirmationModal from 'client/scripts/utility/confirmationModal';
-import rQueryClient from 'client/scripts/utility/rQueryClient';
 import gallery from 'client/scripts/utility/gallery';
 import translator from 'client/scripts/utility/translate';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
+const ORDER_PICTURES_TEMPLATE = 'orderPicturesTemplate',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
 	ORDER_BLOCK_PREFIX = 'order-',
 
-	STATUS_LINK_CLASS = 'nextStatusLink',
 	REMOVE_ORDER_CLASS = 'trashLink',
 	LOAD_PICTURES_LINK_CLASS = 'loadPicturesLink',
 	UPLOADED_IMAGE_THUMBNAIL_CLASS = 'uploadedImageThumbnail',
+	NOTE_LISTING = 'noteListing',
+	FILE_LISTING = 'filesListing',
+
 	HIDE_CLASS = 'hide',
 
-	NEXT_STATUS_MESSAGE = '<span> Are you sure you want to update order <b> ::orderID </b> to' +
-		' <b> ::nextStatus </b> ?</span>',
 	DELETE_ORDER_MESSAGE = '<span> Are you sure you want to <b> DELETE </b> this potential order? Once you delete' +
 		' this order, you will need to go to the database administrator to restore this prospect back into the' +
 		' system. </span>',
 
-	UPDATE_STATUS_URL = 'orders/updateStatus',
-	DELETE_ORDER_URL = 'orders/removeOrder',
+	DELETE_ORDER_URL = 'orders/removeOrder';
 
-	ORDER_ID_PLACEHOLDER = '::orderID',
-	NEXT_STATUS_PLACEHOLDER = '::nextStatus';
+// ----------------- PRIVATE VARIABLES ---------------------------
+
+let _noteListings = document.getElementsByClassName(NOTE_LISTING),
+	_fileListings = document.getElementsByClassName(FILE_LISTING);
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
 /**
  * The partial to render all pictures associated with a particular order
  */
-var orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
+let orderPicturesTemplate = Handlebars.compile(document.getElementById(ORDER_PICTURES_TEMPLATE).innerHTML);
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
-
-/**
- * Function meant to dynamically attach listeners to all status upgrade links
- * Needed so that we can reattach listeners every time orders are re-rendered onto screen
- *
- * @author kinsho
- */
-function _attachStatusLinkListeners()
-{
-	var statusLinks = document.getElementsByClassName(STATUS_LINK_CLASS),
-		i;
-
-	for (i = statusLinks.length - 1; i >= 0; i--)
-	{
-		statusLinks[i].addEventListener('click', updateStatus);
-	}
-}
 
 /**
  * Function meant to dynamically attach listeners to all picture loader links
@@ -72,10 +56,9 @@ function _attachStatusLinkListeners()
  */
 function _attachPictureLoadListeners()
 {
-	var pictureLinks = document.getElementsByClassName(LOAD_PICTURES_LINK_CLASS),
-		i;
+	let pictureLinks = document.getElementsByClassName(LOAD_PICTURES_LINK_CLASS);
 
-	for (i = pictureLinks.length - 1; i >= 0; i--)
+	for (let i = pictureLinks.length - 1; i >= 0; i--)
 	{
 		pictureLinks[i].addEventListener('click', loadPictures);
 	}
@@ -89,10 +72,9 @@ function _attachPictureLoadListeners()
  */
 function _attachOrderRemovalListeners()
 {
-	var removeLinks = document.getElementsByClassName(REMOVE_ORDER_CLASS),
-		i;
+	let removeLinks = document.getElementsByClassName(REMOVE_ORDER_CLASS);
 
-	for (i = removeLinks.length - 1; i >= 0; i--)
+	for (let i = removeLinks.length - 1; i >= 0; i--)
 	{
 		removeLinks[i].addEventListener('click', removeOrder);
 	}
@@ -109,7 +91,7 @@ function _attachOrderRemovalListeners()
  */
 async function loadPictures(event)
 {
-	var targetElement = event.currentTarget,
+	let targetElement = event.currentTarget,
 		parentContainer = targetElement.parentNode,
 		orderID = window.parseInt(targetElement.dataset.id, 10),
 		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
@@ -146,66 +128,20 @@ async function loadPictures(event)
  */
 function openGallery(event)
 {
-	var currentTarget = event.currentTarget,
+	let currentTarget = event.currentTarget,
 		pictureIndex = window.parseInt(currentTarget.dataset.index, 10),
 		parentContainer = currentTarget.parentNode,
 		orderID = window.parseInt(parentContainer.dataset.id, 10),
 		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
 		order = vm.orders[orderIndex],
-		imageURLs = [],
-		i;
+		imageURLs = [];
 
 	// Cycle through each image within the set and collect their src links
-	for (i = 0; i < order.pictures.length; i++)
+	for (let i = 0; i < order.pictures.length; i++)
 	{
 		imageURLs.push(order.pictures[i].shareLink);
 	}
 	gallery.open(imageURLs, pictureIndex);
-}
-
-/**
- * Listener meant to move an order along to the next phase of development
- *
- * @param {Event} event - the event associated with the firing of this listener
- *
- * @author kinsho
- */
-async function updateStatus(event)
-{
-	var targetElement = event.currentTarget,
-		orderID = window.parseInt(targetElement.dataset.id, 10),
-		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
-		order = vm.orders[orderIndex],
-		nextStatus = statuses.moveStatusToNextLevel(order.status),
-		// Generate the message to place within the confirmation modal
-		modalMessage = NEXT_STATUS_MESSAGE.replace(ORDER_ID_PLACEHOLDER, orderID)
-			.replace(NEXT_STATUS_PLACEHOLDER, rQueryClient.capitalize(nextStatus));
-
-	// Translate the modal's message should the page's default language be set in anything other than English
-	translator.translateText(modalMessage).then((modalBodyText) =>
-	{
-		// Confirm that we will be updating the status
-		confirmationModal.open([modalBodyText], () =>
-		{
-			// Update the status in the back-end, then use the results from the service to modify the local copy of data as needed
-			axios.post(UPDATE_STATUS_URL, { orderID: orderID }).then((results) =>
-			{
-				// Update the last known modification date for the order in context
-				order.lastModifiedDate = results.data.lastModifiedDate;
-
-				// Update the status to the next one in the development cycle
-				order.status = results.data.status;
-
-				// Move the newly modified order to the front of the pack to indicate that it was the order most recently modified
-				vm.orders.splice(orderIndex, 1);
-				vm.orders.unshift(order);
-			}, () =>
-			{
-				notifier.showGenericServerError();
-			});
-
-		}, () => {});
-	}, () => {});
 }
 
 /**
@@ -217,7 +153,7 @@ async function updateStatus(event)
  */
 function removeOrder(event)
 {
-	var targetElement = event.currentTarget,
+	let targetElement = event.currentTarget,
 		orderID = window.parseInt(targetElement.dataset.id, 10),
 		orderIndex = orderUtility.findOrderIndexById(vm.orders, orderID),
 		modalMessage = DELETE_ORDER_MESSAGE,
@@ -251,7 +187,26 @@ function removeOrder(event)
 
 document.addEventListener(LISTENER_INIT_EVENT, () =>
 {
-	_attachStatusLinkListeners();
 	_attachPictureLoadListeners();
 	_attachOrderRemovalListeners();
+
+	// Ensure notes are submittable prior to running any note-specific logic
+	if (_noteListings)
+	{
+		// Initializes all note areas
+		for (let i = _noteListings.length - 1; i >= 0; i -= 1)
+		{
+			new noteHandler(_noteListings[i]);
+		}
+	}
+
+	// Likewise, ensure it's possible to upload files before running any uploading logic
+	if (_fileListings)
+	{
+		// Initialize all uploading sections
+		for (let j = _fileListings.length - 1; j >= 0; j -= 1)
+		{
+			new uploader(_fileListings[j]);
+		}
+	}
 });
