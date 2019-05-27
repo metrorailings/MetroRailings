@@ -10,9 +10,10 @@ const SORT_METHODS =
 	{
 		DUE_DATE : 'dueDate',
 		LAST_MODIFIED_DATE : 'lastModified'
-	};
+	},
 
-	// const LOCAL_STORAGE_ORDERS_KEY = 'metroRailings.orders';
+	LOCAL_STORAGE_ORDERS_KEY = 'mrAdminOrders',
+	LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY = 'mrAdminOrdersLastModified';
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -96,7 +97,8 @@ let orderManagerModule =
 	 * @param {Array<Object>} existingOrders - the existing set of order data
 	 * @param {Array<Object>} data - the new set of data to integrate gracefully into the existing set
 	 *
-	 * @returns {Number} - the number of new orders that were appended to the existing set of orders
+	 * @returns {Number} - the number of orders that were appended to the existing set of orders or replaced within
+	 * 		the existing set
 	 *
 	 * @author kinsho
 	 */
@@ -133,11 +135,11 @@ let orderManagerModule =
 		}
 
 		// Sift the orders through whatever filters and sorting methodology have been selected
-		existingOrders.unshift(...changedOrders);
+		existingOrders.push(...changedOrders);
 
-		// @TODO: Set up caching of orders
 		// Ensure that the currently reconciled collection of orders are saved into the user's local browser cache
-		// window.localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(existingOrders));
+		window.localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(existingOrders));
+		window.localStorage.setItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY, JSON.stringify(new Date()));
 
 		return changedOrderCount;
 	},
@@ -257,7 +259,7 @@ let orderManagerModule =
 
 			phoneNumber = '' + order.customer.areaCode + order.customer.phoneOne + order.customer.phoneTwo;
 
-			// @TODO: Allow to search design selections and notes as well
+			// @TODO: Allow searching by design selections and notes as well
 			// Note that the search text will only work on order IDs and customer information
 			if ((order._id.toString().indexOf(searchText) >= 0) ||
 				(order.customer.name.toLowerCase().indexOf(searchText) >= 0) ||

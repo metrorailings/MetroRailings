@@ -7,9 +7,12 @@
 let _Handlebars = require('handlebars'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
+	noteUtility = global.OwlStakes.require('controllers/utility/noteUtility'),
+	uploadUtility = global.OwlStakes.require('controllers/utility/fileUploadUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
+	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	companies = global.OwlStakes.require('shared/company'),
@@ -52,6 +55,7 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			pageData = {},
+			noteData, uploadData,
 			bootData =
 			{
 				dropboxToken: config.DROPBOX_TOKEN,
@@ -75,11 +79,14 @@ module.exports =
 		// Grab the raw HTML of the order pictures template
 		pageData.orderPicturesTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.PICTURES);
 
+		// Grab the templates and logic necessary to append notes and files onto orders
+		noteData = await noteUtility.basicInit();
+		uploadData = await uploadUtility.basicInit();
+		pageData = rQuery.mergeObjects(noteData.pageData, pageData);
+		pageData = rQuery.mergeObjects(uploadData.pageData, pageData);
+
 		// Load a list of the companies we regularly do business with
 		pageData.companies = companies;
-
-		// Load all the orders on the page
-		bootData.orders = await ordersDAO.retrieveAllOrders();
 
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

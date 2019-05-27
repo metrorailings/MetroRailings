@@ -17,11 +17,13 @@ const NOTE_TEXTAREA = 'newNoteText',
 	TASK_ASSIGN_TO_SELECT = 'taskAssignTo',
 	NOTE_SAVE_BUTTON = 'noteSave',
 	NOTE_RECORD_CONTAINER = 'noteRecordContainer',
+	NEW_NOTE_CONTAINER = 'newNoteUpload',
+	LOAD_NOTES_LINK = 'loadNotesLink',
 
-	NEW_NOTE_TEMPLATE = 'newNoteTemplate',
 	NOTE_RECORD_TEMPLATE = 'noteRecordTemplate',
 
 	SAVE_NOTE_URL = 'notes/saveNewNote',
+	FETCH_NOTES_URL = 'notes/retrieveNotesByOrderId',
 
 	NO_TEXT_FOUND_MESSAGE = 'Please enter some text here before trying to save the note.',
 
@@ -39,6 +41,23 @@ const NOTE_TEXTAREA = 'newNoteText',
  */
 const noteRecordTemplate = Handlebars.compile(document.getElementById(NOTE_RECORD_TEMPLATE).innerHTML);
 
+// ----------------- PRIVATE FUNCTION --------------------------
+
+/**
+ * Function responsible for loading a new note record into an existing list of note records
+ *
+ * @param {Object} note - the note data record which will be used to create the new HTML record
+ * @param {HTMLElement} noteRecordContainer - the container in which to pop in the new record
+ *
+ * @author kinsho
+ */
+function _loadNewRecord(note, noteRecordContainer)
+{
+	let newHTML = document.createElement('template');
+	newHTML.innerHTML = noteRecordTemplate(note);
+	noteRecordContainer.insertBefore(newHTML.content.firstChild, noteRecordContainer.firstElementChild);
+}
+
 // ----------------- MODULE ---------------------------
 
 /**
@@ -50,12 +69,14 @@ const noteRecordTemplate = Handlebars.compile(document.getElementById(NOTE_RECOR
  */
 function initNotesTextfield(notesContainer)
 {
-	let vm = new viewModel(notesContainer),
+	// Instantiate the view model that will be associated with the section that will be used to create new notes
+	let vm = new viewModel(notesContainer.getElementsByClassName(NEW_NOTE_CONTAINER)[0]),
 		noteTextarea = notesContainer.getElementsByClassName(NOTE_TEXTAREA)[0],
 		noteTypeSelect = notesContainer.getElementsByClassName(NOTE_TYPE_SELECT)[0],
 		assignToSelect = notesContainer.getElementsByClassName(TASK_ASSIGN_TO_SELECT)[0],
 		saveButton = notesContainer.getElementsByClassName(NOTE_SAVE_BUTTON)[0],
-		noteRecordContainer = notesContainer.parentElement.getElementsByClassName(NOTE_RECORD_CONTAINER)[0],
+		noteRecordContainer = notesContainer.getElementsByClassName(NOTE_RECORD_CONTAINER)[0],
+		loadNotesLink = notesContainer.parentElement.getElementsByClassName(LOAD_NOTES_LINK)[0],
 
 		// Define the listeners to allow us to set values into the view model
 		saveText = () =>
@@ -71,6 +92,29 @@ function initNotesTextfield(notesContainer)
 		saveAssignTo = () =>
 		{
 			vm.assignTo = assignToSelect.value;
+		},
+
+		loadNotes = () =>
+		{
+			axios.post(FETCH_NOTES_URL, { id : vm.orderId }, true).then((response) =>
+			{
+				let notes = response.data;
+
+				// Remove the link now that we're loading the rest of the notes on the screen
+				loadNotesLink.remove();
+
+				// Wipe out all existing note records for the order in context
+				while (noteRecordContainer.lastChild)
+				{
+					noteRecordContainer.lastChild.remove();
+				}
+
+				// Render all the notes under the notes record container again with the data returned from the back end
+				for (let i = 0; i < notes.length; i += 1)
+				{
+					_loadNewRecord(notes[i], noteRecordContainer);
+				}
+			});
 		},
 
 		saveNote = () =>
@@ -97,10 +141,10 @@ function initNotesTextfield(notesContainer)
 			{
 				axios.post(SAVE_NOTE_URL, data, true).then((response) =>
 				{
-					// For new notes, create a note record and stick it to the top of the record container
-					let newHTML = document.createElement('template');
-					newHTML.innerHTML = noteRecordTemplate(response.data);
-					noteRecordContainer.insertBefore(newHTML.content.firstChild, noteRecordContainer.firstElementChild);
+					// Clear out the writing in the textarea now that we uploaded that text into our database
+					vm.text = '';
+
+					_loadNewRecord(response.data, noteRecordContainer);
 				});
 			}
 		};
@@ -110,6 +154,10 @@ function initNotesTextfield(notesContainer)
 	noteTypeSelect.addEventListener('change', saveType);
 	assignToSelect.addEventListener('change', saveAssignTo);
 	saveButton.addEventListener('click', saveNote);
+	if (loadNotesLink)
+	{
+		loadNotesLink.addEventListener('click', loadNotes);
+	}
 }
 
 // ----------------- EXPORT ---------------------------

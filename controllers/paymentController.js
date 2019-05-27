@@ -185,7 +185,7 @@ module.exports =
 			try
 			{
 				// Upload the check image to Dropbox
-				imgMeta = await dropbox.uploadImage(params.orderId, params.checkImage);
+				imgMeta = await dropbox.uploadFile(params.orderId, params.checkImage, dropbox.DIRECTORY.PAYMENTS);
 				imgMeta = imgMeta.pop();
 
 				if (imgMeta.length)
@@ -245,7 +245,7 @@ module.exports =
 			try
 			{
 				// Upload the check image to Dropbox
-				imgMeta = await dropbox.uploadImage(params.orderId, params.cashImage);
+				imgMeta = await dropbox.uploadFile(params.orderId, params.cashImage, dropbox.DIRECTORY.PAYMENTS);
 				imgMeta = imgMeta.pop();
 
 				if (imgMeta.length)

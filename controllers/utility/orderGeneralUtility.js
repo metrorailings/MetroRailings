@@ -7,9 +7,6 @@
 const _Handlebars = require('handlebars'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	cookieManager = global.OwlStakes.require('utility/cookies'),
-
-	userDAO = global.OwlStakes.require('data/DAO/userDAO'),
 
 	pricingData = global.OwlStakes.require('shared/pricing/pricingData'),
 
@@ -35,7 +32,6 @@ const _Handlebars = require('handlebars'),
 
 const ORDER_SHARED_FOLDER = 'orderGeneral',
 	UTILITY_FOLDER = 'utility',
-	NOTES_FOLDER = 'notes',
 
 	PARTIALS =
 	{
@@ -60,12 +56,7 @@ const ORDER_SHARED_FOLDER = 'orderGeneral',
 		DEPOSIT_MODAL: 'depositModal',
 		MULTI_TEXT: 'multiText',
 		PICTURES: 'picturesSection',
-		PAYMENTS: 'paymentsSection',
-
-		ORDER_NOTES: 'notes',
-		NEW_NOTE: 'newNote',
-		NOTE_RECORD: 'noteRecord',
-		NOTE_TEMPLATES: 'notesTemplates'
+		PAYMENTS: 'paymentsSection'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -170,26 +161,6 @@ _Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER
  */
 _Handlebars.registerPartial('orderPayments', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PAYMENTS));
 
-/**
- * The template for the notes lister
- */
-_Handlebars.registerPartial('notes', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.ORDER_NOTES));
-
-/**
- * The template for a new note textarea
- */
-_Handlebars.registerPartial('newNote', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NEW_NOTE));
-
-/**
- * The template for a note record
- */
-_Handlebars.registerPartial('noteRecord', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NOTE_RECORD));
-
-/**
- * The template for the note templates partial
- */
-_Handlebars.registerPartial('notesTemplates', fileManager.fetchTemplateSync(NOTES_FOLDER, PARTIALS.NOTE_TEMPLATES));
-
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -198,23 +169,15 @@ module.exports =
 	 * Function designed to populate the parts of the quote/order page that will always be present, no matter what
 	 * state the quote/order is in
 	 *
-	 * @param {String} cookie - the cookie object coming to us from the browser
-	 *
 	 * @author kinsho
 	 */
-	basicInit: async function (cookie)
+	basicInit: async function ()
 	{
 		let designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
 			picturesTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PICTURES),
-			newNoteTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NEW_NOTE),
-			noteRecordTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NOTE_RECORD),
-			users = { all : await userDAO.collectAllUsers() },
 			pageData,
 			designData;
-
-		// Log the user name of the current user for note purposes
-		users.current = cookieManager.retrieveAdminCookie(cookie)[0];
 
 		// Gather all the design options that we can apply to the order
 		designData =
@@ -245,10 +208,7 @@ module.exports =
 			designs: designData,
 			designErrorsTemplate: designErrorsTemplate,
 			picturesTemplate: picturesTemplate,
-			newNote: newNoteTemplate,
-			noteRecord: noteRecordTemplate,
 			depositModal: depositModalTemplate,
-			users: users
 		};
 
 		return {

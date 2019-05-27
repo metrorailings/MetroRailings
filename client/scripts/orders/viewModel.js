@@ -23,12 +23,12 @@ const SORT_FILTER_CLASS = 'sortFilter',
 	RESET_COMPANY_ICON = 'resetCompany',
 	ORDER_LISTINGS_CONTAINER = 'orderListing',
 	ORDER_LISTING_TEMPLATE = 'orderListingTemplate',
-	ORDER_NOTES_TEMPLATE = 'orderNotesTemplate',
 
 	SEARCH_ORDERS_URL = 'orders/searchOrders',
 
 	LISTENER_INIT_EVENT = 'listenerInit',
 
+	LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY = 'mrAdminOrdersLastModified',
 	DEFAULT_MODIFICATION_DATE = new Date('1/1/2014'),
 
 	HASH_LABELS =
@@ -56,11 +56,6 @@ let _sortFilterLinks = document.getElementsByClassName(SORT_FILTER_CLASS),
  * The partial to render individual orders on the orders page
  */
 let orderListingTemplate = Handlebars.compile(document.getElementById(ORDER_LISTING_TEMPLATE).innerHTML);
-
-/**
- * The partial to render the HTML that renders out all the notes associated with any given order
- */
-Handlebars.registerPartial('orderNotes', document.getElementById(ORDER_NOTES_TEMPLATE).innerHTML);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -374,18 +369,11 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	set: () =>
 	{
-		let changeCount,
-			dateToSearch = DEFAULT_MODIFICATION_DATE;
+		let dateToSearch = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) || DEFAULT_MODIFICATION_DATE);
 
 		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
 		{
-			changeCount = orderUtility.reconcileOrders(viewModel.orders, results.data);
-
-			// Only re-render the orders should there be any changes made to the order
-			if (changeCount)
-			{
-				_renderOrders(true);
-			}
+			orderUtility.reconcileOrders(viewModel.orders, results.data);
 		}, () =>
 		{
 			notifier.showGenericServerError();

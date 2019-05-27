@@ -5,11 +5,49 @@ import orderListing from 'client/scripts/orders/orderListing';
 import vm from 'client/scripts/orders/viewModel';
 
 import handlebarHelpers from 'client/scripts/utility/handlebarHelpers';
-import translate from 'client/scripts/utility/translate';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-// ----------------- PRIVATE VARIABLES ---------------------------
+const LOCAL_STORAGE_ORDERS_KEY = 'mrAdminOrders',
+
+	NOTES_TEMPLATE = 'notesTemplate',
+	NEW_NOTE_TEMPLATE = 'newNoteTemplate',
+	NOTE_RECORD_TEMPLATE = 'noteRecordTemplate',
+	FILE_UPLOAD_TEMPLATE = 'uploadTemplate',
+	UPLOAD_FORM_TEMPLATE = 'uploadSectionTemplate',
+	FILE_THUMBNAIL_TEMPLATE = 'thumbnailTemplate';
+
+// ----------------- HANDLEBAR TEMPLATES ---------------------------
+
+/**
+ * The partial to render the HTML that renders out all the notes associated with any given order
+ */
+Handlebars.registerPartial('notes', document.getElementById(NOTES_TEMPLATE).innerHTML);
+
+/**
+ * The partial to render individual notes
+ */
+Handlebars.registerPartial('noteRecord', document.getElementById(NOTE_RECORD_TEMPLATE).innerHTML);
+
+/**
+ * The partial to write new notes
+ */
+Handlebars.registerPartial('newNote', document.getElementById(NEW_NOTE_TEMPLATE).innerHTML);
+
+/**
+ * The partial to render the HTML that allows users to upload files for any order
+ */
+Handlebars.registerPartial('fileUpload', document.getElementById(FILE_UPLOAD_TEMPLATE).innerHTML);
+
+/**
+ * The partial to render the form that's directly responsible for uploading new files
+ */
+Handlebars.registerPartial('uploadSection', document.getElementById(UPLOAD_FORM_TEMPLATE).innerHTML);
+
+/**
+ * The partial to display a thumbnail for each uploaded file
+ */
+Handlebars.registerPartial('thumbnail', document.getElementById(FILE_THUMBNAIL_TEMPLATE).innerHTML);
 
 // ----------------- LISTENERS ---------------------------
 
@@ -18,25 +56,22 @@ import translate from 'client/scripts/utility/translate';
  *
  * @author kinsho
  */
-// function triggerPing()
-// {
-//	vm.pingTheServer = true;
-// }
+function triggerPing()
+{
+	vm.pingTheServer = true;
+}
 
 // ----------------- DATA INITIALIZATION -----------------------------
 
 // Retrieve the orders either from the local browser cache or from the back-end
 
-// @TODO: Set up caching of orders
-// vm.orders = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_KEY) || '[]');
-// vm.pingTheServer = true;
-vm.orders = window.MetroRailings.orders;
+vm.orders = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_KEY) || '[]');
+vm.pingTheServer = true;
 
 // ----------------- PAGE INITIALIZATION -----------------------------
 
 // Set up a regular timer to check the service for newly-updated data
-// @TODO - Get the ping service working to update orders in real-time
-// window.setInterval(triggerPing, 45000);
+window.setInterval(triggerPing, 60000);
 
 // Scroll to the top when the page loads
 window.scrollTo(0, 0);

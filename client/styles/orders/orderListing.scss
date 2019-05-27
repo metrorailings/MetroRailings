@@ -153,6 +153,17 @@
 	{
 		height: 350px;
 	}
+
+	&.flexHeight
+	{
+		flex-direction: column;
+
+		@include webkitOnly()
+		{
+			min-height: 100px;
+			height: auto;
+		}
+	}
 }
 
 .orderInfoSection
@@ -260,7 +271,7 @@
 	margin-right: 5px;
 }
 
-.orderNotesSection, .orderNavButtons, .orderPictures
+.orderNavButtons
 {
 	height: auto;
 	min-height: 80px;
@@ -280,7 +291,7 @@
 	flex-wrap: wrap;
 }
 
-.nextStatusLink, .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink, .closeOrderAgreementLink, .contractorAgreementLink
+.printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink
 {
 	@extend %regularLinkText;
 

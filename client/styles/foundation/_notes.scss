@@ -25,7 +25,7 @@
 	justify-content: center;
 	flex-direction: column;
 
-	width: 70%;
+	width: 95%;
 }
 
 .noteRecordContainer
@@ -232,4 +232,23 @@
 	@include smallButton($bgColor: indianRedTheme);
 
 	width: 60%;
+}
+
+.loadNotesLink
+{
+	@extend %regularLinkText;
+
+	margin:
+	{
+		top: 5px;
+		bottom: 10px;
+		left: auto;
+		right: auto;
+	}
+
+	&:hover
+	{
+		cursor: pointer;
+		text-decoration: underline;
+	}
 }
