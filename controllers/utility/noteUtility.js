@@ -6,6 +6,9 @@
 
 const _Handlebars = require('handlebars'),
 
+	userDAO = global.OwlStakes.require('data/DAO/userDAO'),
+
+	cookieManager = global.OwlStakes.require('utility/cookies'),
 	fileManager = global.OwlStakes.require('utility/fileManager');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -50,18 +53,27 @@ module.exports =
 	 * Function designed to programmatically fetch the templates for any notes-related modules so that we can render
 	 * notes on a dynamic basis
 	 *
+	 * @param {String} cookie - the cookie object coming to us from the browser
+	 * 
 	 * @author kinsho
 	 */
-	basicInit: async function ()
+	basicInit: async function (cookie)
 	{
-		let newNoteTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NEW_NOTE), 
+		let notesTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.ORDER_NOTES),
+			newNoteTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NEW_NOTE), 
 			noteRecordTemplate = await fileManager.fetchTemplate(NOTES_FOLDER, PARTIALS.NOTE_RECORD),
+			users = { all : await userDAO.collectAllUsers() },
 			pageData = {};
+
+		// Log the user name of the current user for note purposes
+		users.current = cookieManager.retrieveAdminCookie(cookie)[0];
 
 		pageData =
 		{
+			notesTemplate: notesTemplate,
 			newNote: newNoteTemplate,
-			noteRecord: noteRecordTemplate
+			noteRecord: noteRecordTemplate,
+			users: users
 		};
 
 		return {

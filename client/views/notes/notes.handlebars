@@ -2,10 +2,18 @@
     {{> newNote _id=order._id category='new' type='note' assignTo=users.current assignFrom=users.current }}
 
 	<div class='noteRecordContainer'>
-		{{#if notes.length}}
-			{{#each notes}}
-				{{> noteRecord this}}
-			{{/each}}
-		{{/if}}
+		{{#unless doNotLoadNotes}}
+			{{#if order.notes.length}}
+				{{#each order.notes}}
+					{{> noteRecord this}}
+				{{/each}}
+			{{/if}}
+		{{/unless}}
 	</div>
 </div>
+
+{{#if doNotLoadNotes}}
+	{{#if order.notes.length}}
+		<div class='loadNotesLink' data-id='{{ order._id }}'>Load All Notes...</div>
+	{{/if}}
+{{/if}}

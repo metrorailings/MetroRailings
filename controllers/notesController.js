@@ -45,5 +45,31 @@ module.exports =
 			statusCode: responseCodes.OK,
 			data: noteData
 		};
+	},
+
+	/**
+	 * Function responsible for collecting all notes that belong to a particular order
+	 *
+	 * @param {Object} params - a data structure containing the ID of the order that will have its notes returned
+	 *
+	 * @author kinsho
+	 */
+	retrieveNotesByOrderId: async function (params, cookie, request)
+	{
+		let noteData = {};
+
+		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
+		{
+			console.log('Redirecting the user to the log-in page...');
+
+			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
+		}
+
+		noteData = await notesDAO.fetchNotesByOrderId(parseInt(params.id, 10));
+
+		return {
+			statusCode: responseCodes.OK,
+			data: noteData
+		};
 	}
 };

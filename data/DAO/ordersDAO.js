@@ -23,7 +23,9 @@ const ORDERS_COLLECTION = 'orders',
 		QUOTE_CREATION: 'Quote Created',
 		FINALIZE_ORDER: 'Order Finalized',
 		PAYMENT: 'Payment',
-		DUE_DATE_CHANGE: 'Due Date Change'
+		DUE_DATE_CHANGE: 'Due Date Change',
+		NEW_FILE_SAVED: 'New File Uploaded',
+		FILE_DELETED: 'File Deleted'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -201,35 +203,6 @@ let ordersModule =
 	},
 
 	/**
-	 * Function responsible for fetching a removed order from the database using its ID
-	 *
-	 * @param {Object} orderNumber - the order identification number
-	 *
-	 * @returns {Object} - the order itself, in its entirety
-	 *
-	 * @author kinsho
-	 */
-	searchRemovedOrderById: async function (orderNumber)
-	{
-		try
-		{
-			let dbResults = await mongo.read(REMOVED_ORDERS_COLLECTION,
-				{
-					_id: orderNumber
-				});
-
-			return dbResults[0];
-		}
-		catch(error)
-		{
-			console.log('Ran into an error fetching a removed order using its ID...');
-			console.log(error);
-
-			return false;
-		}
-	},
-
-	/**
 	 * Function responsible for fetching orders from the database that were modified from a given date
 	 *
 	 * @param {Date} beginningDate - the date and time from which to look for new orders
@@ -393,9 +366,6 @@ let ordersModule =
 
 			// Attach a new ID to the order
 			order._id = counterRecord.seq;
-		}
-		else
-		{
 		}
 
 		// Set the status
@@ -704,6 +674,68 @@ let ordersModule =
 			throw error;
 		}
 	},
+
+	/**
+	 * Function to store metadata for new files into an existing order
+	 *
+	 * @param {Number} orderId - the ID of the order
+	 * @param {Array<Object>} fileMetas - a collection of metadata for all files that were recently uploaded during
+	 * 		this server request
+	 * @param {String} username - the name of the user uploading the files	
+	 * @param {Function} updateFunc - the actual function to use to update the order properly. This is done in order
+	 * 		to separate out the display logic from backend database logic
+	 *
+	 * @author kinsho
+	 */
+	saveFilesToOrder: async function (orderId, fileMetas, username, updateFunc)
+	{
+		let order = await ordersModule.searchOrderById(orderId),
+			updateRecord;
+
+		// Ensure that the order is properly updated with a record indicating when this order was updated
+		// and who updated this order
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.NEW_FILE_SAVED);
+
+		// Instantiate the collection we'll be using to store the uploaded files, if they haven't been already
+		// instantiated
+		order.pictures = order.pictures || [];
+		order.drawings = order.drawings || [];
+		order.files = order.files || [];
+
+		// Run the update function
+		// The update function is either updateOrderWithImages, updateOrderWithDrawings, updateOrdersWithFiles
+		updateFunc(order, fileMetas);
+
+		// Generate the record we'll be using to update the database
+		updateRecord = mongo.formUpdateOneQuery(
+		{
+			_id: orderId
+		},
+		{
+			pictures: order.pictures,
+			drawings: order.drawings,
+			files: order.files,
+			modHistory: order.modHistory
+		},
+		false);
+
+		try
+		{
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return true;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error uploading files for order ' + orderId);
+			console.log(error);
+
+			throw error;
+		}
+	},
+	updateOrderWithImages: (order, fileMetas) => { order.pictures.push(...fileMetas); },
+	updateOrderWithDrawings: (order, fileMetas) => { order.drawings.push(...fileMetas); },
+	updateOrderWithFiles: (order, fileMetas) => { order.files.push(...fileMetas); },
 
 	/**
 	 * Function responsible for saving changes made to an order and also generating transactions to either charge the
