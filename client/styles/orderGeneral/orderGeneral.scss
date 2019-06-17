@@ -8,13 +8,15 @@
 @import '../foundation/modal';
 @import '../foundation/gallery';
 @import '../foundation/notes';
+@import '../foundation/fileUpload';
 
 @import '../orderGeneral/idSection';
 @import '../orderGeneral/agreementSection';
 @import '../orderGeneral/customerSection';
+@import '../orderGeneral/notesSection';
+@import '../orderGeneral/filesSection';
 @import '../orderGeneral/designDescriptor';
 @import '../orderGeneral/railingsSection';
-@import '../orderGeneral/picturesSection';
 @import '../orderGeneral/submissionSection';
 @import '../orderGeneral/paymentsSection';
 @import '../orderGeneral/depositModal';
@@ -22,7 +24,7 @@
 /* ----------------------- STYLES ----------------------------- */
 
 #idSection, #orderSummary, #customerSummary, #notesSection, #locationSummary, #typeSection, #baseDesignSection, #cableDesignSection, #glassDesignSection,
-#advancedDesignSection, #picketSection, #logisticsSection, #moneySection, #paymentsSection, #agreementSection, #picturesSection, #submissionSection
+#advancedDesignSection, #picketSection, #logisticsSection, #moneySection, #paymentsSection, #agreementSection, #filesSection, #submissionSection
 {
 	padding:
 	{

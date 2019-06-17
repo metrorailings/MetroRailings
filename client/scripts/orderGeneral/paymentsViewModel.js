@@ -22,6 +22,9 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 	CHECK_PAYMENT_AMOUNT = 'newPaymentCheckAmount',
 	CHECK_SUBMIT_BUTTON = 'checkSaveButton',
 
+	CASH_PAYMENT_AMOUNT = 'newPaymentCashAmount',
+	CASH_SUBMIT_BUTTON = 'cashSaveButton',
+
 	NEW_KEYWORD = 'new',
 
 	EXISTING_CC_VALIDATION_FIELDS =
@@ -39,6 +42,11 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 		CHECK_PAYMENT_AMOUNT
 	],
 
+	NEW_CASH_VALIDATION_FIELDS =
+	[
+		CASH_PAYMENT_AMOUNT
+	],
+
 	ERROR_MESSAGES =
 	{
 		DOLLAR_AMOUNT_INVALID : 'Please enter a valid dollar amount here.',
@@ -52,7 +60,10 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 	{
 		CC: 'At least one of the key fields above has an erroneous value or missing value. Please address' +
 			' whatever the problem is prior to submissing this form.',
-		CHECK: 'The check amount field has an erroneous or missing value. Please put an eligible value in that field.'
+		CHECK: 'The check amount field has an erroneous or missing value. Please put an eligible value in that' +
+			' field. Also make sure an image of the check has been uploaded.',
+		CASH: 'The cash amount field has an erroneous or missing value. Please put an eligible value in that' +
+			' field. Also make sure an image of the cash or money order deposit has been uploaded.'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -69,8 +80,11 @@ let _validationSet = new Set(),
 
 	_checkPaymentAmount = document.getElementById(CHECK_PAYMENT_AMOUNT),
 
+	_cashPaymentAmount = document.getElementById(CASH_PAYMENT_AMOUNT),
+
 	_ccSaveButton = document.getElementById(CC_SAVE_BUTTON),
-	_checkSaveButton = document.getElementById(CHECK_SUBMIT_BUTTON);
+	_checkSaveButton = document.getElementById(CHECK_SUBMIT_BUTTON),
+	_cashSaveButton = document.getElementById(CASH_SUBMIT_BUTTON);
 
 // ----------------- PRIVATE FUNCTIONS -----------------------------
 
@@ -131,6 +145,21 @@ function _validateCheck()
 	// Make sure none of the check fields are currently hosting an erroneous value
 	viewModel.isCheckFormSubmissible = viewModel.isCheckFormSubmissible && !(_validationTest(NEW_CHECK_VALIDATION_FIELDS));
 }
+
+/**
+ * Slightly specialized function for invoking the logic that validates a new potential cash or cash equivalent payment
+ *
+ * @author kinsho
+ */
+function _validateCash()
+{
+	// Ensure all the proper information has been put into place
+	viewModel.isCashFormSubmissible = (viewModel.cashAmount && viewModel.cashImage);
+
+	// Make sure none of the check fields are currently hosting an erroneous value
+	viewModel.isCashFormSubmissible = viewModel.isCashFormSubmissible && !(_validationTest(NEW_CASH_VALIDATION_FIELDS));
+}
+
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
@@ -364,6 +393,35 @@ Object.defineProperty(viewModel, 'checkAmount',
 	}
 });
 
+// Amount that the cash or cash instrument totals up to
+Object.defineProperty(viewModel, 'cashAmount',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__cashAmount;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__cashAmount = value;
+
+		// Make sure a valid amount is set here
+		let isInvalid = !(formValidator.isDollarAmount(value)) ||
+			(value.length && !(window.parseFloat(value) >= 0) );
+
+		// If the deposit amount is less than zero or greater than the remaining balance, we have an invalid amount
+		// Notice the use of conditional logic here to ensure that we're dealing with a number
+		isInvalid = isInvalid || window.parseFloat(value) < 0 || window.parseFloat(value) > viewModel.balanceRemaining;
+
+		rQueryClient.updateValidationOnField(isInvalid, _cashPaymentAmount, ERROR_MESSAGES.DOLLAR_AMOUNT_INVALID, _validationSet);
+		rQueryClient.setField(_cashPaymentAmount, value);
+		_validateCash();
+	}
+});
+
 // Flag indicating whether a check image is ready to be uploaded
 Object.defineProperty(viewModel, 'isCheckImageProvided',
 {
@@ -378,6 +436,23 @@ Object.defineProperty(viewModel, 'isCheckImageProvided',
 	set: (value) =>
 	{
 		viewModel.__checkImage = value;
+	}
+});
+
+// Flag indicating whether an image of a cash instrument deposit slip has been provided
+Object.defineProperty(viewModel, 'isCashImageProvided',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__cashImage;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__cashImage = value;
 	}
 });
 
@@ -400,14 +475,43 @@ Object.defineProperty(viewModel, 'isCheckFormSubmissible',
 		if (!(value))
 		{
 			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_ccSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CHECK);
+			tooltipManager.setTooltip(_checkSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CHECK);
 		}
 		else
 		{
-			tooltipManager.closeTooltip(_ccSaveButton.parentNode, true);
+			tooltipManager.closeTooltip(_checkSaveButton.parentNode, true);
 		}
 	}
 });
+
+// Cash form validation flag
+Object.defineProperty(viewModel, 'isCashFormSubmissible',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__isCashFormSubmissible;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__isCashFormSubmissible = value;
+
+		// Disable the button depending on whether the form can be submitted
+		if (!(value))
+		{
+			// Set up a tooltip indicating why the button is disabled
+			tooltipManager.setTooltip(_cashSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CASH);
+		}
+		else
+		{
+			tooltipManager.closeTooltip(_cashSaveButton.parentNode, true);
+		}
+	}
+});
+
 
 // ----------------- EXPORT LOGIC -----------------------------
 

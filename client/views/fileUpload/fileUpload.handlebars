@@ -2,55 +2,50 @@
 
 	{{> uploadSection _id=order._id }}
 
-	{{#if order.pictures.length}}
-		<div class='picturesContainer'>
-			<div class='uploadContainerHeader'>Pictures</div>
-			{{#unless doNotLoadOnInit}}
-				{{#each order.pictures}}
-					{{> fileThumbnail shareLink=shareLink index=@index orderId=../order._id }}
-				{{/each}}
-			{{/unless}}
+	<div class='picturesContainer {{#unless order.pictures.length}} hide {{/unless}}'>
+		<div class='uploadContainerHeader'>Pictures</div>
+		{{#unless doNotLoadOnInit}}
+			{{#each order.pictures}}
+				{{> fileThumbnail }}
+			{{/each}}
+		{{/unless}}
 
-			{{#if doNotLoadOnInit}}
-				{{#if order.pictures.length}}
-					<div class='loadPicturesLink' data-id='{{ order._id }}'>Load All Pictures...</div>
-				{{/if}}
+		{{#if doNotLoadOnInit}}
+			{{#if order.pictures.length}}
+				<div class='loadPicturesLink' data-order-id='{{ order._id }}'>Load All Pictures...</div>
 			{{/if}}
-		</div>
-	{{/if}}
+		{{/if}}
+	</div>
 
-	{{#if order.drawings.length}}
-		<div class='drawingsContainer'>
-			<div class='uploadContainerHeader'>Drawings</div>
-			{{#unless doNotLoadOnInit}}
-				{{#each order.drawings}}
-					{{> fileThumbnail shareLink=shareLink index=@index orderId=../order._id }}
-				{{/each}}
-			{{/unless}}
+	<div class='drawingsContainer  {{#unless order.drawings.length}} hide {{/unless}}'>
+		<div class='uploadContainerHeader'>Drawings</div>
+		{{#unless doNotLoadOnInit}}
+			{{#each order.drawings}}
+				{{> fileThumbnail }}
+			{{/each}}
+		{{/unless}}
 
-			{{#if doNotLoadOnInit}}
-				{{#if order.drawings.length}}
-					<div class='loadDrawingsLink' data-id='{{ order._id }}'>Load All Drawings...</div>
-				{{/if}}
+		{{#if doNotLoadOnInit}}
+			{{#if order.drawings.length}}
+				<div class='loadDrawingsLink' data-order-id='{{ order._id }}'>Load All Drawings...</div>
 			{{/if}}
-		</div>
-	{{/if}}
+		{{/if}}
+	</div>
 
-	{{#if order.files.length}}
-		<div class='filesContainer'>
-			<div class='uploadContainerHeader'>Files</div>
-			{{#unless doNotLoadOnInit}}
-				{{#each order.files}}
-					{{> fileThumbnail shareLink=shareLink index=@index orderId=../order._id }}
-				{{/each}}
-			{{/unless}}
-	
-			{{#if doNotLoadOnInit}}
-				{{#if order.files.length}}
-					<div class='loadFilesLink' data-id='{{ order._id }}'>Load All Files...</div>
-				{{/if}}
+	<div class='filesContainer  {{#unless order.files.length}} hide {{/unless}}'>
+		<div class='uploadContainerHeader'>Files</div>
+		{{#unless doNotLoadOnInit}}
+			{{#each order.files}}
+				{{> fileThumbnail }}
+			{{/each}}
+		{{/unless}}
+
+		{{#if doNotLoadOnInit}}
+			{{#if order.files.length}}
+				<div class='loadFilesLink' data-order-id='{{ order._id }}'>Load All Files...</div>
 			{{/if}}
-		</div>
-	{{/if}}
+		{{/if}}
+	</div>
 
+	<a class='downloadLink' href='' download=''></a>
 </div>

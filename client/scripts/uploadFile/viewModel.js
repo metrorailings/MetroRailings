@@ -8,8 +8,7 @@ import rQuery from 'client/scripts/utility/rQueryClient';
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-const UPLOAD_FILE_SECTION = 'fileUploadSection',
-	UPLOAD_FILE_SELECT = 'uploadFileType';
+const UPLOAD_FILE_SELECT = 'uploadFileType';
 
 // ----------------- CONSTRUCTOR --------------------------
 
@@ -23,7 +22,6 @@ const UPLOAD_FILE_SECTION = 'fileUploadSection',
 function generateViewModel(uploadSection)
 {
 	let viewModel = {},
-		fileUploadSection = uploadSection.getElementsByClassName(UPLOAD_FILE_SECTION)[0],
 		fileTypeSelect = uploadSection.getElementsByClassName(UPLOAD_FILE_SELECT)[0];
 
 	// Order ID
@@ -63,7 +61,7 @@ function generateViewModel(uploadSection)
 	});
 
 	// Set values into this view model depending on the values that are present in the HTML
-	viewModel.orderId = fileUploadSection.dataset.orderId;
+	viewModel.orderId = uploadSection.dataset.orderId;
 
 	return viewModel;
 }

@@ -30,7 +30,7 @@ _Handlebars.registerPartial('fileUpload', fileManager.fetchTemplateSync(FILE_UPL
 /**
  * The template for the thumbnails that represent uploaded files
  */
-_Handlebars.registerPartial('thumbnail', fileManager.fetchTemplateSync(FILE_UPLOAD_FOLDER, PARTIALS.THUMBNAIL));
+_Handlebars.registerPartial('fileThumbnail', fileManager.fetchTemplateSync(FILE_UPLOAD_FOLDER, PARTIALS.THUMBNAIL));
 
 /**
  * The template for the upload form

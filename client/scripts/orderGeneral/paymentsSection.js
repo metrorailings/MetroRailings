@@ -63,5 +63,5 @@ if (_paymentOptionHeaders)
 	for (let i = 0; i < _paymentOptionHeaders.length; i += 1)
 	{
 		_paymentOptionHeaders[i].addEventListener('click', switchPaymentForms);
-	}	
+	}
 }

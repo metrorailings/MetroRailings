@@ -7,6 +7,7 @@
 const controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
 	noteUtility = global.OwlStakes.require('controllers/utility/noteUtility'),
+	fileUtility = global.OwlStakes.require('controllers/utility/fileUploadUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -52,7 +53,7 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			agreementText,
-			allData, noteData, pageData, designData, order;
+			allData, noteData, fileUploadData, pageData, designData, order;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -69,17 +70,27 @@ module.exports =
 			order = await ordersDAO.searchOrderById(parseInt(params.id, 10));
 		}
 
-		// Gather the data we'll need to properly render the page
+		// Gather the foundational data we'll need to properly render the page
 		allData = await orderGeneralUtility.basicInit(cookie);
 		noteData = await noteUtility.basicInit();
+		fileUploadData = await fileUtility.basicInit();
 		designData = allData.designData;
+
+		// Set the foundational data into place
 		pageData = allData.pageData;
 		pageData = rQuery.mergeObjects(noteData.pageData, pageData);
+		pageData = rQuery.mergeObjects(fileUploadData.pageData, pageData);
 		pageData.order =  order || { status : DEFAULT_STATUS };
 
 		// Determine which agreement text to present on the page
 		agreementText = order && order.text && order.text.agreement && order.text.agreement.join('\n\n');
 		pageData.agreement = agreementText || await fileManager.fetchFile(VIEWS_DIRECTORY + CONTROLLER_FOLDER + '/' + DEFAULT_AGREEMENT_TEXT);
+
+		// If the order has notes, pull the full version of those notes from the back-end
+		if (pageData.order._id && pageData.order.notes && pageData.order.notes.length)
+		{
+			pageData.order.notes = await noteUtility.retrieveNotesByOrderId(pageData.order._id);
+		}
 
 		// Now render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);

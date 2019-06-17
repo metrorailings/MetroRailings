@@ -15,6 +15,9 @@ let _dropbox = require('dropbox'),
 const DROPBOX_DOMAIN = 'www.dropbox.com',
 	DIRECT_LINK_DROPBOX_DOMAIN = 'dl.dropboxusercontent.com',
 
+	PDF_THUMBNAIL_LINK = 'client/images/miscellany/pdfThumbnail.png',
+	PDF_EXTENSION = '.pdf',
+
 	JPEG_EXTENSIONS =
 	{
 		jpg : true,
@@ -81,7 +84,7 @@ let dropboxModule =
 			}
 
 			// Conceive the path where the file will be stored within Dropbox
-			path = directory + orderID + '-' + new Date().getTime() + '-';
+			path = directory + orderID + '-' + new Date().getTime() + '-' + filenames[i];
 
 			try
 			{
@@ -95,15 +98,6 @@ let dropboxModule =
 					mute: false
 				});
 
-				// Generate a thumbnail of the file
-				thumbnail = await dropboxConnection.filesGetThumbnail(
-					{
-						path: dropboxMetadata.path_lower,
-						size: 'w128h128',
-						mode: 'bestfit'
-					});
-				dropboxMetadata.thumbnail = thumbnail.path_lower;
-
 				// Mark the file as shareable so that we can store a link that points permanently to the file
 				shareLink = await dropboxConnection.sharingCreateSharedLink(
 				{
@@ -112,13 +106,38 @@ let dropboxModule =
 				});
 				dropboxMetadata.shareLink = shareLink.url.replace(DROPBOX_DOMAIN, DIRECT_LINK_DROPBOX_DOMAIN);
 
-				// Mark the thumbnail as permanently shareable as well
-				shareLink = await dropboxConnection.sharingCreateSharedLink(
+				// For all image files, generate a thumbnail of that image through Dropbox
+				// For all other files, use generic file type placeholder images for now
+				// Also mark files on whether they are an image
+				if (filenames[i].endsWith(PDF_EXTENSION))
 				{
-					path: dropboxMetadata.thumbnail,
-					short_url: false
-				});
-				dropboxMetadata.thumbnail = shareLink.url.replace(DROPBOX_DOMAIN, DIRECT_LINK_DROPBOX_DOMAIN);
+					dropboxMetadata.thumbnail = PDF_THUMBNAIL_LINK;
+					dropboxMetadata.isImage = false;
+				}
+				else
+				{
+					// Generate a thumbnail of the file
+					thumbnail = await dropboxConnection.filesGetThumbnail(
+					{
+						path: dropboxMetadata.path_lower,
+						size: 'w128h128',
+						mode: 'bestfit'
+					});
+					dropboxMetadata.thumbnail = thumbnail.path_lower;
+
+					// Mark the thumbnail as permanently shareable as well
+					shareLink = await dropboxConnection.sharingCreateSharedLink(
+					{
+						path: dropboxMetadata.thumbnail,
+						short_url: false
+					});
+					dropboxMetadata.thumbnail = shareLink.url.replace(DROPBOX_DOMAIN, DIRECT_LINK_DROPBOX_DOMAIN);
+
+					dropboxMetadata.isImage = true;
+				}
+
+				// Record the file name as a shortname which we will use to refer properly to the file
+				dropboxMetadata.shortname = filenames[i];
 
 				metadataCollection.push(dropboxMetadata);
 			}

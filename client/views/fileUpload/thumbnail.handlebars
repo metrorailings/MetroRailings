@@ -1,2 +1,9 @@
-<img src='{{ shareLink }}' alt='File Thumbnail...' class='uploadedImageThumbnail' data-order-id='{{ orderId }}'/>
-<i class='fa fa-times-circle deleteImage'></i>
+<div class='thumbnailContainer'>
+	<img src='{{ thumbnail }}' alt='File Thumbnail...' class='uploadedImageThumbnail'
+		 data-full-src='{{ shareLink }}' data-name='{{ name }}' data-is-image='{{#if isImage}}true{{/if}}' 
+		 data-shortname='{{ shortname }}' />
+	<i class='fa fa-times-circle deleteImage'></i>	
+	{{#unless isImage}}
+		<span class='thumbnailTitleBar'>{{ shortname }}</span>
+	{{/unless}}
+</div>

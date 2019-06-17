@@ -48,7 +48,9 @@ let _sortFilterLinks = document.getElementsByClassName(SORT_FILTER_CLASS),
 	_searchFilter = document.getElementById(SEARCH_FILTER),
 	_resetCompanyIcon = document.getElementById(RESET_COMPANY_ICON),
 	_resetSearchIcon = document.getElementById(RESET_SEARCH_ICON),
-	_orderListing = document.getElementById(ORDER_LISTINGS_CONTAINER);
+	_orderListing = document.getElementById(ORDER_LISTINGS_CONTAINER),
+
+	_initRendered = false;
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -201,7 +203,12 @@ Object.defineProperty(viewModel, 'orders',
 	{
 		viewModel.__orders = orderUtility.wrapOrdersInModels(value);
 
-		_renderOrders(true);
+		if ( !(_initRendered) )
+		{
+			_renderOrders(true);
+
+			_initRendered = true;
+		}
 	}
 });
 
@@ -369,7 +376,7 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	set: () =>
 	{
-		let dateToSearch = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) || DEFAULT_MODIFICATION_DATE);
+		let dateToSearch = (window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) ? JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY)) : DEFAULT_MODIFICATION_DATE);
 
 		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
 		{
