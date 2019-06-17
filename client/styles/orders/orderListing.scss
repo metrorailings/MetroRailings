@@ -124,7 +124,8 @@
 
 	flex-direction: column;
 	width: 800px;
-	max-height: 8000px;
+	height: auto;
+	min-height: 800px;
 
 	opacity: 1.0;
 	overflow: hidden;

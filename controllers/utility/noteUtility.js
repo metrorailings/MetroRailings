@@ -7,6 +7,7 @@
 const _Handlebars = require('handlebars'),
 
 	userDAO = global.OwlStakes.require('data/DAO/userDAO'),
+	notesDAO = global.OwlStakes.require('data/DAO/notesDAO'),
 
 	cookieManager = global.OwlStakes.require('utility/cookies'),
 	fileManager = global.OwlStakes.require('utility/fileManager');
@@ -79,5 +80,21 @@ module.exports =
 		return {
 			pageData: pageData
 		};
+	},
+
+	/**
+	 * Function responsible for collecting all the complete notes that belong to a particular order
+	 *
+	 * @param {Number} orderId - the ID of the order whose notes will be fetched
+	 *
+	 * @author kinsho
+	 */
+	retrieveNotesByOrderId: async function (orderId)
+	{
+		let noteData = {};
+
+		noteData = await notesDAO.fetchNotesByOrderId(parseInt(orderId, 10));
+
+		return noteData;
 	}
 };

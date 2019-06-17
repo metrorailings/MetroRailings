@@ -4,7 +4,7 @@ import noteHandler from 'client/scripts/notes/notes';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-let NOTE_LISTING = 'newNoteUpload';
+let NOTE_LISTING = 'noteListing';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 

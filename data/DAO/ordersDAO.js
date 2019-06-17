@@ -486,7 +486,12 @@ let ordersModule =
 		updateRecord = mongo.formUpdateOneQuery(
 		{
 			_id: order._id
-		}, order, false);
+		},
+		{
+			payments: order.payments,
+			dates: order.dates,
+			modHistory: order.modHistory
+		}, false);
 
 		// Save the order now that it has been updated and the payment has been successfully made
 		try
@@ -715,7 +720,8 @@ let ordersModule =
 			pictures: order.pictures,
 			drawings: order.drawings,
 			files: order.files,
-			modHistory: order.modHistory
+			modHistory: order.modHistory,
+			dates: order.dates
 		},
 		false);
 
@@ -736,6 +742,153 @@ let ordersModule =
 	updateOrderWithImages: (order, fileMetas) => { order.pictures.push(...fileMetas); },
 	updateOrderWithDrawings: (order, fileMetas) => { order.drawings.push(...fileMetas); },
 	updateOrderWithFiles: (order, fileMetas) => { order.files.push(...fileMetas); },
+
+	/**
+	 * Function responsible for deleting a file from a particular order
+	 *
+	 * @param {Number} orderId - the ID of the order from which to remove a file
+	 * @param {String} filename - the name of the file to remove from the order
+	 *
+	 * @returns {Object} - the metadata for the newly-removed file
+	 *
+	 * @author kinsho
+	 */
+	removeFileFromOrder: async function (orderId, filename)
+	{
+		try
+		{
+			let order = await ordersModule.searchOrderById(orderId),
+				files = [...order.pictures, ...order.drawings, ...order.files],
+				updateRecord, metadata,
+				i;
+
+			// Find the file to delete
+			for (i = 0; i < files.length; i += 1)
+			{
+				if (files[i].name === filename)
+				{
+					break;
+				}
+			}
+
+			// Splice out the file from its collection
+			if (i < order.pictures.length)
+			{
+				metadata = order.pictures.splice(i, 1);
+			}
+			else if (i < order.pictures.length + order.drawings.length)
+			{
+				metadata = order.drawings.splice(i - order.pictures.length, 1);
+			}
+			else
+			{
+				metadata = order.files.splice(i - order.pictures.length - order.drawings.length, 1);
+			}
+
+			// Generate a record to push the changes into the database
+			updateRecord = mongo.formUpdateOneQuery(
+				{
+					_id: order._id
+				},
+				{
+					pictures: order.pictures,
+					drawings: order.drawings,
+					files: order.files
+				},
+				false);
+
+			// Update the order within our database
+			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
+
+			return metadata[0];
+		}
+		catch(error)
+		{
+			console.log('Ran into an error deleting a file ' + (filename) + ' for order ' + orderId);
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
+	 * Function responsible for fetching all pictures that belong to a particular order
+	 *
+	 * @param {Number} orderId - the ID of the order from which to fetch all pictures
+	 *
+	 * @returns {Array<Object>} - a collection of metadata structs that represent all images that belong to an order
+	 *
+	 * @author kinsho
+	 */
+	fetchAllPictures: async function (orderId)
+	{
+		try
+		{
+			let order = await this.searchOrderById(orderId);
+
+			return order.pictures;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching pictures from an order...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
+	 * Function responsible for fetching all drawings that belong to a particular order
+	 *
+	 * @param {Number} orderId - the ID of the order from which to fetch all drawings
+	 *
+	 * @returns {Array<Object>} - a collection of metadata structs that represent all drawings that belong to an order
+	 *
+	 * @author kinsho
+	 */
+	fetchAllDrawings: async function (orderId)
+	{
+		try
+		{
+			let order = await this.searchOrderById(orderId);
+
+			return order.drawings;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching drawings from an order...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
+	 * Function responsible for fetching all miscellaneous files that belong to a particular order
+	 *
+	 * @param {Number} orderId - the ID of the order from which to fetch all files
+	 *
+	 * @returns {Array<Object>} - a collection of metadata structs that represent all miscellaneous files that belong
+	 * 		to an order
+	 *
+	 * @author kinsho
+	 */
+	fetchAllFiles: async function (orderId)
+	{
+		try
+		{
+			let order = await this.searchOrderById(orderId);
+
+			return order.files;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching files from an order...');
+			console.log(error);
+
+			return false;
+		}
+	},
 
 	/**
 	 * Function responsible for saving changes made to an order and also generating transactions to either charge the
