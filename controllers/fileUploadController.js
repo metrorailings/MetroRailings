@@ -10,7 +10,7 @@ const responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	dropbox = global.OwlStakes.require('utility/dropbox'),
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-	usersDAO = global.OwlStakes.require('data/DAO/usersDAO');
+	usersDAO = global.OwlStakes.require('data/DAO/userDAO');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -80,6 +80,88 @@ module.exports =
 					statusCode: responseCodes.BAD_REQUEST
 				};
 			}
+		}
+	},
+
+	/**
+	 * Function responsible for deleting the picture from the order and from Dropbox
+	 *
+	 * @param {Object} params
+	 *
+	 * @author kinsho
+	 */
+	deleteFile: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let metadata = await ordersDAO.removeFileFromOrder(parseInt(params.id, 10), params.filename);
+
+			await dropbox.deleteFile(metadata.path_lower);
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
+	},
+
+	/**
+	 * Function responsible for loading all pictures that belong to an order
+	 *
+	 * @param {Object} params
+	 *
+	 * @author kinsho
+	 */
+	loadPictures: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let pictures = await ordersDAO.fetchAllPictures(parseInt(params.id, 10));
+
+			return {
+				statusCode: responseCodes.OK,
+				data: pictures
+			};
+		}
+	},
+
+	/**
+	 * Function responsible for loading all drawings that belong to an order
+	 *
+	 * @param {Object} params
+	 *
+	 * @author kinsho
+	 */
+	loadDrawings: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let drawings = await ordersDAO.fetchAllDrawings(parseInt(params.id, 10));
+
+			return {
+				statusCode: responseCodes.OK,
+				data: drawings
+			};
+		}
+	},
+
+	/**
+	 * Function responsible for loading all miscellaneous files that belong to an order
+	 *
+	 * @param {Object} params
+	 *
+	 * @author kinsho
+	 */
+	loadFiles: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			let files = await ordersDAO.fetchAllFiles(parseInt(params.id, 10));
+
+			return {
+				statusCode: responseCodes.OK,
+				data: files
+			};
 		}
 	}
 };

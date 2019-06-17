@@ -55,7 +55,7 @@ const ORDER_SHARED_FOLDER = 'orderGeneral',
 		DESIGN_CATEGORY: 'designCategory',
 		DEPOSIT_MODAL: 'depositModal',
 		MULTI_TEXT: 'multiText',
-		PICTURES: 'picturesSection',
+		FILES: 'filesSection',
 		PAYMENTS: 'paymentsSection'
 	};
 
@@ -152,9 +152,9 @@ _Handlebars.registerPartial('depositModal', fileManager.fetchTemplateSync(ORDER_
 _Handlebars.registerPartial('multiText', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.MULTI_TEXT));
 
 /**
- * The template for the order pictures section
+ * The template for the order files section
  */
-_Handlebars.registerPartial('orderPictures', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PICTURES));
+_Handlebars.registerPartial('orderFiles', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.FILES));
 
 /**
  * The template for the order payments section
@@ -175,7 +175,6 @@ module.exports =
 	{
 		let designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
-			picturesTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PICTURES),
 			pageData,
 			designData;
 
@@ -207,7 +206,6 @@ module.exports =
 			tariffRate: (pricingData.TARIFF_RATE * 100).toFixed(2),
 			designs: designData,
 			designErrorsTemplate: designErrorsTemplate,
-			picturesTemplate: picturesTemplate,
 			depositModal: depositModalTemplate,
 		};
 

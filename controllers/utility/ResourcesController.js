@@ -4,7 +4,7 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
+let _Q = require('q'),
 	_sass = require('node-sass'),
 	_zlib = require('zlib'),
 
@@ -14,7 +14,7 @@ var _Q = require('q'),
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var SCSS_EXTENSION = '.scss',
+const SCSS_EXTENSION = '.scss',
 
 	SCSS_INCLUDE_PATHS =
 	[
@@ -25,7 +25,7 @@ var SCSS_EXTENSION = '.scss',
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
-var zlibGZipper = _Q.denodeify(_zlib.gzip);
+let zlibGZipper = _Q.denodeify(_zlib.gzip);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -38,7 +38,7 @@ module.exports =
 	 */
 	init: async function (url)
 	{
-		var fileContents,
+		let fileContents,
 			gzipContents;
 
 		try

@@ -92,7 +92,7 @@
 	}
 }
 
-.uploadingText
+.uploadingText, #loadingText
 {
 	@extend %loaderText;
 	@include animationSettings($keyframeSet: fadeIntoView, $duration: 1.5s, $timing: linear, $iterations: 1, $persist: true);

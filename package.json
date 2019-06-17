@@ -23,7 +23,7 @@
     "q": "~1",
     "randomstring": "*",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4",
+    "request-promise-native": "^4.2.4",
     "sharp": "^0.21.3",
     "showdown": "^1.9.0",
     "sleep": "^6.0.0",

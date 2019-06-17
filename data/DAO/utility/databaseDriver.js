@@ -4,14 +4,14 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _Q = require('q'),
+let _Q = require('q'),
 	_mongodb = require('mongodb'),
 
 	config = global.OwlStakes.require('config/config');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var INSERT_ONE = 'insertOne',
+const INSERT_ONE = 'insertOne',
 	UPDATE_ONE = 'updateOne',
 	UPDATE_MANY = 'updateMany',
 	DELETE_ONE = 'deleteOne',
@@ -19,7 +19,7 @@ var INSERT_ONE = 'insertOne',
 
 // ----------------- PRIVATE VARIABLES --------------------------
 
-var client = _mongodb.MongoClient, // The client that will be used to instantiate our connection to the database
+let client = _mongodb.MongoClient, // The client that will be used to instantiate our connection to the database
 	db, // The actual connection which we can use to perform CRUD operations on data
 
 	connect; // The transformed version of the function that will be used to connect to the database
@@ -46,7 +46,7 @@ module.exports =
 			try
 			{
 				// Initialize the MongoDB client
-				var clientConnection = await connect(config.DATABASE_URL, { useNewUrlParser: true });
+				let clientConnection = await connect(config.DATABASE_URL, { useNewUrlParser: true });
 				db = clientConnection.db(config.DATABASE_NAME);
 				console.log('Connected to Mongo!');
 			}

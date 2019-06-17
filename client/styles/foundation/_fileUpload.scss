@@ -36,6 +36,11 @@
 	{
 		opacity: 0.0;
 	}
+
+	& > .labelText
+	{
+		margin-right: 20px;
+	}
 }
 
 .uploadFileType
@@ -111,6 +116,11 @@
 	align-items: center;
 	justify-content: center;
 	flex-wrap: wrap;
+
+	&.hide
+	{
+		display: none;
+	}
 }
 
 .uploadContainerHeader
@@ -121,6 +131,8 @@
 	{
 		top: 10px;
 	}
+
+	width: 100%;
 }
 
 .loadPicturesLink, .loadDrawingsLink, .loadFilesLink
@@ -136,6 +148,7 @@
 	}
 
 	padding: 0px;
+	width: 100%;
 
 	&:hover
 	{
@@ -144,7 +157,7 @@
 	}
 }
 
-.uploadedImageThumbnail
+.thumbnailContainer
 {
 	margin:
 	{
@@ -157,5 +170,66 @@
 	max-width: 150px;
 	max-height: 150px;
 
+	position: relative;
+}
+
+.uploadedImageThumbnail
+{
+	width: 150px;
+	max-height: 150px;
+
 	cursor: pointer;
+}
+
+.deleteImage
+{
+	@include shiftTransition($x: -5%, $y: -50%);
+
+	position: absolute;
+	top: 0%;
+	left: 100%;
+
+	z-index: 20;
+	cursor: pointer;
+	color: map-get($COLORS, indianRedTheme);
+}
+
+.thumbnailTitleBar
+{
+	@extend %tooltipText;
+
+	position: absolute;
+	top: 80%;
+	width: 150px;
+	height: 25px;
+
+	z-index: 20;
+	background-color: rgba(0, 0, 0, 0.55);
+
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.thumbnailTitleBar-modal
+{
+	@extend %decorativeText;
+
+	margin:
+	{
+		top: 15px;
+	}
+
+	width: 100%;
+
+	text-align: center;
+}
+
+.fileDownloadLink
+{
+	display: none;
 }

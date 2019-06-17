@@ -96,6 +96,6 @@ _checkUploadBox.addEventListener('click', () =>
 {
 	_checkUploadFile.click();
 });
-_checkUploadFile.addEventListener('click', uploadImage);
+_checkUploadFile.addEventListener('change', uploadImage);
 
 _checkSubmitButton.addEventListener('click', submitCheckForm);

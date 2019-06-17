@@ -4,13 +4,15 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var router = global.OwlStakes.require('config/router');
+let router = global.OwlStakes.require('config/router');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var INTERNAL_SERVER_ERROR_MESSAGE = 'Something\'s up with our server here. We apologize for any inconvenience here,' +
+const INTERNAL_SERVER_ERROR_MESSAGE = 'Something\'s up with our server here. We apologize for any inconvenience here,' +
 	'but rest assured, the administrator has been notified and somebody will address this issue soon. Until ' +
 	'then, please go back to the home page. Once again, we apologize for having to do this.',
+
+	FORCE_DOWNLOAD_PARAM = 'download=y',
 
 	JSON_CONTENT_TYPE = 'application/json';
 
@@ -29,18 +31,27 @@ module.exports =
 	 */
 	sendResponse: function(response, responseData, url)
 	{
-		var contentEncoding = !(router.isImage(url)) ? 'gzip' : '';
-
-		try
-		{
-			// Write out the important headers before launching the response back to the client
-			response.writeHead(200,
+		let contentEncoding = !(router.isImage(url)) ? 'gzip' : '',
+			headers =
 			{
 				'Content-Type' : router.deduceContentType(responseData.redirect ? '' : url),
 				'Content-Encoding' : contentEncoding,
 				'Access-Control-Allow-Origin' : '*',
 				'Cache-Control' : 'no-cache, no-store'
-			});
+			};
+
+		// Check if the URL features a parameter that mandates that the data being returned be downloaded as a file
+		// by the browser
+		if (url.indexOf(FORCE_DOWNLOAD_PARAM) > -1)
+		{
+			headers['Content-Disposition'] = 'attachment';
+			headers['Content-Encoding'] = '';
+		}
+
+		try
+		{
+			// Write out the important headers before launching the response back to the client
+			response.writeHead(200, headers);
 
 			console.log('Response ready to be returned from URL: /' + url);
 
@@ -80,7 +91,7 @@ module.exports =
 	 */
 	sendPostResponse: function(response, responseData, statusCode, url, cookie)
 	{
-		var responseHeaders =
+		let responseHeaders =
 			{
 				'Content-Type' : JSON_CONTENT_TYPE,
 				'Content-Encoding' : '',

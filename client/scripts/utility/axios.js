@@ -11,7 +11,7 @@ import notifier from 'client/scripts/utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var LOADING_VEIL = 'baseLoaderOverlay',
+const LOADING_VEIL = 'baseLoaderOverlay',
 	VISIBILITY_CLASS = 'show',
 
 	DEFAULT_CONFIG =
@@ -21,7 +21,7 @@ var LOADING_VEIL = 'baseLoaderOverlay',
 
 // ----------------- PRIVATE MEMBERS --------------------------
 
-var _axiosConnection; // The actual instance of axios that we will be using to manage HTTP transactions
+let _axiosConnection; // The actual instance of axios that we will be using to manage HTTP transactions
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
 
@@ -47,7 +47,7 @@ function _genericErrorLogger(response)
  */
 function _toggleLoadingVeil()
 {
-	var veil = document.getElementById(LOADING_VEIL);
+	let veil = document.getElementById(LOADING_VEIL);
 
 	if (veil.classList.contains(VISIBILITY_CLASS))
 	{
@@ -61,7 +61,7 @@ function _toggleLoadingVeil()
 
 // ----------------- MODULE ---------------------------
 
-var axiosModule =
+let axiosModule =
 {
 	/**
 	 * Generic function to leverage when making POST requests from the client
@@ -80,7 +80,7 @@ var axiosModule =
 	 */
 	post: function(url, payload, showLoader, requestHeaders, customTimeout)
 	{
-		var configObj = DEFAULT_CONFIG;
+		let configObj = DEFAULT_CONFIG;
 
 		configObj.timeout = customTimeout || configObj.timeout;
 		configObj.headers = requestHeaders || {};
