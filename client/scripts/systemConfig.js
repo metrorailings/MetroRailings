@@ -32,6 +32,7 @@ SystemJS.config({
 		printOrderDetails: '/client/scripts/printOrderDetails/main.js',
 		paperOrder: '/client/scripts/paperOrder/main.js',
 		tariffInfo: '/client/scripts/tariffInfo/main.js',
+		shopSchedule: '/client/scripts/shopSchedule/main.js',
 
 		conventionContact: '/client/scripts/conventionContact/main.js',
 		conventionGallery: '/client/scripts/conventionGallery/main.js',

@@ -1,0 +1,118 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/fonts';
+@import '../foundation/colors';
+@import '../foundation/animations';
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#actionModalBody
+{
+	padding: 5px;
+}
+
+#statusModal
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	& > div
+	{
+		margin:
+		{
+			left: auto;
+			right: auto;
+		}
+
+		padding: 10px;
+	}
+}
+
+#shopStatusIcons
+{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+
+	& > i
+	{
+		margin:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		font-size: map-get($FONTS, largePlusFontSize);
+
+		color: map-get($COLORS, tomatoOrangeTheme);
+	}
+}
+
+.statusIcon
+{
+	margin:
+	{
+		left: 10px;
+		right: 10px;
+	}
+
+	position: relative;
+	cursor: pointer;
+
+	& > img
+	{
+		@include transitionSettings($property: all, $duration: 0.4s);
+
+		border:
+		{
+			width: 5px;
+			style: solid;
+			color: map-get($COLORS, whiteTheme);
+		}
+
+		width: 150px;
+		height: 150px;
+
+		filter: grayscale(1);
+		-webkit-filter: grayscale(1);
+
+		&.selected
+		{
+			border:
+			{
+				color: map-get($COLORS, darkBlueTheme);
+			}
+
+			filter: greyscale(0);
+			-webkit-filter: grayscale(0);
+		}
+	}
+
+	& > div
+	{
+		@extend %tooltipText;
+
+		margin:
+		{
+			left: 5px;
+		}
+
+		position: absolute;
+
+		top: 75%;
+		left: 0;
+		z-index: 20;
+
+		height: 25px;
+
+		background-color: rgba(0, 0, 0, 0.55);
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}

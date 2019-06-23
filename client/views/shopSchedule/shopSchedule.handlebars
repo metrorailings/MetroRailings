@@ -1,0 +1,49 @@
+<div class='pageHeader'>
+	<h3>Orden de Trabajos</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<div id='openOrderList'>
+	{{#each orders}}
+		<div class='openOrder'>
+			<div class='shopListColumnHeaders'>
+				<span>ID</span>
+				<span>Nombre</span>
+				<span>Compañía</span>
+				<span>Tipo de Producto</span>
+				<span>Estado</span>
+				<span>Fecha de Entrega</span>
+			</div>
+			<div class='infoSection'>
+				<span>{{ _id }}</span>
+				<span>{{ customer.name }}</span>
+				<span>{{#if customer.company}} {{ customer.company }} {{else}} -- {{/if}}</span>
+				<span>{{#map_design_code_to_spanish_name design.type}}{{/map_design_code_to_spanish_name}}</span>
+				<span class='statusLink' data-order-id='{{ _id }}' data-status='{{ status }}'>
+					{{#translate_status status }}{{/translate_status}}
+				</span>
+				<span class='dueDate'>
+					{{#if dates.due }}
+						{{#format_date_for_input dates.due}}{{/format_date_for_input}}
+					{{else}}
+						N/A
+					{{/if}}
+				</span>
+			</div>
+			<div class='filesSection'>
+				{{> fileUpload order=this doNotLoadOnInit=true doNotAllowChanges=true }}
+			</div>
+		</div>
+
+	{{/each}}
+</div>
+
+{{> gallery}}
+
+{{> actionModal }}
+
+{{> uploadTemplates }}
+
+<script id='statusModalTemplate' type='text/x-handlebars-template'>
+	{{{ statusModalTemplate }}}
+</script>
