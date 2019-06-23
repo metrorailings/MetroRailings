@@ -239,3 +239,15 @@ Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
 {
 	return num.toFixed(decimalDigits);
 });
+
+/**
+ * Handlebars helper function to translate an order status into Spanish text
+ *
+ * @params {String} status - the status to translate
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('translate_status', function(status)
+{
+	return statuses.getSpanishTranslation(status);
+});

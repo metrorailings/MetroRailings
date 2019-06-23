@@ -1,0 +1,164 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/general';
+@import '../foundation/fonts';
+@import '../foundation/form';
+@import '../foundation/responsive';
+@import '../foundation/colors';
+@import '../foundation/modal';
+@import '../foundation/adminOnly';
+@import '../foundation/animations';
+@import '../foundation/gallery';
+@import '../foundation/fileUpload';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#languageSelection
+{
+	display: none;
+}
+
+.shopListColumnHeaders
+{
+	@extend %tabularSmallHeaderText;
+
+	border-bottom:
+	{
+		width: 1px;
+		color: map-get($COLORS, lightGrayTheme);
+		style: solid;
+	}
+
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: map-get($COLORS, smokeWhiteTheme);
+
+	& > span
+	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		min-height: 70px;
+
+		&:not(:last-of-type)
+		{
+			border-right:
+			{
+				width: 0.5px;
+				color: map-get($COLORS, lightGrayTheme);
+				style: solid;
+			}
+		}
+	}
+}
+
+#openOrderList
+{
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	width: 90%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.openOrder
+{
+	@extend %smallSignificantText;
+
+	border:
+	{
+		width: 2px;
+		color: map-get($COLORS, darkerGrayTheme);
+		style: solid;
+		radius: 4px;
+	}
+
+	margin:
+	{
+		top: 25px;
+		bottom: 25px;
+	}
+
+	box-shadow: -0.5px 1.5px 5px map-get($COLORS, lightGrayTheme);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.infoSection
+{
+	border-bottom:
+	{
+		width: 1.5px;
+		color: map-get($COLORS, lightGrayTheme);
+		style: solid;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: row;
+
+	width: 100%;
+
+	& > span
+	{
+		padding:
+		{
+			left: 10px;
+			right: 10px;
+		}
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		flex: 1;
+		min-height: 70px;
+
+		&:not(:last-of-type)
+		{
+			border-right:
+			{
+				width: 0.5px;
+				color: map-get($COLORS, lightGrayTheme);
+				style: solid;
+			}
+		}
+	}
+}
+
+.filesSection
+{
+	width: 100%;
+}
+
+.statusLink
+{
+	color: map-get($COLORS, darkerBlueTheme);
+
+	text-decoration: underline;
+
+	cursor: pointer;
+}
+
+.dueDate
+{
+	font-weight: 700;
+	font-style: italic;
+}

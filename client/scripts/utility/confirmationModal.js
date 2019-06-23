@@ -4,7 +4,7 @@
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var MODAL_OVERLAY = 'confirmationModalOverlay',
+const MODAL_OVERLAY = 'confirmationModalOverlay',
 	CONFIRMATION_MODAL = 'confirmationModal',
 	CONFIRMATION_MODAL_BODY = 'confirmationModalBody',
 
@@ -21,7 +21,7 @@ var MODAL_OVERLAY = 'confirmationModalOverlay',
 
 // ----------------- PRIVATE MEMBERS --------------------------
 
-var _yesCallback, // the callback function to execute when the user clicks yes
+let _yesCallback, // the callback function to execute when the user clicks yes
 	_noCallback, // the callback function to execute when the user clicks no
 	_modalExitCallback, // the callback function to execute once the modal finally exits (either the yes or no callback)
 	_messages, // the collection of messages to show to the user, one after the other
@@ -143,7 +143,7 @@ function cancelled()
 
 // ----------------- MODULE ---------------------------
 
-var modalModule =
+let modalModule =
 {
 	/**
 	 * Function responsible for initializing and launching a new modal
@@ -174,8 +174,13 @@ var modalModule =
 
 // ----------------- LISTENER INITIALIZATION --------------------------
 
-document.getElementById(CONFIRMATION_MODAL_YES_BUTTON).addEventListener('click', confirmed);
-document.getElementById(CONFIRMATION_MODAL_NO_BUTTON).addEventListener('click', cancelled);
+// Only attach listeners should the modal be present. It's possible that this script can be invoked even when there
+// isn't a confirmation modal on screen
+if (document.getElementById(CONFIRMATION_MODAL_YES_BUTTON))
+{
+	document.getElementById(CONFIRMATION_MODAL_YES_BUTTON).addEventListener('click', confirmed);
+	document.getElementById(CONFIRMATION_MODAL_NO_BUTTON).addEventListener('click', cancelled);
+}
 
 // ----------------- EXPORT ---------------------------
 

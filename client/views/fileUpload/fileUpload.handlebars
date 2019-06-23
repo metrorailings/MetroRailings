@@ -1,6 +1,8 @@
 <div class='filesListing'>
 
-	{{> uploadSection _id=order._id }}
+	{{#unless doNotAllowChanges}}
+		{{> uploadSection _id=order._id }}
+	{{/unless}}
 
 	<div class='picturesContainer {{#unless order.pictures.length}} hide {{/unless}}'>
 		<div class='uploadContainerHeader'>Pictures</div>

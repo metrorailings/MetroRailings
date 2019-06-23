@@ -34,12 +34,23 @@ const ALL_ORDER_STATUSES =
 
 	PRODUCTION_STATUSES =
 	{
+		material : true,
 		layout : true,
 		welding : true,
 		grinding : true,
 		painting : true
 	},
-	
+
+	SPANISH_SHOP_STATUSES =
+	{
+		material : 'Material',
+		layout : 'Trazar',
+		welding : 'Soldar',
+		grinding : 'Pulir',
+		painting : 'Pintar',
+		install : 'Instalar'
+	},
+
 	STATUS_DESCRIPTIONS =
 	{
 		pending: 'Your order is <b>pending</b> your approval! Please check your e-mail and see if you received an' +
@@ -63,11 +74,7 @@ const ALL_ORDER_STATUSES =
 	},
 
 	LIVE_STATUS = 'open',
-	GENERAL_SHOP_STATUS = 'production',
-	PROSPECT_STATUS = 'prospect',
-	CANCELLED_STATUS = 'cancelled';
-
-// ----------------- MODULE DEFINITION --------------------------
+	GENERAL_SHOP_STATUS = 'production';
 
 // ----------------- EXPORT MODULE --------------------------
 
@@ -125,6 +132,20 @@ module.exports =
 	getVerboseStatusDescription: function(status)
 	{
 		return STATUS_DESCRIPTIONS[status];
+	},
+
+	/**
+	 * Function responsible for returning the spanish translation for the passed status, if one exists
+	 *
+	 * @param {String} status - the status to translate
+	 *
+	 * @returns {String} - the spanish translation of that status
+	 *
+	 * @author kinsho
+	 */
+	getSpanishTranslation: function (status)
+	{
+		return SPANISH_SHOP_STATUSES[status] || '';
 	},
 
 	LIVE: LIVE_STATUS,

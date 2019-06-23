@@ -2,7 +2,9 @@
 	<img src='{{ thumbnail }}' alt='File Thumbnail...' class='uploadedImageThumbnail'
 		 data-full-src='{{ shareLink }}' data-name='{{ name }}' data-is-image='{{#if isImage}}true{{/if}}' 
 		 data-shortname='{{ shortname }}' />
-	<i class='fa fa-times-circle deleteImage'></i>	
+	{{#if showDeleteIcon}}
+		<i class='fa fa-times-circle deleteImage'></i>
+	{{/if}}
 	{{#unless isImage}}
 		<span class='thumbnailTitleBar'>{{ shortname }}</span>
 	{{/unless}}

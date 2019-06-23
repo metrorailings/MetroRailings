@@ -21,6 +21,12 @@ const UPLOAD_FILE_SELECT = 'uploadFileType';
  */
 function generateViewModel(uploadSection)
 {
+	// If the form is not even present on screen, do not bother executing any further view model logic
+	if ( !(uploadSection) )
+	{
+		return false;
+	}
+
 	let viewModel = {},
 		fileTypeSelect = uploadSection.getElementsByClassName(UPLOAD_FILE_SELECT)[0];
 
