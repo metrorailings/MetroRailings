@@ -92,6 +92,9 @@ function initUploader(filesContainer)
 		thumbnails = filesContainer.getElementsByTagName('img'),
 		fileDownloadLink = filesContainer.getElementsByClassName(DOWNLOAD_LINK)[0],
 
+		// If the section to upload files is not present, the user is not allowed to upload files
+		areChangesAllowed = !!(uploadForm),
+
 		startUploadProcess = () =>
 		{
 			// The upload process begins when the type of file being uploaded is specified
@@ -334,7 +337,8 @@ function initUploader(filesContainer)
 				thumbnail : file.thumbnail,
 				name : file.name,
 				isImage : file.isImage,
-				shortname : file.shortname
+				shortname : file.shortname,
+				showDeleteIcon: areChangesAllowed // If changes are not allowed, then hide the delete icon
 			});
 			container = fileContainer.appendChild(newHTML.content.children[0]);
 			newImg = container.getElementsByTagName('img')[0];
@@ -351,12 +355,19 @@ function initUploader(filesContainer)
 			}
 
 			// Attach a listener to the icon that would allow us to delete the file, if needed
-			deleteIcon.addEventListener('click', deleteFile);
+			if (deleteIcon)
+			{
+				deleteIcon.addEventListener('click', deleteFile);
+			}
 		};
 
-	// Initialize the listeners
-	fileTypeSelect.addEventListener('change', startUploadProcess);
-	fileInput.addEventListener('change', uploadFile);
+	// Initialize the listeners, but keep in mind that some listeners cannot be properly set if the user is not
+	// allowed to upload or delete files...
+	if (areChangesAllowed)
+	{
+		fileTypeSelect.addEventListener('change', startUploadProcess);
+		fileInput.addEventListener('change', uploadFile);
+	}
 
 	// Set up all thumbnails with the appropriate listeners
 	for (let i = 0; i < thumbnails.length; i += 1)
@@ -370,8 +381,11 @@ function initUploader(filesContainer)
 			thumbnails[i].addEventListener('click', downloadFile);
 		}
 
-		// Attach the listener to delete the files, if needed
-		thumbnails[i].nextElementSibling.addEventListener('click', deleteFile);
+		// Attach the listener to delete the files, if needed and if the user is allowed to delete files
+		if (areChangesAllowed)
+		{
+			thumbnails[i].nextElementSibling.addEventListener('click', deleteFile);
+		}
 	}
 
 	// If any loader links are present, attach click listeners to them

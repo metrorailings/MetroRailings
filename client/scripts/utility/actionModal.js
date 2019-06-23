@@ -4,7 +4,7 @@
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var MODAL_OVERLAY = 'actionModalOverlay',
+const MODAL_OVERLAY = 'actionModalOverlay',
 	ACTION_MODAL = 'actionModal',
 	ACTION_MODAL_BODY = 'actionModalBody',
 
@@ -20,7 +20,7 @@ var MODAL_OVERLAY = 'actionModalOverlay',
 
 // ----------------- PRIVATE MEMBERS --------------------------
 
-var _okCallback, // the callback function to execute when the user successfully clicks OK
+let _okCallback, // the callback function to execute when the user successfully clicks OK
 	_modalExitCallback, // the callback function to execute once the modal finally exits
 	_listenerInitFunction, // the function to trigger in order to set up listeners on elements inside the modal body
 
@@ -104,7 +104,7 @@ function overlayExit(event)
 
 // ----------------- MODULE ---------------------------
 
-var modalModule =
+let modalModule =
 {
 	/**
 	 * Function responsible for initializing and launching a new modal
@@ -123,10 +123,12 @@ var modalModule =
 		// Initialize the modal with specialized values
 		_okCallback = okCallback;
 		_modalExitCallback = function(){}; // Just leave without executing any successive logic
-		_listenerInitFunction = listenerInitFunction || function(){};
-		
+
 		// Load the modal body with the HTML content
 		_modalBody.innerHTML = Handlebars.compile(modalHTML)(data);
+
+		// Execute any listeners that may be intended to add listeners to elements within the modal body
+		_listenerInitFunction = listenerInitFunction || function(){};
 
 		// Slide the modal down into view after the overlay fades in
 		_modalOverlay.addEventListener('transitionend', fadeIn);

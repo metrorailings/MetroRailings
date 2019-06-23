@@ -1,3 +1,4 @@
+
 /**
  * @module templateManager
  */
@@ -11,7 +12,8 @@ let _Handlebars = require('handlebars'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	dateUtility = global.OwlStakes.require('shared/dateUtility'),
-	designTranslator = global.OwlStakes.require('shared/designs/translator');
+	designTranslator = global.OwlStakes.require('shared/designs/translator'),
+	statuses = global.OwlStakes.require('shared/orderStatus');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -64,6 +66,7 @@ _Handlebars.registerPartial('confirmationModal', fileManager.fetchTemplateSync(U
  * The template for the action modal
  */
 _Handlebars.registerPartial('actionModal', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ACTION_MODAL));
+
 /**
  * The template for the scroll down signifier
  */
@@ -279,6 +282,16 @@ _Handlebars.registerHelper('map_design_code_to_full_name', function(designCode, 
 });
 
 /**
+ * Handlebars helper function designed to map a design's code name to its Spanish equivalent
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('map_design_code_to_spanish_name', function(designCode)
+{
+	return designTranslator.findDesignNameInSpanish(designCode);
+});
+
+/**
  * Handlebars helper function designed to determine whether a given design code is not standardized
  *
  * @author kinsho
@@ -397,6 +410,18 @@ _Handlebars.registerHelper('split_by_comma', function(val)
 _Handlebars.registerHelper('determine_cc_icon', function(val)
 {
 	return CC_ICONS[val.toLowerCase()];
+});
+
+/**
+ * Handlebars helper function to translate an order status into Spanish text
+ *
+ * @params {String} status - the status to translate
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('translate_status', function(status)
+{
+	return statuses.getSpanishTranslation(status);
 });
 
 // ----------------- MODULE DEFINITION --------------------------

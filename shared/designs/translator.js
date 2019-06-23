@@ -8,7 +8,7 @@
 // Dependencies must be pulled differently depending on whether we are pulling these files from within the server
 // or within the client
 
-var designs;
+let designs;
 
 if (global.OwlStakes)
 {
@@ -59,7 +59,7 @@ else
 
 // ----------------- INITIALIZATION LOGIC --------------------------
 
-var designMapper = {},
+let designMapper = {},
 	categories = Object.keys(designs),
 	categoryOptions;
 
@@ -69,7 +69,11 @@ for (let i = 0; i < categories.length; i += 1)
 
 	for (let j = 0; j < categoryOptions.length; j += 1)
 	{
-		designMapper[categoryOptions[j].id] = categoryOptions[j].label;
+		designMapper[categoryOptions[j].id] =
+		{
+			label : categoryOptions[j].label,
+			spanishLabel : categoryOptions[j].spanishLabel
+		};
 	}
 }
 
@@ -90,6 +94,22 @@ module.exports =
 	 */
 	findDesignName: function(designCode)
 	{
-		return (designMapper[designCode] || designCode);
+		return (designMapper[designCode] ? designMapper[designCode].label : designCode);
+	},
+
+	/**
+	 * Function that returns the design name that relates to a particular code, if such a code exists within our
+	 * dictionary. Please note that the Spanish name of that design will be returned in this particular function
+	 *
+	 * @param {String} designCode - the design code associated with the design that we're looking for
+	 *
+	 * @returns {String} - the Spanish name of the design or the design code should there not be a name within our
+	 * 		dictionary
+	 *
+	 * @author kinsho
+	 */
+	findDesignNameInSpanish: function(designCode)
+	{
+		return (designMapper[designCode] ? designMapper[designCode].spanishLabel : designCode);
 	}
 };

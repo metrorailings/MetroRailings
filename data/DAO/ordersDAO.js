@@ -25,7 +25,8 @@ const ORDERS_COLLECTION = 'orders',
 		PAYMENT: 'Payment',
 		DUE_DATE_CHANGE: 'Due Date Change',
 		NEW_FILE_SAVED: 'New File Uploaded',
-		FILE_DELETED: 'File Deleted'
+		FILE_DELETED: 'File Deleted',
+		SHOP_STATUS_CHANGED: 'Production Status Updated'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -588,30 +589,31 @@ let ordersModule =
 	 * Function responsible for updating status for a particular order
 	 *
 	 * @param {Object} orderNumber - the order identification number
-	 * @param {String} username - the username of the admin updating this order
 	 * @param {String} status - the new status to apply to the order
+	 * @param {String} username - the username of the admin updating this order
+	 * @param {Boolean} isStatusBeingChangedFromShop - a flag indicating whether this change of status was issued
+	 * 		from the shop
 	 *
 	 * @returns {Object} - the newly revised modification date as well as the new status applied to the order
 	 *
 	 * @author kinsho
 	 */
-	updateStatus: async function (orderNumber, username)
+	updateStatus: async function (orderNumber, status, username, isStatusBeingChangedFromShop)
 	{
 		let order = await ordersModule.searchOrderById(orderNumber),
-			nextStatus = statuses.moveStatusToNextLevel(order.status),
 			updateRecord;
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
-		_applyModificationUpdates(order, username);
+		_applyModificationUpdates(order, username, (isStatusBeingChangedFromShop ? MODIFICATION_REASONS.SHOP_STATUS_CHANGED : ''));
 
 		updateRecord = mongo.formUpdateOneQuery(
 		{
 			_id: orderNumber
 		},
 		{
-			status: nextStatus,
-			lastModifiedDate: order.lastModifiedDate,
+			status: status,
+			dates: order.dates,
 			modHistory: order.modHistory
 		},
 		false);
@@ -620,10 +622,7 @@ let ordersModule =
 		{
 			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
 
-			return {
-				lastModifiedDate: order.lastModifiedDate,
-				status: nextStatus
-			};
+			return true;
 		}
 		catch(error)
 		{
