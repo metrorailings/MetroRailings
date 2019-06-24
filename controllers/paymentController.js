@@ -5,6 +5,7 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
 const responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
 
 	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -121,6 +122,7 @@ module.exports =
 			let username = cookieManager.retrieveAdminCookie(cookie)[0],
 				order = await ordersDAO.searchOrderById(params.orderId),
 				transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
+				tax = pricingCalculator.calculateTax(params.amount, order),
 				transaction, transactionNature;
 
 			console.log('Recording a new credit card payment...');
@@ -137,7 +139,7 @@ module.exports =
 				transaction = await creditCardProcessor.chargeTotal(params.amount, order._id, params.token, order.customer.email, order.customer.name, order.customer.company, transactionReason + transactionNature);
 
 				// Record the payment information in the payments collection in our database
-				transaction = await paymentsDAO.addNewPayment(params.amount, PAYMENT_TYPES.CREDIT_CARD, order, transactionNature, username, transaction);
+				transaction = await paymentsDAO.addNewPayment(params.amount, tax, PAYMENT_TYPES.CREDIT_CARD, order, transactionNature, username, transaction);
 
 				// Also, record the transaction in the order that's associated with it
 				await ordersDAO.recordCharge(order, username, transaction, params.amount);
@@ -172,6 +174,7 @@ module.exports =
 			let username = cookieManager.retrieveAdminCookie(cookie)[0],
 				order = await ordersDAO.searchOrderById(params.orderId),
 				transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
+				tax = pricingCalculator.calculateTax(params.amount, order),
 				imgMeta, transaction;
 
 			console.log('Recording a new check payment...');
@@ -191,7 +194,7 @@ module.exports =
 				if (imgMeta.length)
 				{
 					// Record the payment information in the payments collection in our database
-					transaction = await paymentsDAO.addNewPayment(params.amount, PAYMENT_TYPES.CHECK, order, transactionReason, username, null, imgMeta);
+					transaction = await paymentsDAO.addNewPayment(params.amount, tax, PAYMENT_TYPES.CHECK, order, transactionReason, username, null, imgMeta);
 
 					// Also, record the transaction in the order that's associated with it
 					await ordersDAO.recordCharge(order, username, transaction, params.amount);
@@ -232,6 +235,7 @@ module.exports =
 			let username = cookieManager.retrieveAdminCookie(cookie)[0],
 				order = await ordersDAO.searchOrderById(params.orderId),
 				transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
+				tax = pricingCalculator.calculateTax(params.amount, order),
 				imgMeta, transaction;
 
 			console.log('Recording a new cash payment...');
@@ -251,7 +255,7 @@ module.exports =
 				if (imgMeta.length)
 				{
 					// Record the payment information in the payments collection in our database
-					transaction = await paymentsDAO.addNewPayment(params.amount, PAYMENT_TYPES.CASH, order, transactionReason, username, null, imgMeta);
+					transaction = await paymentsDAO.addNewPayment(params.amount, tax, PAYMENT_TYPES.CASH, order, transactionReason, username, null, imgMeta);
 
 					// Also, record the transaction in the order that's associated with it
 					await ordersDAO.recordCharge(order, username, transaction, params.amount);

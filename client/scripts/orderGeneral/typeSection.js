@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var TYPE_SELECT = 'orderType',
+const TYPE_SELECT = 'orderType',
 	BASE_DESIGN_SECTION = 'baseDesignSection',
 	ADVANCED_DESIGN_SECTION = 'advancedDesignSection',
 	PICKET_SECTION = 'picketSection',
@@ -31,7 +31,7 @@ var TYPE_SELECT = 'orderType',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _orderTypeField = document.getElementById(TYPE_SELECT),
+let _orderTypeField = document.getElementById(TYPE_SELECT),
 
 	_baseDesignSection = document.getElementById(BASE_DESIGN_SECTION),
 	_advancedDesignSection = document.getElementById(ADVANCED_DESIGN_SECTION),
@@ -50,7 +50,7 @@ var _orderTypeField = document.getElementById(TYPE_SELECT),
  */
 function _nullifySection(section)
 {
-	var dataGroups = [...section.getElementsByClassName(DATA_DESCRIPTION_GROUPING_CLASS), ...section.getElementsByClassName(DATA_GROUPING_CLASS)],
+	let dataGroups = [...section.getElementsByClassName(DATA_DESCRIPTION_GROUPING_CLASS), ...section.getElementsByClassName(DATA_GROUPING_CLASS)],
 		inputs;
 
 	for (let i = 0; i < dataGroups.length; i += 1)
@@ -136,6 +136,15 @@ function setType()
 		_nullifySection(_advancedDesignSection);
 		_nullifySection(_cableDesignSection);
 		_nullifySection(_picketSection);
+	}
+	// Else assume the product will be something that falls outside the norm here and clear out all design selections
+	else
+	{
+		_nullifySection(_baseDesignSection);
+		_nullifySection(_advancedDesignSection);
+		_nullifySection(_picketSection);
+		_nullifySection(_cableDesignSection);
+		_nullifySection(_glassDesignSection);
 	}
 }
 

@@ -9,7 +9,7 @@
 // Dependencies must be pulled differently depending on whether we are pulling these files from within the server
 // or within the client
 
-var pricing;
+let pricing;
 
 if (global.OwlStakes)
 {
@@ -22,11 +22,11 @@ else
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var NJ_STATE_CODE = 'NJ';
+const NJ_STATE_CODE = 'NJ';
 
 // ----------------- MODULE DEFINITION --------------------------
 
-var pricingModule =
+let pricingModule =
 {
 	/**
 	 * Function calculates the total price for any custom order
@@ -39,7 +39,7 @@ var pricingModule =
 	 */
 	calculateSubtotal: function(orderData)
 	{
-		var rawTotal = orderData.dimensions.length * orderData.pricing.pricePerFoot;
+		let rawTotal = orderData.dimensions.length * orderData.pricing.pricePerFoot;
 
 		// Add in any additional pricing that has been set on this order
 		rawTotal += orderData.pricing.additionalPrice;
@@ -127,6 +127,20 @@ var pricingModule =
 	},
 
 	/**
+	 * Function calculates the Stripe fees that will be paid out from any given amount
+	 *
+	 * @param {Number} amount - the amount from which to calculate Stripe fees
+	 *
+	 * @returns {Number} - the Stripe fee
+	 *
+	 * @author kinsho
+	 */
+	calculateStripeFee: function(amount)
+	{
+		return Math.round((amount * pricing.STRIPE_FEE_PERCENTAGE) + pricing.STRIPE_FEE_ADDITIONAL);
+	},
+
+	/**
 	 * Function that returns pricing metadata for a particular design
 	 *
 	 * @param {String} designCode - the design code associated with the design that we're looking for
@@ -152,7 +166,7 @@ var pricingModule =
 	 */
 	calculateDesignCost: function(orderLength, designCode)
 	{
-		var designPricing = pricingModule.findDesignPricing(designCode),
+		let designPricing = pricingModule.findDesignPricing(designCode),
 			subtotal;
 
 		if (designPricing && designPricing.price)
