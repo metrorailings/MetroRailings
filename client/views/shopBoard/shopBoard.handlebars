@@ -1,0 +1,34 @@
+<div class='pageHeader'>
+	<h3>Orden de Trabajos</h3>
+	<div class='headerUnderline'></div>
+</div>
+
+<div id='shopListColumnHeaders'>
+	<span>ID</span>
+	<span>Nombre</span>
+	<span>Compañía</span>
+	<span>Tipo de Producto</span>
+	<span>Estado</span>
+	<span>Fecha de Entrega</span>
+</div>
+
+<div id='openOrderList'>
+	{{#each orders}}
+		<div class='openOrder'>
+			<span>{{ _id }}</span>
+			<span>{{ customer.name }}</span>
+			<span>{{#if customer.company}} {{ customer.company }} {{else}} -- {{/if}}</span>
+			<span>{{#map_design_code_to_spanish_name design.type}}{{/map_design_code_to_spanish_name}}</span>
+			<span class='statusLink' data-order-id='{{ _id }}' data-status='{{ status }}'>
+				{{#translate_status status }}{{/translate_status}}
+			</span>
+			<span class='dueDate'>
+				{{#if dates.due }}
+					{{#format_date_for_input dates.due}}{{/format_date_for_input}}
+				{{else}}
+					--
+				{{/if}}
+			</span>
+		</div>
+	{{/each}}
+</div>

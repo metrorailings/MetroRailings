@@ -1,5 +1,4 @@
 {{#if order._id}}
-
 	<div id='paymentsSection'>
 
 		<div class='dataGrouping'>
@@ -154,4 +153,15 @@
 		</div>
 
 	</div>
+
+	<div id='paymentRecordContainer'>
+		{{#each order.payments.charges}}
+			{{> paymentRecord }}
+		{{/each}}
+	</div>
+
+	<script id='paymentRecordTemplate' type='text/x-handlebars-template'>
+		{{{ paymentRecordTemplate }}}
+	</script>
+
 {{/if}}

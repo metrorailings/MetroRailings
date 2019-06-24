@@ -45,18 +45,19 @@ const ORDER_SHARED_FOLDER = 'orderGeneral',
 		ADVANCED_DESIGN: 'advancedDesignSection',
 		CABLE_DESIGN: 'cableDesignSection',
 		GLASS_DESIGN: 'glassDesignSection',
+		PAYMENTS: 'paymentsSection',
 		LOGISTICS: 'logisticsSection',
 		MONEY: 'moneySection',
 		AGREEMENT: 'agreementSection',
 		SUBMISSION_BUTTON: 'submissionSection',
+		DEPOSIT_MODAL: 'depositModal',
 
 		DESIGN_ERRORS: 'designErrors',
 		DESIGN_DESCRIPTOR: 'designDescriptor',
 		DESIGN_CATEGORY: 'designCategory',
-		DEPOSIT_MODAL: 'depositModal',
 		MULTI_TEXT: 'multiText',
 		FILES: 'filesSection',
-		PAYMENTS: 'paymentsSection'
+		PAYMENT_RECORD: 'paymentRecord'
 	};
 
 // ----------------- PARTIAL TEMPLATES --------------------------
@@ -161,6 +162,11 @@ _Handlebars.registerPartial('orderFiles', fileManager.fetchTemplateSync(ORDER_SH
  */
 _Handlebars.registerPartial('orderPayments', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PAYMENTS));
 
+/**
+ * The template for the payment record
+ */
+_Handlebars.registerPartial('paymentRecord', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.PAYMENT_RECORD));
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =
@@ -175,6 +181,7 @@ module.exports =
 	{
 		let designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
+			paymentRecordTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PAYMENT_RECORD),
 			pageData,
 			designData;
 
@@ -207,6 +214,7 @@ module.exports =
 			designs: designData,
 			designErrorsTemplate: designErrorsTemplate,
 			depositModal: depositModalTemplate,
+			paymentRecordTemplate: paymentRecordTemplate
 		};
 
 		return {
@@ -215,5 +223,4 @@ module.exports =
 		};
 	},
 
-	
 };

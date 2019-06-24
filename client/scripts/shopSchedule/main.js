@@ -49,6 +49,7 @@ function _changeStatus(statusLink, status)
 	{
 		// Update the order status on the view to reflect the newly updated status
 		statusLink.innerHTML = statuses.getSpanishTranslation(status);
+		statusLink.dataset.status = status;
 
 		// Show a notification indicating the due date was successfully changed
 		notifier.showSuccessMessage(STATUS_CHANGE_SUCCESSFUL);
