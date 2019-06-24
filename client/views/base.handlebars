@@ -42,11 +42,11 @@
 		{{#unless isAdmin}}
 			<!-- The navigation menu at the top of the page -->
 			{{> topMenu }}
-
 			<div id='topMenuSpace'>
 				<img id='topMenuPrintableLogo' src='client/images/logo/png/color_logo_transparent_background_small.png' />
 			</div>
 		{{else}}
+			{{> adminMenu }}
 		{{/unless}}
 
         <!-- All page-specific HTML goes here -->
@@ -54,18 +54,7 @@
             {{{content}}}
         </div>
 
-        <!-- Loading veil -->
-        <div id='baseLoaderOverlay'>
-            <div>
-                <span id='loadingText'>Loading</span>
-            </div>
-            <div>
-                <span class="loadingBall"></span>
-                <span class="loadingBall"></span>
-                <span class="loadingBall"></span>
-            </div>
-        </div>
-
+		{{> generalLoadingIndicators }}
         {{> notificationBar }}
         {{> successBar }}
 
@@ -74,7 +63,8 @@
             window.MetroRailings = {{{initialData}}};
         </script>
 
-		<!--- In production, all scripts pulled from third-party servers will be bunded into the compiled production script -->
+		<!--- In production, all scripts pulled from third-party servers will be bundled into the compiled production
+		 script -->
 		{{#unless isProd}}
 			<div id='thirdPartyScripts'>
 				<!-- Load Handlebars on the client -->
@@ -109,24 +99,14 @@
     </body>
 
 	<!-- Page Footer -->
+	<!--
+		Keep in mind that only a part of the footer can be sequestered away in its own handlebars file, as some of 
+		the footer contains files that need to be sourced for the website to work properly, so that part needs to be 
+		kept here for simplicity's sake
+	-->
 	<div id='footerSpace'></div>
 	<footer class='{{#if isAdmin}} hideFooter {{/if}}'>
-		{{#unless isAdmin}}
-			<span class='footerElement'>
-				<span id='desktopContactNumberLister' class='desktopOnly'>{{ contactNumber }}</span>
-				<a id='mobileContactUsNavigator' class='mobileOnly' href='/contactUs'>
-					<i class='fa fa-calendar'></i>Schedule with Us
-				</a>
-			</span>
-			<span class='footerElement'>
-				<span id='desktopCopyrightLister' class='desktopOnly'>
-					<i class='fa fa-copyright'></i>{{currentYear}}
-				</span>
-				<a id='mobileCallUsNavigator' class='mobileOnly' href='tel:{{ contactNumber }}'>
-					<i class='fa fa-phone'></i>Call Us
-				</a>
-			</span>
-		{{/unless}}
+		{{> clientFooter }}
 
 		<!-- Defer the loading of all non-essential third-party stylesheets to this section here --->
 		{{#unless isProd}}
@@ -141,8 +121,10 @@
 			<link rel="stylesheet" href="prod/thirdParty.css">
 		{{/unless}}
 
-		<!-- Separating out the import of font-awesome from the other third-party stylesheets as it is difficult for us
-		 to gracefully import its font libraries as well when in production -->
+		<!--
+			Separating out the import of font-awesome from the other third-party stylesheets as it is difficult for us
+		 	to gracefully import its font libraries as well when in production
+		-->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
 	</footer>
 </html>

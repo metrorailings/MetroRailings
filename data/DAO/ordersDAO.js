@@ -475,7 +475,7 @@ let ordersModule =
 
 		// Store those transaction details inside the order itself so that we can reference the payment for
 		// tracking purposes
-		order.payments.charges.push(transaction);
+		order.payments.charges.unshift(transaction);
 
 		// Adjust the balance remaining to reflect what has been paid off
 		order.payments.balanceRemaining -= amount;

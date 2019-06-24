@@ -5,7 +5,13 @@
 	{{/unless}}
 
 	<div class='picturesContainer {{#unless order.pictures.length}} hide {{/unless}}'>
-		<div class='uploadContainerHeader'>Pictures</div>
+		<div class='uploadContainerHeader'>
+			{{#unless translateToSpanish}}
+				Pictures
+			{{else}}
+				Fotos
+			{{/unless}}
+		</div>
 		{{#unless doNotLoadOnInit}}
 			{{#each order.pictures}}
 				{{> fileThumbnail }}
@@ -14,13 +20,25 @@
 
 		{{#if doNotLoadOnInit}}
 			{{#if order.pictures.length}}
-				<div class='loadPicturesLink' data-order-id='{{ order._id }}'>Load All Pictures...</div>
+				<div class='loadPicturesLink' data-order-id='{{ order._id }}'>
+					{{#unless translateToSpanish}}
+						Load All Pictures...
+					{{else}}
+						Cargar Todas Las Fotos...
+					{{/unless}}
+				</div>
 			{{/if}}
 		{{/if}}
 	</div>
 
 	<div class='drawingsContainer  {{#unless order.drawings.length}} hide {{/unless}}'>
-		<div class='uploadContainerHeader'>Drawings</div>
+		<div class='uploadContainerHeader'>
+			{{#unless translateToSpanish}}
+				Drawings
+			{{else}}
+				Dibujos
+			{{/unless}}
+		</div>
 		{{#unless doNotLoadOnInit}}
 			{{#each order.drawings}}
 				{{> fileThumbnail }}
@@ -29,13 +47,25 @@
 
 		{{#if doNotLoadOnInit}}
 			{{#if order.drawings.length}}
-				<div class='loadDrawingsLink' data-order-id='{{ order._id }}'>Load All Drawings...</div>
+				<div class='loadDrawingsLink' data-order-id='{{ order._id }}'>
+					{{#unless translateToSpanish}}
+						Load All Drawings...
+					{{else}}
+						Cargar Todos Los Dibujos...
+					{{/unless}}
+				</div>
 			{{/if}}
 		{{/if}}
 	</div>
 
 	<div class='filesContainer  {{#unless order.files.length}} hide {{/unless}}'>
-		<div class='uploadContainerHeader'>Files</div>
+		<div class='uploadContainerHeader'>
+			{{#unless translateToSpanish}}
+				Files
+			{{else}}
+				Archivos
+			{{/unless}}
+		</div>
 		{{#unless doNotLoadOnInit}}
 			{{#each order.files}}
 				{{> fileThumbnail }}
@@ -44,7 +74,13 @@
 
 		{{#if doNotLoadOnInit}}
 			{{#if order.files.length}}
-				<div class='loadFilesLink' data-order-id='{{ order._id }}'>Load All Files...</div>
+				<div class='loadFilesLink' data-order-id='{{ order._id }}'>
+					{{#unless translateToSpanish}}
+						Load All Files...
+					{{else}}
+						Cargar Todos Los Archivos...
+					{{/unless}}
+				</div>
 			{{/if}}
 		{{/if}}
 	</div>

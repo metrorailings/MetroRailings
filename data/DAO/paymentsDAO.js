@@ -2,7 +2,7 @@
 
 const mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
-	pricingData = global.OwlStakes.require('shared/pricing/pricingData');
+	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
@@ -17,6 +17,7 @@ module.exports =
 	 * Function to store a new payment into the payments table
 	 *
 	 * @param {Number} amount - the amount that was paid
+	 * @param {Number} tax - the taxable amount that can be withheld from the amount paid
 	 * @param {Enum} paymentType - the manner in which the payment was made
 	 * @param {Object} order - the order with which this payment is to be associated
 	 * @param {Enum} reason - the reason why this payment has been made
@@ -30,7 +31,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	addNewPayment: async function (amount, paymentType, order, reason, username, ccTransaction, image)
+	addNewPayment: async function (amount, tax, paymentType, order, reason, username, ccTransaction, image)
 	{
 		try
 		{
@@ -41,8 +42,7 @@ module.exports =
 				{
 					_id: PAYMENTS_COLLECTION
 				}),
-				tax = 0,
-				data, txnMeta;
+				tax, data, txnMeta;
 
 			// Determine what payment-specific details we should be storing
 			if (ccTransaction)
@@ -50,7 +50,8 @@ module.exports =
 				txnMeta =
 				{
 					brand: ccTransaction.payment_method_details.card.brand,
-					last4: ccTransaction.payment_method_details.card.last4
+					last4: ccTransaction.payment_method_details.card.last4,
+					fee: pricingCalculator.calculateStripeFee(amount) // the Stripe fee
 				};
 			}
 			else if (image)
@@ -61,13 +62,8 @@ module.exports =
 				};
 			}
 
-			// Determine wheteher taxes need to be assessed on this transaction
-			// Keep in mind sales tax is only collected in the state of New Jersey for the time being
-			if (order.pricing.isTaxApplied)
-			{
-				tax = amount / (1 + pricingData.NJ_SALES_TAX_RATE);
-				tax = parseFloat(tax.toFixed(2));
-			}
+			// Calculate the sales taxes collected on this order, if applicable
+			tax = pricingCalculator.calculateTax(amount);
 
 			// Organize the data to be stored in the database
 			data =

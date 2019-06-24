@@ -26,12 +26,12 @@
 					{{#if dates.due }}
 						{{#format_date_for_input dates.due}}{{/format_date_for_input}}
 					{{else}}
-						N/A
+						--
 					{{/if}}
 				</span>
 			</div>
 			<div class='filesSection'>
-				{{> fileUpload order=this doNotLoadOnInit=true doNotAllowChanges=true }}
+				{{> fileUpload order=this doNotLoadOnInit=true doNotAllowChanges=true translateToSpanish=true }}
 			</div>
 		</div>
 

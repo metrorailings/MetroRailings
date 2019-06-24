@@ -30,13 +30,16 @@ const UTILITY_FOLDER = 'utility',
 	PARTIALS =
 	{
 		GALLERY: 'gallery',
+		LOADING_INDICATOR: 'generalLoadingIndicators',
 		CONFIRMATION_MODAL: 'confirmationModal',
 		ACTION_MODAL: 'actionModal',
 		SCROLL_DOWN: 'scrollDownLabel',
 		OPTIONS_CAROUSEL: 'optionsCarousel',
 		NOTIFICATION_BAR: 'notificationBar',
 		SUCCESS_BAR: 'successBar',
-		TOP_MENU: 'topMenu'
+		TOP_MENU: 'topMenu',
+		ADMIN_MENU: 'adminMenu',
+		FOOTER: 'clientFooter'
 	};
 
 // ----------------- PRIVATE VARIABLES -----------------------------
@@ -91,6 +94,21 @@ _Handlebars.registerPartial('successBar', fileManager.fetchTemplateSync(UTILITY_
  * The template for the top menu
  */
 _Handlebars.registerPartial('topMenu', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.TOP_MENU));
+
+/**
+ * The template for the admin menu
+ */
+_Handlebars.registerPartial('adminMenu', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ADMIN_MENU));
+
+/**
+ * The template for the generalized loading indicators
+ */
+_Handlebars.registerPartial('generalLoadingIndicators', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.LOADING_INDICATOR));
+
+/**
+ * The template for the visible portion of the footer
+ */
+_Handlebars.registerPartial('clientFooter', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.FOOTER));
 
 // ----------------- GENERIC HELPERS --------------------------
 

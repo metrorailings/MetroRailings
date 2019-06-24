@@ -22,21 +22,6 @@ let _orderList = document.getElementById(OPEN_ORDER_LIST),
 	_orderRecords = _orderList.children,
 	_dueDates = document.getElementsByClassName(DUE_DATE_FIELDS);
 
-// ----------------- PRIVATE FUNCTIONS ---------------------------
-
-/**
- * A function that formats the date to a shortened user-friendly string
- *
- * @param {HTMLElement} input - the element with the selected date
- * @param {Date} date - the date to format
- *
- * @author kinsho
- */
-function _formatDate(input, date)
-{
-	input.value = dateUtility.formatShortDate(date);
-}
-
 // ----------------- LISTENERS ---------------------------
 
 /**

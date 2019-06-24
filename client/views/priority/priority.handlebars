@@ -7,6 +7,7 @@
 	<span>ID</span>
 	<span>Name</span>
 	<span>Company</span>
+	<span>Product Type</span>
 	<span>Status</span>
 	<span>Due Date</span>
 </div>
@@ -17,6 +18,7 @@
 			<span>{{ _id }}</span>
 			<span>{{ customer.name }}</span>
 			<span>{{#if customer.company}} {{ customer.company }} {{/if}}</span>
+			<span>{{#map_design_code_to_spanish_name design.type}}{{/map_design_code_to_spanish_name}}</span>
 			<span>{{#capitalize status }}{{/capitalize}}</span>
 			<span>
 				<input type='date' class='dueDates' 

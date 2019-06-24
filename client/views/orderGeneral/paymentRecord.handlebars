@@ -1,0 +1,44 @@
+<div class='paymentRecord'>
+
+	<span class='amountsColumn'>
+		<div class='bigPaymentRecordLabel'>Amount</div>
+		<div class='subtotalListing'>{{ amount }}</div>
+		{{#if tax}}
+			<div>
+				<span class='paymentRecordLabel'>Tax: </span>
+				<span class='recordListing'>{{ tax }}</span>
+			</div>
+		{{/if}}
+		{{#if details.fee}}
+			<div>
+				<span class='paymentRecordLabel'>Fee: </span>
+				<span class='recordListing'>{{ details.fee }}</span>
+			</div>
+		{{/if}}
+	</span>
+
+	<span class='paymentRecordDetailsColumn'>
+		{{#if_cond type 'card'}}
+			<div class='bigPaymentRecordLabel'>Card</div>
+			<div class='paymentRecordDetails'>
+				<i class='fa {{#determine_cc_icon details.brand}}{{/determine_cc_icon}}'></i>
+				<span class='subAmountListing'>{{ last4 }}</span>
+			</div>
+		{{/if_cond}}
+
+		{{#if_cond type 'check'}}
+			<div class='bigPaymentRecordLabel'>Check</div>
+			<div class='paymentRecordDetails'>
+				<img src='{{ details.imgLink }}' alt='Check Image' />
+			</div>
+		{{/if_cond}}
+
+		{{#if_cond type 'cash'}}
+			<div class='bigPaymentRecordLabel'>Cash / Money Order</div>
+			<div class='paymentRecordDetails'>
+				<img src='{{ details.imgLink }}' alt='Receipt Image' />
+			</div>
+		{{/if_cond}}
+	</span>
+
+</div>
