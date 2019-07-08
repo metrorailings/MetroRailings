@@ -10,6 +10,7 @@
 	<span>Tipo de Producto</span>
 	<span>Estado</span>
 	<span>Fecha de Entrega</span>
+	<span>Bono de Desempeño</span>
 </div>
 
 <div id='openOrderList'>
@@ -25,6 +26,13 @@
 			<span class='dueDate'>
 				{{#if dates.due }}
 					{{#format_date_for_input dates.due}}{{/format_date_for_input}}
+				{{else}}
+					--
+				{{/if}}
+			</span>
+			<span>
+				{{#if pricing.shopBonus}}
+					${{ pricing.shopBonus }}
 				{{else}}
 					--
 				{{/if}}

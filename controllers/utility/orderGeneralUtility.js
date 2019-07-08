@@ -37,6 +37,7 @@ const ORDER_SHARED_FOLDER = 'orderGeneral',
 	{
 		ID: 'idSection',
 		CUSTOMER: 'customerSection',
+		STATUS: 'statusSection',
 		NOTES: 'notesSection',
 		LOCATION: 'locationSection',
 		TYPE: 'typeSection',
@@ -71,6 +72,11 @@ _Handlebars.registerPartial('orderId', fileManager.fetchTemplateSync(ORDER_SHARE
  * The template for the customer section
  */
 _Handlebars.registerPartial('orderCustomer', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.CUSTOMER));
+
+/**
+ * The template for the status section
+ */
+_Handlebars.registerPartial('orderStatus', fileManager.fetchTemplateSync(ORDER_SHARED_FOLDER, PARTIALS.STATUS));
 
 /**
  * The template for the notes section
@@ -182,6 +188,7 @@ module.exports =
 		let designErrorsTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DESIGN_ERRORS),
 			depositModalTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.DEPOSIT_MODAL),
 			paymentRecordTemplate = await fileManager.fetchTemplate(ORDER_SHARED_FOLDER, PARTIALS.PAYMENT_RECORD),
+			expirationYears = [], currentYear = new Date().getFullYear(),
 			pageData,
 			designData;
 
@@ -207,6 +214,12 @@ module.exports =
 			ada: ada.options
 		};
 
+		// List out the next 10 years (including this year) should we need to record a charge under a new credit card
+		for (let i = 0; i < 10; i += 1)
+		{
+			expirationYears.push(currentYear + i);
+		}
+
 		pageData =
 		{
 			taxRate: (pricingData.NJ_SALES_TAX_RATE * 100).toFixed(2),
@@ -214,7 +227,8 @@ module.exports =
 			designs: designData,
 			designErrorsTemplate: designErrorsTemplate,
 			depositModal: depositModalTemplate,
-			paymentRecordTemplate: paymentRecordTemplate
+			paymentRecordTemplate: paymentRecordTemplate,
+			expirationYears: expirationYears
 		};
 
 		return {

@@ -4,6 +4,7 @@ import handlebarHelpers from 'client/scripts/utility/handlebarHelpers';
 
 import idSection from 'client/scripts/orderGeneral/idSection';
 import customerSection from 'client/scripts/orderGeneral/customerSection';
+import statusSection from 'client/scripts/orderGeneral/statusSection';
 import notesSection from 'client/scripts/orderGeneral/notesSection';
 import filesSection from 'client/scripts/orderGeneral/filesSection';
 import addressSection from 'client/scripts/orderGeneral/addressSection';

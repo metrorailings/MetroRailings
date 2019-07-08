@@ -30,8 +30,8 @@ const SAVE_BUTTON = 'saveButton',
 
 	ORDERS_PAGE_URL = '/orders',
 	SAVE_ORDER_URL = 'orderGeneral/saveNewOrder',
-	SAVE_ORDER_AND_FINISH_LATER_URL = 'orderGeneral/saveProgressOnOrder';
-//	SAVE_CHANGES_TO_ORDER_URL = 'orderGeneral/saveChangesToOrder';
+	SAVE_ORDER_AND_FINISH_LATER_URL = 'orderGeneral/saveProgressOnOrder',
+	SAVE_CHANGES_TO_ORDER_URL = 'orderGeneral/saveChangesToOrder';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -85,7 +85,7 @@ function _validate()
  *
  * @author kinsho
  */
-function _submitAllData(url, successMessage)
+async function _submitAllData(url, successMessage)
 {
 	let designObject = rQuery.copyObject(vm.design, true),
 		designDescriptionObject = rQuery.copyObject(vm.designDescriptions, true),
@@ -95,8 +95,8 @@ function _submitAllData(url, successMessage)
 
 			dimensions:
 			{
-				length: window.parseInt(vm.length, 10) || 0,
-				finishedHeight: window.parseInt(vm.finishedHeight, 10) || 0
+				length: window.parseInt(vm.length, 10) || '',
+				finishedHeight: window.parseInt(vm.finishedHeight, 10) || ''
 			},
 
 			text:
@@ -114,11 +114,11 @@ function _submitAllData(url, successMessage)
 
 			pricing:
 			{
-				pricePerFoot: window.parseFloat(vm.pricePerFoot) || 0,
-				additionalPrice: window.parseFloat(vm.additionalPrice) || 0,
+				pricePerFoot: window.parseFloat(vm.pricePerFoot) || '',
+				additionalPrice: window.parseFloat(vm.additionalPrice) || '',
 				isTaxApplied: vm.applyTaxes || true,
 				isTariffApplied: vm.applyTariffs || true,
-				depositAmount: window.parseFloat(vm.depositAmount) || 0
+				depositAmount: window.parseFloat(vm.depositAmount) || ''
 			},
 
 			customer:
@@ -144,8 +144,11 @@ function _submitAllData(url, successMessage)
 	_saveButton.disabled = true;
 	_tempButton.disabled = true;
 
-	axios.post(url, data, true).then(() =>
+	try
 	{
+		// Make the call to the server
+		await axios.post(url, data, true);
+
 		// In the main tab, show a message indicating success and navigate the user back to the main admin page
 		notifier.showSuccessMessage(successMessage);
 
@@ -153,13 +156,14 @@ function _submitAllData(url, successMessage)
 		{
 			window.location.href = ORDERS_PAGE_URL;
 		}, 2000);
-	}, () =>
+	}
+	catch(error)
 	{
 		notifier.showGenericServerError();
 
 		_saveButton.disabled = false;
 		_tempButton.disabled = false;
-	});
+	}
 }
 
 // ----------------- LISTENERS ---------------------------
@@ -174,17 +178,30 @@ function submit()
 	// Organize the data that will be sent over the wire as long as the entire form is valid
 	if (vm.isFormValid && _validate())
 	{
-		let modalData = { orderTotal : vm.orderTotal, defaultDeposit : vm.orderTotal / 2 };
+		let modalData = { orderTotal : vm.orderTotal, defaultDeposit : vm.orderTotal / 2 },
+			url, successMessage;
+
+		// Determine the proper URL and relay text to ring up when we are sending data to the back-end
+		if ( !(vm._id) || (vm.status === PROSPECT_STATUS) )
+		{
+			url = SAVE_ORDER_URL;
+			successMessage = SUCCESS_MESSAGE.SAVE_ORDER;
+		}
+		else
+		{
+			url = SAVE_CHANGES_TO_ORDER_URL;
+			successMessage = SUCCESS_MESSAGE.SAVE_CHANGES_TO_ORDER;
+		}
 
 		// Only pop out the deposit modal for orders that have not been confirmed yet
 		if ( !(vm.status) || (vm.status === PROSPECT_STATUS) || (vm.status === PENDING_STATUS) )
 		{
 			// Set up a modal to figure out what the deposit amount should be for this particular order
-			actionModal.open(document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML, modalData, () => { _submitAllData(SAVE_ORDER_URL, SUCCESS_MESSAGE.SAVE_ORDER); }, depositModal.initializeDepositModalListeners);
+			actionModal.open(document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML, modalData, () => { _submitAllData(url, successMessage); }, depositModal.initializeDepositModalListeners);
 		}
 		else
 		{
-			_submitAllData(SAVE_ORDER_URL, SUCCESS_MESSAGE.SAVE_ORDER);
+			_submitAllData(url, successMessage);
 		}
 	}
 }

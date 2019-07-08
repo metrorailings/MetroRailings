@@ -383,20 +383,20 @@ Object.defineProperty(viewModel, 'phoneTwo',
 	}
 });
 
-// Pictures
-Object.defineProperty(viewModel, 'pictures',
+// Status
+Object.defineProperty(viewModel, 'status',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
-		return viewModel.__pictures;
+		return viewModel.__status;
 	},
 
 	set: (value) =>
 	{
-		viewModel.__pictures = value;
+		viewModel.__status = value;
 	}
 });
 

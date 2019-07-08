@@ -6,12 +6,21 @@
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var BRANDS =
+const BRANDS =
 	{
 		VISA: 'visa',
 		MASTERCARD: 'mastercard',
 		DISCOVER: 'discover',
 		AMEX: 'amex'
+	},
+
+	CC_ICONS =
+	{
+		'visa' : 'fa-cc-visa',
+		'amex' : 'fa-cc-amex',
+		'american express' : 'fa-cc-amex',
+		'discover' : 'fa-cc-discover',
+		'mastercard' : 'fa-cc-mastercard'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -45,7 +54,7 @@ function _isMastercard(number)
 {
 	number = number || '';
 
-	var first2 = parseInt(number.slice(0, 2), 10),
+	let first2 = parseInt(number.slice(0, 2), 10),
 		first4 = parseInt(number.slice(0, 4), 10);
 
 	return ( ((first2 >= 51) && (first2 <= 55)) ||
@@ -65,7 +74,7 @@ function _isDiscover(number)
 {
 	number = number || '';
 
-	var first2 = parseInt(number.slice(0, 2), 10),
+	let first2 = parseInt(number.slice(0, 2), 10),
 		first3 = parseInt(number.slice(0, 3), 10),
 		first4 = parseInt(number.slice(0, 4), 10),
 		first6 = parseInt(number.slice(0, 6), 10);
@@ -89,7 +98,7 @@ function _isAmex(number)
 {
 	number = number || '';
 
-	var first2 = parseInt(number.slice(0, 2), 10);
+	let first2 = parseInt(number.slice(0, 2), 10);
 
 	return ( (first2 === 34) || (first2 === 37) );
 }
@@ -130,5 +139,19 @@ module.exports =
 		}
 
 		return '';
+	},
+
+	/**
+	 * Function retrieves the icon that corresponds to the passed credit card brand
+	 *
+	 * @param {String} brand - the brand whose icon will be retrieved
+	 *
+	 * @returns {String} - the FontAwesome class name that corresponds to the icon of the passed brand
+	 *
+	 * @author kinsho
+	 */
+	ccIcon: function(brand = '')
+	{
+		return CC_ICONS[brand.toLowerCase()];
 	}
 };

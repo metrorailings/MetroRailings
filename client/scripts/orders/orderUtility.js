@@ -29,7 +29,7 @@ const SORT_METHODS =
  */
 function _sortOrdersByModDate(a, b)
 {
-	return ( (new Date(a.dates.lastModified) < new Date(b.dates.lastModified)) ? 1 : -1 );
+	return ( (new Date(a.dates.lastModified) < new Date(b.dates.lastModified)) ? -1 : 1 );
 }
 
 /**
@@ -44,7 +44,17 @@ function _sortOrdersByModDate(a, b)
  */
 function _sortOrdersByDueDate(a, b)
 {
-	return ( (new Date(a.dates.due) < new Date(b.dates.due)) ? 1 : -1 );
+	// If no dates are present, the goal is to move the order as far down on the list as possible
+	if ( !(a.dates.due) )
+	{
+		return 1;
+	}
+	else if ( !(b.dates.due) )
+	{
+		return -1;
+	}
+
+	return ( (new Date(a.dates.due) < new Date(b.dates.due)) ? -1 : 1 );
 }
 
 // ----------------- MODULE DEFINITION -----------------------------

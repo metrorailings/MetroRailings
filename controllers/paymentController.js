@@ -12,7 +12,7 @@ const responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	dropbox = global.OwlStakes.require('utility/dropbox'),
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
-	usersDAO = global.OwlStakes.require('data/DAO/usersDAO'),
+	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
 	paymentsDAO = global.OwlStakes.require('data/DAO/paymentsDAO');
 
 // ----------------- ENUM/CONSTANTS --------------------------
@@ -83,24 +83,32 @@ module.exports =
 	{
 		try
 		{
-			let token = await creditCardProcessor.generateToken(params.number, params.exp_month, params.exp_year, params.cvc),
-				tokens;
+			let order = await ordersDAO.searchOrderById(params.orderId),
+				token = await creditCardProcessor.generateToken(params.number, params.exp_month, params.exp_year, params.cvc),
+				card;
 
-			// Store the token inside the order
-			tokens = await ordersDAO.addTokenToOrder(params.orderId, token);
+			// Determine if a Stripe customer has been associated with the order for which this token is being created
+			// If not, create that customer within Stripe's systems
+			if ( !(order.payments.customer) )
+			{
+				order.payments.customer = await creditCardProcessor.createCustomer(order.customer.name, order._id);
+			}
+
+			// Register the card in Stripe to the customer
+			card = await creditCardProcessor.createCard(order.payments.customer.id, token.id);
+
+			// Store the card inside the order
+			await ordersDAO.addCardToOrder(parseInt(params.orderId, 10), card, order.payments.customer);
 
 			return {
 				statusCode: responseCodes.OK,
-				data:
-				{
-					token: token,
-					tokens: tokens
-				}
+				data: card
 			};
 		}
 		catch (error)
 		{
-			console.log('Credit card was unable to be processed...');
+			console.log('Credit card was unable to be processed for the following reason...');
+			console.error(error);
 
 			return {
 				statusCode: responseCodes.BAD_REQUEST
@@ -130,19 +138,19 @@ module.exports =
 			// Initializes the charges array if a charge has not been recorded for this order yet
 			order.payments.charges = order.payments.charges || [];
 
+			// Find out the nature of the transaction
+			transactionNature = _determineTxnReason(order, parseFloat(params.amount));
+
 			try
 			{
-				// Find out the nature of the transaction
-				transactionNature = _determineTxnReason(order, params.amount);
-
 				// Now charge the customer
-				transaction = await creditCardProcessor.chargeTotal(params.amount, order._id, params.token, order.customer.email, order.customer.name, order.customer.company, transactionReason + transactionNature);
+				transaction = await creditCardProcessor.chargeTotal(parseFloat(params.amount), order._id, params.card, order.payments.customer.id, order.customer.email, order.customer.name, order.customer.company, transactionReason + transactionNature);
 
 				// Record the payment information in the payments collection in our database
-				transaction = await paymentsDAO.addNewPayment(params.amount, tax, PAYMENT_TYPES.CREDIT_CARD, order, transactionNature, username, transaction);
+				transaction = await paymentsDAO.addNewPayment(parseFloat(params.amount), tax, PAYMENT_TYPES.CREDIT_CARD, order, transactionNature.split(' ').pop(), username, params.memo, transaction);
 
 				// Also, record the transaction in the order that's associated with it
-				await ordersDAO.recordCharge(order, username, transaction, params.amount);
+				await ordersDAO.recordCharge(order, username, transaction, parseFloat(params.amount));
 
 				// Return the processed transaction metadata back to the client
 				return {
@@ -183,25 +191,24 @@ module.exports =
 			order.payments.charges = order.payments.charges || [];
 
 			// Find out the nature of the transaction
-			transactionReason += _determineTxnReason(order, params.amount);
+			transactionReason += _determineTxnReason(order, parseFloat(params.amount));
 
 			try
 			{
 				// Upload the check image to Dropbox
 				imgMeta = await dropbox.uploadFile(params.orderId, params.checkImage, dropbox.DIRECTORY.PAYMENTS);
-				imgMeta = imgMeta.pop();
 
 				if (imgMeta.length)
 				{
 					// Record the payment information in the payments collection in our database
-					transaction = await paymentsDAO.addNewPayment(params.amount, tax, PAYMENT_TYPES.CHECK, order, transactionReason, username, null, imgMeta);
+					transaction = await paymentsDAO.addNewPayment(parseFloat(params.amount), tax, PAYMENT_TYPES.CHECK, order, transactionReason.split(' ').pop(), username, params.memo, null, imgMeta[0]);
 
 					// Also, record the transaction in the order that's associated with it
-					await ordersDAO.recordCharge(order, username, transaction, params.amount);
+					await ordersDAO.recordCharge(order, username, transaction, parseFloat(params.amount));
 
 					return {
 						statusCode: responseCodes.OK,
-						data: imgMeta
+						data: transaction
 					};
 				}
 				else
@@ -244,25 +251,24 @@ module.exports =
 			order.payments.charges = order.payments.charges || [];
 
 			// Find out the nature of the transaction
-			transactionReason += _determineTxnReason(order, params.amount);
+			transactionReason += _determineTxnReason(order, parseFloat(params.amount));
 
 			try
 			{
 				// Upload the check image to Dropbox
 				imgMeta = await dropbox.uploadFile(params.orderId, params.cashImage, dropbox.DIRECTORY.PAYMENTS);
-				imgMeta = imgMeta.pop();
 
 				if (imgMeta.length)
 				{
 					// Record the payment information in the payments collection in our database
-					transaction = await paymentsDAO.addNewPayment(params.amount, tax, PAYMENT_TYPES.CASH, order, transactionReason, username, null, imgMeta);
+					transaction = await paymentsDAO.addNewPayment(parseFloat(params.amount), tax, PAYMENT_TYPES.CASH, order, transactionReason.split(' ').pop(), username, params.memo, null, imgMeta[0]);
 
 					// Also, record the transaction in the order that's associated with it
-					await ordersDAO.recordCharge(order, username, transaction, params.amount);
+					await ordersDAO.recordCharge(order, username, transaction, parseFloat(params.amount));
 
 					return {
 						statusCode: responseCodes.OK,
-						data: imgMeta
+						data: transaction
 					};
 				}
 				else

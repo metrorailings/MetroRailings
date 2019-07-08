@@ -2,11 +2,9 @@
 
 const mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 
-	creditCardProcessor = global.OwlStakes.require('utility/creditCardProcessor'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	pricingCalculator = global.OwlStakes.require('shared/pricing/pricingCalculator'),
-	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 	statuses = global.OwlStakes.require('shared/orderStatus');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
@@ -16,17 +14,20 @@ const ORDERS_COLLECTION = 'orders',
 	REMOVED_ORDERS_COLLECTION = 'removedOrders',
 
 	SYSTEM_USER_NAME = 'system',
-	UNKNOWN_USER_NAME = 'Unknown',
 
 	MODIFICATION_REASONS =
 	{
+		PROSPECT_CREATION: 'Prospect Created',
+		PROSPECT_UPDATE: 'Prospect Updated',
 		QUOTE_CREATION: 'Quote Created',
+		ORDER_UPDATE: 'Quote Updated',
 		FINALIZE_ORDER: 'Order Finalized',
 		PAYMENT: 'Payment',
 		DUE_DATE_CHANGE: 'Due Date Change',
 		NEW_FILE_SAVED: 'New File Uploaded',
 		FILE_DELETED: 'File Deleted',
-		SHOP_STATUS_CHANGED: 'Production Status Updated'
+		SHOP_STATUS_CHANGED: 'Production Status Updated',
+		ORDER_CANCELLED: 'Order Cancelled'
 	};
 
 // ----------------- PRIVATE FUNCTIONS --------------------------
@@ -55,72 +56,6 @@ function _applyModificationUpdates(order, username, reason)
 		date: modificationDate,
 		reason: reason || ''
 	});
-}
-
-/**
- * Function responsible for storing a note in a special format that would allow us to track all the notes that were
- * written on this order
- *
- * @param {Object} order - the order
- * @param {String} note - the note
- * @param {String} username - the name of the user writing the note
- *
- * @author kinsho
- */
-function _formNoteRecord(order, note, username)
-{
-	order.notes.internal = order.notes.internal || [];
-
-	// If we are dealing with old orders here, we need to convert the old notes so that they remain accessible
-	// through the new format
-	if (typeof order.notes.internal === 'string')
-	{
-		order.notes.internal =
-		[{
-			note: order.notes.internal,
-			author: UNKNOWN_USER_NAME,
-			date: order.lastModifiedDate
-		}];
-	}
-
-	if (note && note.trim())
-	{
-		order.notes.internal.unshift(
-		{
-			note: note,
-			author: username,
-			date: new Date()
-		});
-	}
-}
-
-/**
- * Simple utility function that's meant to parse a number from a string or return a zero otherwise if the string cannot
- * be parsed to yield a non-zero number
- *
- * @param {String} num - the string to be parsed
- *
- * @returns {Number} - the number that the string conveys
- *
- * @author kinsho
- */
-function _parseNumberOrReturnZero(num)
-{
-	return (num ? (parseFloat(num) || 0) : 0);
-}
-
-/**
- * Simple utility function that's to generate a fully-formed user-friendly date from a Date object
- *
- * @param {Date} date - the date to transform
- *
- * @returns {String} - the date, formatted and ready to be presented to users
- *
- * @author kinsho
- */
-function _generateUserFriendlyDate(date)
-{
-	return dateUtility.FULL_MONTHS[date.getMonth()] + ' ' + date.getDate() + dateUtility.findOrdinalSuffix(date.getDate()) + ', ' + date.getFullYear();
 }
 
 // ----------------- MODULE DEFINITION --------------------------
@@ -164,6 +99,8 @@ let ordersModule =
 	{
 		try
 		{
+			orderNumber = parseInt(orderNumber, 10) || 0;
+
 			let dbResults = await mongo.read(ORDERS_COLLECTION,
 			{
 				_id: orderNumber
@@ -290,10 +227,11 @@ let ordersModule =
 	 * Function responsible for saving or updating a prospect in the database
 	 *
 	 * @param {Object} order - the order data to save into our system
+	 * @param {String} username - the user saving or modifying this prospect
 	 *
 	 * @author kinsho
 	 */
-	saveProspect: async function (prospect)
+	saveProspect: async function (prospect, username)
 	{
 		let orderId = prospect._id,
 			counterRecord,
@@ -311,8 +249,19 @@ let ordersModule =
 				});
 
 			// Attach a new ID to the order
-			prospect._id = counterRecord.seq;
+			orderId = counterRecord.seq;
+
+			// Update the modification data on this prospect with a reason saying that we're creating a prospect
+			_applyModificationUpdates(prospect, username, MODIFICATION_REASONS.PROSPECT_CREATION);
 		}
+		else
+		{
+			// Update the modification data on this prospect with a reason saying that we're updating the prospect
+			_applyModificationUpdates(prospect, username, MODIFICATION_REASONS.PROSPECT_UPDATE);
+		}
+
+		// Attach a new ID to the order
+		prospect._id = parseInt(orderId, 10);
 
 		// Mark this order as a prospect
 		prospect.status = statuses.ALL.PROSPECT;
@@ -320,7 +269,7 @@ let ordersModule =
 		// Generate a record to upsert all this order information into our database
 		databaseRecord = mongo.formUpdateOneQuery(
 		{
-			_id: orderId
+			_id: prospect._id
 		}, prospect, true);
 
 		// Now save the order
@@ -388,6 +337,9 @@ let ordersModule =
 		order.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subtotal, order);
 		order.pricing.orderTotal = pricingCalculator.calculateTotal(order);
 
+		// Properly format the deposit amount
+		order.pricing.depositAmount = parseFloat(order.pricing.depositAmount);
+
 		// Generate an empty hash object to record all payments made on this order
 		order.payments = {};
 
@@ -417,35 +369,40 @@ let ordersModule =
 	},
 
 	/**
-	 * Function responsible for adding a securitized token to an order so that we could charge credit cards
+	 * Function responsible for adding a live credit card to an order so that we could charge credit cards
 	 * repeatedly if necessary
 	 *
 	 * @param {Number} orderId - the ID of the order which will store the token
-	 * @param {Object} token - the token to store into the order
-	 *
-	 * @param {Array<Object>} - the list of credit cards that have been used for payments on this order
+	 * @param {Object} card - the card to store into the order
+	 * @param {Object} customer - the Stripe customer record to log into the order
 	 *
 	 * @author kinsho
 	 */
-	addTokenToOrder: async function (orderId, token)
+	addCardToOrder: async function (orderId, card, customer)
 	{
 		let order = await ordersModule.searchOrderById(parseInt(orderId, 10)),
 			updateRecord;
 
-		order.payments.ccTokens = order.payments.ccTokens || [];
-		order.payments.ccTokens.push(token);
+		// Set up the credit card tokens collection if it hasn't been done so yet
+		order.payments.cards = order.payments.cards || [];
+		order.payments.cards.push(card);
+
+		// Set the Stripe customer record inside the order as well, if it hasn't been done yet
+		order.payments.customer = order.payments.customer || customer;
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
 		{
 			_id: orderId
-		}, order, false);
+		}, {
+			payments: order.payments
+		}, false);
 
 		try
 		{
 			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
 
-			return order.payments.ccTokens;
+			return true;
 		}
 		catch(error)
 		{
@@ -548,7 +505,7 @@ let ordersModule =
 
 		// Generate a payment record for the order if the user provided a credit card number
 		// And don't forget to charge the customer either!!
-		if (order.payments && order.payments.ccTokens && order.payments.ccTokens.length)
+		if (order.payments && order.payments.cards && order.payments.cards.length)
 		{
 			try
 			{
@@ -903,170 +860,36 @@ let ordersModule =
 	saveChangesToOrder: async function (orderModifications, username)
 	{
 		let order = await ordersModule.searchOrderById(parseInt(orderModifications._id, 10)),
-			amountToBePaid,
-			transactionID,
-			dataToUpdate,
-			rawDueDate,
 			updateRecord;
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
-		_applyModificationUpdates(order, username);
+		// @TODO Indicate exactly what was updated in this order at a later date
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.ORDER_UPDATE);
+		orderModifications.dates = order.dates;
+		orderModifications.modHistory = order.modHistory;
 
-		// Properly store any notes that may have been added to this order
-		_formNoteRecord(order, orderModifications.notes.internal, username);
+		// See if the nickname needs to be updated
+		orderModifications.customer.nickname = (orderModifications.customer.name.split(' ').length > 1 ? rQuery.capitalize(orderModifications.customer.name.split(' ')[0]) : orderModifications.customer.name);
 
-		// Convert any modified pricing and other numeric data into a numerical format
-		orderModifications.pricing.modification = _parseNumberOrReturnZero(orderModifications.pricing.modification);
-		orderModifications.pricing.pricePerFoot = _parseNumberOrReturnZero(orderModifications.pricing.pricePerFoot);
-		orderModifications.pricing.additionalPrice = _parseNumberOrReturnZero(orderModifications.pricing.additionalPrice);
-		orderModifications.pricing.deductions = _parseNumberOrReturnZero(orderModifications.pricing.deductions);
-
-		// Recalculate the total price of the order
-		orderModifications.pricing.subtotal = pricingCalculator.calculateOrderTotal(orderModifications);
-		orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subtotal, orderModifications);
-		orderModifications.pricing.tariff = pricingCalculator.calculateTariffs(order.pricing.subtotal, orderModifications);
-		orderModifications.pricing.orderTotal = pricingCalculator.calculateTotal(orderModifications);
-
-		// If the order is still pending finalization, reset the balance remaining
-		if (order.status === STATUS.PENDING)
+		// If the order is still pending finalization, update all pricing data to account for any changes
+		if (orderModifications.status === statuses.ALL.PENDING)
 		{
-			orderModifications.pricing.balanceRemaining = orderModifications.pricing.orderTotal;
-			orderModifications.pricing.taxRemaining = orderModifications.pricing.tax;
-		}
-		else
-		{
-			orderModifications.pricing.balanceRemaining = order.pricing.balanceRemaining;
-			orderModifications.pricing.taxRemaining = order.pricing.taxRemaining;
-		}
+			// Recalculate the total price of the order if the order is still pending to account for any pricing changes
+			orderModifications.pricing.subtotal = pricingCalculator.calculateOrderTotal(orderModifications);
+			orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subtotal, orderModifications);
+			orderModifications.pricing.tariff = pricingCalculator.calculateTariffs(orderModifications.pricing.subtotal, orderModifications);
+			orderModifications.pricing.orderTotal = pricingCalculator.calculateTotal(orderModifications);
+			orderModifications.pricing.depositAmount = parseFloat(orderModifications.pricing.depositAmount);
 
-		if (order.timeLimit && order.timeLimit.original && order.finalizationDate)
-		{
-			// If the time limit has been extended or shortened, adjust the due date. Otherwise, adjust the due date back to
-			// what it was before it was adjusted
-			rawDueDate = order.finalizationDate;
-			rawDueDate.setDate(rawDueDate.getDate() + order.timeLimit.original + (orderModifications.timeLimit.extension || 0));
-			orderModifications.timeLimit.rawDueDate = rawDueDate;
-			orderModifications.timeLimit.translatedDueDate = _generateUserFriendlyDate(rawDueDate);
-		}
-
-		try
-		{
-			if (orderModifications.status === STATUS.CLOSED)
-			{
-				// Generate credit card transactions necessary to satisfy any changes that may have been made to the order
-				// price only after the order has been closed
-				if ( !(order.pricing.paidByCheck) && !(orderModifications.pricing.restByCheck) )
-				{
-					// Calculate the balance remaining to be paid
-					amountToBePaid = order.pricing.balanceRemaining + orderModifications.pricing.modification + pricingCalculator.calculateTax(orderModifications.pricing.modification, orderModifications);
-
-					if (amountToBePaid > 0)
-					{
-						// Charge the customer if the order total has been increased
-						transactionID = await creditCardProcessor.chargeTotal(amountToBePaid, order.stripe.customer, order._id, orderModifications.customer.email);
-						order.stripe.charges.push(transactionID);
-					}
-					else if (amountToBePaid < 0)
-					{
-						// Refund money back to the customer if the order total has been lessened
-						await creditCardProcessor.refundMoney(Math.abs(amountToBePaid), order.stripe.charges, order._id);
-					}
-				}
-
-				// If the order is closed, we assume that any balance has been paid off.
-				order.pricing.balanceRemaining = 0;
-				order.pricing.taxRemaining = 0;
-			}
-		}
-		catch(error)
-		{
-			console.log('Ran into an error trying to transact some money...');
-			console.log(error);
-
-			throw error;
-		}
-
-		// Gather the data that we will need to put into the database
-		dataToUpdate =
-		{
-			status: orderModifications.status,
-			stripe: order.stripe,
-			rushOrder: orderModifications.rushOrder,
-
-			lastModifiedDate: order.lastModifiedDate,
-			modHistory: order.modHistory,
-
-			length: orderModifications.length,
-			finishedHeight: orderModifications.finishedHeight,
-
-			agreement: orderModifications.agreement,
-			additionalFeatures: orderModifications.additionalFeatures,
-
-			'customer.areaCode': orderModifications.customer.areaCode,
-			'customer.phoneOne': orderModifications.customer.phoneOne,
-			'customer.phoneTwo': orderModifications.customer.phoneTwo,
-			'customer.email': orderModifications.customer.email,
-			'customer.address': orderModifications.customer.address,
-			'customer.aptSuiteNo': orderModifications.customer.aptSuiteNo,
-			'customer.city': orderModifications.customer.city,
-			'customer.state': orderModifications.customer.state,
-			'customer.zipCode': orderModifications.customer.zipCode,
-
-			'pricing.pricePerFoot': orderModifications.pricing.pricePerFoot,
-			'pricing.additionalPrice': orderModifications.pricing.additionalPrice,
-			'pricing.deductions': orderModifications.pricing.deductions,
-			'pricing.modification': orderModifications.pricing.modification,
-			'pricing.subtotal': orderModifications.pricing.subtotal,
-			'pricing.isTaxApplied': orderModifications.pricing.isTaxApplied,
-			'pricing.isTariffApplied': orderModifications.pricing.isTariffApplied,
-			'pricing.orderTotal': orderModifications.pricing.orderTotal,
-			'pricing.tax': orderModifications.pricing.tax,
-			'pricing.tariff': orderModifications.pricing.tariff,
-			'pricing.taxRemaining': order.pricing.taxRemaining || 0,
-			'pricing.balanceRemaining': orderModifications.pricing.balanceRemaining,
-
-			'design.post': orderModifications.design.post,
-			'design.handrailing': orderModifications.design.handrailing,
-			'design.picket': orderModifications.design.picket,
-			'design.postEnd': orderModifications.design.postEnd,
-			'design.postCap': orderModifications.design.postCap,
-			'design.center': orderModifications.design.center,
-			'design.color': orderModifications.design.color,
-
-			'installation.coverPlates': orderModifications.installation.coverPlates,
-			'installation.platformType': orderModifications.installation.platformType,
-
-			'notes.internal': order.notes.internal,
-			'notes.order': orderModifications.notes.order
-		};
-
-		// Set flags and other data now according to whether the order meets certain conditions
-		if ( !(order.pricing.paidByCheck) )
-		{
-			dataToUpdate['pricing.restByCheck'] = orderModifications.pricing.restByCheck;
-		}
-		if (order.timeLimit && order.timeLimit.original && order.finalizationDate)
-		{
-			dataToUpdate.timeLimit =
-			{
-				original : order.timeLimit.original,
-				extension : orderModifications.timeLimit.extension,
-				rawDueDate : orderModifications.timeLimit.rawDueDate,
-				translatedDueDate : orderModifications.timeLimit.translatedDueDate,
-			};
-		}
-		// If the order is still pending finalization, reset the balance remaining
-		if (order.status === STATUS.PENDING)
-		{
-			dataToUpdate['pricing.balanceRemaining'] = orderModifications.pricing.orderTotal;
+			orderModifications.payments.balanceRemaining = orderModifications.payments.orderTotal;
 		}
 
 		// Now generate a record of data we will be using to update the database
 		updateRecord = mongo.formUpdateOneQuery(
 		{
-			_id: order._id
-		}, dataToUpdate, false);
+			_id: orderModifications._id
+		}, orderModifications, false);
 
 		try
 		{
@@ -1077,115 +900,6 @@ let ordersModule =
 		catch(error)
 		{
 			console.log('Ran into an error updating order ' + orderModifications._id);
-			console.log(error);
-
-			throw error;
-		}
-	},
-
-	/**
-	 * Function responsible for saving images to an order record
-	 *
-	 * @param {String} orderID - the ID of the order being modified
-	 * @param {Object} images - the metadata of the newly uploaded image(s)
-	 * @param {String} username - the name of the admin making the changes
-	 *
-	 * @returns {Boolean} - a simple flag indicating whether changes to the order were successfully saved
-	 *
-	 * @author kinsho
-	 */
-	saveNewPicToOrder: async function (orderID, images, username)
-	{
-		let order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
-			updateRecord;
-
-		// Ensure that the order is properly updated with a record indicating when this order was updated
-		// and who updated this order
-		_applyModificationUpdates(order, username);
-
-		// If no image uploads have been associated with this order, instantiate a new collection
-		order.pictures = order.pictures || [];
-
-		// Push the new image metadata into the order record
-		order.pictures.push(...images);
-
-		// Generate a record to push into the database
-		updateRecord = mongo.formUpdateOneQuery(
-		{
-			_id: order._id
-		},
-		{
-			pictures: order.pictures
-		},
-		false);
-
-		try
-		{
-			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
-
-			return true;
-		}
-		catch(error)
-		{
-			console.log('Ran into an error updating order ' + order._id);
-			console.log(error);
-
-			throw error;
-		}
-	},
-
-	/**
-	 * Function responsible for deleting image metadata from an order record
-	 *
-	 * @param {String} orderID - the ID of the order being modified
-	 * @param {Object} meta - the metadata of the image being deleted
-	 * @param {String} username - the name of the admin making the changes
-	 *
-	 * @returns {Boolean} - a simple flag indicating whether changes to the order were successfully saved
-	 *
-	 * @author kinsho
-	 */
-	deletePicFromOrder: async function (orderID, imgMeta, username)
-	{
-		let order = await ordersModule.searchOrderById(parseInt(orderID, 10)),
-			updateRecord,
-			i;
-
-		// Ensure that the order is properly updated with a record indicating when this order was updated
-		// and who updated this order
-		_applyModificationUpdates(order, username);
-
-		// Find the index of the image to remove from the metadata collection
-		for (i = order.pictures.length - 1; i >= 0; i--)
-		{
-			if (order.pictures[i].id === imgMeta.id)
-			{
-				break;
-			}
-		}
-
-		// Splice out that image metadata
-		order.pictures.splice(i, 1);
-
-		// Generate a record to push the changes into the database
-		updateRecord = mongo.formUpdateOneQuery(
-		{
-			_id: order._id
-		},
-		{
-			pictures: order.pictures
-		},
-		false);
-
-		try
-		{
-			await mongo.bulkWrite(ORDERS_COLLECTION, true, updateRecord);
-
-			return true;
-		}
-		catch(error)
-		{
-			console.log('Ran into an error updating order ' + order._id);
 			console.log(error);
 
 			throw error;
@@ -1208,7 +922,7 @@ let ordersModule =
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
-		_applyModificationUpdates(order, username);
+		_applyModificationUpdates(order, username, MODIFICATION_REASONS.ORDER_CANCELLED);
 
 		try
 		{
@@ -1227,7 +941,7 @@ let ordersModule =
 
 			throw error;
 		}
-	},
+	}
 
 	/**
 	 * Function responsible for restoring an order that was removed from the system
@@ -1239,6 +953,7 @@ let ordersModule =
 	 *
 	 * @author kinsho
 	 */
+	/**
 	restoreRemovedOrder: async function (orderID, username)
 	{
 		let order = await ordersModule.searchRemovedOrderById(parseInt(orderID, 10));
@@ -1265,6 +980,7 @@ let ordersModule =
 			throw error;
 		}
 	}
+	 */
 };
 
 // ----------------- EXPORT MODULE --------------------------

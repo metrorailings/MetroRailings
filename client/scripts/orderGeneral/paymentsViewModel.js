@@ -49,7 +49,8 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 
 	ERROR_MESSAGES =
 	{
-		DOLLAR_AMOUNT_INVALID : 'Please enter a valid dollar amount here.',
+		DOLLAR_AMOUNT_INVALID : 'Please enter a valid dollar amount here. Make sure that dollar amount does not' +
+			' exceed the balance remaining on this order.',
 
 		CC_NUMBER_INVALID: 'Please enter only digits here in the credit card number field.',
 		CC_NUMBER_UNACCEPTABLE: 'Please enter a valid credit card number. Keep in mind that we accept Visa, Mastercard, Discover, and Amex cards.',
@@ -140,7 +141,7 @@ function _validateCC()
 function _validateCheck()
 {
 	// Ensure all the check information has been put into place
-	viewModel.isCheckFormSubmissible = (viewModel.checkAmount && viewModel.checkImage);
+	viewModel.isCheckFormSubmissible = (viewModel.checkAmount && viewModel.isCheckImageProvided);
 
 	// Make sure none of the check fields are currently hosting an erroneous value
 	viewModel.isCheckFormSubmissible = viewModel.isCheckFormSubmissible && !(_validationTest(NEW_CHECK_VALIDATION_FIELDS));
@@ -154,7 +155,7 @@ function _validateCheck()
 function _validateCash()
 {
 	// Ensure all the proper information has been put into place
-	viewModel.isCashFormSubmissible = (viewModel.cashAmount && viewModel.cashImage);
+	viewModel.isCashFormSubmissible = (viewModel.cashAmount && viewModel.isCashImageProvided);
 
 	// Make sure none of the check fields are currently hosting an erroneous value
 	viewModel.isCashFormSubmissible = viewModel.isCashFormSubmissible && !(_validationTest(NEW_CASH_VALIDATION_FIELDS));
@@ -209,6 +210,23 @@ Object.defineProperty(viewModel, 'ccAmount',
 		rQueryClient.updateValidationOnField(isInvalid, _ccPaymentAmount, ERROR_MESSAGES.DOLLAR_AMOUNT_INVALID, _validationSet);
 		rQueryClient.setField(_ccPaymentAmount, value);
 		_validateCC();
+	}
+});
+
+// Credit Card Memorandum
+Object.defineProperty(viewModel, 'ccMemo',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__ccMemo;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__ccMemo = value;
 	}
 });
 
@@ -336,34 +354,6 @@ Object.defineProperty(viewModel, 'ccSecurityCode',
 	}
 });
 
-// Credit card form validation flag
-Object.defineProperty(viewModel, 'isCCFormSubmissible',
-{
-	configurable: false,
-	enumerable: false,
-
-	get: () =>
-	{
-		return viewModel.__isCCFormSubmissible;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__isCCFormSubmissible = value;
-
-		// Disable the button depending on whether the form can be submitted
-		if (!(value))
-		{
-			// Set up a tooltip indicating why the button is disabled
-			tooltipManager.setTooltip(_ccSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CC);
-		}
-		else
-		{
-			tooltipManager.closeTooltip(_ccSaveButton.parentNode, true);
-		}
-	}
-});
-
 // Amount that new check is worth
 Object.defineProperty(viewModel, 'checkAmount',
 {
@@ -436,6 +426,8 @@ Object.defineProperty(viewModel, 'isCheckImageProvided',
 	set: (value) =>
 	{
 		viewModel.__checkImage = value;
+
+		_validateCheck();
 	}
 });
 
@@ -453,6 +445,70 @@ Object.defineProperty(viewModel, 'isCashImageProvided',
 	set: (value) =>
 	{
 		viewModel.__cashImage = value;
+
+		_validateCash();
+	}
+});
+
+// Check Memorandum
+Object.defineProperty(viewModel, 'checkMemo',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__checkMemo;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__checkMemo = value;
+	}
+});
+
+// Cash Memorandum
+Object.defineProperty(viewModel, 'cashMemo',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__cashMemo;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__cashMemo = value;
+	}
+});
+
+// Credit card form validation flag
+Object.defineProperty(viewModel, 'isCCFormSubmissible',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return viewModel.__isCCFormSubmissible;
+	},
+
+	set: (value) =>
+	{
+		viewModel.__isCCFormSubmissible = value;
+
+		// Disable the button depending on whether the form can be submitted
+		if (!(value))
+		{
+			// Set up a tooltip indicating why the button is disabled
+			tooltipManager.setTooltip(_ccSaveButton.parentNode, SUBMISSION_INSTRUCTIONS.CC);
+		}
+		else
+		{
+			tooltipManager.closeTooltip(_ccSaveButton.parentNode, true);
+		}
 	}
 });
 

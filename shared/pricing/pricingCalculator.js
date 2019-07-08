@@ -137,7 +137,15 @@ let pricingModule =
 	 */
 	calculateStripeFee: function(amount)
 	{
-		return Math.round((amount * pricing.STRIPE_FEE_PERCENTAGE) + pricing.STRIPE_FEE_ADDITIONAL);
+		// The raw stripe fee
+		let stripeFee = (amount * pricing.STRIPE_FEE_PERCENTAGE) + pricing.STRIPE_FEE_ADDITIONAL;
+
+		// Now round the stripe fee down to 2 decimal places
+		stripeFee *= 100;
+		stripeFee = Math.round(stripeFee);
+		stripeFee /= 100;
+
+		return parseFloat(stripeFee.toFixed(2));
 	},
 
 	/**
