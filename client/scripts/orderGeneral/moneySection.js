@@ -4,7 +4,7 @@ import vm from 'client/scripts/orderGeneral/viewModel';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-var PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
+const PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 	ADDITIONAL_PRICE_TEXTFIELD = 'additionalPrice',
 
 	APPLY_TAXES_BUTTONSET = 'applyTaxesButtonSet',
@@ -12,7 +12,7 @@ var PRICE_PER_FOOT_TEXTFIELD = 'pricePerFoot',
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-var _pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
+let _pricePerFootField = document.getElementById(PRICE_PER_FOOT_TEXTFIELD),
 	_additionalPriceField = document.getElementById(ADDITIONAL_PRICE_TEXTFIELD),
 
 	_taxButtons = document.getElementById(APPLY_TAXES_BUTTONSET).getElementsByTagName('input'),

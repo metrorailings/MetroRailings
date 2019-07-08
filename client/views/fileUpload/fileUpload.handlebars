@@ -14,7 +14,7 @@
 		</div>
 		{{#unless doNotLoadOnInit}}
 			{{#each order.pictures}}
-				{{> fileThumbnail }}
+				{{> fileThumbnail showDeleteIcon=true }}
 			{{/each}}
 		{{/unless}}
 
@@ -41,7 +41,7 @@
 		</div>
 		{{#unless doNotLoadOnInit}}
 			{{#each order.drawings}}
-				{{> fileThumbnail }}
+				{{> fileThumbnail showDeleteIcon=true }}
 			{{/each}}
 		{{/unless}}
 
@@ -68,7 +68,7 @@
 		</div>
 		{{#unless doNotLoadOnInit}}
 			{{#each order.files}}
-				{{> fileThumbnail }}
+				{{> fileThumbnail showDeleteIcon=true }}
 			{{/each}}
 		{{/unless}}
 

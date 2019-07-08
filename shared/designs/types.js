@@ -77,7 +77,7 @@ let types =
 			id: 'T-SAMPLE',
 			label: 'Samples',
 			technicalLabel: 'Samples',
-			spanishLabel: 'Muestras',
+			spanishLabel: 'Samples',
 			description: 'The railings being built here are samples that will be given to court new clients.'
 		},
 		{

@@ -14,7 +14,6 @@ const controllerHelper = global.OwlStakes.require('controllers/utility/controlle
 	mailer = global.OwlStakes.require('utility/mailer'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 	pdfGenerator = global.OwlStakes.require('utility/pdfGenerator'),
-	dropbox = global.OwlStakes.require('utility/dropbox'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 
@@ -210,75 +209,6 @@ module.exports =
 			console.log('Saving changes made to an order...');
 
 			await ordersDAO.saveChangesToOrder(params, username);
-		}
-
-		return {
-			statusCode: responseCodes.OK,
-			data: {}
-		};
-	},
-
-	/**
-	 * Function meant to upload a new image into Dropbox and attach new image metadata to the order associated with
-	 * the new image
-	 *
-	 * @params {Object} params - the ID of the order to modify and the new pictures to upload
-	 *
-	 * @author kinsho
-	 */
-	saveNewPictures: async function (params, cookie, request)
-	{
-		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
-		{
-			let username = cookieManager.retrieveAdminCookie(cookie)[0],
-				imgMetas;
-
-			console.log('Saving new picture(s) to the order...');
-
-			// Upload the image(s) to Dropbox
-			imgMetas = await dropbox.uploadImage(params.id, params.files);
-
-			if (imgMetas.length)
-			{
-				// Save all the metadata from the newly uploaded images into the database
-				await ordersDAO.saveNewPicToOrder(params.id, imgMetas, username);
-
-				return {
-					statusCode: responseCodes.OK,
-					data: imgMetas
-				};
-			}
-			else
-			{
-				return {
-					statusCode: responseCodes.BAD_REQUEST
-				};
-			}
-		}
-	},
-
-	/**
-	 * Function meant to delete an image from the Dropbox repository and wipe away an image's metadata from the order
-	 * associated with that image
-	 *
-	 * @params {Object} params - the ID of the order to modify and the picture metadata to delete from that order
-	 *
-	 * @author kinsho
-	 */
-	deletePicture: async function (params, cookie, request)
-	{
-		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
-		{
-			let username = cookieManager.retrieveAdminCookie(cookie)[0];
-
-			console.log('Deleting a picture from an order...');
-
-			// Delete the image from the Dropbox repository
-			if (await dropbox.deleteImage(params.imgMeta.path_lower))
-			{
-				// Now delete the picture's metadata from the database
-				await ordersDAO.deletePicFromOrder(params.id, params.imgMeta, username);
-			}
 		}
 
 		return {

@@ -7,6 +7,46 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#balanceRemaining, #pastPayments
+{
+	@extend %smallSignificantText;
+
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, slateGrayTheme);
+
+		top-left-radius: 10px;
+		top-right-radius: 10px;
+		bottom: none;
+	}
+
+	margin:
+	{
+		left: auto;
+		right: auto;
+	}
+
+	padding:
+	{
+		top: 10px;
+		bottom: 20px;
+	}
+
+	width: 70%;
+}
+#balanceRemaining
+{
+	width: 70%;
+}
+#pastPayments
+{
+	width: 50%;
+
+	background-color: map-get($COLORS, smokeWhiteTheme);
+}
+
 #paymentsContainer
 {
 	width: 70%;
@@ -16,7 +56,6 @@
 {
 	margin:
 	{
-		top: 20px;
 		bottom: 20px;
 	}
 
@@ -316,7 +355,15 @@
 		left: 5px;
 		right: 5px;
 	}
+}
 
+#ccExpDateMonth
+{
+	width: 160px;
+}
+
+#ccExpDateYear
+{
 	width: 80px;
 }
 

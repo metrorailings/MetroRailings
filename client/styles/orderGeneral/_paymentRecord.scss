@@ -9,15 +9,126 @@
 
 #paymentRecordContainer
 {
+	margin:
+	{
+		bottom: 20px;
+		left: auto;
+		right: auto;
+	}
+
 	border:
 	{
 		width: 1.5px;
 		color: map-get($COLORS, lightGrayTheme);
 		style: solid;
 	}
+
+	width: 70%;
 }
 
 .paymentRecord
 {
-	
+	border:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	height: 125px;
+	overflow: hidden;
+
+	&:nth-child(2n)
+	{
+		background-color: map-get($COLORS, lightBlueTheme);
+	}
+}
+
+.amountsColumn
+{
+	border-right:
+	{
+		width: 1px;
+		style: solid;
+		color: map-get($COLORS, grayTheme);
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
+
+	flex: 1;
+	height: 100%;
+
+	& > div
+	{
+		margin-top: 5px;
+	}
+}
+
+.paymentRecordDetailsColumn
+{
+	padding: 20px;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
+
+	flex: 1;
+	height: 100%;
+}
+
+.bigPaymentRecordLabel
+{
+	@extend %smallSignificantText;
+
+	height: 35px;
+
+	display: flex;
+	align-items: center;
+}
+
+.significantRecordListing
+{
+	@extend %smallSignificantText;
+}
+
+.paymentRecordLabel
+{
+	@extend %smallerSignificantText;
+}
+
+.recordListing
+{
+	@extend %smallerSignificantText;
+
+	margin-left: 3px;
+}
+
+.paymentRecordDetails
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > i
+	{
+		font-size: map-get($FONTS, giganticPlusFontSize);
+
+		margin-right: 5px;
+	}
+
+	& > img
+	{
+		max-width: 150px;
+		max-height: 60px;
+
+		cursor: pointer;
+	}
 }

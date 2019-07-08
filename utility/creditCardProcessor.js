@@ -22,7 +22,9 @@ const ACCEPTABLE_CURRENCY = 'usd',
 let _chargeCard = _Q.nbind(_stripe.charges.create, _stripe.charges),
 	_retrieveTransaction = _Q.nbind(_stripe.charges.retrieve, _stripe.charges),
 	_refundMoney = _Q.nbind(_stripe.refunds.create, _stripe.refunds),
-	_createToken = _Q.nbind(_stripe.tokens.create, _stripe.tokens);
+	_createToken = _Q.nbind(_stripe.tokens.create, _stripe.tokens),
+	_createCustomer = _Q.nbind(_stripe.customers.create, _stripe.customers),
+	_createCard = _Q.nbind(_stripe.customers.createSource, _stripe.customers);
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -57,11 +59,56 @@ module.exports =
 	},
 
 	/**
+	 * Function meant to create a customer for an order so that we can store credit cards that can be repeatedly charged
+	 *
+	 * @param {String} name - the name of the customer
+	 * @param {Number} orderId - the ID of the order associated with the customer
+	 *
+	 * @returns {Object} - the customer object from Stripe
+	 *
+	 * @author kinsho
+	 */
+	createCustomer: async function (name, orderId)
+	{
+		let customer = await _createCustomer(
+		{
+			name: name + ' - ' + orderId,
+			metadata:
+			{
+				orderId: orderId,
+			}
+		});
+
+		return customer;
+	},
+
+	/**
+	 * Function meant to create a credit card object inside Stripe
+	 *
+	 * @param {String} customerId - the ID of the customer using this card
+	 * @param {String} tokenId - the ID of the credit card token to associate with the customer
+	 *
+	 * @returns {Object} - the card object to store within our database
+	 *
+	 * @author kinsho
+	 */
+	createCard: async function (customerId, tokenId)
+	{
+		let creditCard = await _createCard(customerId,
+		{
+			source: tokenId
+		});
+
+		return creditCard;
+	},
+
+	/**
 	 * Function responsible for charging a customer's credit card
 	 *
 	 * @param {Number} orderTotal - the price to charge the customer
 	 * @param {Number} orderId - the ID of the order that's currently making us some money
-	 * @param {String} tokenId - the ID of the token that contains the credit card we'll be using to process payment
+	 * @param {String} cardId - the ID of the credit card we'll be using to process payment
+	 * @param {String} customerId - the ID of the customer associated with the credit card we'll be charging
 	 * @param {String} [emailAddr] - the e-mail address which to e-mail the receipt to once the transaction is complete
 	 * @param {String} [customerName] - the name of the customer
 	 * @param {String} [companyName] - the company that the customer is affiliated with
@@ -71,14 +118,15 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	chargeTotal: async function (orderTotal, orderId, tokenId, emailAddr, customerName, companyName, txDescription)
+	chargeTotal: async function (orderTotal, orderId, cardId, customerId, emailAddr, customerName, companyName, txDescription)
 	{
 		let chargeParams =
 			{
 				amount: Math.floor(orderTotal * 100),
+				customer: customerId,
 				currency: ACCEPTABLE_CURRENCY,
 				metadata: { 'Order ID' : orderId },
-				source: tokenId,
+				source: cardId,
 				description: txDescription
 			};
 

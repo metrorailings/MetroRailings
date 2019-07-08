@@ -97,7 +97,7 @@
 	}
 }
 
-.orderBlock, .orderGrouping, .orderInfoSection, .orderInfoSectionHeader, .orderCell, .orderIDCell, .orderStatusCell
+.orderBlock, .orderGrouping, .orderInfoSection, .orderInfoSectionHeader, .orderCell, .orderIDCell, .orderStatusCell, .dueDateCell
 {
 	display: flex;
 	align-items: center;
@@ -263,6 +263,39 @@
 
 	width: 100%;
 	flex: 1;
+
+	& > i
+	{
+		margin-right: 7px;
+	}
+}
+
+
+.dueDateCell
+{
+	@extend %bigSignificantText;
+
+	border-left:
+	{
+		style: solid;
+		width: 1px;
+		color: map-get($COLORS, lightGrayTheme);
+	}
+
+	width: 100%;
+	flex: 1;
+
+	flex-direction: column;
+}
+
+.monthCell
+{
+	@extend %significantText;
+}
+
+.dateCell
+{
+	@extend %giantNumberText;
 }
 
 .orderLabel
@@ -281,15 +314,6 @@
 	{
 		color: map-get($COLORS, mahoganyTheme);
 	}
-}
-
-.picturesContainer
-{
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	flex-direction: row;
-	flex-wrap: wrap;
 }
 
 .printLink, .loadPicturesLink, .convertOrderLink, .invoiceLink, .trashLink

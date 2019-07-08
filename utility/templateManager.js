@@ -11,6 +11,7 @@ let _Handlebars = require('handlebars'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
 
+	creditCards = global.OwlStakes.require('shared/ccAllowed'),
 	dateUtility = global.OwlStakes.require('shared/dateUtility'),
 	designTranslator = global.OwlStakes.require('shared/designs/translator'),
 	statuses = global.OwlStakes.require('shared/orderStatus');
@@ -18,14 +19,6 @@ let _Handlebars = require('handlebars'),
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 const UTILITY_FOLDER = 'utility',
-
-	CC_ICONS =
-	{
-		'visa' : 'fa-cc-visa',
-		'amex' : 'fa-cc-amex',
-		'discover' : 'fa-cc-discover',
-		'mastercard' : 'fa-cc-mastercard'
-	},
 
 	PARTIALS =
 	{
@@ -427,7 +420,7 @@ _Handlebars.registerHelper('split_by_comma', function(val)
  */
 _Handlebars.registerHelper('determine_cc_icon', function(val)
 {
-	return CC_ICONS[val.toLowerCase()];
+	return creditCards.ccIcon(val);
 });
 
 /**
