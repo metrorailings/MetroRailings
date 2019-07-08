@@ -1,5 +1,22 @@
 /* ----------------------- IMPORTS ----------------------------- */
 
 @import '../foundation/convention';
+@import '../foundation/fonts';
 
 /* ----------------------- STYLES ----------------------------- */
+
+#priceChartHeadsUp
+{
+	@extend %italicizedFormDescriptiveText;
+
+	margin:
+	{
+		top: 20px;
+		bottom: 20px;
+		left: auto;
+		right: auto;
+	}
+
+	display: block;
+	width: 80%;
+}

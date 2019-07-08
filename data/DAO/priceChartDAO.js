@@ -1,10 +1,12 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-const drPriceChart = global.OwlStakes.require('shared/priceCharts/deckRemodelers');
+const drPriceChart = global.OwlStakes.require('shared/priceCharts/deckRemodelers'),
+	boPriceChart = global.OwlStakes.require('shared/priceCharts/barrettOutdoors');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-const DR_CODE = 'dr';
+const DECK_REMODELERS_CODE = 'dr',
+	BARRETT_OUTDOORS_CODE = 'bo';
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -23,9 +25,13 @@ module.exports =
 	{
 		try
 		{
-			if (code === DR_CODE)
+			if (code === DECK_REMODELERS_CODE)
 			{
 				return drPriceChart;
+			}
+			else if (code === BARRETT_OUTDOORS_CODE)
+			{
+				return boPriceChart;
 			}
 
 			return {};
