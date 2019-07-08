@@ -14,7 +14,7 @@ let contractorModule =
 	[
 		{
 			name: 'Traditional',
-			previewImage: ['client/images/deckRemodelers/traditionalFullBody.jpg'],
+			previewImage: ['client/images/priceChart/traditionalFullBody.jpg'],
 			regularPrice: 60,
 			curves:
 			{
@@ -26,7 +26,7 @@ let contractorModule =
 		},
 		{
 			name: 'Vista',
-			previewImage: ['client/images/deckRemodelers/vistaFullBody.jpg'],
+			previewImage: ['client/images/priceChart/vistaFullBody.jpg'],
 			regularPrice: 70,
 			curves:
 			{
@@ -40,7 +40,7 @@ let contractorModule =
 		},
 		{
 			name: 'Cable',
-			previewImage: ['client/images/deckRemodelers/cableFullBody.jpg'],
+			previewImage: ['client/images/priceChart/cableFullBody.jpg'],
 			regularPrice: 100,
 			pricingUnit: ' per foot',
 			note: 'The bodies of the railings will consist of tightly-wound 1/8"-diameter stainless steel cables' +
@@ -52,7 +52,7 @@ let contractorModule =
 	[
 		{
 			name: 'Single-Leaf Gate',
-			previewImage: ['client/images/deckRemodelers/singleLeafGate.jpeg'],
+			previewImage: ['client/images/priceChart/singleLeafGate.jpeg'],
 			priceBreakdowns:
 			[
 				{
@@ -77,7 +77,7 @@ let contractorModule =
 		},
 		{
 			name: 'Double-Leaf Gate',
-			previewImage: ['client/images/deckRemodelers/doubleLeafGate.jpeg'],
+			previewImage: ['client/images/priceChart/doubleLeafGate.jpeg'],
 			priceBreakdowns:
 			[
 				{
@@ -106,13 +106,13 @@ let contractorModule =
 	[
 		{
 			name: '6" Square Bases',
-			previewImage: ['client/images/deckRemodelers/sixPostBase.jpg'],
+			previewImage: ['client/images/priceChart/sixPostBase.jpg'],
 			regularPrice: 85,
 			pricingUnit: ' per base',
 		},
 		{
 			name: 'Privacy Wall',
-			previewImage: ['client/images/deckRemodelers/privacyWall.jpeg'],
+			previewImage: ['client/images/priceChart/privacyWall.jpeg'],
 			regularPrice: 90,
 			pricingUnit: ' per foot',
 		},
