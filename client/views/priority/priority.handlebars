@@ -17,13 +17,11 @@
 		<div class='openOrder'>
 			<span>{{ _id }}</span>
 			<span>{{ customer.name }}</span>
-			<span>{{#if customer.company}} {{ customer.company }} {{/if}}</span>
-			<span>{{#map_design_code_to_spanish_name design.type}}{{/map_design_code_to_spanish_name}}</span>
+			<span>{{#if customer.company}} {{ customer.company }} {{else}} -- {{/if}}</span>
+			<span>{{#map_design_code_to_full_name design.type}}{{/map_design_code_to_full_name}}</span>
 			<span>{{#capitalize status }}{{/capitalize}}</span>
 			<span>
-				<input type='date' class='dueDates' 
-					   value='{{#if dates.due}}{{#format_date_for_input dates.due}}{{/format_date_for_input}}{{/if}}'
-					   data-order-id='{{ _id }}' data-create-date='{{ dates.created }}' />
+				<input type='date' class='dueDates' value='{{#if dates.due}}{{#format_date_for_input dates.due}}{{/format_date_for_input}}{{/if}}'data-order-id='{{ _id }}' data-create-date='{{ dates.created }}' />
 			</span>
 		</div>
 	{{/each}}	

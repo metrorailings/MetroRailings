@@ -1,56 +1,61 @@
 {{#if order._id}}
-	<div id='paymentsSection'>
+	{{#unless_cond order.status 'prospect'}}
 
-		<div class='dataGrouping'>
-			<div class='specializedLabel'>Payments</div>
-			<div id='paymentsContainer'>
-				<div id='newPaymentForm'>
-					<div id='paymentOptionHeaders'>
-						<span class='paymentOptionHeader selected' data-pay-form='newPaymentCreditCard'>Credit Card</span>
-						<span class='paymentOptionHeader' data-pay-form='newPaymentCheck'>Check</span>
-						<span class='paymentOptionHeader' data-pay-form='newPaymentCash'>Cash</span>
+		<div id='paymentsSection'>
+
+			<div class='dataGrouping'>
+				<div class='specializedLabel'>Payments</div>
+				<div id='paymentsContainer'>
+					<div id='balanceRemaining' data-balance-remaining='{{ order.payments.balanceRemaining }}'>
+						Balance Remaining: ${{#to_fixed order.payments.balanceRemaining 2 }}{{/to_fixed}}
 					</div>
+					<div id='newPaymentForm'>
+						<div id='paymentOptionHeaders'>
+							<span class='paymentOptionHeader selected' data-pay-form='newPaymentCreditCard'>Credit Card</span>
+							<span class='paymentOptionHeader' data-pay-form='newPaymentCheck'>Check</span>
+							<span class='paymentOptionHeader' data-pay-form='newPaymentCash'>Cash</span>
+						</div>
 
-					<div id='newPaymentCreditCard' class='paymentForm'>
-						<div id='ccPaymentDetails'>
+						<div id='newPaymentCreditCard' class='paymentForm'>
+							<div id='ccPaymentDetails'>
 							<span>
 								<label>Amount</label>
 								$<input id='newPaymentCCAmount' type='tel' />
 							</span>
-							<span>
+								<span>
 								<label>Card</label>
 								<span id='ccList'>
-									{{#if order.payments.ccTokens}}
-										{{#each order.payments.ccTokens}}
+									{{#if order.payments.cards}}
+										{{#each order.payments.cards}}
 											<div class='ccListEntry'>
-												<input id='{{ this.id }}' type='radio' name='existingCC' value='{{this.card.id}}' />
+												<input id='{{ this.id }}' type='radio' name='existingCC' value='{{ this.id }}' />
 												<label for='{{ this.id }}'>
-													<i class='fa {{#determine_cc_icon this.card.brand}}{{/determine_cc_icon}}'></i>&nbsp;(...{{ this.card.last4 }})
+													<i class='fa {{#determine_cc_icon this.brand}}{{/determine_cc_icon}}'></i>&nbsp;(...{{ this.last4 }})
 												</label>
 											</div>
 										{{/each}}
-										<div class='ccListEntry'>
-											<input id='newCardOption' type='radio' name='existingCC' value='new' />
-											<label for='newCardOption' class='smallLabel'>New Card</label>
-										</div>
 									{{/if}}
+									<div class='ccListEntry'>
+										<input id='newCardOption' type='radio' name='existingCC' value='new' />
+										<label for='newCardOption' class='smallLabel'>New Card</label>
+									</div>
 								</span>
 							</span>
-							<span>
+								<span>
 								<label>Memo</label>
 								<input id='ccMemo' type='text' />
 							</span>
-						</div>
-						<div>
-							<div id='newPaymentCCForm' class='{{#if order.payments.ccTokens}} disabled {{/if}}'>
-								<div class='controlGroupingRow'>
-									<label>Credit Card Number</label>
-									<input id='newCCNumber' type='tel' maxlength='16' {{#if order.payments.ccTokens}} disabled {{/if}} />
-								</div>
-								<div class='controlGroupingRow'>
+							</div>
+							<div>
+								<div id='newPaymentCCForm' class='disabled'>
+									<div class='controlGroupingRow'>
+										<label>Credit Card Number</label>
+										<input id='newCCNumber' type='tel' maxlength='16' disabled />
+									</div>
+									<div class='controlGroupingRow'>
 									<span>
 										<label>Expiration Date</label>
-										<select id='ccExpDateMonth' {{#if order.payments.ccTokens}} disabled {{/if}}>
+										<select id='ccExpDateMonth' disabled>
 											<option value='' selected='selected' disabled>Month</option>
 											<option value='1'>January</option>
 											<option value='2'>February</option>
@@ -65,7 +70,7 @@
 											<option value='11'>November</option>
 											<option value='12'>December</option>
 										</select>
-										<select id='ccExpDateYear' {{#if order.payments.ccTokens}} disabled {{/if}}>
+										<select id='ccExpDateYear' disabled>
 											<option value='' selected='selected' disabled>Year</option>
 											{{#each expirationYears }}
 												<option value='{{this}}'>{{this}}</option>
@@ -73,31 +78,31 @@
 										</select>
 									</span>
 
-									<span>
+										<span>
 										<label>Security Code (CVC)</label>
-										<input type='tel' id='newCVCNumber' maxlength='4' {{#if order.payments.ccTokens}} disabled {{/if}} />
+										<input type='tel' id='newCVCNumber' maxlength='4' disabled />
 									</span>
+									</div>
+								</div>
+								<div id='ccSaveButtonRow'>
+									<button id='ccSaveButton'>Submit Payment</button>
 								</div>
 							</div>
-							<div>
-								<button id='ccSaveButton'>Submit Payment</button>
-							</div>
 						</div>
-					</div>
 
-					<div id='newPaymentCheck' class='hide paymentForm'>
-						<div id='checkPaymentDetails'>
+						<div id='newPaymentCheck' class='hide paymentForm'>
+							<div id='checkPaymentDetails'>
 							<span>
 								<label>Amount</label>
 								$<input id='newPaymentCheckAmount' type='tel' />
 							</span>
-							<span>
+								<span>
 								<label>Memo</label>
 								<input id='checkMemo' type='text' />
 							</span>
-						</div>
-						<div>
-							<div id='checkImageContainer'>
+							</div>
+							<div>
+								<div id='checkImageContainer'>
 								<span id='checkUploadBox'>
 									<div id='noCheckImageUploaded'>
 										<i class='fa fa-upload'></i>
@@ -108,27 +113,27 @@
 										<div>Check Uploaded!</div>
 									</div>
 								</span>
+								</div>
+								<div id='checkSaveButtonRow'>
+									<button id='checkSaveButton'>Submit Payment</button>
+								</div>
+								<input id='checkUploadFile' type='file' />
 							</div>
-							<div>
-								<button id='checkSaveButton'>Submit Payment</button>
-							</div>
-							<input id='checkUploadFile' type='file' />
 						</div>
-					</div>
 
-					<div id='newPaymentCash' class='hide paymentForm'>
-						<div id='cashPaymentDetails'>
+						<div id='newPaymentCash' class='hide paymentForm'>
+							<div id='cashPaymentDetails'>
 							<span>
 								<label>Amount</label>
 								$<input id='newPaymentCashAmount' type='tel' />
 							</span>
-							<span>
+								<span>
 								<label>Memo</label>
 								<input id='cashMemo' type='text' />
 							</span>
-						</div>
-						<div>
-							<div id='cashImageContainer'>
+							</div>
+							<div>
+								<div id='cashImageContainer'>
 								<span id='cashUploadBox'>
 									<div id='noCashImageUploaded'>
 										<i class='fa fa-upload'></i>
@@ -139,29 +144,31 @@
 										<div>Image Uploaded!</div>
 									</div>
 								</span>
+								</div>
+								<div id='cashSaveButtonRow'>
+									<button id='cashSaveButton'>Submit Payment</button>
+								</div>
+								<input id='cashUploadFile' type='file' />
 							</div>
-							<div>
-								<button id='cashSaveButton'>Submit Payment</button>
-							</div>
-							<input id='cashUploadFile' type='file' />
 						</div>
+
 					</div>
 
 				</div>
-
 			</div>
+
 		</div>
 
-	</div>
+		<div id='pastPayments'>Past Payments</div>
+		<div id='paymentRecordContainer'>
+			{{#each order.payments.charges}}
+				{{> paymentRecord }}
+			{{/each}}
+		</div>
 
-	<div id='paymentRecordContainer'>
-		{{#each order.payments.charges}}
-			{{> paymentRecord }}
-		{{/each}}
-	</div>
+		<script id='paymentRecordTemplate' type='text/x-handlebars-template'>
+			{{{ paymentRecordTemplate }}}
+		</script>
 
-	<script id='paymentRecordTemplate' type='text/x-handlebars-template'>
-		{{{ paymentRecordTemplate }}}
-	</script>
-
+	{{/unless_cond}}
 {{/if}}

@@ -14,8 +14,9 @@
  * Sorts Mill Goudy
  * Julius Sans One
  * Comfortaa
+ * Roboto Mono
  */
-@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy|Julius+Sans+One+Comfortaa|Roboto+Mono);
+@import url(https://fonts.googleapis.com/css?family=Cardo|Muli|Raleway|Playfair+Display|Dancing+Script|Sorts+Mill+Goudy|Julius+Sans+One+Comfortaa|Roboto+Mono:100,400);
 
 /* ----------------------- LOCAL CONSTANTS ----------------------------- */
 
@@ -31,7 +32,7 @@ $FONTS:
 	largePlusFontSize: 28px,
 	giganticFontSize: 36px,
 	giganticPlusFontSize: 48px,
-	enormousFontSize: 72px,
+	enormousFontSize: 128px,
 
 	mobile-tinyFontSize: 10px,
 	mobile-smallFontSize: 12px,
@@ -445,6 +446,13 @@ $FONTS:
 %smallErrorText
 {
 	@include basicFontSettings($size: smallFontSize, $family: Muli, $color: darkRedTheme);
+}
+
+%giantNumberText
+{
+	@include basicFontSettings($weight: 100, $size: enormousFontSize, $family: Roboto Mono, $color: blackTheme);
+
+	letter-spacing: 0.2px;
 }
 
 /* --- Smaller font stylings --- */

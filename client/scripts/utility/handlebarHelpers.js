@@ -1,5 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
+import creditCards from 'shared/ccAllowed';
 import statuses from 'shared/orderStatus';
 import designTranslator from 'shared/designs/translator';
 import dateUtility from 'shared/dateUtility';
@@ -8,7 +9,7 @@ import rQueryClient from 'client/scripts/utility/rQueryClient';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var	GOOGLE_MAPS_SEARCH_URL = 'https://www.google.com/maps/search/?api=1&query=::params',
+const	GOOGLE_MAPS_SEARCH_URL = 'https://www.google.com/maps/search/?api=1&query=::params',
 	PARAMS_PLACEHOLDER = '::params';
 
 // ----------------- HANDLEBAR HELPERS ---------------------------
@@ -55,6 +56,26 @@ Handlebars.registerHelper('map_design_code_to_full_name', function(designCode)
 });
 
 /**
+ * Handlebars helper function designed to test whether multiple values are present at once
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('if_group', function(obj, keys, block)
+{
+	let ifCheck = true;
+
+	for (let i = 0; i < keys.length; i += 1)
+	{
+		if ( !(obj[keys[i]]) )
+		{
+			ifCheck = false;
+		}
+	}
+
+	return (ifCheck ? block.fn(this) : block.inverse(this));
+});
+
+/**
  * Handlebars helper function designed to test whether two values are equal
  *
  * @author kinsho
@@ -85,7 +106,7 @@ Handlebars.registerHelper('if_cond_group', function(val, groupVals, block)
 {
 	groupVals = JSON.parse(groupVals);
 
-	for (var i = groupVals.length - 1; i >= 0; i--)
+	for (let i = groupVals.length - 1; i >= 0; i--)
 	{
 		if (groupVals[i] === val)
 		{
@@ -106,7 +127,7 @@ Handlebars.registerHelper('unless_cond_group', function(val, groupVals, block)
 {
 	groupVals = JSON.parse(groupVals);
 
-	for (var i = groupVals.length - 1; i >= 0; i--)
+	for (let i = groupVals.length - 1; i >= 0; i--)
 	{
 		if (groupVals[i] === val)
 		{
@@ -140,13 +161,37 @@ Handlebars.registerHelper('format_date', function(date)
 });
 
 /**
+ * Handlebars helper function designed to pull a full month out of a serialized date
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('get_month', function(date)
+{
+	date = new Date(date);
+
+	return dateUtility.FULL_MONTHS[date.getMonth()];
+});
+
+/**
+ * Handlebars helper function designed to pull a specifica date out of a serialized date object
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('get_date', function(date)
+{
+	date = new Date(date);
+
+	return date.getDate();
+});
+
+/**
  * Handlebars helper function designed to translate computerized time strings into user-friendly text
  *
  * @author kinsho
  */
 Handlebars.registerHelper('format_time', function(date)
 {
-	var dateObj = new Date(date),
+	let dateObj = new Date(date),
 		militaryHour = dateObj.getHours(),
 		readableHour = (militaryHour % 12 ? militaryHour % 12 : 12),
 		useAMorPM = (militaryHour - 12 < 0 ? 'AM' : 'PM'),
@@ -179,7 +224,7 @@ Handlebars.registerHelper('format_time', function(date)
  */
 Handlebars.registerHelper('form_google_maps_url', function(customer)
 {
-	var params = '' + customer.address.trim().split(' ').join('+') + '+' + customer.city.trim().split(' ').join('+') + '+' + customer.state;
+	let params = '' + customer.address.trim().split(' ').join('+') + '+' + customer.city.trim().split(' ').join('+') + '+' + customer.state;
 	if (customer.zipCode)
 	{
 		params += customer.zipCode;
@@ -198,7 +243,7 @@ Handlebars.registerHelper('form_google_maps_url', function(customer)
  */
 Handlebars.registerHelper('format_multiple_emails', function(email)
 {
-	var blockToInsert = '';
+	let blockToInsert = '';
 
 	if (email)
 	{
@@ -250,4 +295,15 @@ Handlebars.registerHelper('to_fixed', function(num, decimalDigits)
 Handlebars.registerHelper('translate_status', function(status)
 {
 	return statuses.getSpanishTranslation(status);
+});
+
+/**
+ * Handlebars helper function designed to determine which credit card icon to display depending on the value passed
+ * into the function
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('determine_cc_icon', function(val)
+{
+	return creditCards.ccIcon(val);
 });

@@ -2,17 +2,17 @@
 
 	<span class='amountsColumn'>
 		<div class='bigPaymentRecordLabel'>Amount</div>
-		<div class='subtotalListing'>{{ amount }}</div>
+		<div class='significantRecordListing'>${{#to_fixed amount 2}}{{/to_fixed}}</div>
 		{{#if tax}}
 			<div>
-				<span class='paymentRecordLabel'>Tax: </span>
-				<span class='recordListing'>{{ tax }}</span>
+				<span class='paymentRecordLabel'>(Tax: </span>
+				<span class='recordListing'>${{#to_fixed tax 2}}{{/to_fixed}})</span>
 			</div>
 		{{/if}}
 		{{#if details.fee}}
 			<div>
-				<span class='paymentRecordLabel'>Fee: </span>
-				<span class='recordListing'>{{ details.fee }}</span>
+				<span class='paymentRecordLabel'>(Stripe Fee: </span>
+				<span class='recordListing'>${{#to_fixed details.fee 2 }}{{/to_fixed}})</span>
 			</div>
 		{{/if}}
 	</span>
@@ -22,8 +22,13 @@
 			<div class='bigPaymentRecordLabel'>Card</div>
 			<div class='paymentRecordDetails'>
 				<i class='fa {{#determine_cc_icon details.brand}}{{/determine_cc_icon}}'></i>
-				<span class='subAmountListing'>{{ last4 }}</span>
+				<span class='significantRecordListing'>(...{{ details.last4 }})</span>
 			</div>
+			{{#if memo}}
+				<div class='paymentRecordDetails'>
+					<span class='recordListing'>Memo: {{ memo }}</span>
+				</div>
+			{{/if}}
 		{{/if_cond}}
 
 		{{#if_cond type 'check'}}
@@ -31,6 +36,11 @@
 			<div class='paymentRecordDetails'>
 				<img src='{{ details.imgLink }}' alt='Check Image' />
 			</div>
+			{{#if memo}}
+				<div class='paymentRecordDetails'>
+					<span class='recordListing'>Memo: {{ memo }}</span>
+				</div>
+			{{/if}}
 		{{/if_cond}}
 
 		{{#if_cond type 'cash'}}
@@ -38,6 +48,11 @@
 			<div class='paymentRecordDetails'>
 				<img src='{{ details.imgLink }}' alt='Receipt Image' />
 			</div>
+			{{#if memo}}
+				<div class='paymentRecordDetails'>
+					<span class='recordListing'>Memo: {{ memo }}</span>
+				</div>
+			{{/if}}
 		{{/if_cond}}
 	</span>
 

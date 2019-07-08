@@ -22,6 +22,7 @@ module.exports =
 	 * @param {Object} order - the order with which this payment is to be associated
 	 * @param {Enum} reason - the reason why this payment has been made
 	 * @param {String} username - the adminstrator recording this payment
+	 * @param {String} memo - the memo note to associate with this payment
 	 * @param {Object} [ccTransaction] - Stripe transaction details from a recent credit card charge, should the
 	 * 		payment have been made through a credit card
 	 * @param {Object} [image] - Dropbox metadata relating to a recently uploaded image of a check or cash instrument,
@@ -31,7 +32,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	addNewPayment: async function (amount, tax, paymentType, order, reason, username, ccTransaction, image)
+	addNewPayment: async function (amount, tax, paymentType, order, reason, username, memo, ccTransaction, image)
 	{
 		try
 		{
@@ -63,15 +64,16 @@ module.exports =
 			}
 
 			// Calculate the sales taxes collected on this order, if applicable
-			tax = pricingCalculator.calculateTax(amount);
+			tax = pricingCalculator.calculateTax(amount, order);
 
 			// Organize the data to be stored in the database
 			data =
 			{
-				id: counterRecord.seq,
+				_id: counterRecord.seq,
 				orderId: order._id,
 				amount: amount,
 				tax: tax,
+				memo: memo || '',
 				type: paymentType,
 				admin: username,
 				reason: reason,

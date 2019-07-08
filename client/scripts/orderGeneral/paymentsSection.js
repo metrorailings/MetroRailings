@@ -4,17 +4,24 @@ import ccForm from 'client/scripts/orderGeneral/creditCardPaymentForm';
 import checkForm from 'client/scripts/orderGeneral/checkPaymentForm';
 import cashForm from 'client/scripts/orderGeneral/cashPaymentForm';
 
+import vm from 'client/scripts/orderGeneral/paymentsViewModel';
+
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
-const PAYMENT_OPTION_HEADER = 'paymentOptionHeader',
+const BALANCE_REMAINING = 'balanceRemaining',
+	PAYMENT_OPTION_HEADER = 'paymentOptionHeader',
 	PAYMENT_FORM = 'paymentForm',
+
+	BALANCE_REMAINING_PREFIX = 'Balance Remaining: $',
+	CHANGE_BALANCE_REMAINING_LISTENER = 'changeBalanceRemaining',
 
 	HIDE_CLASS = 'hide',
 	SELECTED_CLASS = 'selected';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
-let _paymentOptionHeaders = document.getElementsByClassName(PAYMENT_OPTION_HEADER),
+let _balanceRemaining = document.getElementById(BALANCE_REMAINING),
+	_paymentOptionHeaders = document.getElementsByClassName(PAYMENT_OPTION_HEADER),
 	_paymentForms = document.getElementsByClassName(PAYMENT_FORM);
 
 // ----------------- LISTENERS ---------------------------
@@ -54,14 +61,36 @@ function switchPaymentForms(event)
 	currentTarget.classList.add(SELECTED_CLASS);
 }
 
+/**
+ * Function responsible for updating the balance remaining on the order dynamically
+ *
+ * @param {Event} event - the event responsible for triggering the invocation of this function
+ *
+ * @author kinsho
+ */
+function updateBalanceRemaining(event)
+{
+	let newPaymentAmount = window.parseFloat(event.detail.amount),
+		balanceRemaining = window.parseFloat(_balanceRemaining.dataset.balanceRemaining),
+		newBalance = balanceRemaining - newPaymentAmount;
+
+	_balanceRemaining.dataset.balanceRemaining = newBalance;
+	_balanceRemaining.innerHTML = BALANCE_REMAINING_PREFIX + newBalance.toFixed(2);
+	
+}
+
 // ----------------- INITIALIZATION LOGIC ---------------------------
 
 // Ensure we're able to create payments prior to running logic that necessitates payment elements being present on
 // the page
-if (_paymentOptionHeaders)
+if (_paymentOptionHeaders.length)
 {
 	for (let i = 0; i < _paymentOptionHeaders.length; i += 1)
 	{
 		_paymentOptionHeaders[i].addEventListener('click', switchPaymentForms);
 	}
+
+	vm.balanceRemaining = window.parseFloat(_balanceRemaining.dataset.balanceRemaining);
+
+	document.addEventListener(CHANGE_BALANCE_REMAINING_LISTENER, updateBalanceRemaining);
 }

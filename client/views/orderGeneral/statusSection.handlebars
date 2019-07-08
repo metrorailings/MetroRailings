@@ -1,0 +1,56 @@
+{{#if order.status}}
+	<input type='hidden' id='statusHiddenField' value='{{ order.status }}' />
+{{/if}}
+
+{{#if order._id}}
+	{{#unless_cond_group order.status '["prospect", "pending"]' }}
+		<div id='statusSection'>
+			<div class='dataGrouping'>
+
+				<span class='specializedLabel'>
+					<span class='translate'>Status</span>
+				</span>
+
+				<span id='statusButtonSet' class='buttonSet'>
+
+					<input type='radio' class='statusRadio' id='materialStatus' name='status' value='material'
+						   {{#if_cond order.status 'material'}}checked{{/if_cond}}/>
+					<label for='materialStatus'>Material</label>
+
+					<input type='radio' class='statusRadio' id='layoutStatus' name='status' value='layout'
+						   {{#if_cond order.status 'layout'}}checked{{/if_cond}}/>
+					<label for='layoutStatus'>Layout</label>
+
+					<input type='radio' class='statusRadio' id='weldingStatus' name='status' value='welding'
+						   {{#if_cond order.status 'welding'}}checked{{/if_cond}}/>
+					<label for='weldingStatus'>Welding</label>
+
+					<input type='radio' class='statusRadio' id='grindingStatus' name='status' value='grinding'
+						   {{#if_cond order.status 'grinding'}}checked{{/if_cond}}/>
+					<label for='grindingStatus'>Grinding</label>
+
+					<input type='radio' class='statusRadio' id='paintingStatus' name='status' value='painting'
+						   {{#if_cond order.status 'painting'}}checked{{/if_cond}}/>
+					<label for='paintingStatus'>Painting</label>
+
+					<input type='radio' class='statusRadio' id='installStatus' name='status' value='install'
+						   {{#if_cond order.status 'install'}}checked{{/if_cond}}/>
+					<label for='installStatus'>Install</label>
+
+					<input type='radio' class='statusRadio' id='closingStatus' name='status' value='closing'
+						   {{#if_cond order.status 'closing'}}checked{{/if_cond}}/>
+					<label for='closingStatus'>Closing</label>
+
+					<input type='radio' class='statusRadio' id='closedStatus' name='status' value='closed'
+						   {{#if_cond order.status 'closed'}}checked{{/if_cond}}/>
+					<label for='closedStatus'>Closed</label>
+					
+					<input type='radio' class='statusRadio' id='cancelledStatus' name='status' value='cancelled'
+						   {{#if_cond order.status 'cancelled'}}checked{{/if_cond}}/>
+					<label for='cancelledStatus'>Cancelled</label>
+
+				</span>
+			</div>
+		</div>
+	{{/unless_cond_group}}
+{{/if}}

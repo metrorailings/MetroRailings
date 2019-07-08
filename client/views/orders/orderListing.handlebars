@@ -6,38 +6,56 @@
                 <span class='orderIDCell'>
                     {{ this._id }}
                 </span>
-                <span class='orderStatusCell translate'>
+                <span class='orderStatusCell'>
                     {{#capitalize this.status }}{{/capitalize }}
                 </span>
             </span>
 
             <span class='orderInfoSection'>
-                <span class='orderInfoSectionHeader translate'>Customer Info</span>
+                <span class='orderInfoSectionHeader'>Customer Info</span>
                 <span class='orderCell'>{{ customer.name }}</span>
-                <span class='orderCell'>
-					<a class='linkText addressLink' target='_blank'
-					   href='{{#form_google_maps_url customer }}{{/form_google_maps_url}}'>
-						{{ customer.address }}
-						{{#if customer.aptSuiteNo}}
+
+				{{#if_cond_group customer '["address", "city", "state"]' }}
+					<span class='orderCell'>
+						<a class='linkText addressLink' target='_blank'
+						   href='{{#form_google_maps_url customer }}{{/form_google_maps_url}}'>
+							{{ customer.address }}
+							{{#if customer.aptSuiteNo}}
+								<br />
+								{{ customer.aptSuiteNo }}
+							{{/if}}
 							<br />
-							{{ customer.aptSuiteNo }}
-						{{/if}}
-						<br />
-						{{ customer.city }}, {{ customer.state }}{{#if customer.zipCode}}, {{ customer.zipCode }}{{/if}}
-						<i class='fa fa-map-marker'></i>
-					</a>
-				</span>
+							{{ customer.city }}, {{ customer.state }}{{#if customer.zipCode}}, {{ customer.zipCode }}{{/if}}
+							<i class='fa fa-map-marker'></i>
+						</a>
+					</span>
+				{{/if_cond_group}}
+
 				{{#if customer.email }}
-					<span class='orderCell'>{{#format_multiple_emails customer.email }}{{/format_multiple_emails}}</span>
+					<span class='orderCell'>
+						<i class='fa fa-envelope'></i>{{#format_multiple_emails customer.email }}{{/format_multiple_emails}}
+					</span>
 				{{/if}}
-                <span class='orderCell'>
-					<a class='linkText' href='tel:{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>
-						({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}
-						<i class='fa fa-phone-square'></i>
-					</a>
-				</span>
+
+				{{#if_cond_group customer '["areaCode", "phoneOne", "phoneTwo"]' }}
+					<span class='orderCell'>
+						<a class='linkText' href='tel:{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>
+							({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}
+							<i class='fa fa-phone-square'></i>
+						</a>
+					</span>
+				{{/if_cond_group}}
             </span>
 
+			{{#if dates.due}}
+				<span class='orderInfoSection'>
+					<span class='orderInfoSectionHeader'>Due Date</span>
+					<span class='dueDateCell'>
+						<span class='monthCell'>{{#get_month dates.due}}{{/get_month}}</span>
+						<span class='dateCell'>{{#get_date dates.due}}{{/get_date}}</span>
+					</span>
+				</span>
+			{{/if}}
 		</div>
 
 		<div class='orderGrouping flexHeight'>
@@ -50,44 +68,25 @@
 			{{#if_cond_group this.status '["prospect", "pending"]'}}
 				<span class='orderCell'>
 					<span class='trashLink' data-id='{{ this._id }}'>
-						<i class='fa fa-trash'></i><span class='translate'>Remove from System</span>
+						<i class='fa fa-trash'></i><span>Remove from System</span>
 					</span>
 				</span>
 			{{/if_cond_group}}
 
-			<!-- Allow the user to generate a contractor-specific agreement for the order whenever the order is in 
-				 pending or queued status -->
-			<!-- Comment out the below code for now, in the interest of de-cluttering -->
-			<!--
-			{{#if_cond_group this.status '["pending", "queued"]'}}
-				<span class='orderCell'>
-					<a class='contractorAgreementLink' target='_blank' href='/contractorAgreement?id={{ this._id }}'>
-						<i class='fa fa-file-text'></i><span class='translate'>Print Contractor Agreement</span>
-					</a>
-				</span>
-			{{/if_cond_group}}
-			-->
-
-			<!-- Only show this section for actual orders and not estimates -->
+			<!-- Only show this section for actual orders with quotes and not estimates -->
 			{{#unless_cond this.status 'prospect'}}
-				{{#unless_cond this.status 'pending'}}
-					<span class='orderCell'>
-						<a class='printLink' target='_blank' href='/printOrderDetails?id={{ this._id }}'>
-							<i class='fa fa-print'></i><span class='translate'>Print Order</span>
-						</a>
-					</span>
-				{{/unless_cond}}
 				<span class='orderCell'>
 					<a class='invoiceLink' target='_blank' href='/orderInvoice?id={{#obfuscate_id this._id }}{{/obfuscate_id}}'>
-						<i class='fa fa-file-text'></i><span class='translate'>View Invoice</span>
-					</a>
-				</span>
-				<span class='orderCell'>
-					<a class='detailsButton' href='/orderGeneral?id={{ this._id }}'>
-						<span class='translate'>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
+						<i class='fa fa-file-text'></i><span>View Invoice</span>
 					</a>
 				</span>
 			{{/unless_cond}}
+
+			<span class='orderCell'>
+				<a class='detailsButton' href='/orderGeneral?id={{ this._id }}'>
+					<span>Edit</span><i class='fa fa-arrow-circle-o-right'></i>
+				</a>
+			</span>
 		</div>
 
 		<div class='orderGrouping flexHeight'>
@@ -99,5 +98,5 @@
 {{/each}}
 
 {{#unless orders.length}}
-    <div id='nothingToDisplay' class='translate'>Nothing to display here...</div>
+    <div id='nothingToDisplay'>Nothing to display here...</div>
 {{/unless}}
