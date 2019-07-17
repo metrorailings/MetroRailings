@@ -547,15 +547,15 @@ let ordersModule =
 	 *
 	 * @param {Object} orderNumber - the order identification number
 	 * @param {String} status - the new status to apply to the order
-	 * @param {String} username - the username of the admin updating this order
-	 * @param {Boolean} isStatusBeingChangedFromShop - a flag indicating whether this change of status was issued
+	 * @param {String} [username] - the username of the admin updating this order
+	 * @param {Boolean} [isStatusBeingChangedFromShop] - a flag indicating whether this change of status was issued
 	 * 		from the shop
 	 *
 	 * @returns {Object} - the newly revised modification date as well as the new status applied to the order
 	 *
 	 * @author kinsho
 	 */
-	updateStatus: async function (orderNumber, status, username, isStatusBeingChangedFromShop)
+	updateStatus: async function (orderNumber, status, username = SYSTEM_USER_NAME, isStatusBeingChangedFromShop)
 	{
 		let order = await ordersModule.searchOrderById(orderNumber),
 			updateRecord;
@@ -851,16 +851,20 @@ let ordersModule =
 	 * customer or refund money back to him/her
 	 *
 	 * @param {Object} orderModifications - the order that contains the modified data
-	 * @param {String} username - the name of the admin making the changes
+	 * @param {String} [username] - the name of the admin making the changes
 	 *
 	 * @returns {Boolean} - a simple flag indicating that the order was successfully saved
 	 *
 	 * @author kinsho
 	 */
-	saveChangesToOrder: async function (orderModifications, username)
+	saveChangesToOrder: async function (orderModifications, username = SYSTEM_USER_NAME)
 	{
 		let order = await ordersModule.searchOrderById(parseInt(orderModifications._id, 10)),
 			updateRecord;
+
+		// Format the ID of the change object here to make sure the database understands that we are not changing
+		// the ID parameter
+		orderModifications._id = parseInt(orderModifications._id, 10);
 
 		// Ensure that the order is properly updated with a record indicating when this order was updated
 		// and who updated this order
@@ -872,17 +876,20 @@ let ordersModule =
 		// See if the nickname needs to be updated
 		orderModifications.customer.nickname = (orderModifications.customer.name.split(' ').length > 1 ? rQuery.capitalize(orderModifications.customer.name.split(' ')[0]) : orderModifications.customer.name);
 
-		// If the order is still pending finalization, update all pricing data to account for any changes
-		if (orderModifications.status === statuses.ALL.PENDING)
+		// If the status of an order has been provided, update all pricing data to account for any changes
+		if (orderModifications.status)
 		{
 			// Recalculate the total price of the order if the order is still pending to account for any pricing changes
-			orderModifications.pricing.subtotal = pricingCalculator.calculateOrderTotal(orderModifications);
+			orderModifications.pricing.subtotal = pricingCalculator.calculateSubtotal(orderModifications);
 			orderModifications.pricing.tax = pricingCalculator.calculateTax(orderModifications.pricing.subtotal, orderModifications);
 			orderModifications.pricing.tariff = pricingCalculator.calculateTariffs(orderModifications.pricing.subtotal, orderModifications);
 			orderModifications.pricing.orderTotal = pricingCalculator.calculateTotal(orderModifications);
 			orderModifications.pricing.depositAmount = parseFloat(orderModifications.pricing.depositAmount);
 
-			orderModifications.payments.balanceRemaining = orderModifications.payments.orderTotal;
+			// Copy over the payments object from the original order, as the client does not send over any data
+			// regarding payments
+			orderModifications.payments = order.payments;
+			orderModifications.payments.balanceRemaining = orderModifications.pricing.orderTotal;
 		}
 
 		// Now generate a record of data we will be using to update the database

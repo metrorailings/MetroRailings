@@ -6,7 +6,7 @@ import tooltipManager from 'client/scripts/utility/tooltip';
 
 // ----------------- ENUM/CONSTANTS -----------------------------
 
-var ERROR_CLASS = 'error',
+const ERROR_CLASS = 'error',
 
 	RANDOM_ALPHA_3 =
 	{
@@ -21,7 +21,7 @@ var ERROR_CLASS = 'error',
 
 // ----------------- MODULE -----------------------------
 
-var rQueryClient =
+let rQueryClient =
 {
 	/**
 	 * Function that finds the closest ancestor of an element that matches a given tag name
@@ -36,7 +36,7 @@ var rQueryClient =
 	 */
 	closestElementByTag: function (el, tagName)
 	{
-		var parent = el.parentNode;
+		let parent = el.parentNode;
 
 		while (parent)
 		{
@@ -61,7 +61,7 @@ var rQueryClient =
 	 */
 	closestElementByClass: function(el, className)
 	{
-		var parent = el.parentNode;
+		let parent = el.parentNode;
 
 		while (parent)
 		{
@@ -86,11 +86,9 @@ var rQueryClient =
 	 */
 	setCheckboxSets: function (checkboxes, selectedCheckboxID)
 	{
-		var i;
-
 		selectedCheckboxID = selectedCheckboxID || null;
 
-		for (i = checkboxes.length - 1; i >= 0; i--)
+		for (let i = checkboxes.length - 1; i >= 0; i--)
 		{
 			checkboxes[i].checked = (checkboxes[i].id === selectedCheckboxID);
 		}
@@ -110,7 +108,7 @@ var rQueryClient =
 	 */
 	updateValidationOnField: function (showError, formField, errorMessage, validationSet, hintElement)
 	{
-		var tooltipExists;
+		let tooltipExists;
 
 		// If a hint element is not provided, just assume the form field itself is the element to attach a tooltip toward
 		hintElement = hintElement || formField;
@@ -236,7 +234,7 @@ var rQueryClient =
 			return false;
 		}
 
-		for (var i in viewModel)
+		for (let i in viewModel)
 		{
 			// If the property is an internal copy of a field, simply ignore testing the value that particular property
 			if (i.indexOf('__') > -1)
@@ -315,7 +313,7 @@ var rQueryClient =
 	 */
 	copyObject: function (obj, pruneFalsy)
 	{
-		var keys = Object.keys(obj || {}),
+		let keys = Object.keys(obj || {}),
 			cloneObj = {};
 
 		for (let i = 0; i < keys.length; i += 1)
@@ -350,7 +348,7 @@ var rQueryClient =
 	 */
 	prunePrivateMembers: function (obj)
 	{
-		var keys = Object.keys(obj || {});
+		let keys = Object.keys(obj || {});
 
 		// Assume all private members have a reference name that starts with an underscore
 		for (let i = 0; i < keys.length; i += 1)
@@ -376,7 +374,7 @@ var rQueryClient =
 	 */
 	obfuscateNumbers: function(num)
 	{
-		var numStr = num + '',
+		let numStr = num + '',
 			jumble = '';
 
 		for (let i = 0; i < numStr.length; i += 1)
@@ -403,7 +401,7 @@ var rQueryClient =
 	/**
 	 * Function that prunes a primitive value from a collection
 	 *
-	 * @param {Array<any>} arr - the collection to loop through
+	 * @param {Array<Number | String>} arr - the collection to loop through
 	 * @param {String | Number} value - the value to remove from the collection
 	 *
 	 * @returns {Array} - the modified array
