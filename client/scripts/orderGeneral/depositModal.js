@@ -27,10 +27,11 @@ let depositModalModule =
 	{
 		document.getElementById(DEPOSIT_PRICE_FIELD).addEventListener('change', setDeposit);
 
-		// Initialize the view model with one-half of the order total
-		document.getElementById(DEPOSIT_PRICE_FIELD).value = (vm.orderTotal / 2).toFixed(2);
+		// Initialize the view model with whatever value has been set inside the modal
 		setDeposit();
 	}
 };
+
+// ----------------- DATA INITIALIZATION -----------------------------
 
 export default depositModalModule;

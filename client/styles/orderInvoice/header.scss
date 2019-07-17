@@ -41,4 +41,12 @@
 	{
 		text-decoration: underline;
 	}
+
+	&:first-of-type, &:last-of-type
+	{
+		@include mobileOnly()
+		{
+			display: none;
+		}
+	}
 }

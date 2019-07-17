@@ -118,6 +118,23 @@ Handlebars.registerHelper('if_cond_group', function(val, groupVals, block)
 });
 
 /**
+ * Helper designed to test the existence of three properties at once
+ *
+ * @author kinsho
+ */
+Handlebars.registerHelper('if_and_set', function(val1, val2, val3, block)
+{
+	if (val1 && val2 && val3)
+	{
+		return block.fn(this);
+	}
+	else
+	{
+		return block.inverse(this);
+	}
+});
+
+/**
  * Helper designed to help us test whether a value already exists within a set of given values. We execute opposite
  * blocks of code depending on the results of that test
  *

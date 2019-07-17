@@ -1,6 +1,6 @@
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _crypto = require('crypto'),
+let _crypto = require('crypto'),
 
 	config = global.OwlStakes.require('config/config'),
 
@@ -9,7 +9,7 @@ var _crypto = require('crypto'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var ADMINS_COLLECTION = 'admins',
+const ADMINS_COLLECTION = 'admins',
 	COOKIES_COLLECTION = 'cookies',
 
 	ADMIN_COOKIE = 'owl';
@@ -31,7 +31,7 @@ module.exports =
 	 */
 	checkAdminCredentials: async function (username, password)
 	{
-		var dbResults,
+		let dbResults,
 			// The password has to be hashed first prior to verification
 			hash = _crypto.createHmac('sha256', config.HASH_KEY).update(password).digest('hex');
 
@@ -55,6 +55,37 @@ module.exports =
 	},
 
 	/**
+	 * Function responsible for retrieving all details for any given user
+	 *
+	 * @param {String} username - the user name from which we'll be retrieving all details
+	 *
+	 * @returns {Object} - the user record in full
+	 *
+	 * @author kinsho
+	 */
+	retrieveUserData: async function (username)
+	{
+		let dbResults;
+
+		try
+		{
+			dbResults = await mongo.read(ADMINS_COLLECTION,
+			{
+				username: username
+			});
+
+			return dbResults[0];
+		}
+		catch(error)
+		{
+			console.log('Ran into an error trying to gather all information about a particular admin!');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for storing a new administrator cookie into the database for future verification
 	 *
 	 * @param {String} username - the user name to associate with the cookie
@@ -69,7 +100,7 @@ module.exports =
 	 */
 	storeAdminCookie: async function (username, cookie, userAgent)
 	{
-		var cookieRecord =
+		let cookieRecord =
 			{
 				username: username,
 				// Ensure we only store the part of the cookie responsible for logging admins into the system
@@ -106,7 +137,7 @@ module.exports =
 	 */
 	verifyAdminCookie: async function (cookie, userAgent)
 	{
-		var	username = cookieManager.retrieveAdminCookie(cookie)[0],
+		let	username = cookieManager.retrieveAdminCookie(cookie)[0],
 			dbResults;
 
 		// Not finding a username is a sign that the user does not have a properly-formed admin cookie
@@ -145,7 +176,7 @@ module.exports =
 	 */
 	collectAllUsers: async function ()
 	{
-		var dbResults;
+		let dbResults;
 
 		try
 		{

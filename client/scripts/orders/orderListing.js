@@ -26,6 +26,8 @@ const LISTENER_INIT_EVENT = 'listenerInit',
 		' this order, you will need to go to the database administrator to restore this prospect back into the' +
 		' system. </span>',
 
+	LOCAL_STORAGE_ORDERS_KEY = 'mrAdminOrders',
+
 	DELETE_ORDER_URL = 'orders/removeOrder';
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -111,6 +113,9 @@ function removeOrder(event)
 		{
 			// Remove the order from the cached collection of orders
 			vm.orders.splice(orderIndex, 1);
+
+			// Update the local cache with the collection
+			window.localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(vm.orders));
 
 			// Hide the block associated with this order from view
 			orderBlock.classList.add(HIDE_CLASS);

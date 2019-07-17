@@ -186,6 +186,13 @@
 			</div>
 		{{/if}}
 
+		{{#if order.text.additionalDescription}}
+			<div class='invoiceRow'>
+				<div class='invoiceLabel'>-- Details --</div>
+				<div class='invoiceDescription'>{{{ order.text.additionalDescription }}}</div>
+			</div>
+		{{/if}}
+
 	</div>
 
 	<div id='invoiceFooter'>

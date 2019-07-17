@@ -11,15 +11,15 @@
 <div id='orderInfo'>
     <span>
         <span class='bolded'>- Your Order Number -</span>
-		<span>{{ orderNumber }}</span>
+		<span>{{ order._id }}</span>
     </span>
     <span>
     	<span class='bolded'>- Your Phone Number -</span>
-		<span>{{ phoneNumber }}</span>
+		<span>({{ order.customer.areaCode }}) {{ order.customer.phoneOne }}-{{ order.customer.phoneTwo }}</span>
     </span>
     <span>
-	    <span class='bolded'>- Your E-mail Address -</span>
-		<span>{{ email }}</span>
+	    <span class='bolded'>- Your E-mail Address(es) -</span>
+		<span id='emailList'>{{#format_emails order.customer.email }}{{/format_emails}}</span>
     </span>
 </div>
 

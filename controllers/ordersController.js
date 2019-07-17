@@ -59,16 +59,22 @@ module.exports =
 			bootData =
 			{
 				dropboxToken: config.DROPBOX_TOKEN,
-			};
+			},
+			username;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
+			username = cookieManager.retrieveAdminCookie(cookie)[0];
+
 			console.log('Redirecting the user to the log-in page...');
 
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
 		console.log('Loading the orders page...');
+
+		// Grab the user data to figure out what this particular user is allowed to access
+		pageData.self = await usersDAO.retrieveUserData(username);
 
 		// Grab the raw HTML of the order listing template
 		pageData.orderListingTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.LISTING);
