@@ -435,6 +435,26 @@ _Handlebars.registerHelper('translate_status', function(status)
 	return statuses.getSpanishTranslation(status);
 });
 
+/**
+ * Handlebars helper function meant to list out multiple e-mail addresses in a graceful manner within the DOM tree
+ *
+ * @params {String} emailAddresses - the list of e-mail addresses, delineated by commas
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('format_emails', function(emailAddresses)
+{
+	let emailHTML = '',
+		emails = emailAddresses.split(',');
+
+	for (let i = 0; i < emails.length; i += 1)
+	{
+		emailHTML += '<span>' + emails[i] + '</span>';
+	}
+
+	return emailHTML;
+});
+
 // ----------------- MODULE DEFINITION --------------------------
 
 module.exports =

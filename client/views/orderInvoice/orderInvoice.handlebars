@@ -2,8 +2,6 @@
 
 {{> orderInvoiceRailingsInvoice }}
 
-{{> orderInvoiceTermsOfAgreement }}
-
 {{> orderInvoicePersonalInfoSection }}
 
 {{> orderInvoiceAddressSection }}
@@ -11,6 +9,8 @@
 {{#if_cond order.status 'pending'}}
 	{{> orderInvoicePaymentSection }}
 {{/if_cond}}
+
+{{> orderInvoiceTermsOfAgreement }}
 
 {{#if_cond order.status 'pending'}}
 	{{> orderInvoiceSubmissionSection }}

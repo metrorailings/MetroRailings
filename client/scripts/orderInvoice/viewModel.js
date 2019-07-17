@@ -25,10 +25,6 @@ const CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 	CUSTOMER_STATE_FIELD = 'state',
 	CUSTOMER_ZIP_CODE_FIELD = 'addressZipCode',
 
-	CREDIT_CARD_RADIO = 'creditCardOption',
-	CHECK_RADIO = 'checkOption',
-	CHECK_MESSAGE = 'checkMessage',
-	CREDIT_CARD_SECTION = 'creditCardSection',
 	CREDIT_CARD_TEXTFIELD = 'creditCardNumber',
 	SECURITY_CODE_TEXTFIELD = 'securityCode',
 	EXPIRATION_MONTH_DROPDOWN = 'expirationDateMonth',
@@ -37,11 +33,7 @@ const CUSTOMER_AREA_CODE_FIELD = 'customerPhoneAreaCode',
 
 	SUBMISSION_BUTTON = 'orderSubmissionButton',
 
-	CREDIT_CARD_PAYMENT_METHOD = 'cc',
-	CHECK_PAYMENT_METHOD = 'c',
-
 	SHADE_CLASS = 'shade',
-	REVEAL_CLASS = 'reveal',
 
 	SUBMISSION_INSTRUCTIONS =
 	{
@@ -82,10 +74,6 @@ let _validationSet = new Set(),
 	_stateField = document.getElementById(CUSTOMER_STATE_FIELD),
 	_addressZipCodeField = document.getElementById(CUSTOMER_ZIP_CODE_FIELD),
 
-	_creditCardOption = document.getElementById(CREDIT_CARD_RADIO),
-	_checkOption = document.getElementById(CHECK_RADIO),
-	_checkMessage = document.getElementById(CHECK_MESSAGE),
-	_creditCardSection = document.getElementById(CREDIT_CARD_SECTION),
 	// Defensive logic should the payment section not be extant on the page
 	_creditCardIcons = document.getElementById(CREDIT_CARD_ICON_ROW) ? document.getElementById(CREDIT_CARD_ICON_ROW).children : null,
 	_ccNumberField = document.getElementById(CREDIT_CARD_TEXTFIELD),
@@ -135,19 +123,8 @@ function _validate()
 		return null;
 	}
 
-	if (viewModel.paymentMethod === CREDIT_CARD_PAYMENT_METHOD)
-	{
-		// Ensure all the credit card information has been put into place
-		viewModel.isFormSubmissible = (validated && viewModel.ccNumber && viewModel.ccExpMonth && viewModel.ccExpYear && viewModel.ccSecurityCode);
-	}
-	else if (viewModel.paymentMethod === CHECK_PAYMENT_METHOD)
-	{
-		viewModel.isFormSubmissible = validated;
-	}
-	else
-	{
-		viewModel.isFormSubmissible = false;
-	}
+	// Ensure all the credit card information has been put into place
+	viewModel.isFormSubmissible = (validated && viewModel.ccNumber && viewModel.ccExpMonth && viewModel.ccExpYear && viewModel.ccSecurityCode);
 }
 
 // ----------------- VIEW MODEL DEFINITION -----------------------------
@@ -430,50 +407,11 @@ Object.defineProperty(viewModel, 'zipCode',
 	}
 });
 
-// Payment Method
-Object.defineProperty(viewModel, 'paymentMethod',
-{
-	configurable: false,
-	enumerable: true,
-
-	get: () =>
-	{
-		return viewModel.__paymentMethod;
-	},
-
-	set: (value) =>
-	{
-		viewModel.__paymentMethod = value;
-
-		if (value === CREDIT_CARD_PAYMENT_METHOD)
-		{
-			_creditCardSection.classList.add(REVEAL_CLASS);
-			_checkMessage.classList.remove(REVEAL_CLASS);
-		}
-		else if (value === CHECK_PAYMENT_METHOD)
-		{
-			_creditCardSection.classList.remove(REVEAL_CLASS);
-			_checkMessage.classList.add(REVEAL_CLASS);
-		}
-		else
-		{
-			_creditCardSection.classList.remove(REVEAL_CLASS);
-			_checkMessage.classList.remove(REVEAL_CLASS);
-
-			// Uncheck any payment options that may have been selected before
-			_creditCardOption.checked = false;
-			_checkOption.checked = false;
-		}
-
-		_validate();
-	}
-});
-
 // Credit card number
 Object.defineProperty(viewModel, 'ccNumber',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -514,7 +452,7 @@ Object.defineProperty(viewModel, 'ccNumber',
 Object.defineProperty(viewModel, 'ccSecurityCode',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -539,7 +477,7 @@ Object.defineProperty(viewModel, 'ccSecurityCode',
 Object.defineProperty(viewModel, 'ccExpMonth',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{
@@ -559,7 +497,7 @@ Object.defineProperty(viewModel, 'ccExpMonth',
 Object.defineProperty(viewModel, 'ccExpYear',
 {
 	configurable: false,
-	enumerable: false,
+	enumerable: true,
 
 	get: () =>
 	{

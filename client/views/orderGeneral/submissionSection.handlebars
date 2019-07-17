@@ -6,6 +6,9 @@
 	{{/if_cond}}
 </div>
 
+<!-- Store the deposit amount here should we be dealing with an existing order -->
+<input id='hiddenDepositPrice' type='hidden' value='{{ order.pricing.depositAmount }}' />
+
 <div id='designErrorsContainer'><!-- Design validation error messages will go here --></div>
 
 <script id='designErrorsTemplate' type='text/x-handlebars-template'>

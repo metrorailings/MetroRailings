@@ -14,6 +14,7 @@ import designValidation from 'shared/designs/designValidation';
 
 const SAVE_BUTTON = 'saveButton',
 	SAVE_AS_PROSPECT_BUTTON = 'tempButton',
+	HIDDEN_DEPOSIT_PRICE_FIELD = 'hiddenDepositPrice',
 	DESIGN_ERRORS_CONTAINER = 'designErrorsContainer',
 	DESIGN_ERRORS_TEMPLATE = 'designErrorsTemplate',
 	DEPOSIT_MODAL_TEMPLATE = 'depositModalTemplate',
@@ -38,7 +39,8 @@ const SAVE_BUTTON = 'saveButton',
 // Elements
 let _saveButton = document.getElementById(SAVE_BUTTON),
 	_tempButton = document.getElementById(SAVE_AS_PROSPECT_BUTTON) || {},
-	_designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER);
+	_designErrorsContainer = document.getElementById(DESIGN_ERRORS_CONTAINER),
+	_depositModalTemplate = document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML;
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -92,6 +94,7 @@ async function _submitAllData(url, successMessage)
 		data =
 		{
 			_id: vm._id || '',
+			status: vm.status || '',
 
 			dimensions:
 			{
@@ -103,7 +106,7 @@ async function _submitAllData(url, successMessage)
 			{
 				agreement: vm.agreement || '',
 				additionalDescription: vm.additionalDescription ?
-					vm.additionalDescription.split('\n\n').join('<br' + ' /><br />') : ''
+					vm.additionalDescription.trim().split('\n\n').join('<br /><br />') : ''
 			},
 
 			installation:
@@ -178,7 +181,7 @@ function submit()
 	// Organize the data that will be sent over the wire as long as the entire form is valid
 	if (vm.isFormValid && _validate())
 	{
-		let modalData = { orderTotal : vm.orderTotal, defaultDeposit : vm.orderTotal / 2 },
+		let modalData = { orderTotal : vm.orderTotal, depositAmount : (vm.depositAmount || vm.orderTotal / 2) },
 			url, successMessage;
 
 		// Determine the proper URL and relay text to ring up when we are sending data to the back-end
@@ -197,7 +200,7 @@ function submit()
 		if ( !(vm.status) || (vm.status === PROSPECT_STATUS) || (vm.status === PENDING_STATUS) )
 		{
 			// Set up a modal to figure out what the deposit amount should be for this particular order
-			actionModal.open(document.getElementById(DEPOSIT_MODAL_TEMPLATE).innerHTML, modalData, () => { _submitAllData(url, successMessage); }, depositModal.initializeDepositModalListeners);
+			actionModal.open(_depositModalTemplate, modalData, () => { _submitAllData(url, successMessage); }, depositModal.initializeDepositModalListeners);
 		}
 		else
 		{
@@ -227,3 +230,7 @@ if (_tempButton.addEventListener)
 {
 	_tempButton.addEventListener('click', saveAndFinishLater);
 }
+
+// ----------------- DATA INITIALIZATION -----------------------------
+
+vm.depositAmount = window.parseFloat(document.getElementById(HIDDEN_DEPOSIT_PRICE_FIELD).value);

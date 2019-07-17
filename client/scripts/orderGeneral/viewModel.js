@@ -46,6 +46,8 @@ const CUSTOMER_EMAIL_TEXTFIELD = 'emailMultitext',
 	SAVE_BUTTON = 'saveButton',
 	SAVE_AND_FINISH_LATER_BUTTON = 'tempButton',
 
+	DEPOSIT_MODAL = 'depositModal',
+
 	DISABLED_CLASS = 'disabled',
 	ERROR_CLASS = 'error',
 	SHOW_CLASS = 'show',
@@ -144,10 +146,6 @@ function _calculateSubTotal()
 	if (viewModel.additionalPrice)
 	{
 		subTotal += window.parseFloat(viewModel.additionalPrice);
-	}
-	if (viewModel.deductions)
-	{
-		subTotal -= window.parseFloat(viewModel.deductions);
 	}
 
 	viewModel.subtotal = formValidator.isNumeric(subTotal + '') ? subTotal : 0;
@@ -862,7 +860,7 @@ Object.defineProperty(viewModel, 'depositAmount',
 
 	set: (value) =>
 	{
-		viewModel.__depositAmount = value;
+		viewModel.__depositAmount = window.parseFloat(value) || '';
 
 		// Make sure a valid amount is set here
 		let isInvalid = !(formValidator.isDollarAmount(value)) ||
@@ -872,21 +870,22 @@ Object.defineProperty(viewModel, 'depositAmount',
 		// Notice the use of conditional logic here to ensure that we're dealing with a number
 		isInvalid = isInvalid || window.parseFloat(value) < 0 || window.parseFloat(value) > viewModel.orderTotal;
 
-		rQueryClient.setField(document.getElementById(DEPOSIT_PRICE_TEXTFIELD), value);
-
 		// As the deposit amount only gets set in a modal, we have to prevent the user from going forward should an
 		// invalid deposit amount be placed into that field
-		if (isInvalid)
+		if (document.getElementById(DEPOSIT_MODAL))
 		{
-			document.getElementById(DEPOSIT_PRICE_TEXTFIELD).classList.add(ERROR_CLASS);
-			document.getElementById(DEPOSIT_PRICE_ERROR_MESSAGE).classList.add(SHOW_CLASS);
-			actionModal.disableOk();
-		}
-		else
-		{
-			document.getElementById(DEPOSIT_PRICE_TEXTFIELD).classList.remove(ERROR_CLASS);
-			document.getElementById(DEPOSIT_PRICE_ERROR_MESSAGE).classList.remove(SHOW_CLASS);
-			actionModal.enableOk();
+			if (isInvalid)
+			{
+				document.getElementById(DEPOSIT_PRICE_TEXTFIELD).classList.add(ERROR_CLASS);
+				document.getElementById(DEPOSIT_PRICE_ERROR_MESSAGE).classList.add(SHOW_CLASS);
+				actionModal.disableOk();
+			}
+			else
+			{
+				document.getElementById(DEPOSIT_PRICE_TEXTFIELD).classList.remove(ERROR_CLASS);
+				document.getElementById(DEPOSIT_PRICE_ERROR_MESSAGE).classList.remove(SHOW_CLASS);
+				actionModal.enableOk();
+			}
 		}
 	}
 });

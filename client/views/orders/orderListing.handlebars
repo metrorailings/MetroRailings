@@ -15,7 +15,7 @@
                 <span class='orderInfoSectionHeader'>Customer Info</span>
                 <span class='orderCell'>{{ customer.name }}</span>
 
-				{{#if_cond_group customer '["address", "city", "state"]' }}
+				{{#if_and_set customer.address customer.city customer.state }}
 					<span class='orderCell'>
 						<a class='linkText addressLink' target='_blank'
 						   href='{{#form_google_maps_url customer }}{{/form_google_maps_url}}'>
@@ -29,7 +29,7 @@
 							<i class='fa fa-map-marker'></i>
 						</a>
 					</span>
-				{{/if_cond_group}}
+				{{/if_and_set}}
 
 				{{#if customer.email }}
 					<span class='orderCell'>
@@ -37,14 +37,14 @@
 					</span>
 				{{/if}}
 
-				{{#if_cond_group customer '["areaCode", "phoneOne", "phoneTwo"]' }}
+				{{#if_and_set customer.areaCode customer.phoneOne customer.phoneTwo }}
 					<span class='orderCell'>
 						<a class='linkText' href='tel:{{ customer.areaCode }}{{ customer.phoneOne }}{{ customer.phoneTwo }}'>
 							({{ customer.areaCode }}) {{ customer.phoneOne }}-{{ customer.phoneTwo }}
 							<i class='fa fa-phone-square'></i>
 						</a>
 					</span>
-				{{/if_cond_group}}
+				{{/if_and_set}}
             </span>
 
 			{{#if dates.due}}

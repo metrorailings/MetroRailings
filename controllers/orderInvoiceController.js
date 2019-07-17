@@ -18,8 +18,9 @@ let _Handlebars = require('handlebars'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	pricing = global.OwlStakes.require('shared/pricing/pricingData'),
+	statuses = global.OwlStakes.require('shared/orderStatus'),
 
-	DAO = global.OwlStakes.require('data/DAO/ordersDAO');
+	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
@@ -117,7 +118,7 @@ module.exports =
 		console.log('Loading the custom order invoice page...');
 
 		// Fetch the data that will be needed to properly render the page
-		pageData.order = await DAO.searchOrderById(orderNumber);
+		pageData.order = await ordersDAO.searchOrderById(orderNumber);
 
 		// If no order was found that can be used to populate the invoice, then just take the user back to the home page
 		if ( !(pageData.order) || (pageData.order.status === PROSPECT_STATUS) )
@@ -152,6 +153,48 @@ module.exports =
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, pageData);
 	},
 
+
+	/**
+	 * Function meant to save all updates that may have been made to a particular order directly from the customer
+	 *
+	 * @params {Object} params - all the details of the order whose changes will be saved
+	 *
+	 * @author kinsho
+	 */
+	saveChangesToOrder: async function (params)
+	{
+		console.log('Saving changes made to an order...');
+
+		try
+		{
+			await ordersDAO.saveChangesToOrder(params);
+		}
+		catch(error)
+		{
+			return {
+				statusCode: responseCodes.BAD_REQUEST
+			};
+		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
+	},
+
+	updateStatus: async function (params)
+	{
+		console.log('Updating the status of an order to indicate it\'s ready for production...');
+
+		// Now change the order's status to indicate it is now a live order
+		await ordersDAO.updateStatus(parseInt(params.orderId, 10), statuses.ALL.MATERIAL);
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
+	},
+
 	/**
 	 * Function meant to save all updates that may have been made to a particular order and charge the user if he
 	 * elected to pay for the order by credit card
@@ -171,7 +214,7 @@ module.exports =
 		try
 		{
 			// Save the now-approved order into the database
-			processedOrder = await DAO.finalizeNewOrder(params);
+			processedOrder = await ordersDAO.finalizeNewOrder(params);
 		}
 		catch(error)
 		{

@@ -42,7 +42,7 @@ let pricingModule =
 		let rawTotal = orderData.dimensions.length * orderData.pricing.pricePerFoot;
 
 		// Add in any additional pricing that has been set on this order
-		rawTotal += orderData.pricing.additionalPrice;
+		rawTotal += (orderData.pricing.additionalPrice || 0);
 
 		return rawTotal;
 	},

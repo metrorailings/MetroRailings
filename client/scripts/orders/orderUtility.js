@@ -29,7 +29,7 @@ const SORT_METHODS =
  */
 function _sortOrdersByModDate(a, b)
 {
-	return ( (new Date(a.dates.lastModified) < new Date(b.dates.lastModified)) ? -1 : 1 );
+	return ( (new Date(a.dates.lastModified) < new Date(b.dates.lastModified)) ? 1 : -1 );
 }
 
 /**

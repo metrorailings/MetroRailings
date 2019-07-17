@@ -4,24 +4,21 @@
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var config = global.OwlStakes.require('config/config'),
+let config = global.OwlStakes.require('config/config'),
 
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 
-	templateManager = global.OwlStakes.require('utility/templateManager'),
-	cookieManager = global.OwlStakes.require('utility/cookies');
+	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
+
+	rQuery = global.OwlStakes.require('utility/rQuery'),
+	templateManager = global.OwlStakes.require('utility/templateManager');
 
 // ----------------- ENUM/CONSTANTS --------------------------
 
-var CONTROLLER_FOLDER = 'orderConfirmation',
-
-	COOKIE_CUSTOMER_INFO = 'customerInfo';
-
-// ----------------- PRIVATE VARIABLES --------------------------
-
-// ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
+const CONTROLLER_FOLDER = 'orderConfirmation';
 
 // ----------------- MODULE DEFINITION --------------------------
+
 module.exports =
 {
 	/**
@@ -29,29 +26,18 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	init: async function (params, cookie)
+	init: async function (params)
 	{
-		var populatedPageTemplate,
-			cookieData = cookieManager.parseCookie(cookie || ''),
-			customerData = cookieData[COOKIE_CUSTOMER_INFO],
-			pageData = {};
+		let populatedPageTemplate,
+			order;
 
 		console.log('Loading the order confirmation page...');
 
-		// Parse the order data as long as the cookie carrying the data exists
-		customerData = (customerData ? JSON.parse(customerData) : {});
-
-		// Now organize the data that will be needed to properly render the page
-		pageData =
-		{
-			phoneNumber: '(' + customerData.areaCode + ') ' + customerData.phoneOne + '-' + customerData.phoneTwo,
-			email: customerData.email,
-			orderNumber: customerData.orderNumber,
-			supportPhoneNumber : config.SUPPORT_PHONE_NUMBER
-		};
+		// Retrieve the order
+		order = await ordersDAO.searchOrderById(parseInt(rQuery.decryptNumbers(params.id), 10));
 
 		// Now render the page template
-		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
+		populatedPageTemplate = await templateManager.populateTemplate({ order : order, supportPhoneNumber : config.SUPPORT_PHONE_NUMBER }, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {});
 	}
