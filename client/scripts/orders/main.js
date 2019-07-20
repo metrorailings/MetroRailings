@@ -10,6 +10,11 @@ import handlebarHelpers from 'client/scripts/utility/handlebarHelpers';
 
 const LOCAL_STORAGE_ORDERS_KEY = 'mrAdminOrders',
 
+	REFRESH_ORDERS_LINK = 'refreshOrdersLink',
+
+	LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY = 'mrAdminOrdersLastModified',
+	DEFAULT_MODIFICATION_DATE = new Date('1/1/2014'),
+
 	NOTES_TEMPLATE = 'notesTemplate',
 	NEW_NOTE_TEMPLATE = 'newNoteTemplate',
 	NOTE_RECORD_TEMPLATE = 'noteRecordTemplate',
@@ -61,6 +66,19 @@ function triggerPing()
 	vm.pingTheServer = true;
 }
 
+/**
+ * Listener responsible for wiping the cache and reloading all orders
+ *
+ * @author kinsho
+ */
+function refreshOrderCache()
+{
+	window.localStorage.clear();
+
+	vm.orders = [];
+	triggerPing();
+}
+
 // ----------------- DATA INITIALIZATION -----------------------------
 
 // Retrieve the orders either from the local browser cache or from the back-end
@@ -69,6 +87,9 @@ vm.orders = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_KEY) || 
 vm.pingTheServer = true;
 
 // ----------------- PAGE INITIALIZATION -----------------------------
+
+// Set up the handler to allow the user to refresh the order cache at any point
+document.getElementById(REFRESH_ORDERS_LINK).addEventListener('click', refreshOrderCache);
 
 // Set up a regular timer to check the service for newly-updated data
 window.setInterval(triggerPing, 60000);
