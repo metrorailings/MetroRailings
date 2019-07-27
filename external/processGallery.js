@@ -7,7 +7,7 @@ global.OwlStakes =
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _dropbox = require('dropbox'),
+let _dropbox = require('dropbox'),
 	_jpegrotator = require('jpeg-autorotate'),
 	_imagemin = require('imagemin'),
 	_imageminJpegTran = require('imagemin-jpegtran'),
@@ -21,7 +21,7 @@ var _dropbox = require('dropbox'),
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var GALLERY_METADATA_COLLECTION = 'gallery',
+const GALLERY_METADATA_COLLECTION = 'gallery',
 
 	GALLERY_IMAGE_DIRECTORY = 'client/images/gallery/',
 	DESKTOP_THUMBNAIL_DIRECTORY = 'desktop/',
@@ -39,7 +39,7 @@ var GALLERY_METADATA_COLLECTION = 'gallery',
 
 // ----------------- I/O FUNCTION TRANSFORMATIONS --------------------------
 
-var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
+let jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 
 // ----------------- INITIALIZATION --------------------------
 
@@ -47,7 +47,7 @@ var jpegRotate = _Q.denodeify(_jpegrotator.rotate);
 {
 	await mongo.initialize();
 
-	var dropboxConnection = new _dropbox({ accessToken: config.GALLERY_TOKEN }), // Instantiate a new dropbox connection
+	let dropboxConnection = new _dropbox({ accessToken: config.GALLERY_TOKEN }), // Instantiate a new dropbox connection
 		testImage = (process.argv[2] ? process.argv[2] : ''),
 		indexRecord,
 		results,

@@ -7,14 +7,14 @@ global.OwlStakes =
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var _sass = require('node-sass'),
+let _sass = require('node-sass'),
 	_cssPurge = require('css-purge'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var STYLE_DIRECTORY = 'client/styles/',
+const STYLE_DIRECTORY = 'client/styles/',
 	FOUNDATION_DIRECTORY = 'foundation',
 	COMPILED_CSS_FILE = 'page.css',
 
@@ -29,10 +29,11 @@ var STYLE_DIRECTORY = 'client/styles/',
 
 (async function ()
 {
-	var filePaths = await fileManager.childFilenamesScraper(STYLE_DIRECTORY),
+	let filePaths = await fileManager.childFilenamesScraper(STYLE_DIRECTORY),
 		pageLevelCSSFilenames, pageLevelCSSFiles,
 		pageLevelFile, compiledCSSFile,
 		i, j;
+
 	for (i = filePaths.length - 1; i >= 0; i--)
 	{
 		if (filePaths[i].indexOf(FOUNDATION_DIRECTORY) !== 0)
