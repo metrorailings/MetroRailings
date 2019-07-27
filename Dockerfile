@@ -58,7 +58,7 @@ EXPOSE 80
 EXPOSE 443
 
 # Initialize dumb-init to prevent zombie chrome processes
-ENTRYPOINT ["dumb-init", "--"]
+# ENTRYPOINT ["dumb-init", "--"]
 
 # Run app.js when the container launches
 # Yes, we are assuming that all the production compression has already been done prior to this container even
