@@ -380,7 +380,11 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
 		{
-			orderUtility.reconcileOrders(viewModel.orders, results.data);
+			// @TODO - Figure out a way to let the admin know that the data has become stale
+			if (orderUtility.reconcileOrders(viewModel.orders, results.data))
+			{
+				_renderOrders();
+			}
 		}, () =>
 		{
 			notifier.showGenericServerError();

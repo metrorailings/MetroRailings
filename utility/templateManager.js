@@ -179,19 +179,19 @@ _Handlebars.registerHelper('if_or', function(val1, val2, block)
  *
  * @author kinsho
  */
-_Handlebars.registerHelper('unless_cond_group', function(val, [groupVals], block)
+_Handlebars.registerHelper('unless_cond_group', function(val, groupVals, block)
 {
-	for (let i = groupVals.length - 1; i >= 0; i--)
+	groupVals = JSON.parse(groupVals);
+
+	for (let i = 0; i < groupVals.length; i += 1)
 	{
 		if (groupVals[i] === val)
 		{
-			block.inverse(this);
-		}
-		else
-		{
-			block.fn(this);
+			return block.inverse(this);
 		}
 	}
+
+	return block.fn(this);
 });
 
 /**

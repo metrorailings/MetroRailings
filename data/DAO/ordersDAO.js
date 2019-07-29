@@ -317,6 +317,11 @@ let ordersModule =
 			// Attach a new ID to the order
 			order._id = counterRecord.seq;
 		}
+		// Make sure to format the order ID so that we can properly set the database
+		else
+		{
+			order._id = parseInt(order._id, 10);
+		}
 
 		// Set the status
 		order.status = statuses.ALL.PENDING;

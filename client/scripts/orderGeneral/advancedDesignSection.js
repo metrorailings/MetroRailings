@@ -63,6 +63,7 @@ function setValence()
 _orderCenterDesignField.addEventListener('change', setCenterDesign);
 _orderCollarsField.addEventListener('change', setCollars);
 _orderBasketsField.addEventListener('change', setBaskets);
+_orderValenceField.addEventListener('change', setValence);
 
 // ----------------- DATA INITIALIZATION -----------------------------
 

@@ -13,7 +13,12 @@
 
             <span class='orderInfoSection'>
                 <span class='orderInfoSectionHeader'>Customer Info</span>
-                <span class='orderCell'>{{ customer.name }}</span>
+                <span class='orderCell nameCell'>
+					{{#if customer.company}}
+						<span class='companyListing'>{{ customer.company }}</span>
+					{{/if}}
+					<span>{{ customer.name }}</span>
+				</span>
 
 				{{#if_and_set customer.address customer.city customer.state }}
 					<span class='orderCell'>
