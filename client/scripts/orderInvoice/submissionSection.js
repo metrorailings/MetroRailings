@@ -13,7 +13,7 @@ const SUBMIT_BUTTON = 'orderSubmissionButton',
 	DEPOSIT_AMOUNT_LISTING = 'depositAmountListing',
 
 	GENERATE_TOKEN_URL = 'payment/generateCCToken',
-	CREDIT_CARD_PAYMENT_URL = 'payment/processCCPayment',
+	CREDIT_CARD_PAYMENT_URL = 'payment/processCCPaymentFromCustomer',
 	SAVE_CUSTOMER_INFO_CHANGES = 'orderInvoice/saveChangesToOrder',
 	FINALIZE_ORDER_URL = 'orderInvoice/updateStatus',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation?id=',

@@ -169,6 +169,54 @@ module.exports =
 	},
 
 	/**
+	 * Function responsible for processing credit card payments initiated directly from our clients
+	 *
+	 * @param {Object} params - the credit card information and the amount which to charge that credit card
+	 *
+	 * @author kinsho
+	 */
+	processCCPaymentFromCustomer: async function (params)
+	{
+		let order = await ordersDAO.searchOrderById(params.orderId),
+			transactionReason = TRANSACTION_REASONS.ORDER_ID + params.orderId,
+			tax = pricingCalculator.calculateTax(params.amount, order),
+			transaction, transactionNature;
+
+		console.log('Recording a new credit card payment...');
+
+		// Initializes the charges array if a charge has not been recorded for this order yet
+		order.payments.charges = order.payments.charges || [];
+
+		// Find out the nature of the transaction
+		transactionNature = _determineTxnReason(order, parseFloat(params.amount));
+
+		try
+		{
+			// Now charge the customer
+			transaction = await creditCardProcessor.chargeTotal(parseFloat(params.amount), order._id, params.card, order.payments.customer.id, order.customer.email, order.customer.name, order.customer.company, transactionReason + transactionNature);
+
+			// Record the payment information in the payments collection in our database
+			transaction = await paymentsDAO.addNewPayment(parseFloat(params.amount), tax, PAYMENT_TYPES.CREDIT_CARD, order, transactionNature.split(' ').pop(), null, params.memo, transaction);
+
+			// Also, record the transaction in the order that's associated with it
+			await ordersDAO.recordCharge(order, null, transaction, parseFloat(params.amount));
+
+			// Return the processed transaction metadata back to the client
+			return {
+				statusCode: responseCodes.OK,
+				data: transaction
+			};
+		}
+		catch(error)
+		{
+			console.log('Ran into an error trying to process a credit card for Order #' + params.orderId);
+			console.log(error);
+
+			throw error;
+		}
+	},
+
+	/**
 	 * Function responsible for recording check payments
 	 *
 	 * @param {Object} params - the check information to store, including an image of the check itself

@@ -160,7 +160,7 @@ Object.defineProperty(viewModel, 'name',
 Object.defineProperty(viewModel, 'company',
 {
 	configurable: false,
-	enumerable: true,
+	enumerable: false,
 
 	get: () =>
 	{
