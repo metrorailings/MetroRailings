@@ -119,8 +119,8 @@ async function _submitAllData(url, successMessage)
 			{
 				pricePerFoot: window.parseFloat(vm.pricePerFoot) || '',
 				additionalPrice: window.parseFloat(vm.additionalPrice) || '',
-				isTaxApplied: vm.applyTaxes || true,
-				isTariffApplied: vm.applyTariffs || true,
+				isTaxApplied: !!(vm.applyTaxes),
+				isTariffApplied: !!(vm.applyTariffs),
 				depositAmount: window.parseFloat(vm.depositAmount) || ''
 			},
 
