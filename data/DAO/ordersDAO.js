@@ -431,7 +431,7 @@ let ordersModule =
 	 *
 	 * @author kinsho
 	 */
-	recordCharge: async function (order, username, transaction, amount)
+	recordCharge: async function (order, username = SYSTEM_USER_NAME, transaction, amount)
 	{
 		let updateRecord;
 

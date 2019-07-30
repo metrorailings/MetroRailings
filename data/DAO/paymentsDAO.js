@@ -7,7 +7,9 @@ const mongo = global.OwlStakes.require('data/DAO/utility/databaseDriver'),
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 const COUNTERS_COLLECTION = 'counters',
-	PAYMENTS_COLLECTION = 'payments';
+	PAYMENTS_COLLECTION = 'payments',
+
+	SYSTEM_USER_NAME = 'system';
 
 // ----------------- MODULE DEFINITION --------------------------
 
@@ -32,7 +34,7 @@ module.exports =
 	 *
 	 * @author kinsho
 	 */
-	addNewPayment: async function (amount, tax, paymentType, order, reason, username, memo, ccTransaction, image)
+	addNewPayment: async function (amount, tax, paymentType, order, reason, username = SYSTEM_USER_NAME, memo, ccTransaction, image)
 	{
 		try
 		{
