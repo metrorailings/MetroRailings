@@ -44,8 +44,13 @@ function _sortOrdersByModDate(a, b)
  */
 function _sortOrdersByDueDate(a, b)
 {
-	// If no dates are present, the goal is to move the order as far down on the list as possible
-	if ( !(a.dates.due) )
+	// If no dates are present, then sort by modification date
+	if ( !(a.dates.due) && !(b.dates.due) )
+	{
+		return _sortOrdersByModDate(a, b);
+	}
+	// If one of the orders is missing a due date, push it down the list
+	else if ( !(a.dates.due) )
 	{
 		return 1;
 	}

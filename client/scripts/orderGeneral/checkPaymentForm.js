@@ -18,7 +18,7 @@ const CHECK_PAYMENT_AMOUNT = 'newPaymentCheckAmount',
 	YES_CHECK_IMAGE_UPLOADED = 'yesCheckImageUploaded',
 	CHECK_SUBMIT_BUTTON = 'checkSaveButton',
 
-	CHANGE_BALANCE_REMAINING_LISTENER = 'changeBalanceRemaining',
+	PARENT_SECTION_LISTENER = 'parentSectionListener',
 
 	HIDE_CLASS = 'hide',
 
@@ -123,7 +123,7 @@ async function submitCheckForm()
 			paymentRecord.produceNewRecord(paymentData.data);
 
 			// Update the balance remaining
-			balanceEvent = new CustomEvent(CHANGE_BALANCE_REMAINING_LISTENER,
+			balanceEvent = new CustomEvent(PARENT_SECTION_LISTENER,
 				{ detail: { amount : paymentsVM.checkAmount } });
 			document.dispatchEvent(balanceEvent);
 
