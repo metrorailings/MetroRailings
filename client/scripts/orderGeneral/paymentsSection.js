@@ -5,6 +5,9 @@ import checkForm from 'client/scripts/orderGeneral/checkPaymentForm';
 import cashForm from 'client/scripts/orderGeneral/cashPaymentForm';
 
 import vm from 'client/scripts/orderGeneral/paymentsViewModel';
+import orderVM from 'client/scripts/orderGeneral/viewModel';
+import axios from '../utility/axios';
+import notifier from '../utility/notifications';
 
 // ----------------- ENUMS/CONSTANTS ---------------------------
 
@@ -13,7 +16,12 @@ const BALANCE_REMAINING = 'balanceRemaining',
 	PAYMENT_FORM = 'paymentForm',
 
 	BALANCE_REMAINING_PREFIX = 'Balance Remaining: $',
-	CHANGE_BALANCE_REMAINING_LISTENER = 'changeBalanceRemaining',
+	PARENT_SECTION_LISTENER = 'parentSectionListener',
+
+	PENDING_STATUS = 'pending',
+	OPEN_ORDER_URL = 'orderGeneral/openOrder',
+	STATUS_CHANGE_ERROR = 'Something went wrong when trying to update the status of this order to' +
+		' "material"...please reach out to Rickin.',
 
 	HIDE_CLASS = 'hide',
 	SELECTED_CLASS = 'selected';
@@ -76,7 +84,33 @@ function updateBalanceRemaining(event)
 
 	_balanceRemaining.dataset.balanceRemaining = newBalance;
 	_balanceRemaining.innerHTML = BALANCE_REMAINING_PREFIX + newBalance.toFixed(2);
-	
+}
+
+/**
+ * Function responsible for checking whether the status of the order needs to be changed over to material once at
+ * least one payment has been made on this order
+ *
+ * @param {Event} event - the event responsible for triggering the invocation of this function
+ */
+async function changeStatus()
+{
+	if (orderVM.status === PENDING_STATUS)
+	{
+		// Finally, update the status on the order to indicate that it is now an open order ready for production
+		try
+		{
+			await axios.post(OPEN_ORDER_URL, { orderId: orderVM._id }, true);
+
+			// Reload the page so that we can properly render the status section
+			window.location.reload();
+		}
+		catch(error)
+		{
+			notifier.showSpecializedServerError(STATUS_CHANGE_ERROR);
+
+			return;
+		}
+	}
 }
 
 // ----------------- INITIALIZATION LOGIC ---------------------------
@@ -92,5 +126,9 @@ if (_paymentOptionHeaders.length)
 
 	vm.balanceRemaining = window.parseFloat(_balanceRemaining.dataset.balanceRemaining);
 
-	document.addEventListener(CHANGE_BALANCE_REMAINING_LISTENER, updateBalanceRemaining);
+	document.addEventListener(PARENT_SECTION_LISTENER, async (event) =>
+	{
+		await changeStatus(event);
+		updateBalanceRemaining(event);
+	});
 }

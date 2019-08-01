@@ -16,6 +16,7 @@ const controllerHelper = global.OwlStakes.require('controllers/utility/controlle
 	pdfGenerator = global.OwlStakes.require('utility/pdfGenerator'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
+	statuses = global.OwlStakes.require('shared/orderStatus'),
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO'),
 	usersDAO = global.OwlStakes.require('data/DAO/userDAO'),
@@ -210,6 +211,26 @@ module.exports =
 
 			await ordersDAO.saveChangesToOrder(params, username);
 		}
+
+		return {
+			statusCode: responseCodes.OK,
+			data: {}
+		};
+	},
+
+	/**
+	 * Function that updates the status of an order to indicate that it is now live
+	 *
+	 * @params {Object} params - the ID of the order to update
+	 *
+	 * @author kinsho
+	 */
+	openOrder: async function (params)
+	{
+		console.log('Updating the status of an order to indicate it\'s ready for production...');
+
+		// Now change the order's status to indicate it is now a live order
+		await ordersDAO.updateStatus(parseInt(params.orderId, 10), statuses.ALL.MATERIAL);
 
 		return {
 			statusCode: responseCodes.OK,

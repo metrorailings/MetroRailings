@@ -70,7 +70,7 @@ function _readFiltersFromHash()
 		}
 		else if (HASH_LABELS.SEARCH === hashPair[0])
 		{
-			vm.searchFilter = hashPair[1];
+			vm.searchFilter = decodeURI(hashPair[1]);
 		}
 	}
 }

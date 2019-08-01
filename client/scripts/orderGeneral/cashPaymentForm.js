@@ -18,7 +18,7 @@ const CASH_PAYMENT_AMOUNT = 'newPaymentCashAmount',
 	YES_CASH_IMAGE_UPLOADED = 'yesCashImageUploaded',
 	CASH_SUBMIT_BUTTON = 'cashSaveButton',
 
-	CHANGE_BALANCE_REMAINING_LISTENER = 'changeBalanceRemaining',
+	PARENT_SECTION_LISTENER = 'parentSectionListener',
 
 	HIDE_CLASS = 'hide',
 
@@ -124,7 +124,7 @@ async function submitCashForm()
 			paymentRecord.produceNewRecord(paymentData.data);
 
 			// Update the balance remaining
-			balanceEvent = new CustomEvent(CHANGE_BALANCE_REMAINING_LISTENER,
+			balanceEvent = new CustomEvent(PARENT_SECTION_LISTENER,
 				{ detail: { amount : paymentsVM.cashAmount } });
 			document.dispatchEvent(balanceEvent);
 

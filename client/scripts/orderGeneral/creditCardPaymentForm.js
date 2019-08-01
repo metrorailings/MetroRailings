@@ -20,7 +20,7 @@ const CC_PAYMENT_AMOUNT = 'newPaymentCCAmount',
 	CC_NEW_CVC = 'newCVCNumber',
 	CC_SUBMIT_BUTTON = 'ccSaveButton',
 
-	CHANGE_BALANCE_REMAINING_LISTENER = 'changeBalanceRemaining',
+	PARENT_SECTION_LISTENER = 'parentSectionListener',
 
 	GENERATE_TOKEN_URL = 'payment/generateCCToken',
 	CC_PAYMENT_URL = 'payment/processCCPayment',
@@ -236,7 +236,7 @@ async function submitCCPayment()
 			_clearCCForm();
 
 			// Update the balance remaining
-			balanceEvent = new CustomEvent(CHANGE_BALANCE_REMAINING_LISTENER,
+			balanceEvent = new CustomEvent(PARENT_SECTION_LISTENER,
 				{ detail: { amount : data.amount } });
 			document.dispatchEvent(balanceEvent);
 
