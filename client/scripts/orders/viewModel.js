@@ -50,7 +50,7 @@ let _sortFilterLinks = document.getElementsByClassName(SORT_FILTER_CLASS),
 	_resetSearchIcon = document.getElementById(RESET_SEARCH_ICON),
 	_orderListing = document.getElementById(ORDER_LISTINGS_CONTAINER),
 
-	_initRendered = false;
+	_pingInitRendered = false;
 
 // ----------------- HANDLEBAR TEMPLATES ---------------------------
 
@@ -202,13 +202,6 @@ Object.defineProperty(viewModel, 'orders',
 	set: (value) =>
 	{
 		viewModel.__orders = orderUtility.wrapOrdersInModels(value);
-
-		if ( !(_initRendered) )
-		{
-			_renderOrders(true);
-
-			_initRendered = true;
-		}
 	}
 });
 
@@ -376,14 +369,20 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	set: () =>
 	{
-		let dateToSearch = (window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) ? JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY)) : DEFAULT_MODIFICATION_DATE);
+		let dateToSearch = (window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) ? JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY)).split('T')[0] : DEFAULT_MODIFICATION_DATE);
 
 		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
 		{
 			// @TODO - Figure out a way to let the admin know that the data has become stale
 			if (orderUtility.reconcileOrders(viewModel.orders, results.data))
 			{
-				_renderOrders();
+				_renderOrders(true);
+			}
+			else if ( !(_pingInitRendered) )
+			{
+				_pingInitRendered = true;
+
+				_renderOrders(true);
 			}
 		}, () =>
 		{

@@ -29,7 +29,6 @@ const SAVE_BUTTON = 'saveButton',
 		SAVE_CHANGES_TO_ORDER: 'Success! Updates have been successfully saved to this order.'
 	},
 
-	ORDERS_PAGE_URL = '/orders',
 	SAVE_ORDER_URL = 'orderGeneral/saveNewOrder',
 	SAVE_ORDER_AND_FINISH_LATER_URL = 'orderGeneral/saveProgressOnOrder',
 	SAVE_CHANGES_TO_ORDER_URL = 'orderGeneral/saveChangesToOrder';
@@ -157,7 +156,7 @@ async function _submitAllData(url, successMessage)
 
 		window.setTimeout(function()
 		{
-			window.location.href = ORDERS_PAGE_URL;
+			window.history.back();
 		}, 2000);
 	}
 	catch(error)

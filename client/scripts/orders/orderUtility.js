@@ -193,7 +193,7 @@ let orderManagerModule =
 		{
 			for (let i = 0; i < orders.length; i++)
 			{
-				if (statuses.isShopStatus(orders[i].status))
+				if (statuses.isManufacturingStatus(orders[i].status))
 				{
 					filteredOrders.push(orders[i]);
 				}

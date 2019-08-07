@@ -7,25 +7,7 @@
 
 	<div id='invoiceBody'>
 
-		{{#if order.design.type}}
-			<div class='invoiceRow'>
-				<div class='invoiceLabel'>- Type of Product -</div>
-				<div class='invoiceValue'>
-					{{#map_design_code_to_full_name order.design.type}}{{/map_design_code_to_full_name}}
-				</div>
-				<div class='invoiceDescription'>{{order.designDescription.type}}</div>
-			</div>
-		{{/if}}
-
-		{{#unless_cond order.design.type 'T-MISC'}}
-			<div class='invoiceRow'>
-				<div class='invoiceLabel'>- Amount of Product Needed -</div>
-				<div class='invoiceDescription'>
-					{{order.dimensions.length}} linear feet of
-					{{#map_design_code_to_full_name order.design.type true}}{{/map_design_code_to_full_name}}
-				</div>
-			</div>
-		{{/unless_cond}}
+		{{> orderInvoiceNumbersSection }}
 
 		{{#if order.design.post}}
 			<div class='invoiceRow'>
@@ -189,7 +171,7 @@
 		{{#if order.text.additionalDescription}}
 			<div class='invoiceRow'>
 				<div class='invoiceLabel'>-- Details --</div>
-				<div class='invoiceDescription'>{{{ order.text.additionalDescription }}}</div>
+				<div class='invoiceLongText'>{{{ order.text.additionalDescription }}}</div>
 			</div>
 		{{/if}}
 
