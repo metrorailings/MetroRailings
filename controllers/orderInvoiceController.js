@@ -41,6 +41,7 @@ const CONTROLLER_FOLDER = 'orderInvoice',
 	PARTIALS =
 	{
 		HEADER_SECTION: 'headerSection',
+		NUMBERS_SECTION: 'numbersSection',
 		INVOICE_SECTION: 'invoiceSection',
 		AGREEMENT_SECTION: 'agreement',
 		PERSONAL_INFO_SECTION: 'personalInfoSection',
@@ -56,6 +57,11 @@ const CONTROLLER_FOLDER = 'orderInvoice',
  * The template for the quote header that also features all our contact information
  */
 _Handlebars.registerPartial('orderInvoiceHeader', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.HEADER_SECTION));
+
+/**
+ * The template for the subsection of the invoice that explicitly lays out the numbers and breaks down the length
+ */
+_Handlebars.registerPartial('orderInvoiceNumbersSection', fileManager.fetchTemplateSync(CONTROLLER_FOLDER, PARTIALS.NUMBERS_SECTION));
 
 /**
  * The template for the invoice that lists out all the aspects of the order for which the user will be charged

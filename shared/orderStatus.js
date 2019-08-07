@@ -41,6 +41,14 @@ const ALL_ORDER_STATUSES =
 		painting : true
 	},
 
+	MANUFACTURING_STATUSES =
+	{
+		layout : true,
+		welding : true,
+		grinding : true,
+		painting : true
+	},
+
 	SPANISH_SHOP_STATUSES =
 	{
 		material : 'Material',
@@ -107,7 +115,7 @@ module.exports =
 	},
 
 	/**
-	 * Function responsible for determining whether the status indicates that the order is being fabricated
+	 * Function responsible for determining whether the status indicates that the order is in a production state
 	 *
 	 * @param {String} status - the status to test
 	 *
@@ -118,6 +126,20 @@ module.exports =
 	isShopStatus: function(status)
 	{
 		return !!(PRODUCTION_STATUSES[status]);
+	},
+
+	/**
+	 * Function responsible for determining whether the status indicates that the order is being fabricated
+	 *
+	 * @param {String} status - the status to test
+	 *
+	 * @returns {boolean} - a flag indicating whether the order is currently in the midst of fabrication
+	 *
+	 * @author kinsho
+	 */
+	isManufacturingStatus: function(status)
+	{
+		return !!(MANUFACTURING_STATUSES[status]);
 	},
 
 	/**

@@ -895,6 +895,15 @@ let ordersModule =
 			// regarding payments
 			orderModifications.payments = order.payments;
 			orderModifications.payments.balanceRemaining = orderModifications.pricing.orderTotal;
+
+			// If any payments have been made, account for them when setting the balance remaining on the order
+			if (order.payments.charges && order.payments.charges.length)
+			{
+				for (let i = 0; i < order.payments.charges.length; i += 1)
+				{
+					orderModifications.payments.balanceRemaining -= parseFloat(order.payments.charges[i].amount);
+				}
+			}
 		}
 
 		// Now generate a record of data we will be using to update the database

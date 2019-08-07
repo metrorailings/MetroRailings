@@ -114,7 +114,7 @@ async function submitCheckForm()
 		try
 		{
 			paymentData = await axios.post(CHECK_PAYMENT_URL, saveData, true,
-				{ 'content-type': 'multipart/form-data' }, 15000);
+				{ 'content-type': 'multipart/form-data' }, 30000);
 
 			// Show a message indicating the payment was successfully recorded
 			notifier.showSuccessMessage(SUCCESS_MESSAGE + paymentsVM.checkAmount);

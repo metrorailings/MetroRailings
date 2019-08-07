@@ -134,7 +134,7 @@
 
 	border:
 	{
-		width: 0.5px;
+		width: 1px;
 		style: solid;
 		color: map-get($COLORS, blackTheme);
 		radius: 12px;
@@ -158,6 +158,13 @@
 	{
 		padding: 8px;
 	}
+}
+
+.invoiceLongText
+{
+	@extend .invoiceDescription;
+
+	text-align: left;
 }
 
 #invoiceFooter

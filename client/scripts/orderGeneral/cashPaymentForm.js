@@ -115,7 +115,7 @@ async function submitCashForm()
 		try
 		{
 			paymentData = await axios.post(CASH_PAYMENT_URL, saveData, true,
-				{ 'content-type': 'multipart/form-data' }, 15000);
+				{ 'content-type': 'multipart/form-data' }, 30000);
 
 			// Show a message indicating the payment was successfully recorded
 			notifier.showSuccessMessage(SUCCESS_MESSAGE + paymentsVM.cashAmount);
