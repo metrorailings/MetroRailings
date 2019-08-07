@@ -196,9 +196,13 @@ Handlebars.registerHelper('get_month', function(date)
  */
 Handlebars.registerHelper('get_date', function(date)
 {
-	date = new Date(date);
+	// Take out any time zone information from the passed datestring
+	if (date.toString().endsWith('Z'))
+	{
+		date = date.toString().slice(0, -1);
+	}
 
-	return date.getDate();
+	return new Date(date).getDate();
 });
 
 /**
