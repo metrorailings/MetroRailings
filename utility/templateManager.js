@@ -333,7 +333,6 @@ _Handlebars.registerHelper('format_date', function(date)
 });
 
 /**
-<<<<<<< HEAD
  * Handlebars helper function designed to translate computerized dates into concise user-friendly text
  *
  * @author kinsho

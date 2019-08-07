@@ -110,7 +110,7 @@ function initNotesTextfield(notesContainer)
 				}
 
 				// Render all the notes under the notes record container again with the data returned from the back end
-				for (let i = 0; i < notes.length; i += 1)
+				for (let i = notes.length - 1; i >= 0; i -= 1)
 				{
 					_loadNewRecord(notes[i], noteRecordContainer);
 				}
@@ -139,6 +139,9 @@ function initNotesTextfield(notesContainer)
 			}
 			else if ((vm.category === CATEGORIES.NEW) || (vm.category === CATEGORIES.REPLY))
 			{
+				// Format the text so that spacing is kept intact
+				data.text = data.text.split('\n').join('<br />');
+
 				axios.post(SAVE_NOTE_URL, data, true).then((response) =>
 				{
 					// Clear out the writing in the textarea now that we uploaded that text into our database
