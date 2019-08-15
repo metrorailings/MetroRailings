@@ -68,9 +68,8 @@ var handrailingDesigns =
 			label: 'Hemisphere',
 			technicalLabel: 'Semicircle',
 			spanishLabel: 'Semicírculo',
-			description: 'All railings will be topped off with a hollow half-pipe handrail. The round half of the' +
-				' handrail will be facing upward while the flat half will be facing downward toward the body of the' +
-				' railing. The round part will be 1.5" in diameter.'
+			description: 'All railings will be topped off with a handrail with a rounded top. The round part will be' +
+				' 1.5" in diameter.'
 		},
 	],
 	designMetadata: [],
