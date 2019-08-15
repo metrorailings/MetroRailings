@@ -369,9 +369,10 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	set: () =>
 	{
-		let dateToSearch = (window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) ? JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY)).split('T')[0] : DEFAULT_MODIFICATION_DATE);
+		let dateToSearch = (window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY) ? JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_ORDERS_LAST_MODIFIED_KEY)) : DEFAULT_MODIFICATION_DATE),
+			formalDate = new Date(dateToSearch);
 
-		axios.post(SEARCH_ORDERS_URL, { date: dateToSearch }).then((results) =>
+		axios.post(SEARCH_ORDERS_URL, { date: formalDate.toString() }).then((results) =>
 		{
 			// @TODO - Figure out a way to let the admin know that the data has become stale
 			if (orderUtility.reconcileOrders(viewModel.orders, results.data))

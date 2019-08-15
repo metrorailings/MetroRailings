@@ -10,10 +10,18 @@
 
 // ----------------- MODULE DEFINITION --------------------------
 
-var glassBuilds =
+let glassBuilds =
 {
 	options:
 	[
+		{
+			id: 'GLASS-DESIGN-THIN',
+			label: '1/4" Tempered',
+			technicalLabel: '1/4" Tempered',
+			spanishLabel: '1/4" Templado',
+			description: 'All panels of glass used in this project will be 1/4" thick and strengthened through' +
+				' heat-treating.'
+		},
 		{
 			id: 'GLASS-DESIGN-STND',
 			label: '1/2" Tempered',
