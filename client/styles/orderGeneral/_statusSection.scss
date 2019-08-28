@@ -1,0 +1,12 @@
+/* ----------------------- IMPORTS ----------------------------- */
+
+@import '../foundation/form';
+
+/* ----------------------- STYLES ----------------------------- */
+
+#makeOrderLiveButton
+{
+	@include smallButton($bgColor: cadetBlueTheme);
+
+	width: 200px;
+}

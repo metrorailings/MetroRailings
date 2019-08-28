@@ -1,36 +1,39 @@
 // ----------------- APP_ROOT_PATH INSTANTIATION --------------------------
 
 global.OwlStakes =
-	{
-		require : require('app-root-path').require
-	};
+{
+	require : require('app-root-path').require
+};
 
 // ----------------- EXTERNAL MODULES --------------------------
 
-var mailer = global.OwlStakes.require('utility/mailer');
+let mailer = global.OwlStakes.require('utility/mailer');
 
 // ----------------- ENUMS/CONSTANTS --------------------------
 
-var DETAILS =
-	{
-		_id: 1566,
-
-		customer:
+const DETAILS =
 		{
-			name: 'Fu Zhang',
-			email: 'fu4999@aol.com',
-			areaCode: '908',
-			phoneOne: '544',
-			phoneTwo: '4323'
+			_id: 1566,
+
+			customer:
+				{
+					name: 'Fu Zhang',
+					email: 'fu4999@aol.com',
+					areaCode: '908',
+					phoneOne: '544',
+					phoneTwo: '4323'
+				},
+
+			payments:
+				{
+				charges:
+				[{
+					amount: 5597.81,
+					type: 'cash'
+				}]
+			},
+
 		},
-
-		pricing:
-		{
-			paidByCheck: false,
-			balanceRemaining: 800,
-			orderTotal: 1600
-		}
-	},
 
 	RECIPIENT_ADDRESS = 'kinsho@gmail.com',
 	SENDER_NAME = 'support@metrorailings.com',
@@ -41,7 +44,7 @@ var DETAILS =
 // Open up a connection to the database
 (async function ()
 {
-	var htmlText;
+	let htmlText;
 
 	// Generate the e-mail
 	htmlText = await mailer.generateFullEmail('adminOrderConfirmed', DETAILS, 'adminOrderConfirmed');
