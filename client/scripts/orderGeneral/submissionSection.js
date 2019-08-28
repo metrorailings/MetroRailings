@@ -180,7 +180,7 @@ function submit()
 	// Organize the data that will be sent over the wire as long as the entire form is valid
 	if (vm.isFormValid && _validate())
 	{
-		let modalData = { orderTotal : vm.orderTotal, depositAmount : (vm.depositAmount || vm.orderTotal / 2) },
+		let modalData = { orderTotal : vm.orderTotal, depositAmount : (vm.depositAmount || Math.round(vm.orderTotal  * 100) / 200) },
 			url, successMessage;
 
 		// Determine the proper URL and relay text to ring up when we are sending data to the back-end

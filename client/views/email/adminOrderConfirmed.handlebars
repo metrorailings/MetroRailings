@@ -5,6 +5,7 @@
 </table>
 
 <table id='orderDetails'>
+
 	<tr>
 		<th class='tableHeader'>Name</th>
 		<td class='infoCell'>{{customer.name}}</td>
@@ -22,38 +23,39 @@
 		<td class='infoCell'>({{customer.areaCode}}) {{customer.phoneOne}}-{{customer.phoneTwo}}</td>
 	</tr>
 
-	<tr>
-		<th class='tableHeader'>Method of Payment</th>
-		<td class='infoCell'>
-			{{#if pricing.paidByCheck}}
-				Check / Cash
-				<i class='fa fa-bank'></i>
-			{{else}}
-				Credit Card
-				<i class='fa fa-credit-card'></i>
-			{{/if}}
-		</td>
-	</tr>
+	{{#if payments.charges.length}}
 
-	<tr>
-		<th class='tableHeader'>Amount Confirmed Paid</th>
-		<td class='infoCell'>
-			{{#if pricing.paidByCheck}}
-				$0.00
-			{{else}}
-				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed}}
-			{{/if}}
-		</td>
-	</tr>
+		<tr>
+			<th class='tableHeader'>Deposit Payment Made By</th>
+			<td class='infoCell'>
+				{{#with payments.charges.[0]}}
 
-	<tr>
-		<th class='tableHeader'>Balance Remaining</th>
-		<td class='infoCell'>
-			{{#if pricing.paidByCheck}}
-				${{#to_fixed pricing.orderTotal 2 }}{{/to_fixed}}
-			{{else}}
-				${{#to_fixed pricing.balanceRemaining 2 }}{{/to_fixed}}
-			{{/if}}
-		</td>
-	</tr>
+					{{#if_cond type 'card'}}
+						Credit Card
+					{{/if_cond}}
+
+					{{#if_cond type 'check'}}
+						Check
+					{{/if_cond}}
+
+					{{#if_cond type 'cash'}}
+						Cash
+					{{/if_cond}}
+
+				{{/with}}
+			</td>
+		</tr>
+
+		<tr>
+			<th class='tableHeader'>Deposit Amount</th>
+			<td class='infoCell'> ${{#to_fixed payments.charges.0.amount 2}}{{/to_fixed}}</td>
+		</tr>
+
+	{{else}}
+		<tr>
+			<td class='infoCell' colspan='2'>
+				No payment has been made yet on this order.
+			</td>
+		</tr>		
+	{{/if}}
 </table>

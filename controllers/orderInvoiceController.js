@@ -12,9 +12,9 @@ let _Handlebars = require('handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	cookieManager = global.OwlStakes.require('utility/cookies'),
 	mailer = global.OwlStakes.require('utility/mailer'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
+	pdfGenerator = global.OwlStakes.require('utility/pdfGenerator'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	pricing = global.OwlStakes.require('shared/pricing/pricingData'),
@@ -32,11 +32,11 @@ const CONTROLLER_FOLDER = 'orderInvoice',
 	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
-	COOKIE_CUSTOMER_INFO = 'customerInfo',
-
 	PROSPECT_STATUS = 'prospect',
 
+	INVOICE_URL = '/orderInvoice?id=::orderId',
 	HOME_URL = '/',
+	PDF_EXTENSION = '.pdf',
 
 	PARTIALS =
 	{
@@ -202,57 +202,45 @@ module.exports =
 	},
 
 	/**
-	 * Function meant to save all updates that may have been made to a particular order and charge the user if he
-	 * elected to pay for the order by credit card
+	 * Function meant to send out confirmation e-mails to both the customer and the administrators
 	 *
-	 * @params {Object} params - all the details of the order whose changes will be saved
+	 * @params {Object} params - all the details of the order that will be needed to populate these e-mails
 	 *
 	 * @author kinsho
 	 */
-	approveOrder: async function (params)
+	sendConfirmationEmails: async function (params)
 	{
-		let mailHTML,
-			adminMailHTML,
-			processedOrder;
+		let order,
+			mailHTML,
+			quoteAttachment, quotePDF,
+			adminMailHTML;
 
-		console.log('Approving an order...');
+		console.log('Sending out confirmation e-mails');
 
-		try
-		{
-			// Save the now-approved order into the database
-			processedOrder = await ordersDAO.finalizeNewOrder(params);
-		}
-		catch(error)
-		{
-			return {
-				statusCode: responseCodes.BAD_REQUEST
-			};
-		}
+		// Fetch the order that will be used to write out the e-mails
+		order = await ordersDAO.searchOrderById(params.orderId);
 
 		// Send out an e-mail to the customer if the customer provided his e-mail address
-		if (params.customer.email)
+		if (order.customer.email)
 		{
-			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, processedOrder, ORDER_RECEIPT_EMAIL);
-			await mailer.sendMail(mailHTML, '', params.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
+			// Generate a PDF of the quote that has been finalized for this new customer
+			quotePDF = await pdfGenerator.htmlToPDF(INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, rQuery.obfuscateNumbers(order._id)));
+
+			// Prepare the PDF copy of the quote to be sent over as an attachment
+			quoteAttachment = await mailer.generateAttachment(order._id + PDF_EXTENSION, quotePDF);
+
+			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, order, ORDER_RECEIPT_EMAIL);
+			await mailer.sendMail(mailHTML, '', order.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, order._id), config.SUPPORT_MAILBOX, '', [quoteAttachment]);
 		}
 
 		// Send an e-mail to the company admins notifying that the order has been approved
-		adminMailHTML = await mailer.generateFullEmail(ADMIN_ORDER_CONFIRMATION_EMAIL, processedOrder, ADMIN_ORDER_CONFIRMATION_EMAIL);
-		await mailer.sendMail(adminMailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, processedOrder._id), config.SUPPORT_MAILBOX);
+		adminMailHTML = await mailer.generateFullEmail(ADMIN_ORDER_CONFIRMATION_EMAIL, order, ADMIN_ORDER_CONFIRMATION_EMAIL);
+		await mailer.sendMail(adminMailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, order._id), config.SUPPORT_MAILBOX);
 
 		// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
 		return {
 			statusCode: responseCodes.OK,
 			data: {},
-
-			cookie: cookieManager.formCookie(COOKIE_CUSTOMER_INFO,
-			{
-				areaCode: processedOrder.customer.areaCode,
-				phoneOne: processedOrder.customer.phoneOne,
-				phoneTwo: processedOrder.customer.phoneTwo,
-				email: processedOrder.customer.email,
-				orderNumber: processedOrder._id
-			})
 		};
 	}
 };

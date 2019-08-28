@@ -16,6 +16,7 @@ const SUBMIT_BUTTON = 'orderSubmissionButton',
 	CREDIT_CARD_PAYMENT_URL = 'payment/processCCPaymentFromCustomer',
 	SAVE_CUSTOMER_INFO_CHANGES = 'orderInvoice/saveChangesToOrder',
 	FINALIZE_ORDER_URL = 'orderInvoice/updateStatus',
+	SEND_OUT_EMAILS_URL = 'orderInvoice/sendConfirmationEmails',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation?id=',
 
 	ERROR_MESSAGES =
@@ -25,7 +26,9 @@ const SUBMIT_BUTTON = 'orderSubmissionButton',
 		SERVER_ISSUES: 'Something went wrong behind the scenes with our payment processor. Please try again later or' +
 			' reach out to us via phone.',
 		ALMOST_SUCCESSFUL: 'Your credit card payment seems to have gone through, but we\'re having issues with our' +
-			' own internal systems. Please reach out to us to ensure that the order has been fully finalized.'
+			' own internal systems. Please reach out to us to ensure that the order has been fully finalized.',
+		ISSUES_SENDING_EMAILS: 'The system ran into issues sending out confirmation updates to the admins. Please' +
+			' call the admins to ensure your order has been acknowledged as confirmed.'
 	};
 
 // ----------------- PRIVATE VARIABLES ---------------------------
@@ -131,7 +134,7 @@ async function submit()
 			return;
 		}
 
-		// Finally, update the status on the order to indicate that it is now an open order ready for production
+		// Next, update the status on the order to indicate that it is now an open order ready for production
 		try
 		{
 			await axios.post(FINALIZE_ORDER_URL, { orderId: _orderId }, true);
@@ -141,6 +144,16 @@ async function submit()
 			notifier.showSpecializedServerError(ERROR_MESSAGES.ALMOST_SUCCESSFUL);
 
 			return;
+		}
+
+		// Lastly, send out e-mails to notify the customer and the admins that the order has been confirmed
+		try
+		{
+			await axios.post(SEND_OUT_EMAILS_URL, { orderId: _orderId }, true);
+		}
+		catch(error)
+		{
+			notifier.showSpecializedServerError();
 		}
 
 		window.location.href = ORDER_CONFIRMATION_URL + rQuery.obfuscateNumbers(_orderId);

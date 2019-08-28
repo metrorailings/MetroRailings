@@ -23,6 +23,7 @@ const SORT_FILTER_CLASS = 'sortFilter',
 	RESET_COMPANY_ICON = 'resetCompany',
 	ORDER_LISTINGS_CONTAINER = 'orderListing',
 	ORDER_LISTING_TEMPLATE = 'orderListingTemplate',
+	STALE_DATA_FOUND = 'staleDataNotifier',
 
 	SEARCH_ORDERS_URL = 'orders/searchOrders',
 
@@ -49,6 +50,7 @@ let _sortFilterLinks = document.getElementsByClassName(SORT_FILTER_CLASS),
 	_resetCompanyIcon = document.getElementById(RESET_COMPANY_ICON),
 	_resetSearchIcon = document.getElementById(RESET_SEARCH_ICON),
 	_orderListing = document.getElementById(ORDER_LISTINGS_CONTAINER),
+	_staleDataNotifier = document.getElementById(STALE_DATA_FOUND),
 
 	_pingInitRendered = false;
 
@@ -374,11 +376,23 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 		axios.post(SEARCH_ORDERS_URL, { date: formalDate.toString() }).then((results) =>
 		{
-			// @TODO - Figure out a way to let the admin know that the data has become stale
 			if (orderUtility.reconcileOrders(viewModel.orders, results.data))
 			{
-				_renderOrders(true);
+				// In the event that data is present on the screen, show the alert indicating that the data present
+				// is stale
+				if (_pingInitRendered)
+				{
+					_staleDataNotifier.classList.add(REVEAL_CLASS);
+				}
+				else
+				{
+					_pingInitRendered = true;
+
+					_renderOrders(true);
+				}
 			}
+			// As part of the page initialization process, orders will need to be rendered even if the back-end
+			// indicates no orders have been updated since the last ping
 			else if ( !(_pingInitRendered) )
 			{
 				_pingInitRendered = true;
@@ -389,6 +403,27 @@ Object.defineProperty(viewModel, 'pingTheServer',
 		{
 			notifier.showGenericServerError();
 		});
+	}
+});
+
+/**
+ * A flag that simply forces the orders on screen to reload
+ *
+ * @author kinsho
+ */
+Object.defineProperty(viewModel, 'forceRefresh',
+{
+	configurable: false,
+	enumerable: false,
+
+	get: () =>
+	{
+		return false;
+	},
+
+	set: () =>
+	{
+		_renderOrders(true);
 	}
 });
 

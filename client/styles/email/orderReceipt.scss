@@ -7,85 +7,16 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
-#orderRecap
+#receiptHeader
 {
-	margin:
-	{
-		left: auto;
-		right: auto;
-	}
+	@extend #header;
 
-	width: 100%;
-
-	& > tr > td
+	td
 	{
-		padding:
+		margin:
 		{
-			left: 20px;
-			right: 20px;
+			top: 15px;
+			bottom: 15px;
 		}
-
-		vertical-align: top;
-
-		&:first-child
-		{
-			width: 50%;
-		}
-
-		&:last-child
-		{
-			width: 50%;
-		}
-	}
-}
-
-#orderDetails, #designDetails
-{
-	width: 100%;
-
-	.plainLabel, .infoCell
-	{
-		padding:
-		{
-			top: 10px;
-			bottom: 10px;
-		}
-
-		width: 50%;
-		text-align: center;
-	}
-
-	.plainLabel
-	{
-		@include tabularBorder($top: false, $right: false, $bottom: false);
-	}
-
-	.infoCell
-	{
-		@include tabularBorder($top: false, $left: false, $bottom: false);
-	}
-}
-
-#totalPriceRow
-{
-	& > td
-	{
-		@include tabularBorder();
-
-		padding:
-		{
-			top: 20px;
-			bottom: 20px;
-		}
-
-		background-color: map-get($COLORS, lightGrayTheme);
-	}
-}
-
-#colorRow
-{
-	& > td
-	{
-		@include tabularBorder($top: false, $right: false, $left: false);
 	}
 }
