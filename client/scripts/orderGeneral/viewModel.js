@@ -195,6 +195,21 @@ function _calculateTotal()
 	viewModel.orderTotal = totalPrice;
 }
 
+function _controlTaxToggler()
+{
+	// Disable the inputs entirely if the project takes place outside of New Jersey
+	if (viewModel.state !== STATE_NJ_VALUE)
+	{
+		rQueryClient.disableToggleField(_chargeTaxButtons.getElementsByTagName('input'));
+		_chargeTaxButtons.classList.add(DISABLED_CLASS);
+	}
+	else
+	{
+		rQueryClient.enableToggleField(_chargeTaxButtons.getElementsByTagName('input'));
+		_chargeTaxButtons.classList.remove(DISABLED_CLASS);
+	}
+}
+
 // ----------------- VIEW MODEL DEFINITION -----------------------------
 
 let viewModel = {};
@@ -483,12 +498,8 @@ Object.defineProperty(viewModel, 'state',
 		{
 			viewModel.applyTaxes = false;
 		}
-		else
-		{
-			// Set to true in case an idiot salesman forgets to reset taxes here
-			viewModel.applyTaxes = true;
-		}
 
+		_controlTaxToggler();
 		_updateTariffAndTaxDisplays();
 		_calculateTotal();
 	}
@@ -772,18 +783,7 @@ Object.defineProperty(viewModel, 'applyTaxes',
 
 		rQueryClient.setToggleField(_chargeTaxButtons.getElementsByTagName('input'), value);
 
-		// Disable the inputs entirely if the project takes place outside of New Jersey
-		if (viewModel.state !== STATE_NJ_VALUE)
-		{
-			rQueryClient.disableToggleField(_chargeTaxButtons.getElementsByTagName('input'));
-			_chargeTaxButtons.classList.add(DISABLED_CLASS);
-		}
-		else
-		{
-			rQueryClient.enableToggleField(_chargeTaxButtons.getElementsByTagName('input'));
-			_chargeTaxButtons.classList.remove(DISABLED_CLASS);
-		}
-
+		_controlTaxToggler();
 		_updateTariffAndTaxDisplays();
 		_calculateTotal();
 	}
@@ -824,7 +824,12 @@ Object.defineProperty(viewModel, 'orderTotal',
 
 	set: (value) =>
 	{
-		viewModel.__orderTotal = value;
+		value = value || 0;
+
+		// Limit the value to two decimal places
+		value *= 100;
+		value = Math.round(value);
+		viewModel.__orderTotal = value / 100;
 	}
 });
 

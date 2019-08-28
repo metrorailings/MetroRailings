@@ -86,3 +86,38 @@
 {
 	background-color: map-get($COLORS, darkBlueTheme);
 }
+
+#staleDataNotifier
+{
+	@include transitionSettings($property: all, $duration: 0.2s);
+	@extend %smallButtonText;
+
+	border:
+	{
+		style: solid;
+		width: 1.5px;
+		radius: 15px;
+		color: map-get($COLORS, blackTheme);
+	}
+
+	padding: 10px;
+
+	position: fixed;
+	height: 50px;
+	width: 400px;
+
+	left: 100%;
+	top: calc(95% - 50px);
+
+	background-color: map-get($COLORS, darkGreenTheme);
+	cursor: pointer;
+
+	opacity: 0.0;
+
+	&.reveal
+	{
+		left: calc(100% - 400px);
+
+		opacity: 1.0;
+	}
+}

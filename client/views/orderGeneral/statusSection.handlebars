@@ -3,13 +3,11 @@
 {{/if}}
 
 {{#if order._id}}
-	{{#unless_cond_group order.status '["prospect", "pending"]' }}
-		<div id='statusSection'>
-			<div class='dataGrouping'>
+	<div id='statusSection'>
+		<div class='dataGrouping'>
 
-				<span class='specializedLabel'>
-					<span class='translate'>Status</span>
-				</span>
+			{{#unless_cond_group order.status '["prospect", "pending"]' }}
+				<span class='specializedLabel'>Status</span>
 
 				<span id='statusButtonSet' class='buttonSet'>
 
@@ -50,7 +48,12 @@
 					<label for='cancelledStatus'>Cancelled</label>
 
 				</span>
-			</div>
+			{{else}}
+
+				<span class='specializedLabel'>Move Order into Production?</span>
+				<button id='makeOrderLiveButton'>Finalize</button>
+
+			{{/unless_cond_group}}
 		</div>
-	{{/unless_cond_group}}
+	</div>
 {{/if}}

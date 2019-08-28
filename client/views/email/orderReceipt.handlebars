@@ -1,4 +1,4 @@
-<table id='header'>
+<table id='receiptHeader'>
     <tr>
         <th>Thank you for your business, {{customer.nickname}}</th>
     </tr>
@@ -10,75 +10,9 @@
 			appointment.
         </td>
     </tr>
-</table>
-
-<table id='orderRecap'>
-    <tr>
-        <td>
-            <table id='orderDetails'>
-                <tr>
-					<th class='tableHeader' colspan='2'>Order Details</th>
-                </tr>
-				<tr>
-					<td class='plainLabel'>Order ID</td>
-					<td class='infoCell'>{{_id}}</td>
-				</tr>
-				<tr>
-					<td class='plainLabel'>Length</td>
-					<td class='infoCell'>{{length}} linear feet</td>
-				</tr>
-				<tr>
-					<td class='plainLabel'>Installation Address</td>
-					<td class='infoCell'>
-						{{customer.address}}<br />
-						{{#if customer.aptSuiteNumber}}
-							{{customer.aptSuiteNumber}}<br />
-						{{/if}}
-						{{customer.city}}, {{customer.state}} {{customer.zipCode}}
-					</td>
-				</tr>
-				<tr id='totalPriceRow'>
-					<td class='specialLabel'>Total Price</td>
-					<td class='plainLabel'>${{pricing.orderTotal}}</td>
-				</tr>
-
-            </table>
-        </td>
-
+	<tr>
 		<td>
-			<table id='designDetails'>
-				<tr>
-					<th class='tableHeader' colspan='2'>Design Selections</th>
-				</tr>
-				<tr>
-					<td class='plainLabel'>Post</td>
-					<td class='infoCell'>{{#map_design_code_to_full_name design.post}}{{/map_design_code_to_full_name}}</td>
-				</tr>
-                {{#if design.postEnd }}
-					<tr>
-						<td class='plainLabel'>Post End</td>
-						<td class='infoCell'>{{#map_design_code_to_full_name design.postEnd}}{{/map_design_code_to_full_name}}</td>
-					</tr>
-                {{/if}}
-				{{#if design.postCap }}
-					<tr>
-						<td class='plainLabel'>Post Cap</td>
-						<td class='infoCell'>{{#map_design_code_to_full_name design.postCap}}{{/map_design_code_to_full_name}}</td>
-					</tr>
-				{{/if}}
-				{{#if design.center }}
-					<tr>
-						<td class='plainLabel'>Center</td>
-						<td class='infoCell'>{{#map_design_code_to_full_name design.center}}{{/map_design_code_to_full_name}}</td>
-					</tr>
-				{{/if}}
-				<tr id='colorRow'>
-					<td class='plainLabel'>Color</td>
-					<td class='infoCell'>{{#map_design_code_to_full_name design.color}}{{/map_design_code_to_full_name}}</td>
-				</tr>
-			</table>
+			Please see the attachment below for details about your order.
 		</td>
-
-		<!-- @TODO: Include a table to list any other special designs that were part of this order -->
-    </tr>
+	</tr>
 </table>
