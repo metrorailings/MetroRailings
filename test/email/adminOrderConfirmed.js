@@ -12,28 +12,28 @@ let mailer = global.OwlStakes.require('utility/mailer');
 // ----------------- ENUMS/CONSTANTS --------------------------
 
 const DETAILS =
-		{
-			_id: 1566,
+	{
+		_id: 1566,
 
-			customer:
-				{
-					name: 'Fu Zhang',
-					email: 'fu4999@aol.com',
-					areaCode: '908',
-					phoneOne: '544',
-					phoneTwo: '4323'
-				},
-
-			payments:
-				{
-				charges:
-				[{
-					amount: 5597.81,
-					type: 'cash'
-				}]
+		customer:
+			{
+				name: 'Fu Zhang',
+				email: 'fu4999@aol.com',
+				areaCode: '908',
+				phoneOne: '544',
+				phoneTwo: '4323'
 			},
 
+		payments:
+			{
+			charges:
+			[{
+				amount: 5597.81,
+				type: 'cash'
+			}]
 		},
+
+	},
 
 	RECIPIENT_ADDRESS = 'kinsho@gmail.com',
 	SENDER_NAME = 'support@metrorailings.com',
