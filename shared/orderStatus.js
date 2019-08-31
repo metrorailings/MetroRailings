@@ -38,7 +38,8 @@ const ALL_ORDER_STATUSES =
 		layout : true,
 		welding : true,
 		grinding : true,
-		painting : true
+		painting : true,
+		install : true
 	},
 
 	MANUFACTURING_STATUSES =
@@ -112,6 +113,18 @@ module.exports =
 	listAllOpenStatuses: function()
 	{
 		return Object.keys(OPEN_STATUSES);
+	},
+
+	/**
+	 * Function responsible for returning a list of all statuses that denote whether an order is in production
+	 *
+	 * @returns {Array<String>} - an array of all production statuses
+	 *
+	 * @author kinsho
+	 */
+	listAllShopStatuses: function()
+	{
+		return Object.keys(PRODUCTION_STATUSES);
 	},
 
 	/**

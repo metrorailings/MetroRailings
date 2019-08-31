@@ -15,8 +15,8 @@ const SUBMIT_BUTTON = 'orderSubmissionButton',
 	GENERATE_TOKEN_URL = 'payment/generateCCToken',
 	CREDIT_CARD_PAYMENT_URL = 'payment/processCCPaymentFromCustomer',
 	SAVE_CUSTOMER_INFO_CHANGES = 'orderInvoice/saveChangesToOrder',
-	FINALIZE_ORDER_URL = 'orderInvoice/updateStatus',
-	SEND_OUT_EMAILS_URL = 'orderInvoice/sendConfirmationEmails',
+	FINALIZE_ORDER_URL = 'orderGeneral/openOrder',
+	SEND_OUT_EMAILS_URL = 'orderGeneral/sendConfirmationEmails',
 	ORDER_CONFIRMATION_URL = 'orderConfirmation?id=',
 
 	ERROR_MESSAGES =

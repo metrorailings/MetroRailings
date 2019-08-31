@@ -12,13 +12,10 @@ let _Handlebars = require('handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
-	mailer = global.OwlStakes.require('utility/mailer'),
 	rQuery = global.OwlStakes.require('utility/rQuery'),
-	pdfGenerator = global.OwlStakes.require('utility/pdfGenerator'),
 
 	responseCodes = global.OwlStakes.require('shared/responseStatusCodes'),
 	pricing = global.OwlStakes.require('shared/pricing/pricingData'),
-	statuses = global.OwlStakes.require('shared/orderStatus'),
 
 	ordersDAO = global.OwlStakes.require('data/DAO/ordersDAO');
 
@@ -27,16 +24,9 @@ let _Handlebars = require('handlebars'),
 const CONTROLLER_FOLDER = 'orderInvoice',
 	UTILITY_FOLDER = 'utility',
 
-	ORDER_RECEIPT_EMAIL = 'orderReceipt',
-	ADMIN_ORDER_CONFIRMATION_EMAIL = 'adminOrderConfirmed',
-	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
-	ORDER_ID_PLACEHOLDER = '::orderId',
-
 	PROSPECT_STATUS = 'prospect',
 
-	INVOICE_URL = '/orderInvoice?id=::orderId',
 	HOME_URL = '/',
-	PDF_EXTENSION = '.pdf',
 
 	PARTIALS =
 	{
@@ -185,62 +175,6 @@ module.exports =
 		return {
 			statusCode: responseCodes.OK,
 			data: {}
-		};
-	},
-
-	updateStatus: async function (params)
-	{
-		console.log('Updating the status of an order to indicate it\'s ready for production...');
-
-		// Now change the order's status to indicate it is now a live order
-		await ordersDAO.updateStatus(parseInt(params.orderId, 10), statuses.ALL.MATERIAL);
-
-		return {
-			statusCode: responseCodes.OK,
-			data: {}
-		};
-	},
-
-	/**
-	 * Function meant to send out confirmation e-mails to both the customer and the administrators
-	 *
-	 * @params {Object} params - all the details of the order that will be needed to populate these e-mails
-	 *
-	 * @author kinsho
-	 */
-	sendConfirmationEmails: async function (params)
-	{
-		let order,
-			mailHTML,
-			quoteAttachment, quotePDF,
-			adminMailHTML;
-
-		console.log('Sending out confirmation e-mails');
-
-		// Fetch the order that will be used to write out the e-mails
-		order = await ordersDAO.searchOrderById(params.orderId);
-
-		// Send out an e-mail to the customer if the customer provided his e-mail address
-		if (order.customer.email)
-		{
-			// Generate a PDF of the quote that has been finalized for this new customer
-			quotePDF = await pdfGenerator.htmlToPDF(INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, rQuery.obfuscateNumbers(order._id)));
-
-			// Prepare the PDF copy of the quote to be sent over as an attachment
-			quoteAttachment = await mailer.generateAttachment(order._id + PDF_EXTENSION, quotePDF);
-
-			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, order, ORDER_RECEIPT_EMAIL);
-			await mailer.sendMail(mailHTML, '', order.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, order._id), config.SUPPORT_MAILBOX, '', [quoteAttachment]);
-		}
-
-		// Send an e-mail to the company admins notifying that the order has been approved
-		adminMailHTML = await mailer.generateFullEmail(ADMIN_ORDER_CONFIRMATION_EMAIL, order, ADMIN_ORDER_CONFIRMATION_EMAIL);
-		await mailer.sendMail(adminMailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, order._id), config.SUPPORT_MAILBOX);
-
-		// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
-		return {
-			statusCode: responseCodes.OK,
-			data: {},
 		};
 	}
 };

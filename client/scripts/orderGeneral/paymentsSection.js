@@ -19,12 +19,17 @@ const BALANCE_REMAINING = 'balanceRemaining',
 	PARENT_SECTION_LISTENER = 'parentSectionListener',
 
 	PENDING_STATUS = 'pending',
-	OPEN_ORDER_URL = 'orderGeneral/openOrder',
-	STATUS_CHANGE_ERROR = 'Something went wrong when trying to update the status of this order to' +
-		' "material"...please reach out to Rickin.',
 
 	HIDE_CLASS = 'hide',
-	SELECTED_CLASS = 'selected';
+	SELECTED_CLASS = 'selected',
+
+	FINALIZE_ORDER_URL = 'orderGeneral/openOrder',
+	SEND_OUT_EMAILS_URL = 'orderGeneral/sendConfirmationEmails',
+
+	ERROR_MESSAGES =
+	{
+		FINALIZATION_ERROR: 'Something went wrong finalizing this order. Try again or contact Rickin.'
+	};
 
 // ----------------- PRIVATE VARIABLES ---------------------------
 
@@ -86,27 +91,28 @@ function updateBalanceRemaining(event)
 	_balanceRemaining.innerHTML = BALANCE_REMAINING_PREFIX + newBalance.toFixed(2);
 }
 
+
 /**
- * Function responsible for checking whether the status of the order needs to be changed over to material once at
- * least one payment has been made on this order
+ * Function responsible for checking whether the order needs to be made live if the order is still noted as pending
  *
  * @param {Event} event - the event responsible for triggering the invocation of this function
  */
-async function changeStatus()
+async function finalizeOrder()
 {
+	// Only finalize the order should the order still be in pending status and a payment has been recorded on this order
 	if (orderVM.status === PENDING_STATUS)
 	{
-		// Finally, update the status on the order to indicate that it is now an open order ready for production
+		// Make the service calls necessary to finalize the order
 		try
 		{
-			await axios.post(OPEN_ORDER_URL, { orderId: orderVM._id }, true);
+			await axios.post(FINALIZE_ORDER_URL, { orderId: orderVM._id }, true);
+			await axios.post(SEND_OUT_EMAILS_URL, { orderId: orderVM._id }, true);
 
-			// Reload the page so that we can properly render the status section
-			window.location.reload();
+			window.location.reload(true);
 		}
 		catch(error)
 		{
-			notifier.showSpecializedServerError(STATUS_CHANGE_ERROR);
+			notifier.showSpecializedServerError(ERROR_MESSAGES.FINALIZATION_ERROR);
 
 			return;
 		}
@@ -128,7 +134,7 @@ if (_paymentOptionHeaders.length)
 
 	document.addEventListener(PARENT_SECTION_LISTENER, async (event) =>
 	{
-		await changeStatus(event);
+		await finalizeOrder(event);
 		updateBalanceRemaining(event);
 	});
 }
