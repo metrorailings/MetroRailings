@@ -43,7 +43,7 @@ module.exports =
 			console.log('Loading the shop board...');
 
 			// Retrieve all open orders
-			orders = await ordersDAO.searchForOpenOrders();
+			orders = await ordersDAO.searchForOrdersInProduction();
 
 			// Reorder the open orders so that the orders that do not have due dates are at the bottom of the list
 			orders.sort(dateUtility.sortByDueDates);

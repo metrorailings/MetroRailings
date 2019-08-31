@@ -141,6 +141,29 @@ let ordersModule =
 	},
 
 	/**
+	 * Function responsible for fetching all orders currently in production
+	 *
+	 * @author kinsho
+	 */
+	searchForOrdersInProduction: async function ()
+	{
+		try
+		{
+			let dbResults = await mongo.read(ORDERS_COLLECTION,
+				mongo.orOperator('status', statuses.listAllShopStatuses()), { 'dates.due': 1 });
+
+			return dbResults;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching all open orders...');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for fetching orders from the database that were modified from a given date
 	 *
 	 * @param {Date} beginningDate - the date and time from which to look for new orders
