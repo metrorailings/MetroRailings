@@ -10,6 +10,11 @@
 
 /* ----------------------- STYLES ----------------------------- */
 
+#topMenu
+{
+	display: none !important;
+}
+
 #languageSelection
 {
 	display: none;
@@ -85,7 +90,7 @@
 
 .openOrder
 {
-	@extend %smallSignificantText;
+	@extend %smallerSignificantText;
 
 	display: flex;
 	align-items: center;
@@ -107,7 +112,7 @@
 		justify-content: center;
 
 		flex: 1;
-		min-height: 70px;
+		min-height: 55px;
 
 		&:not(:last-of-type)
 		{

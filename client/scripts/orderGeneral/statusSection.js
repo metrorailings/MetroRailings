@@ -12,8 +12,8 @@ const STATUS_FIELD = 'statusHiddenField',
 	STATUS_RADIO_BUTTONS = 'statusRadio',
 	FINALIZE_ORDER_BUTTON = 'makeOrderLiveButton',
 
-	FINALIZE_ORDER_URL = 'orderInvoice/updateStatus',
-	SEND_OUT_EMAILS_URL = 'orderInvoice/sendConfirmationEmails',
+	FINALIZE_ORDER_URL = 'orderGeneral/openOrder',
+	SEND_OUT_EMAILS_URL = 'orderGeneral/sendConfirmationEmails',
 
 	CONFIRM_LIVE_ORDER = 'Are you sure you want to send this order into production? Once this is done, you cannot' +
 		' undo this. Furthermore, the client will no longer be able to pay for the order directly.',

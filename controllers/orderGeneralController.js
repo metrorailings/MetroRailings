@@ -31,10 +31,14 @@ const CONTROLLER_FOLDER = 'orderGeneral',
 	CUSTOM_ORDER_SUBJECT_HEADER = 'Metro Railings: Your Order (Order #::orderId)',
 	ORDER_ID_PLACEHOLDER = '::orderId',
 
-	ADMIN_LOG_IN_URL = '/admin',
-	INVOICE_URL = '/orderInvoice?id=::orderId',
+	ORDER_RECEIPT_EMAIL = 'orderReceipt',
+	ADMIN_ORDER_CONFIRMATION_EMAIL = 'adminOrderConfirmed',
+	ORDER_RECEIPT_SUBJECT_HEADER = 'Order Confirmed (Order ID #::orderId)',
 
 	DEFAULT_STATUS = 'prospect',
+
+	INVOICE_URL = '/orderInvoice?id=::orderId',
+	ADMIN_LOG_IN_URL = '/admin',
 
 	VIEWS_DIRECTORY = '/client/views/',
 	DEFAULT_AGREEMENT_TEXT = 'customerAgreement.txt',
@@ -235,6 +239,49 @@ module.exports =
 		return {
 			statusCode: responseCodes.OK,
 			data: {}
+		};
+	},
+
+	/**
+	 * Function meant to send out confirmation e-mails to both the customer and the administrators
+	 *
+	 * @params {Object} params - all the details of the order that will be needed to populate these e-mails
+	 *
+	 * @author kinsho
+	 */
+	sendConfirmationEmails: async function (params)
+	{
+		let order,
+			mailHTML,
+			quoteAttachment, quotePDF,
+			adminMailHTML;
+
+		console.log('Sending out confirmation e-mails');
+
+		// Fetch the order that will be used to write out the e-mails
+		order = await ordersDAO.searchOrderById(params.orderId);
+
+		// Send out an e-mail to the customer if the customer provided his e-mail address
+		if (order.customer.email)
+		{
+			// Generate a PDF of the quote that has been finalized for this new customer
+			quotePDF = await pdfGenerator.htmlToPDF(INVOICE_URL.replace(ORDER_ID_PLACEHOLDER, rQuery.obfuscateNumbers(order._id)));
+
+			// Prepare the PDF copy of the quote to be sent over as an attachment
+			quoteAttachment = await mailer.generateAttachment(order._id + PDF_EXTENSION, quotePDF);
+
+			mailHTML = await mailer.generateFullEmail(ORDER_RECEIPT_EMAIL, order, ORDER_RECEIPT_EMAIL);
+			await mailer.sendMail(mailHTML, '', order.customer.email, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, order._id), config.SUPPORT_MAILBOX, '', [quoteAttachment]);
+		}
+
+		// Send an e-mail to the company admins notifying that the order has been approved
+		adminMailHTML = await mailer.generateFullEmail(ADMIN_ORDER_CONFIRMATION_EMAIL, order, ADMIN_ORDER_CONFIRMATION_EMAIL);
+		await mailer.sendMail(adminMailHTML, '', config.SUPPORT_MAILBOX, ORDER_RECEIPT_SUBJECT_HEADER.replace(ORDER_ID_PLACEHOLDER, order._id), config.SUPPORT_MAILBOX);
+
+		// Return a 200 response along with a cookie that we will use to render parts of the order confirmation page
+		return {
+			statusCode: responseCodes.OK,
+			data: {},
 		};
 	}
 };
