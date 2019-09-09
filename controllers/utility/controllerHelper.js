@@ -9,6 +9,8 @@ const _Q = require('q'),
 
 	config = global.OwlStakes.require('config/config'),
 
+	adminUtility = global.OwlStakes.require('controllers/utility/adminUtility'),
+
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager');
 
@@ -29,6 +31,7 @@ const BASE_TEMPLATE_FILE = 'base',
 	HBARS_LAUNCH_SCRIPT = 'launchScript',
 	HBARS_IS_PROD_FLAG = 'isProd',
 	HBARS_IS_ADMIN_PAGE = 'isAdmin',
+	HBARS_ADMIN_REFERENCE = 'admin',
 	HBARS_CURRENT_YEAR = 'currentYear',
 	HBARS_CONTACT_NUMBER = 'contactNumber';
 
@@ -50,16 +53,20 @@ module.exports =
 	 * 		the file system
 	 * @param {Object} [bootData] - data to bootstrap into the page when it is initially loaded
 	 * @param {boolean} [ignoreScaling] - a flag indicating whether we should avoid doing any mobile scaling on the page
-	 * @param {boolean} [displayAfterPageLoad] - a flag indicating whether we should wait for the page to completely load before
-	 * 		showing it to the user
+	 * @param {boolean} [isAdmin] - a flag indicating whether the page is open to the public or part of the admin
+	 * 		platform
+	 * @param {boolean}	[includeAdminInfo] - a boolean indicating whether we need to augment the page data with
+	 * 		information about the admin
+	 * @param {String} [cookie] - the cookie containing information about the admin accessing the platform
 	 *
 	 * @return {String} - a fully populated string of HTML
 	 *
 	 * @author kinsho
 	 */
-	renderInitialView: async function (content, directory, bootData, ignoreScaling, isAdmin)
+	renderInitialView: async function (content, directory, bootData, ignoreScaling, isAdmin, includeAdminInfo, cookie)
 	{
 		let data = {},
+			adminData,
 			response;
 
 		// Augment the bootlegged data with other data that needs to be loaded for all pages
@@ -98,6 +105,13 @@ module.exports =
 
 		// Set the main phone number as well
 		data[HBARS_CONTACT_NUMBER] = config.SUPPORT_PHONE_NUMBER;
+
+		// If need be, add information about the admin in context to the data used to load the base template
+		if (includeAdminInfo)
+		{
+			adminData = await adminUtility.basicInit(cookie);
+			data[HBARS_ADMIN_REFERENCE] = adminData.pageData.admin;
+		}
 
 		// Render the template
 		response = await templateManager.populateTemplate(data, '', BASE_TEMPLATE_FILE);

@@ -55,6 +55,86 @@ module.exports =
 	},
 
 	/**
+	 * Function responsible for verifying whether the admin user has permission to visit a particular section of the
+	 * admin platform
+	 *
+	 * @param {String} cookie - the cookie containing information about the user
+	 * @param {String} pageName - the shortname of the page that user is trying to visit
+	 *
+	 * @returns {boolean} - a flag indicating whether the user has permission to visit the page indicated by the
+	 * 		parameter
+	 *
+	 * @author kinsho 
+	 */
+	verifyAdminHasPermission: async function (cookie, pageName)
+	{
+		let username = cookieManager.retrieveAdminCookie(cookie)[0],
+			dbResults,
+			accessRights;
+
+		try
+		{
+			// Retrieve the user's data from the database
+			dbResults = await mongo.read(ADMINS_COLLECTION,
+			{
+				username: username
+			});
+
+			// Test whether the user is allowed to access the page in context
+			accessRights = dbResults[0].access.split('|');
+			for (let i = 0; i < accessRights.length; i += 1)
+			{
+				if (accessRights[i] === pageName)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+		catch (error)
+		{
+			console.log('Ran into an error trying to get accessibility information about a particular user!');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
+	 * Function responsible for fetching an admin user's landing page
+	 *
+	 * @param {String} cookie - the cookie containing information about the user
+	 *
+	 * @returns {String} - the shortname of the page that serves as the landing page for the user in context
+	 *
+	 * @author kinsho
+	 */
+	retrieveLandingPage: async function (cookie)
+	{
+		let username = cookieManager.retrieveAdminCookie(cookie)[0],
+			dbResults;
+
+		try
+		{
+			// Retrieve the user's data from the database
+			dbResults = await mongo.read(ADMINS_COLLECTION,
+			{
+				username: username
+			});
+
+			return dbResults[0].landingPage;
+		}
+		catch (error)
+		{
+			console.log('Ran into an error trying to figure out + ' + username + '\'s landing page !');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for retrieving all details for any given user
 	 *
 	 * @param {String} username - the user name from which we'll be retrieving all details
@@ -65,11 +145,10 @@ module.exports =
 	 */
 	retrieveUserData: async function (username)
 	{
-		let dbResults;
-
 		try
 		{
-			dbResults = await mongo.read(ADMINS_COLLECTION,
+			// Retrieve the user record from the back-end
+			let dbResults = await mongo.read(ADMINS_COLLECTION,
 			{
 				username: username
 			});
@@ -78,7 +157,7 @@ module.exports =
 		}
 		catch(error)
 		{
-			console.log('Ran into an error trying to gather all information about a particular admin!');
+			console.log('Ran into an error trying to get information about a particular user!');
 			console.log(error);
 
 			return false;
@@ -191,5 +270,7 @@ module.exports =
 
 			return [];
 		}
-	}
+	},
+
+	
 };

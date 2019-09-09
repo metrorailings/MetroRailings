@@ -9,6 +9,7 @@ let _Handlebars = require('handlebars'),
 	controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	noteUtility = global.OwlStakes.require('controllers/utility/noteUtility'),
 	uploadUtility = global.OwlStakes.require('controllers/utility/fileUploadUtility'),
+	adminUtility = global.OwlStakes.require('controllers/utility/adminUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -55,7 +56,7 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			pageData = {},
-			noteData, uploadData,
+			noteData, uploadData, adminData,
 			bootData =
 			{
 				dropboxToken: config.DROPBOX_TOKEN,
@@ -69,6 +70,13 @@ module.exports =
 			console.log('Redirecting the user to the log-in page...');
 
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
+		}
+
+		if ( !(await usersDAO.verifyAdminHasPermission(cookie, CONTROLLER_FOLDER)) )
+		{
+			console.log('Redirecting the user back to whatever his landing page is...');
+
+			return await controllerHelper.renderRedirectView('/' + await usersDAO.retrieveLandingPage(cookie));
 		}
 
 		console.log('Loading the orders page...');
@@ -88,8 +96,10 @@ module.exports =
 		// Grab the templates and logic necessary to append notes and files onto orders
 		noteData = await noteUtility.basicInit();
 		uploadData = await uploadUtility.basicInit();
+		adminData = await adminUtility.basicInit(cookie);
 		pageData = rQuery.mergeObjects(noteData.pageData, pageData);
 		pageData = rQuery.mergeObjects(uploadData.pageData, pageData);
+		pageData = rQuery.mergeObjects(adminData.pageData, pageData);
 
 		// Load a list of the companies we regularly do business with
 		pageData.companies = companies;
@@ -97,7 +107,8 @@ module.exports =
 		// Render the page template
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, bootData, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, bootData,
+			true, true, true, cookie);
 	},
 
 	/**

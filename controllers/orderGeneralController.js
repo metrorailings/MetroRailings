@@ -8,6 +8,7 @@ const controllerHelper = global.OwlStakes.require('controllers/utility/controlle
 	orderGeneralUtility = global.OwlStakes.require('controllers/utility/orderGeneralUtility'),
 	noteUtility = global.OwlStakes.require('controllers/utility/noteUtility'),
 	fileUtility = global.OwlStakes.require('controllers/utility/fileUploadUtility'),
+	adminUtility = global.OwlStakes.require('controllers/utility/adminUtility'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	cookieManager = global.OwlStakes.require('utility/cookies'),
@@ -57,13 +58,20 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			agreementText,
-			allData, noteData, fileUploadData, pageData, designData, order;
+			allData, noteData, fileUploadData, pageData, designData, adminData, order;
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
 			console.log('Redirecting the user to the log-in page...');
 
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
+		}
+
+		if ( !(await usersDAO.verifyAdminHasPermission(cookie, CONTROLLER_FOLDER)) )
+		{
+			console.log('Redirecting the user back to whatever his landing page is...');
+
+			return await controllerHelper.renderRedirectView('/' + await usersDAO.retrieveLandingPage(cookie));
 		}
 
 		console.log('Loading the order page...');
@@ -78,12 +86,14 @@ module.exports =
 		allData = await orderGeneralUtility.basicInit(cookie);
 		noteData = await noteUtility.basicInit();
 		fileUploadData = await fileUtility.basicInit();
+		adminData = await adminUtility.basicInit(cookie);
 		designData = allData.designData;
 
 		// Set the foundational data into place
 		pageData = allData.pageData;
 		pageData = rQuery.mergeObjects(noteData.pageData, pageData);
 		pageData = rQuery.mergeObjects(fileUploadData.pageData, pageData);
+		pageData = rQuery.mergeObjects(adminData.pageData, pageData);
 		pageData.order =  order || { status : DEFAULT_STATUS };
 
 		// Determine which agreement text to present on the page
@@ -100,7 +110,7 @@ module.exports =
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
 		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER,
-			{ designData: designData }, true, true);
+			{ designData: designData }, true, true,true, cookie);
 	},
 
 	/**
