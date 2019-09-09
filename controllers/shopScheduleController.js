@@ -6,6 +6,8 @@
 
 let controllerHelper = global.OwlStakes.require('controllers/utility/controllerHelper'),
 	uploadUtility = global.OwlStakes.require('controllers/utility/fileUploadUtility'),
+	adminUtility = global.OwlStakes.require('controllers/utility/adminUtility'),
+	rQuery = global.OwlStakes.require('utility/rQuery'),
 
 	fileManager = global.OwlStakes.require('utility/fileManager'),
 	templateManager = global.OwlStakes.require('utility/templateManager'),
@@ -41,7 +43,8 @@ module.exports =
 	{
 		let populatedPageTemplate,
 			orders,
-			uploadData, pageData;
+			uploadData, adminData,
+			pageData = {};
 
 		if ( !(await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent'])) )
 		{
@@ -50,26 +53,36 @@ module.exports =
 			return await controllerHelper.renderRedirectView(ADMIN_LOG_IN_URL);
 		}
 
+		if ( !(await usersDAO.verifyAdminHasPermission(cookie, CONTROLLER_FOLDER)) )
+		{
+			console.log('Redirecting the user back to whatever his landing page is...');
+
+			return await controllerHelper.renderRedirectView('/' + await usersDAO.retrieveLandingPage(cookie));
+		}
+
 		console.log('Loading the shop schedule page...');
 
 		// Retrieve all open orders
-		orders = await ordersDAO.searchForOpenOrders();
+		orders = await ordersDAO.searchForOrdersInProduction();
 
 		// Reorder the open orders so that the orders that do not have due dates are at the bottom of the list
 		orders.sort(dateUtility.sortByDueDates);
+		pageData.orders = orders;
 
 		// Grab the templates and logic necessary to show files attached to the order
 		uploadData = await uploadUtility.basicInit();
-		pageData = uploadData.pageData;
+		adminData = await adminUtility.basicInit(cookie);
+		pageData = rQuery.mergeObjects(uploadData.pageData, pageData);
+		pageData = rQuery.mergeObjects(adminData.pageData, pageData);
 
 		// Grab the raw HTML for status modal template
 		pageData.statusModalTemplate = await fileManager.fetchTemplate(CONTROLLER_FOLDER, PARTIALS.STATUS_MODAL);
 
 		// Render the page template
-		pageData.orders = orders;
 		populatedPageTemplate = await templateManager.populateTemplate(pageData, CONTROLLER_FOLDER, CONTROLLER_FOLDER);
 
-		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {}, true, true);
+		return await controllerHelper.renderInitialView(populatedPageTemplate, CONTROLLER_FOLDER, {},
+			true,true,true, cookie);
 	},
 
 	/**
