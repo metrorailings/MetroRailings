@@ -89,11 +89,6 @@ _Handlebars.registerPartial('successBar', fileManager.fetchTemplateSync(UTILITY_
 _Handlebars.registerPartial('topMenu', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.TOP_MENU));
 
 /**
- * The template for the admin menu
- */
-_Handlebars.registerPartial('adminMenu', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.ADMIN_MENU));
-
-/**
  * The template for the generalized loading indicators
  */
 _Handlebars.registerPartial('generalLoadingIndicators', fileManager.fetchTemplateSync(UTILITY_FOLDER, PARTIALS.LOADING_INDICATOR));
@@ -453,6 +448,29 @@ _Handlebars.registerHelper('format_emails', function(emailAddresses)
 	}
 
 	return emailHTML;
+});
+
+/**
+ * Handlebars helper function meant to determine whether an admin is allowed to navigate to a particular part of the
+ * administration platform
+ *
+ * @params {String} username - the admin's username to test
+ *
+ * @author kinsho
+ */
+_Handlebars.registerHelper('is_admin_allowed_to_navigate', function(adminPermissions, pageURL, block)
+{
+	let permissions = adminPermissions.split('|');
+
+	for (let i = 0; i < permissions.length; i += 1)
+	{
+		if (permissions[i] === pageURL)
+		{
+			return block.fn(this);
+		}
+	}
+
+	return block.inverse(this);
 });
 
 // ----------------- MODULE DEFINITION --------------------------
