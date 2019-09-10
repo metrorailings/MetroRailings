@@ -366,7 +366,7 @@ Object.defineProperty(viewModel, 'pingTheServer',
 
 	get: () =>
 	{
-		return viewModel.__pingTheServer;
+		return null;
 	},
 
 	set: () =>

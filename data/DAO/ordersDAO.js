@@ -198,6 +198,43 @@ let ordersModule =
 	},
 
 	/**
+	 * Function responsible for fetching open orders from the database that were modified from a given date
+	 *
+	 * @param {Date} beginningDate - the date and time from which to look for newly modified open orders
+	 *
+	 * @returns Array<Object> - all open orders that were modified on or after the passed datetime
+	 *
+	 * @author kinsho
+	 */
+	searchOpenOrdersByDate: async function (beginningDate)
+	{
+		let selectionQuery;
+
+		// Set up a complex selection query here to filter all open orders that were modified after a given datetime
+		selectionQuery = mongo.orOperator('status', statuses.listAllOpenStatuses());
+		selectionQuery['dates.lastModified'] = mongo.greaterThanOrEqualToOperator(beginningDate);
+
+		try
+		{
+			console.log('Searching for all open orders that have been modified after ' + beginningDate);
+
+			let dbResults = await mongo.read(ORDERS_COLLECTION, selectionQuery,
+				{
+					'dates.lastModified': 1
+				});
+
+			return dbResults;
+		}
+		catch(error)
+		{
+			console.log('Ran into an error fetching orders!');
+			console.log(error);
+
+			return false;
+		}
+	},
+
+	/**
 	 * Function responsible for search for orders from the database given various criteria
 	 *
 	 * @param {Number} [orderID]- the order number associated with the order being sought

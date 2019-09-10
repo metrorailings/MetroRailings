@@ -86,6 +86,37 @@ module.exports =
 	},
 
 	/**
+	 * Function meant to search for all OPEN orders that were modified after a particular date
+	 *
+	 * @params {Object} params -
+	 * 		{
+	 * 			date - the date we will use to seek all the OPEN orders that were modified from then onwards
+	 * 		}
+	 *
+	 * @author kinsho 
+	 */
+	searchOpenOrders: async function (params, cookie, request)
+	{
+		if (await usersDAO.verifyAdminCookie(cookie, request.headers['user-agent']))
+		{
+			console.log('Searching for newly modified open orders...');
+
+			let newData = await ordersDAO.searchOpenOrdersByDate(new Date(params.date));
+
+			return {
+				statusCode: responseCodes.OK,
+				data: newData
+			};
+		}
+
+		// Return a meaningless response for unauthorized calls
+		return {
+			statusCode: responseCodes.OK,
+			data: ''
+		};
+	},
+
+	/**
 	 * Function meant to update the production status for a given order
 	 *
 	 * @params {Object} params - the ID of the order to modify and the new status
