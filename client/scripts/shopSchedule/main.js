@@ -16,6 +16,7 @@ import uploader from 'client/scripts/uploadFile/uploadFile';
 const STATUS_LINKS = 'statusLink',
 	FILE_LISTING = 'filesListing',
 	STATUS_MODAL_TEMPLATE ='statusModalTemplate',
+	STALE_DATA_FOUND = 'staleDataNotifier',
 
 	STATUS_CHANGE_SUCCESSFUL = 'El cambio de estado ha sido exitoso.',
 	STATUS_CHANGE_FAILED = 'El cambio de estado no fue efectuado. Por favor contacte a Rick.',
@@ -24,7 +25,8 @@ const STATUS_LINKS = 'statusLink',
 // ----------------- PRIVATE VARIABLES ---------------------------
 
 let _statusLinks = document.getElementsByClassName(STATUS_LINKS),
-	_fileListings = document.getElementsByClassName(FILE_LISTING);
+	_fileListings = document.getElementsByClassName(FILE_LISTING),
+	_staleDataLink = document.getElementById(STALE_DATA_FOUND);
 
 // ----------------- PRIVATE FUNCTIONS ---------------------------
 
@@ -87,6 +89,26 @@ function openStatusModal(event)
 	}, statusModal.initializeStatusModalListeners);
 }
 
+/**
+ * Listener responsible for forcing the reload of all orders of the page
+ *
+ * @author kinsho
+ */
+function reloadPage()
+{
+	window.location.reload();
+}
+
+/**
+ * Listener responsible for setting the flag that will trigger logic to check the server for new data
+ *
+ * @author kinsho
+ */
+function triggerPing()
+{
+	vm.pingTheServer = true;
+}
+
 // ----------------- LISTENER INITIALIZATION -----------------------------
 
 for (let i = _statusLinks.length - 1; i >= 0; i -= 1)
@@ -98,3 +120,9 @@ for (let j = _fileListings.length - 1; j >= 0; j -= 1)
 {
 	new uploader(_fileListings[j]);
 }
+
+// Set up a handler to allow data to be updated on the fly
+_staleDataLink.addEventListener('click', reloadPage);
+
+// Set up a regular timer to check the service for newly-updated data
+window.setInterval(triggerPing, 60000);
