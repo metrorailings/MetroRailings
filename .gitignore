@@ -17,3 +17,4 @@ client/images/gallery
 client/styles/**/page.css
 quotes/*.*
 dump/**.**
+config/**.**
