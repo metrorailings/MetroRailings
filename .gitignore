@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+.ssl/**.**
 quotes/*.*
 dump/**
 prod/buildScript.sh
