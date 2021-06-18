@@ -28,7 +28,7 @@
     "showdown": "*",
     "sleep": "*",
     "stripe": "^6.26.1",
-    "striptags": "~2",
+    "striptags": "~3",
     "styliner": "*"
   },
   "jspm": {
